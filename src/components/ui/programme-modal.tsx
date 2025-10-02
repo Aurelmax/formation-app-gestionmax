@@ -14,7 +14,8 @@ import {
   Phone,
   Mail,
   Download,
-  FileText
+  FileText,
+  X
 } from 'lucide-react';
 
 interface ProgrammeModalProps {
@@ -295,9 +296,18 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto relative">
+        {/* Croix rouge en haut à droite */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors duration-200 shadow-lg"
+          aria-label="Fermer le modal"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-[#1f3b8e] mb-4">
+          <DialogTitle className="text-2xl font-bold text-[#1f3b8e] mb-4 pr-12">
             {programme.titre}
           </DialogTitle>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -567,14 +577,9 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
             )}
           </Button>
           
-          <div className="flex gap-3">
-            <Button variant="outline" onClick={onClose} className="border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#1f3b8e] hover:text-white">
-              Fermer
-            </Button>
-            <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white">
-              RDV de Positionnement
-            </Button>
-          </div>
+          <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white">
+            RDV de Positionnement
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
