@@ -12,8 +12,8 @@ export default async function CataloguePage() {
 
   return (
     <PublicLayout>
-      {/* Header */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16 overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         <Image
           src="/formation-wordpress-antibes.webp"
           alt="Formation WordPress Antibes"
@@ -21,11 +21,12 @@ export default async function CataloguePage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-purple-600/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold mb-4">Catalogue de formations</h1>
-          <p className="text-lg text-gray-100">
-            Explorez nos programmes de formation professionnelle certifiés
+          <h1 className="text-5xl font-bold mb-6">Catalogue de Formations</h1>
+          <p className="text-xl text-gray-100 max-w-4xl mx-auto">
+            Découvrez notre catalogue complet de formations WordPress professionnelles. 
+            Formations éligibles CPF, adaptées aux entreprises et particuliers.
           </p>
         </div>
       </section>

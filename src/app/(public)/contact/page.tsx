@@ -21,7 +21,14 @@ export default function ContactPage() {
     <PublicLayout>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20" />
+        <Image
+          src="/formation-wordpress-antibes.webp"
+          alt="Formation WordPress Antibes"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-bold mb-6">Contactez-nous</h1>
           <p className="text-xl text-gray-100 max-w-4xl mx-auto">
