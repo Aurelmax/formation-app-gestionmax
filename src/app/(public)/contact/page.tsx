@@ -1,5 +1,5 @@
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -161,7 +161,7 @@ export default function ContactPage() {
 
                     <Button 
                       type="submit" 
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
+                      className="w-full bg-brand-primary hover:bg-brand-secondary text-white py-3"
                     >
                       Envoyer le message
                     </Button>
@@ -206,8 +206,8 @@ export default function ContactPage() {
             <Card className="p-6 shadow-lg">
               <CardContent className="p-0">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                    <FileText className="h-6 w-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-brand-primary/10 rounded-full flex items-center justify-center mr-4">
+                    <FileText className="h-6 w-6 text-brand-primary" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900">Contrat de formation</h3>
                 </div>

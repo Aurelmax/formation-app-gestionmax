@@ -62,7 +62,7 @@ export default async function ProgrammesPage() {
                   <p className="font-semibold">{programme.niveau}</p>
                 </div>
               </div>
-              <Button variant="outline" className="w-full" asChild>
+              <Button variant="outline" className="w-full border-brand-primary text-brand-primary hover:bg-brand-secondary hover:text-white" asChild>
                 <Link href={`/admin/programmes/${programme.id}`}>
                   Voir détails
                 </Link>

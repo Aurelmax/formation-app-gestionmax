@@ -1,96 +1,76 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
+import { FormationCard } from '@/components/shared/FormationCard';
+import { ModernFAQ } from '@/components/shared/ModernFAQ';
+import { MockService } from '@/lib/mock-service';
 import { 
   ArrowRight, 
   BookOpen, 
   Users, 
   Award, 
-  Phone, 
-  Calendar,
-  CheckCircle,
+  TrendingUp,
   Search,
-  ChevronDown
+  Filter,
+  CheckCircle,
+  User,
+  Target
 } from 'lucide-react';
-import { useState } from 'react';
 
 export default function HomePage() {
-  const [isFaqOpen, setIsFaqOpen] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [formations, setFormations] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const formations = [
-    {
-      id: 1,
-      title: "Génération de contenu avec ChatGPT + Automatisation Marketing",
-      duration: "2 jours",
-      level: "Débutant",
-      description: "Maîtrisez l'IA pour créer du contenu et automatiser vos campagnes marketing."
-    },
-    {
-      id: 2,
-      title: "WordPress pour débutants - Créer son premier site",
-      duration: "3 jours",
-      level: "Débutant",
-      description: "Apprenez les bases de WordPress et créez votre premier site professionnel."
-    },
-    {
-      id: 3,
-      title: "Développement WordPress avancé",
-      duration: "5 jours",
-      level: "Intermédiaire",
-      description: "Développez des thèmes et plugins personnalisés avec PHP et JavaScript."
-    },
-    {
-      id: 4,
-      title: "WooCommerce - E-commerce avec WordPress",
-      duration: "4 jours",
-      level: "Intermédiaire",
-      description: "Créez une boutique en ligne complète avec WooCommerce."
-    },
-    {
-      id: 5,
-      title: "Sécurité WordPress - Protection avancée",
-      duration: "2 jours",
-      level: "Avancé",
-      description: "Sécurisez votre site WordPress contre les cyberattaques."
-    },
-    {
-      id: 6,
-      title: "Performance WordPress - Optimisation",
-      duration: "3 jours",
-      level: "Intermédiaire",
-      description: "Optimisez la vitesse et les performances de votre site WordPress."
-    }
+  useEffect(() => {
+    const loadFormations = async () => {
+      try {
+        const data = await MockService.getProgrammes();
+        setFormations(data);
+      } catch (error) {
+        console.error('Erreur lors du chargement des formations:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadFormations();
+  }, []);
+
+  // Stats pour le formateur (utilisées dans la section "Votre formateur certifié")
+  const formateurStats = [
+    { label: 'Apprenants formés', value: '500+', icon: Users },
+    { label: 'Formations', value: '50+', icon: BookOpen },
+    { label: 'Taux de réussite', value: '95%', icon: TrendingUp },
+    { label: 'Certifié Qualiopi', value: '2024', icon: Award },
   ];
 
-  const faqItems = [
-    {
-      question: "Qui peut suivre une formation WordPress?",
-      answer: "Nos formations s'adressent à tous les profils : débutants, développeurs, entrepreneurs, marketeurs. Chaque formation est adaptée au niveau des participants."
-    },
-    {
-      question: "Faut-il avoir des connaissances techniques pour apprendre WordPress?",
-      answer: "Non, nos formations débutant ne nécessitent aucune connaissance technique préalable. Nous partons des bases et progressons étape par étape."
-    },
-    {
-      question: "Les formations sont-elles éligibles au CPF?",
-      answer: "Oui, toutes nos formations sont éligibles au Compte Personnel de Formation (CPF) et peuvent être financées par votre OPCO."
-    },
-    {
-      question: "Quel est le format des formations?",
-      answer: "Nous proposons des formations en présentiel à Antibes, en distanciel ou en hybride selon vos préférences et contraintes."
-    }
+  // Filtrage des formations
+  const filteredFormations = formations.filter((formation: any) => {
+    const matchesSearch = formation.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         formation.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         formation.competences.some((comp: string) => comp.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    return matchesSearch;
+  });
+
+  const categories = [
+    { id: 'all', label: 'Toutes les formations' },
+    { id: 'developpement', label: 'Développement' },
+    { id: 'design', label: 'Design' },
+    { id: 'data', label: 'Data Science' },
+    { id: 'marketing', label: 'Marketing' }
   ];
 
   return (
     <PublicLayout>
-      {/* Hero Section - UNIQUE */}
-      <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
+            {/* Hero Section */}
+            <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         <Image
           src="/formation-wordpress-antibes.webp"
           alt="Formation WordPress Antibes"
@@ -98,264 +78,192 @@ export default function HomePage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90" />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-bold mb-6">Formations WordPress Professionnelles</h1>
           <p className="text-xl text-gray-100 max-w-4xl mx-auto mb-8">
             Développez vos compétences WordPress avec un formateur certifié. Formations éligibles FAF & OPCO et conformes Qualiopi.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
-              <Phone className="h-5 w-5 mr-2" />
-              Appeler maintenant
-            </Button>
-            <Button size="lg" variant="outline" className="bg-white text-blue-600 hover:bg-gray-50 px-8 py-3">
-              <Calendar className="h-5 w-5 mr-2" />
-              RDV de positionnement
-            </Button>
-          </div>
-
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Certifié Qualiopi
+            <Button size="lg" className="bg-brand-primary hover:bg-brand-secondary text-white" asChild>
+              <Link href="/catalogue">
+                Découvrir nos formations
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-              <Award className="h-4 w-4 mr-2" />
-              Éligible FAF & OPCO
+                  <Button size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-brand-primary" asChild>
+              <Link href="/contact">Demander un devis</Link>
             </Button>
           </div>
         </div>
       </section>
 
       {/* Votre formateur certifié */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6 text-gray-900">Votre formateur certifié</h2>
-              <p className="text-lg text-gray-600 mb-8">
+              <h2 className="text-3xl font-bold mb-6">Votre formateur certifié</h2>
+              <p className="text-lg text-gray-600 mb-6">
                 Formateur indépendant certifié Qualiopi avec plus de 8 ans d'expérience dans l'enseignement WordPress. 
                 Passionné par la transmission de connaissances et l'accompagnement personnalisé de chaque apprenant.
               </p>
-              
-              <div className="space-y-4">
-                {[
-                  'Certification Qualiopi',
-                  'Formations éligibles CPF',
-                  'Suivi personnalisé',
-                  'Support technique inclus'
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">{feature}</span>
+              <div className="grid grid-cols-2 gap-6">
+                {formateurStats.map((stat, index) => (
+                  <div key={index} className="text-center">
+                        <div className="text-3xl font-bold text-brand-primary mb-2">{stat.value}</div>
+                    <div className="text-sm text-gray-600">{stat.label}</div>
                   </div>
                 ))}
               </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              <Card className="p-6 text-center shadow-lg">
-                <CardContent className="p-0">
-                  <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                    <BookOpen className="h-6 w-6 text-blue-600" />
+            <div className="relative">
+                    <div className="w-full h-96 bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 rounded-lg shadow-lg flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-24 h-24 bg-brand-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                    <User className="h-12 w-12 text-white" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Formations</h3>
-                  <div className="text-3xl font-bold text-blue-600 mb-1">50+</div>
-                  <p className="text-sm text-gray-600">Sessions réalisées</p>
-                </CardContent>
-              </Card>
-
-              <Card className="p-6 text-center shadow-lg">
-                <CardContent className="p-0">
-                  <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                    <Users className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Apprenants</h3>
-                  <div className="text-3xl font-bold text-blue-600 mb-1">200+</div>
-                  <p className="text-sm text-gray-600">Personnes formées</p>
-                </CardContent>
-              </Card>
+                  <h3 className="text-xl font-semibold text-brand-primary mb-2">Formateur WordPress</h3>
+                  <p className="text-brand-secondary text-sm">Certifié Qualiopi</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Notre Catalogue de Formations */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-16 bg-gray-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Notre Catalogue de Formations</h2>
-            <p className="text-lg text-gray-600">
-              Découvrez notre catalogue complet de formations professionnelles certifiées Qualiopi. 
-              Formations éligibles CPF, adaptées aux entreprises et particuliers.
-            </p>
+            <h2 className="text-3xl font-bold mb-4">Notre Catalogue de Formations</h2>
+            <p className="text-lg text-gray-600">Découvrez nos programmes de formation WordPress adaptés à tous les niveaux</p>
           </div>
 
-          {/* Trouvez votre formation */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Trouvez votre formation</h3>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1">
-                <Input 
-                  placeholder="Rechercher une formation..." 
-                  className="border-gray-300"
+          {/* Barre de recherche et filtres */}
+          <div className="mb-8">
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Input
+                  placeholder="Rechercher une formation..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
                 />
               </div>
-              <Select>
-                <SelectTrigger className="w-full sm:w-64 border-gray-300">
-                  <SelectValue placeholder="Toutes les catégories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="toutes">Toutes les catégories</SelectItem>
-                  <SelectItem value="debutant">Débutant</SelectItem>
-                  <SelectItem value="intermediaire">Intermédiaire</SelectItem>
-                  <SelectItem value="avance">Avancé</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex gap-2">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  Filtres
+                </Button>
+              </div>
             </div>
-            <p className="text-sm text-gray-600 mt-4">9 formation(s) trouvé(s)</p>
+
+            {/* Catégories */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  {category.label}
+                </Button>
+              ))}
+            </div>
           </div>
 
-          {/* Grille de formations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {formations.map((formation) => (
-              <Card key={formation.id} className="hover:shadow-lg transition-all duration-300">
-                <CardHeader>
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-sm text-gray-500">{formation.duration}</span>
-                    <span className="text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded">{formation.level}</span>
-                  </div>
-                  <CardTitle className="text-lg">{formation.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">{formation.description}</p>
-                  <div className="flex gap-2">
-                    <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
-                      Détails du parcours
-                    </Button>
-                    <Button size="sm" variant="outline" className="flex-1 border-blue-600 text-blue-600 hover:bg-blue-50">
-                      Réserver un RDV
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {/* Grille des formations */}
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1f3b8e] mx-auto mb-4"></div>
+                <p className="text-gray-600">Chargement des formations...</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredFormations.slice(0, 6).map((formation) => (
+                <FormationCard 
+                  key={formation.id} 
+                  programme={formation}
+                  showDetails={true}
+                />
+              ))}
+            </div>
+          )}
 
-          {/* Pagination */}
-          <div className="flex justify-center items-center gap-2">
-            <Button variant="outline" size="sm">Précédent</Button>
-            <Button size="sm" className="bg-blue-600 text-white">1</Button>
-            <Button variant="outline" size="sm">2</Button>
-            <Button variant="outline" size="sm">Suivant</Button>
+          <div className="text-center mt-12">
+            <Button size="lg" className="bg-[#7eb33f] hover:bg-[#1f3b8e] text-white" asChild>
+              <Link href="/catalogue">Voir toutes les formations</Link>
+            </Button>
           </div>
         </div>
       </section>
 
       {/* Processus pédagogique personnalisé */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Processus pédagogique personnalisé</h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Une approche structurée en 3 étapes pour garantir l'efficacité de votre formation.
-            </p>
+            <h2 className="text-3xl font-bold mb-4">Processus pédagogique personnalisé</h2>
+            <p className="text-lg text-gray-600">Une approche adaptée à vos besoins et objectifs</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <Card className="p-6 text-center">
-              <CardContent className="p-0">
-                <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="h-8 w-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Rendez-vous de découverte</h3>
-                <p className="text-gray-600 text-sm">
-                  Évaluation de vos besoins et définition d'un parcours personnalisé adapté à vos objectifs professionnels.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6 text-center">
-              <CardContent className="p-0">
-                <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <BookOpen className="h-8 w-8 text-green-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Inscription et formation</h3>
-                <p className="text-gray-600 text-sm">
-                  Suivi de votre formation avec un accompagnement personnalisé et un support technique inclus.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="p-6 text-center">
-              <CardContent className="p-0">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="h-8 w-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Rendez-vous d'impact</h3>
-                <p className="text-gray-600 text-sm">
-                  Évaluation des acquis et planification de la suite de votre parcours de formation.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 mb-4">
-              Démarrer votre parcours
-            </Button>
-            <p className="text-sm text-gray-500 mb-6">Rendez-vous de positionnement obligatoire avant toute inscription.</p>
-            
-            <div className="max-w-4xl mx-auto">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Formations personnalisées</h3>
-              <p className="text-gray-600">
-                Chaque formation est adaptée à votre niveau, vos objectifs et votre contexte professionnel. 
-                Notre approche pédagogique flexible s'ajuste à vos contraintes et à votre rythme d'apprentissage.
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <User className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Positionnement</h3>
+              <p className="text-sm text-gray-600">Évaluation de votre niveau et définition de vos objectifs</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Target className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Planification</h3>
+              <p className="text-sm text-gray-600">Création d'un parcours personnalisé adapté à votre rythme</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Formation</h3>
+              <p className="text-sm text-gray-600">Apprentissage progressif avec accompagnement individuel</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Certification</h3>
+              <p className="text-sm text-gray-600">Validation des acquis et obtention de votre certification</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="mx-auto max-w-4xl px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Questions fréquentes sur nos formations WordPress</h2>
-            <p className="text-lg text-gray-600">
-              Retrouvez les réponses aux questions les plus courantes sur nos formations WordPress.
-            </p>
-          </div>
+      {/* FAQ Moderne */}
+      <ModernFAQ />
 
-          <div className="space-y-4">
-            {faqItems.map((item, index) => (
-              <Card key={index} className="overflow-hidden">
-                <CardHeader 
-                  className="cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => setIsFaqOpen(isFaqOpen === index ? null : index)}
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
-                    <ChevronDown 
-                      className={`h-5 w-5 text-gray-500 transition-transform ${
-                        isFaqOpen === index ? 'rotate-180' : ''
-                      }`} 
-                    />
-                  </div>
-                </CardHeader>
-                {isFaqOpen === index && (
-                  <CardContent>
-                    <p className="text-gray-600">{item.answer}</p>
-                  </CardContent>
-                )}
-              </Card>
-            ))}
-          </div>
+      {/* CTA Section */}
+      <section className="bg-[#1f3b8e] text-white py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">Prêt à vous former ?</h2>
+          <p className="text-lg mb-8 text-gray-100">
+            Contactez-nous pour discuter de votre projet de formation
+          </p>
+          <Button 
+            size="lg" 
+            className="bg-[#7eb33f] hover:bg-[#1f3b8e] text-white"
+            asChild
+          >
+            <Link href="/contact">Demander un devis</Link>
+          </Button>
         </div>
-      </section>
+        </section>
 
-    </PublicLayout>
-  );
-}
+      </PublicLayout>
+    );
+  }

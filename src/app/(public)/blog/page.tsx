@@ -132,8 +132,8 @@ export default function BlogPage() {
                 variant={selectedCategory === category ? "default" : "outline"}
                 className={`px-6 py-2 rounded-full ${
                   selectedCategory === category
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-[#1f3b8e] text-white hover:bg-[#7eb33f]'
+                    : 'bg-gray-100 text-gray-700 hover:bg-[#1f3b8e] hover:text-white'
                 }`}
                 onClick={() => setSelectedCategory(category)}
               >
@@ -190,7 +190,7 @@ export default function BlogPage() {
                   {/* Read Article Button */}
                   <Button 
                     variant="outline" 
-                    className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+                    className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white"
                   >
                     Lire l'article
                   </Button>
@@ -214,7 +214,7 @@ export default function BlogPage() {
               placeholder="Votre adresse email" 
               className="flex-1"
             />
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8">
+            <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white px-8">
               <Mail className="h-4 w-4 mr-2" />
               S'abonner
             </Button>

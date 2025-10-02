@@ -39,7 +39,7 @@ export function PublicHeader() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-brand-primary hover:bg-brand-primary/10"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <span className="sr-only">Menu</span>
@@ -59,8 +59,8 @@ export function PublicHeader() {
               className={cn(
                 'text-sm font-semibold leading-6 transition-colors',
                 pathname === item.href
-                  ? 'text-primary'
-                  : 'text-gray-900 hover:text-primary'
+                  ? 'text-[#1f3b8e] bg-[#1f3b8e]/10 px-3 py-2 rounded-lg'
+                  : 'text-gray-900 hover:text-[#1f3b8e] hover:bg-[#1f3b8e]/5 px-3 py-2 rounded-lg'
               )}
             >
               {item.name}
@@ -69,11 +69,11 @@ export function PublicHeader() {
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
-          <Button variant="ghost" asChild>
+          <Button variant="ghost" className="text-[#1f3b8e] hover:bg-[#1f3b8e]/10 hover:text-[#1f3b8e]" asChild>
             <Link href="/admin">Connexion</Link>
           </Button>
-          <Button asChild>
-            <Link href="/contact">Inscription</Link>
+          <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white" asChild>
+            <Link href="/contact">RDV de Positionnement</Link>
           </Button>
         </div>
       </nav>
@@ -89,8 +89,8 @@ export function PublicHeader() {
                 className={cn(
                   'block rounded-lg px-3 py-2 text-base font-semibold leading-7',
                   pathname === item.href
-                    ? 'bg-gray-50 text-primary'
-                    : 'text-gray-900 hover:bg-gray-50'
+                    ? 'bg-[#1f3b8e]/10 text-[#1f3b8e]'
+                    : 'text-gray-900 hover:bg-[#7eb33f]/10 hover:text-[#7eb33f]'
                 )}
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -98,11 +98,11 @@ export function PublicHeader() {
               </Link>
             ))}
             <div className="mt-4 space-y-2">
-              <Button variant="outline" className="w-full" asChild>
+              <Button variant="outline" className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white" asChild>
                 <Link href="/admin">Connexion</Link>
               </Button>
-              <Button className="w-full" asChild>
-                <Link href="/contact">Inscription</Link>
+              <Button className="w-full bg-[#1f3b8e] hover:bg-[#7eb33f] text-white" asChild>
+                <Link href="/contact">RDV de Positionnement</Link>
               </Button>
             </div>
           </div>

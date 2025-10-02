@@ -1,13 +1,13 @@
+'use client';
+
+import { useState } from 'react';
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { CVModal } from '@/components/ui/cv-modal';
 import { 
-  Award, 
   Users, 
-  Target, 
-  Heart, 
   BookOpen, 
-  UserCheck, 
   Shield, 
   Clock,
   Download,
@@ -15,13 +15,22 @@ import {
   CheckCircle,
   Mail,
   Phone,
-  Ribbon,
+  Award,
   CheckCircle2,
   Book
 } from 'lucide-react';
 import Image from 'next/image';
 
 export default function AproposPage() {
+  const [isCVModalOpen, setIsCVModalOpen] = useState(false);
+
+  const handleOpenCVModal = () => {
+    setIsCVModalOpen(true);
+  };
+
+  const handleCloseCVModal = () => {
+    setIsCVModalOpen(false);
+  };
   const stats = [
     {
       icon: BookOpen,
@@ -55,7 +64,7 @@ export default function AproposPage() {
 
   const certifications = [
     {
-      icon: Ribbon,
+      icon: Award,
       title: 'Qualiopi',
       description: 'Certification qualité des organismes de formation',
       button: 'N° 2024-QUAL-1234',
@@ -118,10 +127,13 @@ export default function AproposPage() {
                 Passionné par la transmission de connaissances et l'accompagnement personnalisé de chaque apprenant.
               </p>
               
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg mb-4">
+              <Button 
+                onClick={handleOpenCVModal}
+                className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white px-6 py-3 rounded-lg mb-4 inline-flex items-center"
+              >
                 <Download className="h-5 w-5 mr-2" />
                 <ExternalLink className="h-4 w-4 ml-2" />
-                Télécharger le CV du formateur
+                Consulter le CV du formateur
               </Button>
               
               <p className="text-sm text-gray-500 mb-8">
@@ -180,7 +192,7 @@ export default function AproposPage() {
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-4">{cert.title}</h3>
                     <p className="text-gray-600 mb-6">{cert.description}</p>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                    <Button className="bg-brand-secondary hover:bg-brand-primary text-white px-4 py-2 rounded-lg">
                       {cert.button}
                     </Button>
                   </CardContent>
@@ -234,17 +246,23 @@ export default function AproposPage() {
             Chaque projet est unique. Contactez-moi pour discuter de vos besoins et créer une formation adaptée à vos objectifs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg">
+            <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white px-8 py-3 rounded-lg">
               <Mail className="h-5 w-5 mr-2" />
               aurelien@gestionmax.fr
             </Button>
-            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg">
+            <Button variant="outline" className="border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white px-8 py-3 rounded-lg">
               <Phone className="h-5 w-5 mr-2" />
               06 46 02 24 68
             </Button>
           </div>
         </div>
       </section>
+
+      {/* Modal CV */}
+      <CVModal 
+        isOpen={isCVModalOpen} 
+        onClose={handleCloseCVModal} 
+      />
     </PublicLayout>
   );
 }

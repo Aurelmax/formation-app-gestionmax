@@ -44,6 +44,15 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Couleurs personnalisées
+        brand: {
+          primary: "#1f3b8e",    // Bleu foncé
+          secondary: "#7eb33f",   // Vert
+          "primary-light": "#2d4ba0",
+          "primary-dark": "#1a2f7a",
+          "secondary-light": "#8bc547",
+          "secondary-dark": "#6a9a35",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

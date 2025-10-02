@@ -24,8 +24,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Supprimer les attributs ajoutés par les extensions de navigateur
+              if (typeof window !== 'undefined') {
+                document.addEventListener('DOMContentLoaded', function() {
+                  const body = document.body;
+                  if (body) {
+                    body.removeAttribute('cz-shortcut-listen');
+                    body.removeAttribute('data-new-gr-c-s-check-loaded');
+                    body.removeAttribute('data-gr-ext-installed');
+                  }
+                });
+              }
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
       >
         {children}
       </body>
