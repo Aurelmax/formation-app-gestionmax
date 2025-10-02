@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ProgrammeModal } from '@/components/ui/programme-modal';
+import { SimpleProgrammeModal } from '@/components/ui/simple-programme-modal';
 // import { Programme } from '@/types/common';
 
 interface ProgrammeModalWrapperProps {
@@ -24,7 +24,7 @@ export function ProgrammeModalWrapper({ programme }: ProgrammeModalWrapperProps)
   };
 
   return (
-    <ProgrammeModal
+    <SimpleProgrammeModal
       programme={programme}
       isOpen={isOpen}
       onClose={handleClose}

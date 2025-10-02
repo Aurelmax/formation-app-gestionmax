@@ -296,7 +296,7 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto relative">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto relative" showCloseButton={false}>
         {/* Croix rouge en haut à droite */}
         <button
           onClick={onClose}
