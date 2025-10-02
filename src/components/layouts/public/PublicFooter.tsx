@@ -33,6 +33,7 @@ export function PublicFooter() {
               <li><Link href="/apropos" className="hover:text-white transition">À propos</Link></li>
               <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
               <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
+              <li><Link href="/reglement-interieur" className="hover:text-white transition">Règlement intérieur</Link></li>
             </ul>
           </div>
 
