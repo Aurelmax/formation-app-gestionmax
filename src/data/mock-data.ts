@@ -34,21 +34,6 @@ export const MOCK_USERS: User[] = [
 export const MOCK_PROGRAMMES: Programme[] = [
   {
     id: '1',
-    codeFormation: 'A007-SEO-WC',
-    titre: 'SEO les fondamentaux (SEOPress) & Techniques de Vente WooCommerce',
-    description: 'Formation complète en SEO et e-commerce : maîtrisez le référencement naturel et les techniques de vente en ligne avec WooCommerce',
-    duree: 21,
-    niveau: 'INTERMEDIAIRE',
-    modalites: 'PRESENTIEL',
-    prix: 1470,
-    statut: 'PUBLIE',
-    formateurs: ['2'],
-    competences: ['SEO', 'SEOPress', 'WooCommerce', 'E-commerce', 'Google Search Console', 'Analytics'],
-    createdAt: new Date('2025-01-25T10:00:00Z'),
-    updatedAt: new Date('2025-01-25T10:00:00Z'),
-  },
-  {
-    id: '2',
     codeFormation: 'A001-WP-DD',
     titre: 'Création de son site internet (WordPress) + Stratégie de développement digital',
     description: 'Formation complète en 2 jours : création et gestion d\'un site WordPress + stratégie de développement digital (SEO, réseaux sociaux, publicité en ligne)',
@@ -63,7 +48,7 @@ export const MOCK_PROGRAMMES: Programme[] = [
     updatedAt: new Date('2025-01-30T10:00:00Z'),
   },
   {
-    id: '3',
+    id: '2',
     codeFormation: 'A008-BD-WC',
     titre: 'Marketing digital avec Brevo + Techniques de vente en ligne avec WooCommerce',
     description: 'Formation complète en 2 jours : maîtrise du marketing digital avec Brevo (emailing, automatisation) + techniques de vente en ligne avec WooCommerce (gestion produits, paiements, conversion)',
@@ -78,7 +63,7 @@ export const MOCK_PROGRAMMES: Programme[] = [
     updatedAt: new Date('2025-02-01T10:00:00Z'),
   },
   {
-    id: '4',
+    id: '3',
     codeFormation: 'A009-SW-MA',
     titre: 'Gestion de la sécurité de votre site & analyse Web',
     description: 'Formation complète en 2 jours : sécurisation et maintenance d\'un site WordPress + analyse des statistiques avec Matomo (conforme RGPD)',
@@ -93,7 +78,7 @@ export const MOCK_PROGRAMMES: Programme[] = [
     updatedAt: new Date('2025-02-05T10:00:00Z'),
   },
   {
-    id: '5',
+    id: '4',
     codeFormation: 'A010-WP-IM',
     titre: 'Créer et Gérer un Site WordPress + Stratégie de Contenu Inbound Marketing',
     description: 'Formation complète en 3 jours : création et gestion d\'un site WordPress + stratégie de contenu inbound marketing pour attirer, convertir et fidéliser une audience',
@@ -108,7 +93,7 @@ export const MOCK_PROGRAMMES: Programme[] = [
     updatedAt: new Date('2025-02-10T10:00:00Z'),
   },
   {
-    id: '6',
+    id: '5',
     codeFormation: 'A011-SW-WC',
     titre: 'SEO les fondamentaux (SEOPRESS) & Techniques de Vente WooCommerce',
     description: 'Formation complète en 2 jours : maîtrise des bases du référencement naturel (SEO) et configuration de SEOPress pour optimiser la visibilité d\'un site WordPress',
@@ -123,7 +108,7 @@ export const MOCK_PROGRAMMES: Programme[] = [
     updatedAt: new Date('2025-02-15T10:00:00Z'),
   },
   {
-    id: '7',
+    id: '6',
     codeFormation: 'A012-CV-WEB-WC',
     titre: 'Maîtriser Canva pour le web, les réseaux sociaux et la vente en ligne',
     description: 'Formation complète en 2 jours : création et optimisation de visuels professionnels avec Canva pour le web, les réseaux sociaux et la vente en ligne',
@@ -138,7 +123,7 @@ export const MOCK_PROGRAMMES: Programme[] = [
     updatedAt: new Date('2025-02-20T10:00:00Z'),
   },
   {
-    id: '8',
+    id: '7',
     codeFormation: 'A014-FB-LI',
     titre: 'Maîtriser Facebook Ads et LinkedIn Ads pour une stratégie publicitaire efficace',
     description: 'Formation complète en 4 jours : maîtrise des publicités Facebook et LinkedIn, création de campagnes performantes, retargeting et optimisation des performances',
@@ -153,7 +138,7 @@ export const MOCK_PROGRAMMES: Programme[] = [
     updatedAt: new Date('2025-02-25T10:00:00Z'),
   },
   {
-    id: '9',
+    id: '8',
     codeFormation: 'A015-IA-CGPT',
     titre: 'Génération de contenu avec ChatGPT + Automatisation Marketing',
     description: 'Formation complète en 2 jours : maîtrise de ChatGPT pour la génération de contenu et mise en place d\'automatisations marketing avec Make, Brevo et autres outils',
