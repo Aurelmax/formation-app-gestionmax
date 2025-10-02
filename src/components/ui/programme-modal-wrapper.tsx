@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ProgrammeModal } from '@/components/ui/programme-modal-fixed';
+import { ProgrammeModal } from '@/components/ui/programme-modal';
 // import { Programme } from '@/types/common';
 
 interface ProgrammeModalWrapperProps {
