@@ -25,7 +25,16 @@ import {
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [formations, setFormations] = useState<any[]>([]);
+  const [formations, setFormations] = useState<Array<{
+    id: string;
+    titre: string;
+    description: string;
+    duree: number;
+    niveau: string;
+    modalites: string;
+    prix: number;
+    competences: string[];
+  }>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -51,7 +60,7 @@ export default function HomePage() {
   ];
 
   // Filtrage des formations
-  const filteredFormations = formations.filter((formation: any) => {
+  const filteredFormations = formations.filter((formation) => {
     const matchesSearch = formation.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          formation.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          formation.competences.some((comp: string) => comp.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -105,8 +114,8 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Votre formateur certifié</h2>
               <p className="text-lg text-gray-600 mb-6">
-                Formateur indépendant certifié Qualiopi avec plus de 8 ans d'expérience dans l'enseignement WordPress. 
-                Passionné par la transmission de connaissances et l'accompagnement personnalisé de chaque apprenant.
+                Formateur indépendant certifié Qualiopi avec plus de 8 ans d&apos;expérience dans l&apos;enseignement WordPress. 
+                Passionné par la transmission de connaissances et l&apos;accompagnement personnalisé de chaque apprenant.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 {formateurStats.map((stat, index) => (
@@ -118,13 +127,23 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative">
-                    <div className="w-full h-96 bg-gradient-to-br from-brand-primary/10 to-brand-secondary/10 rounded-lg shadow-lg flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-24 h-24 bg-brand-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                    <User className="h-12 w-12 text-white" />
+              <div className="w-full h-96 rounded-lg shadow-lg overflow-hidden relative">
+                <Image
+                  src="/formateur-background.webp"
+                  alt="Formateur WordPress - Arrière-plan"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/80 to-brand-secondary/80" />
+                <div className="relative z-10 flex items-center justify-center h-full">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-white/30">
+                      <User className="h-12 w-12 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-white mb-2">Formateur WordPress à Antibes</h3>
+                    <p className="text-white/90 text-sm mb-1">Aurélien LAVAYSSIERE</p>
+                    <p className="text-white/90 text-sm">Certifié Qualiopi</p>
                   </div>
-                  <h3 className="text-xl font-semibold text-brand-primary mb-2">Formateur WordPress</h3>
-                  <p className="text-brand-secondary text-sm">Certifié Qualiopi</p>
                 </div>
               </div>
             </div>
@@ -224,7 +243,7 @@ export default function HomePage() {
                 <Target className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Planification</h3>
-              <p className="text-sm text-gray-600">Création d'un parcours personnalisé adapté à votre rythme</p>
+              <p className="text-sm text-gray-600">Création d&apos;un parcours personnalisé adapté à votre rythme</p>
             </div>
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">

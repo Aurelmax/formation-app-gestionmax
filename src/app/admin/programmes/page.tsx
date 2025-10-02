@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,9 +7,39 @@ import { Badge } from '@/components/ui/badge';
 import { Plus } from 'lucide-react';
 import { MockService } from '@/lib/mock-service';
 import { formatCurrency } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
-export default async function ProgrammesPage() {
-  const programmes = await MockService.getProgrammes();
+export default function ProgrammesPage() {
+  const [programmes, setProgrammes] = useState<Array<{
+    id: string;
+    codeFormation: string;
+    titre: string;
+    description: string;
+    duree: number;
+    niveau: string;
+    modalites: string;
+    prix: number;
+    statut: string;
+    formateurs: string[];
+    competences: string[];
+    createdAt: Date;
+    updatedAt: Date;
+  }>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProgrammes = async () => {
+      try {
+        const data = await MockService.getProgrammes();
+        setProgrammes(data);
+      } catch (error) {
+        console.error('Erreur lors du chargement des programmes:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadProgrammes();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -25,7 +57,13 @@ export default async function ProgrammesPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {programmes.map((programme) => (
+        {isLoading ? (
+          <div className="col-span-full text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-2 text-gray-600">Chargement des programmes...</p>
+          </div>
+        ) : (
+          programmes.map((programme) => (
           <Card key={programme.id} className="hover:shadow-lg transition">
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -69,7 +107,8 @@ export default async function ProgrammesPage() {
               </Button>
             </CardContent>
           </Card>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

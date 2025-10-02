@@ -11,7 +11,16 @@ import Image from 'next/image';
 import { Search, SortAsc, SortDesc } from 'lucide-react';
 
 export default function CataloguePage() {
-  const [programmes, setProgrammes] = useState<any[]>([]);
+  const [programmes, setProgrammes] = useState<Array<{
+    id: string;
+    titre: string;
+    description: string;
+    duree: number;
+    niveau: string;
+    modalites: string;
+    prix: number;
+    competences: string[];
+  }>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNiveau, setSelectedNiveau] = useState('all');
@@ -35,7 +44,7 @@ export default function CataloguePage() {
 
   // Filtrage et tri des programmes
   const filteredAndSortedProgrammes = useMemo(() => {
-    let filtered = programmes.filter((programme: any) => {
+    const filtered = programmes.filter((programme) => {
       const matchesSearch = programme.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            programme.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            programme.competences.some((comp: string) => comp.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -48,7 +57,7 @@ export default function CataloguePage() {
 
     // Tri des programmes
     if (sortBy !== 'default') {
-      filtered.sort((a: any, b: any) => {
+      filtered.sort((a, b) => {
         let comparison = 0;
         
         switch (sortBy) {
@@ -112,7 +121,7 @@ export default function CataloguePage() {
                     Les formations présentées dans ce catalogue sont conçues pour répondre aux besoins spécifiques des artisans, commerçants et très petites entreprises (TPE). Elles constituent une base structurée, construite à partir de situations professionnelles courantes.
                   </p>
                   <p>
-                    Toutefois, chaque module peut être entièrement adapté en fonction des résultats du rendez-vous de positionnement initial, afin de tenir compte de vos objectifs, contraintes et compétences déjà acquises. Cette phase d'analyse garantit la pertinence du parcours proposé et son alignement avec vos besoins réels.
+                    Toutefois, chaque module peut être entièrement adapté en fonction des résultats du rendez-vous de positionnement initial, afin de tenir compte de vos objectifs, contraintes et compétences déjà acquises. Cette phase d&apos;analyse garantit la pertinence du parcours proposé et son alignement avec vos besoins réels.
                   </p>
                 </div>
               </div>
@@ -230,7 +239,7 @@ export default function CataloguePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredAndSortedProgrammes.map((programme: any) => (
+                  {filteredAndSortedProgrammes.map((programme) => (
                 <FormationCard 
                   key={programme.id} 
                   programme={programme}

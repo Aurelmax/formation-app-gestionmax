@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -310,6 +310,9 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
           <DialogTitle className="text-2xl font-bold text-[#1f3b8e] mb-4 pr-12">
             {programme.titre}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Modal détaillé pour la formation {programme.titre} - {programme.duree} heures - Niveau {programme.niveau} - {programme.modalites} - {programme.prix}€
+          </DialogDescription>
           <div className="flex flex-wrap gap-2 mb-4">
             <Badge className="bg-[#1f3b8e] text-white">{programme.niveau}</Badge>
             <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{programme.modalites}</Badge>
@@ -328,7 +331,7 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
                 : 'text-gray-500 hover:text-[#1f3b8e]'
             }`}
           >
-            Vue d'ensemble
+            Vue d&apos;ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -504,7 +507,7 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm">Certificat de réalisation de formation</p>
-                  <p className="text-sm text-gray-600">Quiz d'évaluation des acquis</p>
+                  <p className="text-sm text-gray-600">Quiz d&apos;évaluation des acquis</p>
                 </CardContent>
               </Card>
             </div>

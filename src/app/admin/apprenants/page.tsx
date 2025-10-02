@@ -1,12 +1,43 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Plus, Mail, Phone } from 'lucide-react';
 import { MockService } from '@/lib/mock-service';
+import { useState, useEffect } from 'react';
 
-export default async function ApprenantsPage() {
-  const apprenants = await MockService.getApprenants();
+export default function ApprenantsPage() {
+  const [apprenants, setApprenants] = useState<Array<{
+    id: string;
+    nom: string;
+    prenom: string;
+    email: string;
+    telephone: string;
+    dateNaissance: string;
+    adresse: string;
+    statut: string;
+    programmes: string[];
+    progression: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadApprenants = async () => {
+      try {
+        const data = await MockService.getApprenants();
+        setApprenants(data);
+      } catch (error) {
+        console.error('Erreur lors du chargement des apprenants:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadApprenants();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -24,7 +55,13 @@ export default async function ApprenantsPage() {
       </div>
 
       <div className="space-y-4">
-        {apprenants.map((apprenant) => (
+        {isLoading ? (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-2 text-gray-600">Chargement des apprenants...</p>
+          </div>
+        ) : (
+          apprenants.map((apprenant) => (
           <Card key={apprenant.id} className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -64,7 +101,8 @@ export default async function ApprenantsPage() {
               </div>
             </div>
           </Card>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

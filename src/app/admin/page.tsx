@@ -39,7 +39,7 @@ export default async function AdminDashboard() {
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">
-          Vue d'ensemble de votre activité
+          Vue d&apos;ensemble de votre activité
         </p>
       </div>
 

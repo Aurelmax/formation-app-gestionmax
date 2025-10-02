@@ -115,7 +115,7 @@ export default function BlogPage() {
             <div className="text-center">
               <h3 className="text-lg font-semibold text-gray-900 mb-1">Blog en cours de mise à jour</h3>
               <p className="text-gray-700">
-                Nous sommes en train d'améliorer notre blog pour vous offrir un contenu de meilleure qualité. Merci de votre patience.
+                Nous sommes en train d&apos;améliorer notre blog pour vous offrir un contenu de meilleure qualité. Merci de votre patience.
               </p>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function BlogPage() {
               <Card key={article.id} className="hover:shadow-lg transition-all duration-300 border border-gray-200">
                 {/* Article Image Placeholder */}
                 <div className="h-48 bg-gray-100 rounded-t-lg flex items-center justify-center">
-                  <div className="text-gray-400 text-sm">Image de l'article</div>
+                  <div className="text-gray-400 text-sm">Image de l&apos;article</div>
                 </div>
                 
                 <CardContent className="p-6">
@@ -192,7 +192,7 @@ export default function BlogPage() {
                     variant="outline" 
                     className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white"
                   >
-                    Lire l'article
+                    Lire l&apos;article
                   </Button>
                 </CardContent>
               </Card>
@@ -216,7 +216,7 @@ export default function BlogPage() {
             />
             <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white px-8">
               <Mail className="h-4 w-4 mr-2" />
-              S'abonner
+              S&apos;abonner
             </Button>
           </div>
         </div>

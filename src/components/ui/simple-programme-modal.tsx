@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,12 +9,10 @@ import {
   Clock, 
   MapPin, 
   Euro, 
-  CheckCircle, 
   Award,
   Phone,
   Mail,
   Download,
-  FileText,
   X
 } from 'lucide-react';
 
@@ -65,12 +63,19 @@ export function SimpleProgrammeModal({ programme, isOpen, onClose }: SimpleProgr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto relative" showCloseButton={false}>
+      <DialogContent 
+        className="max-w-4xl max-h-[90vh] overflow-y-auto relative" 
+        showCloseButton={false}
+      >
         {/* Croix rouge en haut à droite */}
         <button
-          onClick={onClose}
+          onClick={() => {
+            console.log('Clic sur la croix de fermeture');
+            onClose();
+          }}
           className="absolute top-4 right-4 z-10 p-2 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors duration-200 shadow-lg"
           aria-label="Fermer le modal"
+          type="button"
         >
           <X className="h-5 w-5" />
         </button>
@@ -79,6 +84,9 @@ export function SimpleProgrammeModal({ programme, isOpen, onClose }: SimpleProgr
           <DialogTitle className="text-2xl font-bold text-[#1f3b8e] mb-4 pr-12">
             {programme.titre}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Modal détaillé pour la formation {programme.titre} - {programme.duree} heures - Niveau {programme.niveau} - {programme.modalites} - {programme.prix}€
+          </DialogDescription>
           <div className="flex flex-wrap gap-2 mb-4">
             <Badge className="bg-[#1f3b8e] text-white">{programme.niveau}</Badge>
             <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{programme.modalites}</Badge>

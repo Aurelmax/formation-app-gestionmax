@@ -1,3 +1,5 @@
+'use client';
+
 import { use } from 'react';
 import { notFound } from 'next/navigation';
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';

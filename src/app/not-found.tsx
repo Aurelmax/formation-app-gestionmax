@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,13 +22,13 @@ export default function NotFound() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-gray-600">
-                Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+                Désolé, la page que vous recherchez n&apos;existe pas ou a été déplacée.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button className="bg-brand-primary hover:bg-brand-secondary text-white" asChild>
                   <Link href="/">
                     <Home className="h-4 w-4 mr-2" />
-                    Retour à l'accueil
+                    Retour à l&apos;accueil
                   </Link>
                 </Button>
                 <Button variant="outline" onClick={() => window.history.back()}>

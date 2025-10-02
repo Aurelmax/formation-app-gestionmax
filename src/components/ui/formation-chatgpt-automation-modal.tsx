@@ -161,7 +161,7 @@ export function FormationChatgptAutomationModal({ isOpen, onClose }: FormationCh
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d'ensemble
+            Vue d&apos;ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -264,7 +264,7 @@ export function FormationChatgptAutomationModal({ isOpen, onClose }: FormationCh
                     </div>
                     <ul className="ml-7 space-y-1 text-sm text-gray-600">
                       <li>• Workflows automatisés</li>
-                      <li>• Intégration d\'outils</li>
+                      <li>• Intégration d&apos;outils</li>
                       <li>• Campagnes emailing</li>
                       <li>• Publications automatiques</li>
                     </ul>
@@ -278,7 +278,7 @@ export function FormationChatgptAutomationModal({ isOpen, onClose }: FormationCh
                       <li>• Posts réseaux sociaux</li>
                       <li>• Newsletters automatisées</li>
                       <li>• Calendriers éditoriaux</li>
-                      <li>• Appels à l\'action</li>
+                      <li>• Appels à l&apos;action</li>
                     </ul>
                   </div>
                   <div className="space-y-3">

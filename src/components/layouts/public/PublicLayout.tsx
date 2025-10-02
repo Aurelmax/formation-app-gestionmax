@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode } from 'react';
 import { PublicHeader } from './PublicHeader';
 import { PublicFooter } from './PublicFooter';

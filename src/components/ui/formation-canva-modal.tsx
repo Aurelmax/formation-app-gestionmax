@@ -160,7 +160,7 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d'ensemble
+            Vue d&apos;ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -251,7 +251,7 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
                     </div>
                     <ul className="ml-7 space-y-1 text-sm text-gray-600">
                       <li>• Principes du design (couleurs, typographies)</li>
-                      <li>• Création d\'identité visuelle</li>
+                      <li>• Création d&apos;identité visuelle</li>
                       <li>• Optimisation des visuels</li>
                       <li>• Formats adaptés par plateforme</li>
                     </ul>

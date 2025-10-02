@@ -141,7 +141,7 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d'ensemble
+            Vue d&apos;ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}

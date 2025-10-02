@@ -197,7 +197,7 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d'ensemble
+            Vue d&apos;ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -289,7 +289,7 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
                     <ul className="ml-7 space-y-1 text-sm text-gray-600">
                       <li>• Meta Business Suite</li>
                       <li>• Création de campagnes</li>
-                      <li>• Ciblage d\'audiences</li>
+                      <li>• Ciblage d&apos;audiences</li>
                       <li>• Optimisation des performances</li>
                     </ul>
                   </div>

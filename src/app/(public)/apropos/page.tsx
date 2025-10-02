@@ -109,8 +109,8 @@ export default function AproposPage() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-bold mb-6">À propos de GestionMax Formateur</h1>
           <p className="text-xl text-gray-100 max-w-4xl mx-auto">
-            Formateur indépendant certifié Qualiopi avec plus de 8 ans d'expérience dans l'enseignement WordPress. 
-            Passionné par la transmission de connaissances et l'accompagnement personnalisé de chaque apprenant.
+            Formateur indépendant certifié Qualiopi avec plus de 8 ans d&apos;expérience dans l&apos;enseignement WordPress. 
+            Passionné par la transmission de connaissances et l&apos;accompagnement personnalisé de chaque apprenant.
           </p>
         </div>
       </section>
@@ -123,8 +123,8 @@ export default function AproposPage() {
             <div>
               <h2 className="text-4xl font-bold mb-6 text-gray-900">Votre formateur expert</h2>
               <p className="text-lg text-gray-600 mb-8">
-                Formateur indépendant certifié Qualiopi avec plus de 8 ans d'expérience dans l'enseignement WordPress. 
-                Passionné par la transmission de connaissances et l'accompagnement personnalisé de chaque apprenant.
+                Formateur indépendant certifié Qualiopi avec plus de 8 ans d&apos;expérience dans l&apos;enseignement WordPress. 
+                Passionné par la transmission de connaissances et l&apos;accompagnement personnalisé de chaque apprenant.
               </p>
               
               <Button 
@@ -227,11 +227,11 @@ export default function AproposPage() {
                 <p><strong>Raison sociale:</strong> GestionMax</p>
                 <p><strong>Statut juridique:</strong> Entreprise individuelle</p>
                 <p><strong>SIRET:</strong> 483 797 213 00061</p>
-                <p><strong>N° déclaration d'activité:</strong> 11 75 12345 75</p>
+                <p><strong>N° déclaration d&apos;activité:</strong> 11 75 12345 75</p>
                 <p><strong>Certification Qualiopi:</strong> QUA230C60046</p>
               </div>
               <p className="text-sm text-gray-500 mt-4">
-                Cet enregistrement ne vaut pas agrément de l'État (Article L.6352-12 du Code du travail)
+                Cet enregistrement ne vaut pas agrément de l&apos;État (Article L.6352-12 du Code du travail)
               </p>
             </div>
           </div>

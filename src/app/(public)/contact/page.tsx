@@ -1,3 +1,5 @@
+'use client';
+
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,6 +17,7 @@ import {
   Shield
 } from 'lucide-react';
 import Image from 'next/image';
+import { InteractiveMap } from '@/components/ui/InteractiveMap';
 
 export default function ContactPage() {
   return (
@@ -75,7 +78,7 @@ export default function ContactPage() {
                     <div className="flex items-start gap-4">
                       <Clock className="h-6 w-6 text-blue-600 mt-1" />
                       <div>
-                        <p className="font-semibold text-gray-900">Heures d'ouverture</p>
+                        <p className="font-semibold text-gray-900">Heures d&apos;ouverture</p>
                         <div className="text-gray-600 space-y-1">
                           <p>Lundi - Vendredi : 9h00 - 18h00</p>
                           <p>Samedi : 9h00 - 12h00</p>
@@ -182,13 +185,7 @@ export default function ContactPage() {
           </div>
           
           <Card className="overflow-hidden">
-            <div className="h-96 bg-gray-200 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                <p className="text-gray-600">Carte interactive</p>
-                <p className="text-sm text-gray-500">300 chemin de la suquette, 06600 Antibes</p>
-              </div>
-            </div>
+            <InteractiveMap className="h-96" />
           </Card>
         </div>
       </section>
@@ -213,8 +210,8 @@ export default function ContactPage() {
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
                   Un contrat de formation professionnelle est établi pour chaque formation. Il précise les objectifs, 
-                  modalités, programme, délais, conditions financières et droit de rétractation. L'accès se fait 
-                  dès réception de l'accord de prise en charge. Un entretien préalable personnalise votre parcours.
+                  modalités, programme, délais, conditions financières et droit de rétractation. L&apos;accès se fait 
+                  dès réception de l&apos;accord de prise en charge. Un entretien préalable personnalise votre parcours.
                 </p>
               </CardContent>
             </Card>
@@ -229,7 +226,7 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold text-gray-900">Procédure de réclamation</h3>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  En cas de mécontentement, utilisez le formulaire de contact en sélectionnant "Réclamation". 
+                  En cas de mécontentement, utilisez le formulaire de contact en sélectionnant &quot;Réclamation&quot;. 
                   Nous nous engageons à traiter votre demande sous 10 jours ouvrés maximum avec un suivi 
                   personnalisé. Contact direct : <strong>reclamation@gestionmax-formation.fr</strong>
                 </p>
@@ -247,7 +244,7 @@ export default function ContactPage() {
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
                   Vos données personnelles sont traitées conformément au RGPD. Elles servent à des fins 
-                  pédagogiques, administratives ou réglementaires. Vous disposez d'un droit d'accès, 
+                  pédagogiques, administratives ou réglementaires. Vous disposez d&apos;un droit d&apos;accès, 
                   rectification et suppression. Contact DPO : <strong>dpo@gestionmax-formation.fr</strong>
                 </p>
               </CardContent>

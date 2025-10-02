@@ -194,7 +194,7 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
                 : 'text-gray-500 hover:text-[#1f3b8e]'
             }`}
           >
-            Vue d'ensemble
+            Vue d&apos;ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -245,7 +245,7 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <h4 className="font-medium text-gray-700 mb-2">Prérequis</h4>
                 <p className="text-sm text-gray-600">
-                  Avoir des connaissances de base sur WordPress, ou avoir suivi un module d'initiation.
+                  Avoir des connaissances de base sur WordPress, ou avoir suivi un module d&apos;initiation.
                 </p>
               </div>
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">

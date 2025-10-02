@@ -9,8 +9,8 @@ import { Star } from 'lucide-react';
 
 interface FormationCardProps {
   programme: {
-    id: number;
-    codeFormation: string;
+    id: string | number;
+    codeFormation?: string;
     titre: string;
     description: string;
     duree: number;
@@ -41,9 +41,11 @@ export function FormationCard({ programme, showDetails = true }: FormationCardPr
           </div>
         </div>
         <CardTitle className="text-xl">{programme.titre}</CardTitle>
-        <div className="text-sm text-[#1f3b8e] font-medium">
-          Code: {programme.codeFormation}
-        </div>
+        {programme.codeFormation && (
+          <div className="text-sm text-[#1f3b8e] font-medium">
+            Code: {programme.codeFormation}
+          </div>
+        )}
       </CardHeader>
       
       <CardContent className="flex flex-col flex-grow">
