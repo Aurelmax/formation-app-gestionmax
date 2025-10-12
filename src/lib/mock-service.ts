@@ -56,4 +56,55 @@ export class MockService {
     await delay();
     return MOCK_USERS[0]!; // Admin par défaut
   }
+
+  static async createUser(userData: any): Promise<User> {
+    await delay();
+    const newUser: User = {
+      id: `user_${Date.now()}`,
+      email: userData.email,
+      name: userData.name,
+      firstName: userData.firstName,
+      role: userData.role || 'apprenant',
+      status: 'active',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    MOCK_USERS.push(newUser);
+    return newUser;
+  }
+
+  static async updateUser(userId: string, userData: any): Promise<User> {
+    await delay();
+    const userIndex = MOCK_USERS.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+      throw new Error('Utilisateur non trouvé');
+    }
+    
+    MOCK_USERS[userIndex] = {
+      ...MOCK_USERS[userIndex]!,
+      ...userData,
+      updatedAt: new Date().toISOString(),
+    };
+    
+    return MOCK_USERS[userIndex]!;
+  }
+
+  static async deleteUser(userId: string): Promise<void> {
+    await delay();
+    const userIndex = MOCK_USERS.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+      throw new Error('Utilisateur non trouvé');
+    }
+    MOCK_USERS.splice(userIndex, 1);
+  }
+
+  static async changePassword(userId: string, passwordData: any): Promise<void> {
+    await delay();
+    const user = MOCK_USERS.find(u => u.id === userId);
+    if (!user) {
+      throw new Error('Utilisateur non trouvé');
+    }
+    // En mode mock, on simule juste le succès
+    console.log(`Mot de passe changé pour ${user.email}`);
+  }
 }

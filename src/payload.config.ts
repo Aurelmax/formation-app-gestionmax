@@ -1,14 +1,21 @@
+import * as path from 'path'
 import { buildConfig } from 'payload'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 export default buildConfig({
+  secret: process.env['PAYLOAD_SECRET'] || 'your-secret-key-change-this-in-production',
   admin: {
     user: 'users',
     meta: {
       titleSuffix: '- GestionMax CMS',
-      favicon: '/favicon.ico',
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          url: '/favicon.ico',
+        },
+      ],
     },
   },
   editor: lexicalEditor({}),
@@ -23,9 +30,21 @@ export default buildConfig({
           required: true,
         },
         {
+          name: 'firstName',
+          type: 'text',
+        },
+        {
+          name: 'lastName',
+          type: 'text',
+        },
+        {
           name: 'role',
           type: 'select',
           options: [
+            {
+              label: 'Super Admin',
+              value: 'super_admin',
+            },
             {
               label: 'Admin',
               value: 'admin',
@@ -35,12 +54,103 @@ export default buildConfig({
               value: 'formateur',
             },
             {
+              label: 'Gestionnaire',
+              value: 'gestionnaire',
+            },
+            {
               label: 'Apprenant',
               value: 'apprenant',
             },
           ],
           defaultValue: 'apprenant',
           required: true,
+        },
+        {
+          name: 'status',
+          type: 'select',
+          options: [
+            {
+              label: 'Actif',
+              value: 'active',
+            },
+            {
+              label: 'Inactif',
+              value: 'inactive',
+            },
+            {
+              label: 'Suspendu',
+              value: 'suspended',
+            },
+            {
+              label: 'En attente',
+              value: 'pending',
+            },
+          ],
+          defaultValue: 'active',
+          required: true,
+        },
+        {
+          name: 'phone',
+          type: 'text',
+        },
+        {
+          name: 'address',
+          type: 'textarea',
+        },
+        {
+          name: 'dateOfBirth',
+          type: 'date',
+        },
+        {
+          name: 'avatar',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
+          name: 'permissions',
+          type: 'array',
+          fields: [
+            {
+              name: 'permission',
+              type: 'select',
+              options: [
+                { label: 'Lecture utilisateurs', value: 'users:read' },
+                { label: 'Création utilisateurs', value: 'users:create' },
+                { label: 'Modification utilisateurs', value: 'users:update' },
+                { label: 'Suppression utilisateurs', value: 'users:delete' },
+                { label: 'Lecture formations', value: 'formations:read' },
+                { label: 'Création formations', value: 'formations:create' },
+                { label: 'Modification formations', value: 'formations:update' },
+                { label: 'Suppression formations', value: 'formations:delete' },
+                { label: 'Lecture apprenants', value: 'apprenants:read' },
+                { label: 'Création apprenants', value: 'apprenants:create' },
+                { label: 'Modification apprenants', value: 'apprenants:update' },
+                { label: 'Suppression apprenants', value: 'apprenants:delete' },
+                { label: 'Lecture rendez-vous', value: 'rendez_vous:read' },
+                { label: 'Création rendez-vous', value: 'rendez_vous:create' },
+                { label: 'Modification rendez-vous', value: 'rendez_vous:update' },
+                { label: 'Suppression rendez-vous', value: 'rendez_vous:delete' },
+                { label: 'Lecture documents', value: 'documents:read' },
+                { label: 'Création documents', value: 'documents:create' },
+                { label: 'Modification documents', value: 'documents:update' },
+                { label: 'Suppression documents', value: 'documents:delete' },
+                { label: 'Accès admin', value: 'admin:access' },
+                { label: 'Paramètres système', value: 'system:settings' },
+                { label: 'Accès rapports', value: 'reports:access' },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'lastLoginAt',
+          type: 'date',
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'metadata',
+          type: 'json',
         },
       ],
     },
@@ -194,6 +304,6 @@ export default buildConfig({
   },
   plugins: [],
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI!,
+    url: process.env['MONGODB_URI'] || '',
   }),
 })

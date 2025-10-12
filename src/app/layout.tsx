@@ -33,11 +33,46 @@ export default function RootLayout({
                 document.addEventListener('DOMContentLoaded', function() {
                   const body = document.body;
                   if (body) {
-                    body.removeAttribute('cz-shortcut-listen');
-                    body.removeAttribute('data-new-gr-c-s-check-loaded');
-                    body.removeAttribute('data-gr-ext-installed');
+                    // Supprimer les attributs des extensions courantes
+                    const extensionAttributes = [
+                      'cz-shortcut-listen',
+                      'data-new-gr-c-s-check-loaded',
+                      'data-gr-ext-installed',
+                      'data-gramm_editor',
+                      'data-gramm',
+                      'spellcheck',
+                      'data-gramm_editor',
+                      'data-gramm_id'
+                    ];
+                    
+                    extensionAttributes.forEach(attr => {
+                      body.removeAttribute(attr);
+                    });
+                    
+                    // Supprimer les attributs de toutes les extensions
+                    const allAttributes = Array.from(body.attributes);
+                    allAttributes.forEach(attr => {
+                      if (attr.name.startsWith('data-gramm') || 
+                          attr.name.startsWith('data-new-gr') ||
+                          attr.name.includes('extension') ||
+                          attr.name.includes('grammarly')) {
+                        body.removeAttribute(attr.name);
+                      }
+                    });
                   }
                 });
+                
+                // Désactiver le service worker des extensions
+                if ('serviceWorker' in navigator) {
+                  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    registrations.forEach(function(registration) {
+                      if (registration.scope.includes('chrome-extension://') ||
+                          registration.scope.includes('moz-extension://')) {
+                        registration.unregister();
+                      }
+                    });
+                  });
+                }
               }
             `,
           }}

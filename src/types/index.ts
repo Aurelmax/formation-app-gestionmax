@@ -4,6 +4,8 @@
 
 // Types communs
 export * from './common';
+// Types utilisateurs et permissions
+export * from './users';
 // Types utilitaires
 export * from './utils';
 // Types API

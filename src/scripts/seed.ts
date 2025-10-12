@@ -6,14 +6,14 @@ import payloadConfig from '../payload.config'
 config({ path: '.env.local' })
 
 // Vérifier que PAYLOAD_SECRET est défini
-if (!process.env.PAYLOAD_SECRET) {
+if (!process.env['PAYLOAD_SECRET']) {
   console.error('❌ PAYLOAD_SECRET n\'est pas défini dans .env.local')
   process.exit(1)
 }
 
 const seed = async () => {
-  console.log('🔑 PAYLOAD_SECRET:', process.env.PAYLOAD_SECRET ? '✅ Défini' : '❌ Manquant')
-  console.log('🗄️ MONGODB_URI:', process.env.MONGODB_URI ? '✅ Défini' : '❌ Manquant')
+  console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
+  console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
   
   const payload = await getPayload({ config: payloadConfig })
 

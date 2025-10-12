@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Désactiver le service worker automatique
+  experimental: {
+    esmExternals: false,
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals.push('mongoose')

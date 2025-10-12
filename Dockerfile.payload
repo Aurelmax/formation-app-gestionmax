@@ -1,0 +1,23 @@
+# Dockerfile spécifique pour Payload CMS
+FROM node:20-alpine
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers de dépendances
+COPY package*.json ./
+
+# Installer les dépendances avec legacy peer deps
+RUN npm ci --legacy-peer-deps
+
+# Copier le code source
+COPY . .
+
+# Créer le répertoire media
+RUN mkdir -p media
+
+# Exposer le port
+EXPOSE 3000
+
+# Commande de démarrage pour Payload CMS uniquement
+CMD ["npm", "run", "dev"]

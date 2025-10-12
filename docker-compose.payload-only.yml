@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Service Payload CMS pur (sans l'application Next.js)
+  payload-cms:
+    build: 
+      context: .
+      dockerfile: Dockerfile.payload-only
+    ports:
+      - "3300:3000"
+    environment:
+      - MONGODB_URI=mongodb+srv://aurelien_db_user:UabCxoHI9J4C75j0@clustergestionmaxformat.a9qrz87.mongodb.net/gestionmax-formation?retryWrites=true&w=majority&appName=Clustergestionmaxformation
+      - PAYLOAD_SECRET=your-secret-key-change-this-in-production-gestionmax-2024
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3300
+      - NEXTAUTH_URL=http://localhost:3300
+      - NEXTAUTH_SECRET=your-nextauth-secret-change-this-in-production-gestionmax-2024
+    volumes:
+      - ./media:/app/media
+      - ./src/payload.config.ts:/app/payload.config.ts
+      - ./src/payload.ts:/app/payload.ts
+    networks:
+      - payload-network
+    command: npx payload dev
+
+networks:
+  payload-network:
+    driver: bridge

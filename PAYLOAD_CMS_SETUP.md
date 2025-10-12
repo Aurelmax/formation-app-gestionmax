@@ -393,24 +393,64 @@ seed()
 
 ## 🚀 Démarrage
 
-### 1. Créer le répertoire media
+### Option 1 : Démarrage local
+
+#### 1. Créer le répertoire media
 
 ```bash
 mkdir -p media
 ```
 
-### 2. Démarrer le serveur
+#### 2. Démarrer le serveur
 
 ```bash
 npm run dev
 ```
 
-### 3. Accéder à l'interface d'administration
+#### 3. Accéder à l'interface d'administration
 
 - **URL** : http://localhost:3000/admin
 - **Premier utilisateur** : Créer via l'interface web
 
-> **Note** : Si vous avez un conflit avec une route `/admin` existante, Payload prendra la priorité. Vous pouvez accéder à votre dashboard React via une autre route.
+### Option 2 : Démarrage avec Docker (Recommandé)
+
+#### 1. Construire l'image Docker
+
+```bash
+./docker-scripts.sh build
+```
+
+#### 2. Démarrer Payload CMS
+
+```bash
+./docker-scripts.sh up
+```
+
+#### 3. Accéder à l'interface d'administration
+
+- **URL** : http://localhost:3300/admin
+- **Premier utilisateur** : Créer via l'interface web
+
+#### 4. Commandes Docker utiles
+
+```bash
+# Voir les logs
+./docker-scripts.sh logs
+
+# Redémarrer
+./docker-scripts.sh restart
+
+# Arrêter
+./docker-scripts.sh down
+
+# Accéder au shell
+./docker-scripts.sh shell
+
+# Nettoyer
+./docker-scripts.sh clean
+```
+
+> **Note** : Docker isole Payload CMS sur le port 3300, évitant les conflits avec d'autres projets.
 
 ## 📚 Utilisation
 
