@@ -31,11 +31,12 @@ export function PublicFooter() {
           <div>
             <h3 className="text-white text-lg font-bold mb-4">Liens rapides</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/catalogue" className="hover:text-white transition">Catalogue formations</Link></li>
-              <li><Link href="/apropos" className="hover:text-white transition">À propos</Link></li>
-              <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
-              <li><Link href="/reglement-interieur" className="hover:text-white transition">Règlement intérieur</Link></li>
+                <li><Link href="/catalogue" className="hover:text-white transition">Catalogue formations</Link></li>
+                <li><Link href="/apropos" className="hover:text-white transition">À propos</Link></li>
+                <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
+                <li><Link href="/reglement-interieur" className="hover:text-white transition">Règlement intérieur</Link></li>
+                <li><Link href="/informations-legales" className="hover:text-white transition">Informations légales</Link></li>
             </ul>
           </div>
 
@@ -56,15 +57,15 @@ export function PublicFooter() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>Nice, France</span>
+                <span>Antibes, France</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                <span>+33 (0)4 XX XX XX XX</span>
+                <span>06 46 02 24 68</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                <span>contact@gestionmax.fr</span>
+                <span>aurelien@gestionmax.fr</span>
               </li>
             </ul>
           </div>

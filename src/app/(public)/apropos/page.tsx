@@ -72,8 +72,8 @@ export default function AproposPage() {
     },
     {
       icon: CheckCircle2,
-      title: 'CPF',
-      description: 'Formations éligibles au Compte Personnel de Formation',
+      title: 'OPCO',
+      description: 'Organisme Paritaire Collecteur Agréé pour la formation professionnelle',
       button: 'Toutes nos formations',
       color: 'text-green-600'
     },
@@ -81,7 +81,7 @@ export default function AproposPage() {
       icon: Book,
       title: 'Datadock',
       description: 'Référencement qualité des organismes de formation',
-      button: 'Référencé depuis 2020',
+      button: 'Référencé depuis 2017',
       color: 'text-purple-600'
     }
   ];
@@ -227,7 +227,7 @@ export default function AproposPage() {
                 <p><strong>Raison sociale:</strong> GestionMax</p>
                 <p><strong>Statut juridique:</strong> Entreprise individuelle</p>
                 <p><strong>SIRET:</strong> 483 797 213 00061</p>
-                <p><strong>N° déclaration d&apos;activité:</strong> 11 75 12345 75</p>
+                <p><strong>N° déclaration d&apos;activité:</strong> 93 06 107 8906</p>
                 <p><strong>Certification Qualiopi:</strong> QUA230C60046</p>
               </div>
               <p className="text-sm text-gray-500 mt-4">
