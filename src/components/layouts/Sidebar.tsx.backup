@@ -18,6 +18,7 @@ import {
   LogOut,
   PenTool,
   Image,
+  Calendar,
 } from 'lucide-react';
 
 const navigation = [
@@ -89,7 +90,7 @@ export function Sidebar() {
             </Link>
           );
         })}
-
+        
         {/* Lien vers l'interface CMS */}
         <div className="pt-4 border-t border-gray-200">
           <Link

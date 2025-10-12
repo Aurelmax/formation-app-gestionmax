@@ -12,3 +12,5 @@ export * from './utils';
 export * from './api';
 // Types blog
 export * from './blog';
+// Types rendez-vous
+export * from './rendez-vous';
