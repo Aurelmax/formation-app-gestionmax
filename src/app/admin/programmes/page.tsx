@@ -74,7 +74,7 @@ export default function ProgrammesPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground line-clamp-2">
+              <p className="text-sm text-muted-foreground overflow-hidden text-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                 {programme.description}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -100,7 +100,7 @@ export default function ProgrammesPage() {
                   <p className="font-semibold">{programme.niveau}</p>
                 </div>
               </div>
-              <Button variant="outline" className="w-full border-brand-primary text-brand-primary hover:bg-brand-secondary hover:text-white" asChild>
+              <Button variant="outline" className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white" asChild>
                 <Link href={`/admin/programmes/${programme.id}`}>
                   Voir détails
                 </Link>

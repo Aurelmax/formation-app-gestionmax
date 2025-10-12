@@ -424,6 +424,243 @@ export default buildConfig({
       ],
     },
     {
+      slug: 'programmes',
+      fields: [
+        {
+          name: 'codeFormation',
+          type: 'text',
+          required: true,
+          unique: true,
+        },
+        {
+          name: 'titre',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          required: true,
+        },
+        {
+          name: 'duree',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'niveau',
+          type: 'select',
+          options: [
+            { label: 'Débutant', value: 'DEBUTANT' },
+            { label: 'Intermédiaire', value: 'INTERMEDIAIRE' },
+            { label: 'Avancé', value: 'AVANCE' },
+          ],
+          required: true,
+        },
+        {
+          name: 'modalites',
+          type: 'select',
+          options: [
+            { label: 'Présentiel', value: 'PRESENTIEL' },
+            { label: 'Distanciel', value: 'DISTANCIEL' },
+            { label: 'Hybride', value: 'HYBRIDE' },
+          ],
+          required: true,
+        },
+        {
+          name: 'prix',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'competences',
+          type: 'array',
+          fields: [
+            {
+              name: 'competence',
+              type: 'text',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'objectifs',
+          type: 'richText',
+        },
+        {
+          name: 'prerequis',
+          type: 'richText',
+        },
+        {
+          name: 'programme',
+          type: 'richText',
+        },
+        {
+          name: 'modalitesPedagogiques',
+          type: 'richText',
+        },
+        {
+          name: 'evaluation',
+          type: 'richText',
+        },
+        {
+          name: 'certification',
+          type: 'text',
+        },
+        {
+          name: 'eligibleCPF',
+          type: 'checkbox',
+          defaultValue: false,
+        },
+        {
+          name: 'codeCPF',
+          type: 'text',
+        },
+        {
+          name: 'statut',
+          type: 'select',
+          options: [
+            { label: 'Actif', value: 'actif' },
+            { label: 'Inactif', value: 'inactif' },
+            { label: 'En développement', value: 'en_developpement' },
+          ],
+          defaultValue: 'actif',
+          required: true,
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
+          name: 'rating',
+          type: 'number',
+          min: 0,
+          max: 5,
+        },
+        {
+          name: 'students',
+          type: 'number',
+          defaultValue: 0,
+        },
+      ],
+    },
+    {
+      slug: 'rendez-vous',
+      fields: [
+        {
+          name: 'programme',
+          type: 'relationship',
+          relationTo: 'programmes',
+          required: true,
+        },
+        {
+          name: 'client',
+          type: 'group',
+          fields: [
+            {
+              name: 'nom',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'prenom',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'email',
+              type: 'email',
+              required: true,
+            },
+            {
+              name: 'telephone',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'entreprise',
+              type: 'text',
+            },
+          ],
+        },
+        {
+          name: 'type',
+          type: 'select',
+          options: [
+            { label: 'Positionnement', value: 'positionnement' },
+            { label: 'Information', value: 'information' },
+            { label: 'Inscription', value: 'inscription' },
+            { label: 'Suivi', value: 'suivi' },
+          ],
+          defaultValue: 'positionnement',
+          required: true,
+        },
+        {
+          name: 'statut',
+          type: 'select',
+          options: [
+            { label: 'En attente', value: 'en_attente' },
+            { label: 'Confirmé', value: 'confirme' },
+            { label: 'Terminé', value: 'termine' },
+            { label: 'Annulé', value: 'annule' },
+            { label: 'Reporté', value: 'reporte' },
+          ],
+          defaultValue: 'en_attente',
+          required: true,
+        },
+        {
+          name: 'date',
+          type: 'date',
+          required: true,
+        },
+        {
+          name: 'heure',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'duree',
+          type: 'number',
+          defaultValue: 30,
+          required: true,
+        },
+        {
+          name: 'lieu',
+          type: 'select',
+          options: [
+            { label: 'Visio', value: 'visio' },
+            { label: 'Présentiel', value: 'presentiel' },
+            { label: 'Téléphone', value: 'telephone' },
+          ],
+          defaultValue: 'visio',
+          required: true,
+        },
+        {
+          name: 'adresse',
+          type: 'textarea',
+        },
+        {
+          name: 'lienVisio',
+          type: 'text',
+        },
+        {
+          name: 'notes',
+          type: 'textarea',
+        },
+        {
+          name: 'rappelEnvoye',
+          type: 'checkbox',
+          defaultValue: false,
+        },
+        {
+          name: 'createdBy',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
       slug: 'media',
       upload: {
         staticDir: 'media',

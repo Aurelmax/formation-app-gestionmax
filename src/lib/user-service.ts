@@ -43,6 +43,12 @@ class UserService {
   }
 
   private loadUsersFromStorage() {
+    // Vérifier si nous sommes côté client (localStorage n'est pas disponible côté serveur)
+    if (typeof window === 'undefined') {
+      console.log('📁 Côté serveur - Utilisation des utilisateurs par défaut');
+      return;
+    }
+
     try {
       const storedUsers = localStorage.getItem('gestionmax_users');
       if (storedUsers) {
@@ -64,6 +70,11 @@ class UserService {
   }
 
   private saveUsersToStorage() {
+    // Vérifier si nous sommes côté client (localStorage n'est pas disponible côté serveur)
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     try {
       localStorage.setItem('gestionmax_users', JSON.stringify(this.users));
     } catch (error) {

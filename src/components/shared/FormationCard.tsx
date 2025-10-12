@@ -5,7 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/lib/utils';
 import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { Star, Calendar } from 'lucide-react';
+import { PublicRendezVousModal } from '@/components/forms/PublicRendezVousModal';
 
 interface FormationCardProps {
   programme: {
@@ -101,9 +102,16 @@ export function FormationCard({ programme, showDetails = true }: FormationCardPr
         </div>
 
         <div className="flex gap-2 pt-4 mt-4">
-          <Button className="flex-1 bg-[#1f3b8e] hover:bg-[#7eb33f] text-white" asChild>
-            <Link href="/contact">RDV de Positionnement</Link>
-          </Button>
+          <PublicRendezVousModal
+            programmeId={programme.id.toString()}
+            programmeTitre={programme.titre}
+            trigger={
+              <Button className="flex-1 bg-[#1f3b8e] hover:bg-[#7eb33f] text-white">
+                <Calendar className="h-4 w-4 mr-2" />
+                RDV de Positionnement
+              </Button>
+            }
+          />
           {showDetails && (
             <Button 
               variant="outline" 

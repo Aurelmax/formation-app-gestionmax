@@ -1,7 +1,7 @@
 'use client';
 
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { RendezVousForm } from '@/components/forms/RendezVousForm';
+import { PublicRendezVousForm } from '@/components/forms/PublicRendezVousForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, CheckCircle } from 'lucide-react';
 
@@ -22,7 +22,7 @@ export default function RendezVousPage() {
             </div>
 
             {/* Formulaire */}
-            <RendezVousForm
+            <PublicRendezVousForm
               programmeId="1"
               programmeTitre="Formation WordPress Débutant"
               onSuccess={() => {
