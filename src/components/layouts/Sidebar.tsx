@@ -16,6 +16,8 @@ import {
   UserCog,
   ExternalLink,
   LogOut,
+  PenTool,
+  Image,
 } from 'lucide-react';
 
 const navigation = [
@@ -23,6 +25,8 @@ const navigation = [
   { name: 'Programmes', href: '/admin/programmes', icon: BookOpen },
   { name: 'Apprenants', href: '/admin/apprenants', icon: Users },
   { name: 'Rendez-vous', href: '/admin/rendez-vous', icon: Calendar },
+  { name: 'Blog', href: '/admin/blog', icon: PenTool },
+  { name: 'Médias', href: '/admin/medias', icon: Image },
   { name: 'Utilisateurs', href: '/admin/utilisateurs', icon: UserCog },
   { name: 'Documents', href: '/admin/documents', icon: FileText },
   { name: 'Paramètres', href: '/admin/parametres', icon: Settings },

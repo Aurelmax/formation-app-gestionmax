@@ -268,6 +268,162 @@ export default buildConfig({
       ],
     },
     {
+      slug: 'articles',
+      fields: [
+        {
+          name: 'titre',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'slug',
+          type: 'text',
+          required: true,
+          unique: true,
+        },
+        {
+          name: 'contenu',
+          type: 'richText',
+          required: true,
+        },
+        {
+          name: 'resume',
+          type: 'textarea',
+          required: true,
+        },
+        {
+          name: 'auteur',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'datePublication',
+          type: 'date',
+          required: true,
+        },
+        {
+          name: 'statut',
+          type: 'select',
+          options: [
+            { label: 'Brouillon', value: 'brouillon' },
+            { label: 'Publié', value: 'publie' },
+            { label: 'Archivé', value: 'archive' },
+          ],
+          defaultValue: 'brouillon',
+          required: true,
+        },
+        {
+          name: 'categories',
+          type: 'relationship',
+          relationTo: 'categories',
+          hasMany: true,
+        },
+        {
+          name: 'tags',
+          type: 'relationship',
+          relationTo: 'tags',
+          hasMany: true,
+        },
+        {
+          name: 'imagePrincipale',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
+          name: 'images',
+          type: 'array',
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+            },
+          ],
+        },
+        {
+          name: 'metaDescription',
+          type: 'textarea',
+          required: true,
+        },
+        {
+          name: 'metaKeywords',
+          type: 'array',
+          fields: [
+            {
+              name: 'keyword',
+              type: 'text',
+            },
+          ],
+        },
+        {
+          name: 'vue',
+          type: 'number',
+          defaultValue: 0,
+        },
+        {
+          name: 'tempsLecture',
+          type: 'number',
+          defaultValue: 5,
+        },
+        {
+          name: 'featured',
+          type: 'checkbox',
+          defaultValue: false,
+        },
+      ],
+    },
+    {
+      slug: 'categories',
+      fields: [
+        {
+          name: 'nom',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'slug',
+          type: 'text',
+          required: true,
+          unique: true,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+        },
+        {
+          name: 'couleur',
+          type: 'text',
+          defaultValue: '#3B82F6',
+        },
+        {
+          name: 'icone',
+          type: 'text',
+          defaultValue: '📝',
+        },
+      ],
+    },
+    {
+      slug: 'tags',
+      fields: [
+        {
+          name: 'nom',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'slug',
+          type: 'text',
+          required: true,
+          unique: true,
+        },
+        {
+          name: 'couleur',
+          type: 'text',
+          defaultValue: '#6B7280',
+        },
+      ],
+    },
+    {
       slug: 'media',
       upload: {
         staticDir: 'media',

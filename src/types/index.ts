@@ -10,3 +10,5 @@ export * from './users';
 export * from './utils';
 // Types API
 export * from './api';
+// Types blog
+export * from './blog';

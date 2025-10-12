@@ -10,82 +10,68 @@ import {
   User, 
   Clock, 
   AlertTriangle,
-  Mail
+  Mail,
+  Star,
+  Eye
 } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+
+interface Article {
+  id: string;
+  titre: string;
+  slug: string;
+  resume: string;
+  auteur: string;
+  datePublication: string;
+  statut: string;
+  categories: string[];
+  tags: string[];
+  vue: number;
+  tempsLecture: number;
+  featured: boolean;
+}
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('Tous');
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>(['Tous']);
 
-  const categories = ['Tous', 'Débutant', 'Technique', 'E-commerce', 'Tendances', 'Sécurité', 'Outils'];
+  useEffect(() => {
+    loadArticles();
+  }, []);
 
-  const articles = [
-    {
-      id: 1,
-      title: '10 erreurs à éviter lors de la création de votre site WordPress',
-      excerpt: 'Découvrez les pièges les plus courants que font les débutants sur WordPress et comment les éviter pour créer un site professionnel dès le...',
-      category: 'Débutant',
-      date: '15 mai 2024',
-      author: 'Marie Dubois',
-      readTime: '5 min',
-      image: '/images/blog-placeholder.jpg'
-    },
-    {
-      id: 2,
-      title: 'Comment optimiser la vitesse de votre site WordPress',
-      excerpt: 'La vitesse de chargement est cruciale pour l\'expérience utilisateur et le référencement. Voici nos conseils d\'experts pour accélérer votre site.',
-      category: 'Technique',
-      date: '10 mai 2024',
-      author: 'Pierre Martin',
-      readTime: '8 min',
-      image: '/images/blog-placeholder.jpg'
-    },
-    {
-      id: 3,
-      title: 'WooCommerce vs Shopify : quel choix pour votre e-commerce?',
-      excerpt: 'Comparaison détaillée entre WooCommerce et Shopify pour vous aider à choisir la meilleure solution e-commerce selon vos besoins.',
-      category: 'E-commerce',
-      date: '5 mai 2024',
-      author: 'Sophie Leroy',
-      readTime: '6 min',
-      image: '/images/blog-placeholder.jpg'
-    },
-    {
-      id: 4,
-      title: 'Les tendances WordPress 2024 à ne pas manquer',
-      excerpt: 'Découvrez les dernières tendances en matière de design, fonctionnalités et développement WordPress pour rester à la pointe.',
-      category: 'Tendances',
-      date: '1er mai 2024',
-      author: 'Thomas Rousseau',
-      readTime: '7 min',
-      image: '/images/blog-placeholder.jpg'
-    },
-    {
-      id: 5,
-      title: 'Sécuriser son site WordPress : guide complet 2024',
-      excerpt: 'La sécurité WordPress est essentielle. Découvrez toutes les bonnes pratiques pour protéger efficacement votre site contre les cybermenaces.',
-      category: 'Sécurité',
-      date: '25 avril 2024',
-      author: 'Marie Dubois',
-      readTime: '10 min',
-      image: '/images/blog-placeholder.jpg'
-    },
-    {
-      id: 6,
-      title: 'Gutenberg vs Elementor : quel éditeur choisir?',
-      excerpt: 'Comparaison approfondie entre l\'éditeur natif Gutenberg et le page builder Elementor pour créer vos pages WordPress.',
-      category: 'Outils',
-      date: '20 avril 2024',
-      author: 'Pierre Martin',
-      readTime: '9 min',
-      image: '/images/blog-placeholder.jpg'
+  const loadArticles = async () => {
+    try {
+      const response = await fetch('/api/blog');
+      const data = await response.json();
+      
+      if (data.success) {
+        setArticles(data.data.articles);
+        // Extraire les catégories uniques
+        const uniqueCategories = ['Tous', ...new Set(data.data.articles.flatMap((article: Article) => article.categories))];
+        setCategories(uniqueCategories);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des articles:', error);
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   const filteredArticles = selectedCategory === 'Tous' 
     ? articles 
-    : articles.filter(article => article.category === selectedCategory);
+    : articles.filter(article => article.categories.includes(selectedCategory));
 
   return (
     <PublicLayout>
@@ -107,15 +93,14 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Warning Banner */}
-      <section className="bg-yellow-50 border-l-4 border-yellow-400 py-6">
+      {/* Success Banner */}
+      <section className="bg-green-50 border-l-4 border-green-400 py-6">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex items-center justify-center">
-            <AlertTriangle className="h-6 w-6 text-yellow-600 mr-3" />
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Blog en cours de mise à jour</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">✅ Blog connecté au back-office</h3>
               <p className="text-gray-700">
-                Nous sommes en train d&apos;améliorer notre blog pour vous offrir un contenu de meilleure qualité. Merci de votre patience.
+                Les articles sont maintenant gérés depuis l&apos;interface d&apos;administration et affichés en temps réel.
               </p>
             </div>
           </div>
@@ -147,57 +132,106 @@ export default function BlogPage() {
       {/* Articles Grid */}
       <section className="py-16 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredArticles.map((article) => (
-              <Card key={article.id} className="hover:shadow-lg transition-all duration-300 border border-gray-200">
-                {/* Article Image Placeholder */}
-                <div className="h-48 bg-gray-100 rounded-t-lg flex items-center justify-center">
-                  <div className="text-gray-400 text-sm">Image de l&apos;article</div>
-                </div>
-                
-                <CardContent className="p-6">
-                  {/* Category Badge */}
-                  <Badge className="mb-4 bg-gray-100 text-gray-700 hover:bg-gray-100">
-                    {article.category}
-                  </Badge>
-                  
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-blue-900 mb-3 line-clamp-2">
-                    {article.title}
-                  </h3>
-                  
-                  {/* Excerpt */}
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {article.excerpt}
-                  </p>
-                  
-                  {/* Metadata */}
-                  <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
-                    <span className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      {article.author}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {article.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {article.readTime}
-                    </span>
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Chargement des articles...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredArticles.map((article) => (
+                <Card key={article.id} className="hover:shadow-lg transition-all duration-300 border border-gray-200">
+                  {/* Article Image */}
+                  <div className="h-48 bg-gray-100 rounded-t-lg overflow-hidden relative">
+                    {article.featured && (
+                      <div className="absolute top-3 left-3 z-10">
+                        <Badge className="bg-yellow-100 text-yellow-800">
+                          <Star className="h-3 w-3 mr-1" />
+                          En vedette
+                        </Badge>
+                      </div>
+                    )}
+                    {article.imagePrincipale ? (
+                      <img 
+                        src={article.imagePrincipale} 
+                        alt={article.titre}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="text-gray-400 text-sm">Image de l&apos;article</div>
+                      </div>
+                    )}
                   </div>
                   
-                  {/* Read Article Button */}
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white"
-                  >
-                    Lire l&apos;article
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  <CardContent className="p-6">
+                    {/* Category Badges */}
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {article.categories.slice(0, 2).map((category) => (
+                        <Badge key={category} className="bg-gray-100 text-gray-700 hover:bg-gray-100">
+                          {category}
+                        </Badge>
+                      ))}
+                      {article.categories.length > 2 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{article.categories.length - 2}
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-blue-900 mb-3 line-clamp-2">
+                      <Link href={`/blog/${article.slug}`} className="hover:text-blue-700">
+                        {article.titre}
+                      </Link>
+                    </h3>
+                    
+                    {/* Excerpt */}
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      {article.resume}
+                    </p>
+                    
+                    {/* Metadata */}
+                    <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                      <span className="flex items-center gap-1">
+                        <User className="h-3 w-3" />
+                        {article.auteur}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {formatDate(article.datePublication)}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {article.tempsLecture} min
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Eye className="h-3 w-3" />
+                        {article.vue}
+                      </span>
+                    </div>
+                    
+                    {/* Read Article Button */}
+                    <Button 
+                      asChild
+                      variant="outline" 
+                      className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white"
+                    >
+                      <Link href={`/blog/${article.slug}`}>
+                        Lire l&apos;article
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+          
+          {filteredArticles.length === 0 && !isLoading && (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Aucun article trouvé dans cette catégorie.</p>
+            </div>
+          )}
         </div>
       </section>
 
