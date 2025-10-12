@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
@@ -10,6 +11,8 @@ import {
   Calendar,
   FileText,
   Settings,
+  UserCog,
+  ExternalLink,
 } from 'lucide-react';
 
 const navigation = [
@@ -17,12 +20,23 @@ const navigation = [
   { name: 'Programmes', href: '/admin/programmes', icon: BookOpen },
   { name: 'Apprenants', href: '/admin/apprenants', icon: Users },
   { name: 'Rendez-vous', href: '/admin/rendez-vous', icon: Calendar },
+  { name: 'Utilisateurs', href: '/admin/utilisateurs', icon: UserCog },
   { name: 'Documents', href: '/admin/documents', icon: FileText },
   { name: 'Paramètres', href: '/admin/parametres', icon: Settings },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Rendu côté client uniquement pour éviter les erreurs d'hydratation
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
@@ -52,6 +66,18 @@ export function Sidebar() {
             </Link>
           );
         })}
+        
+        {/* Lien vers l'interface CMS */}
+        <div className="pt-4 border-t border-gray-200">
+          <Link
+            href="/admin"
+            target="_blank"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            <ExternalLink className="h-5 w-5" />
+            Interface CMS Payload
+          </Link>
+        </div>
       </nav>
 
       <div className="p-4 border-t">
