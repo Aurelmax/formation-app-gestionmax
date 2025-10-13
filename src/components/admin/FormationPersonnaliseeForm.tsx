@@ -94,8 +94,8 @@ interface FormationPersonnaliseeFormProps {
 
 export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoading = false, rdvData }: FormationPersonnaliseeFormProps) {
   const [formData, setFormData] = useState<FormationPersonnalisee>({
-    title: formation?.title || (rdvData ? `${(rdvData.programmeTitre as string) || ''} - ${(rdvData.client as Record<string, unknown>)?.prenom} ${(rdvData.client as Record<string, unknown>)?.nom}` : ''),
-    code_formation: formation?.code_formation || (rdvData ? `A${Date.now().toString().slice(-6)}-${((rdvData.client as Record<string, unknown>)?.nom as string)?.toUpperCase()}` : ''),
+    title: formation?.title || (rdvData ? `${(rdvData['programmeTitre'] as string) || ''} - ${(rdvData['client'] as Record<string, unknown>)?.['prenom']} ${(rdvData['client'] as Record<string, unknown>)?.['nom']}` : ''),
+    code_formation: formation?.code_formation || (rdvData ? `A${Date.now().toString().slice(-6)}-${((rdvData['client'] as Record<string, unknown>)?.['nom'] as string)?.toUpperCase()}` : ''),
     statut: formation?.statut || 'EN_COURS',
     objectifs: formation?.objectifs || { root: { type: 'root', children: [] } },
     programme_detail: formation?.programme_detail || [
@@ -169,7 +169,7 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
     setFormData(prev => ({
       ...prev,
       [parent]: {
-        ...prev[parent as keyof FormationPersonnalisee],
+        ...(prev[parent as keyof FormationPersonnalisee] as Record<string, unknown> || {}),
         [field]: value
       }
     }));
@@ -521,8 +521,10 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
                           value={ressource.ressource}
                           onChange={(e) => {
                             const newRessources = [...formData.ressources_dispo];
-                            newRessources[index].ressource = e.target.value;
-                            setFormData(prev => ({ ...prev, ressources_dispo: newRessources }));
+                            if (newRessources[index]) {
+                              newRessources[index]!.ressource = e.target.value;
+                              setFormData(prev => ({ ...prev, ressources_dispo: newRessources }));
+                            }
                           }}
                           placeholder="Nom de la ressource"
                         />
@@ -530,8 +532,10 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
                           value={ressource.description}
                           onChange={(e) => {
                             const newRessources = [...formData.ressources_dispo];
-                            newRessources[index].description = e.target.value;
-                            setFormData(prev => ({ ...prev, ressources_dispo: newRessources }));
+                            if (newRessources[index]) {
+                              newRessources[index]!.description = e.target.value;
+                              setFormData(prev => ({ ...prev, ressources_dispo: newRessources }));
+                            }
                           }}
                           placeholder="Description"
                         />
@@ -580,14 +584,16 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
                           value={evalType.type}
                           onChange={(e) => {
                             const newTypes = [...formData.modalites_evaluation.types_evaluation];
-                            newTypes[index].type = e.target.value;
-                            setFormData(prev => ({
-                              ...prev,
-                              modalites_evaluation: {
-                                ...prev.modalites_evaluation,
-                                types_evaluation: newTypes
-                              }
-                            }));
+                            if (newTypes[index]) {
+                              newTypes[index]!.type = e.target.value;
+                              setFormData(prev => ({
+                                ...prev,
+                                modalites_evaluation: {
+                                  ...prev.modalites_evaluation,
+                                  types_evaluation: newTypes
+                                }
+                              }));
+                            }
                           }}
                           placeholder="Type d'évaluation"
                         />
@@ -595,14 +601,16 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
                           value={evalType.description}
                           onChange={(e) => {
                             const newTypes = [...formData.modalites_evaluation.types_evaluation];
-                            newTypes[index].description = e.target.value;
-                            setFormData(prev => ({
-                              ...prev,
-                              modalites_evaluation: {
-                                ...prev.modalites_evaluation,
-                                types_evaluation: newTypes
-                              }
-                            }));
+                            if (newTypes[index]) {
+                              newTypes[index]!.description = e.target.value;
+                              setFormData(prev => ({
+                                ...prev,
+                                modalites_evaluation: {
+                                  ...prev.modalites_evaluation,
+                                  types_evaluation: newTypes
+                                }
+                              }));
+                            }
                           }}
                           placeholder="Description"
                         />
