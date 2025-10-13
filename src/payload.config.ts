@@ -220,6 +220,254 @@ export default buildConfig({
       ],
     },
     {
+      slug: 'formations_personnalisees',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          label: 'Nom du programme de formation',
+        },
+        {
+          name: 'objectifs',
+          type: 'richText',
+          label: 'Objectifs pédagogiques',
+        },
+        {
+          name: 'programme_detail',
+          type: 'array',
+          label: 'Détail des modules et séances',
+          fields: [
+            {
+              name: 'jour',
+              type: 'text',
+              label: 'Jour (ex: Jour 1, Jour 2)',
+            },
+            {
+              name: 'duree',
+              type: 'text',
+              label: 'Durée (ex: 7 heures)',
+            },
+            {
+              name: 'modules',
+              type: 'array',
+              label: 'Modules du jour',
+              fields: [
+                {
+                  name: 'titre',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'description',
+                  type: 'textarea',
+                },
+                {
+                  name: 'duree',
+                  type: 'text',
+                },
+                {
+                  name: 'contenu',
+                  type: 'richText',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'modalites_acces',
+          type: 'group',
+          label: 'Modalités d\'accès',
+          fields: [
+            {
+              name: 'prerequis',
+              type: 'textarea',
+              label: 'Prérequis',
+            },
+            {
+              name: 'public_concerne',
+              type: 'textarea',
+              label: 'Public concerné',
+            },
+            {
+              name: 'duree',
+              type: 'text',
+              label: 'Durée totale',
+            },
+            {
+              name: 'horaires',
+              type: 'text',
+              label: 'Horaires',
+            },
+            {
+              name: 'delais_mise_en_place',
+              type: 'text',
+              label: 'Délais de mise en place',
+            },
+            {
+              name: 'tarif',
+              type: 'number',
+              label: 'Tarif en euros',
+            },
+            {
+              name: 'modalites_reglement',
+              type: 'textarea',
+              label: 'Modalités de règlement',
+            },
+          ],
+        },
+        {
+          name: 'contact_formateur',
+          type: 'group',
+          label: 'Contact formateur',
+          fields: [
+            {
+              name: 'nom',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'email',
+              type: 'email',
+              required: true,
+            },
+            {
+              name: 'telephone',
+              type: 'text',
+            },
+            {
+              name: 'role',
+              type: 'text',
+              label: 'Rôle/Fonction',
+            },
+            {
+              name: 'biographie',
+              type: 'textarea',
+            },
+          ],
+        },
+        {
+          name: 'modalites_pedagogiques',
+          type: 'richText',
+          label: 'Modalités techniques et pédagogiques',
+        },
+        {
+          name: 'ressources_dispo',
+          type: 'array',
+          label: 'Ressources mises à disposition',
+          fields: [
+            {
+              name: 'ressource',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+            },
+          ],
+        },
+        {
+          name: 'modalites_evaluation',
+          type: 'group',
+          label: 'Modalités d\'évaluation',
+          fields: [
+            {
+              name: 'types_evaluation',
+              type: 'array',
+              label: 'Types d\'évaluation',
+              fields: [
+                {
+                  name: 'type',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'description',
+                  type: 'textarea',
+                },
+              ],
+            },
+            {
+              name: 'plateforme_evaluation',
+              type: 'text',
+              label: 'Plateforme d\'évaluation',
+            },
+            {
+              name: 'grille_analyse',
+              type: 'textarea',
+              label: 'Grille d\'analyse des compétences',
+            },
+          ],
+        },
+        {
+          name: 'sanction_formation',
+          type: 'text',
+          label: 'Sanction de la formation',
+        },
+        {
+          name: 'niveau_certification',
+          type: 'text',
+          label: 'Niveau/Certification obtenue',
+        },
+        {
+          name: 'accessibilite_handicap',
+          type: 'group',
+          label: 'Accessibilité handicap',
+          fields: [
+            {
+              name: 'referent_handicap',
+              type: 'text',
+              label: 'Référent handicap',
+            },
+            {
+              name: 'contact_referent',
+              type: 'text',
+              label: 'Contact référent',
+            },
+            {
+              name: 'adaptations_proposees',
+              type: 'textarea',
+              label: 'Adaptations proposées',
+            },
+          ],
+        },
+        {
+          name: 'cessation_abandon',
+          type: 'group',
+          label: 'Cessation anticipée/Abandon',
+          fields: [
+            {
+              name: 'conditions_renonciation',
+              type: 'textarea',
+              label: 'Conditions de renonciation',
+            },
+            {
+              name: 'facturation_abandon',
+              type: 'textarea',
+              label: 'Modalités de facturation en cas d\'abandon',
+            },
+          ],
+        },
+        {
+          name: 'statut',
+          type: 'select',
+          options: [
+            { label: 'Publié', value: 'PUBLIE' },
+            { label: 'Brouillon', value: 'BROUILLON' },
+            { label: 'Archivé', value: 'ARCHIVE' },
+          ],
+          defaultValue: 'BROUILLON',
+        },
+        {
+          name: 'code_formation',
+          type: 'text',
+          label: 'Code formation',
+          unique: true,
+        },
+      ],
+    },
+    {
       slug: 'apprenants',
       fields: [
         {

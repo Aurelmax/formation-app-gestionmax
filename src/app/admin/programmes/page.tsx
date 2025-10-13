@@ -4,13 +4,16 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Download } from 'lucide-react';
 import { useMainService } from '@/hooks/useApiService';
 import { formatCurrency } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function ProgrammesPage() {
   const { service } = useMainService();
+  const router = useRouter();
   const [programmes, setProgrammes] = useState<Array<{
     id: string;
     codeFormation: string;
@@ -42,6 +45,61 @@ export default function ProgrammesPage() {
     loadProgrammes();
   }, [service]);
 
+  const handleDelete = async (programmeId: string, programmeTitre: string) => {
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer le programme "${programmeTitre}" ?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/programmes/${programmeId}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Erreur lors de la suppression');
+      }
+
+      toast.success('Programme supprimé avec succès !');
+      // Recharger la liste
+      const data = await service.getProgrammes();
+      setProgrammes(data);
+    } catch (error: any) {
+      console.error('Erreur lors de la suppression:', error);
+      toast.error(error.message || 'Erreur lors de la suppression du programme');
+    }
+  };
+
+  const handleDownloadPDF = async (programmeId: string, programmeTitre: string) => {
+    try {
+      const response = await fetch(`/api/programmes/${programmeId}/pdf`, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la génération du PDF');
+      }
+
+      // Créer un blob et télécharger le fichier
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `${programmeTitre.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast.success('PDF téléchargé avec succès !');
+    } catch (error: any) {
+      console.error('Erreur lors du téléchargement du PDF:', error);
+      toast.error(error.message || 'Erreur lors du téléchargement du PDF');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -51,9 +109,11 @@ export default function ProgrammesPage() {
             Gérez votre catalogue de formations
           </p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          Nouveau programme
+        <Button asChild>
+          <Link href="/admin/programmes/nouveau">
+            <Plus className="h-4 w-4 mr-2" />
+            Nouveau programme
+          </Link>
         </Button>
       </div>
 
@@ -101,11 +161,38 @@ export default function ProgrammesPage() {
                   <p className="font-semibold">{programme.niveau}</p>
                 </div>
               </div>
-              <Button variant="outline" className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white" asChild>
-                <Link href={`/admin/programmes/${programme.id}`}>
-                  Voir détails
-                </Link>
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={`/admin/programmes/${programme.id}`}>
+                    <Eye className="h-4 w-4 mr-1" />
+                    Voir
+                  </Link>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={`/admin/programmes/${programme.id}/edit`}>
+                    <Edit className="h-4 w-4 mr-1" />
+                    Modifier
+                  </Link>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  onClick={() => handleDelete(programme.id, programme.titre)}
+                >
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Supprimer
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                  onClick={() => handleDownloadPDF(programme.id, programme.titre)}
+                >
+                  <Download className="h-4 w-4 mr-1" />
+                  PDF
+                </Button>
+              </div>
             </CardContent>
           </Card>
           ))

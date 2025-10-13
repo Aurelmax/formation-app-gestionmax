@@ -27,7 +27,8 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  RefreshCw
+  RefreshCw,
+  GraduationCap
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -311,17 +312,17 @@ export function RendezVousManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rendezVous.map((rdv) => (
+              {rendezVous && rendezVous.length > 0 ? rendezVous.map((rdv) => (
                 <TableRow key={rdv.id}>
                   <TableCell>
                     <div>
                       <div className="font-medium">
-                        {rdv.client.prenom} {rdv.client.nom}
+                        {rdv.client?.prenom} {rdv.client?.nom}
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {rdv.client.email}
+                        {rdv.client?.email}
                       </div>
-                      {rdv.client.telephone && (
+                      {rdv.client?.telephone && (
                         <div className="text-sm text-muted-foreground">
                           {rdv.client.telephone}
                         </div>
@@ -364,6 +365,13 @@ export function RendezVousManagement() {
                           Modifier
                         </DropdownMenuItem>
                         
+                        {rdv.type === 'positionnement' && rdv.statut === 'termine' && (
+                          <DropdownMenuItem onClick={() => router.push(`/admin/formation-programmes/nouveau?rdvId=${rdv.id}`)}>
+                            <GraduationCap className="h-4 w-4 mr-2" />
+                            Créer formation personnalisée
+                          </DropdownMenuItem>
+                        )}
+                        
                         <DropdownMenuSeparator />
                         
                         {rdv.statut === 'en_attente' && (
@@ -401,7 +409,13 @@ export function RendezVousManagement() {
                     </DropdownMenu>
                   </TableCell>
                 </TableRow>
-              ))}
+              )) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                    Aucun rendez-vous trouvé
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>

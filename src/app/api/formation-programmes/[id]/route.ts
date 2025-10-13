@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     await client.connect();
     
     const db = client.db();
-    const collection = db.collection('programmes');
+    const collection = db.collection('formations_personnalisees');
     
     const id = new ObjectId(params.id);
     const programme = await collection.findOne({ _id: id });
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     
     if (!programme) {
       return NextResponse.json(
-        { success: false, error: 'Programme non trouvé' },
+        { success: false, error: 'Programme de formation non trouvé' },
         { status: 404 }
       );
     }
@@ -35,9 +35,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       data: programme
     });
   } catch (error) {
-    console.error('Erreur API programmes/[id]:', error);
+    console.error('Erreur API formation-programmes/[id]:', error);
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la récupération du programme' },
+      { success: false, error: 'Erreur lors de la récupération du programme de formation' },
       { status: 500 }
     );
   }
@@ -56,37 +56,37 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     await client.connect();
     
     const db = client.db();
-    const collection = db.collection('programmes');
+    const collection = db.collection('formations_personnalisees');
     
     const id = new ObjectId(params.id);
     
-    // Vérifier si le programme existe
-    const existingProgramme = await collection.findOne({ _id: id });
-    if (!existingProgramme) {
+    // Vérifier si la formation existe
+    const existingFormation = await collection.findOne({ _id: id });
+    if (!existingFormation) {
       await client.close();
       return NextResponse.json(
-        { success: false, error: 'Programme non trouvé' },
+        { success: false, error: 'Formation non trouvée' },
         { status: 404 }
       );
     }
     
-    // Vérifier si le code formation est unique (sauf pour le programme actuel)
-    if (body.codeFormation && body.codeFormation !== existingProgramme.codeFormation) {
-      const duplicateProgramme = await collection.findOne({ 
-        codeFormation: body.codeFormation,
+    // Vérifier si le code formation est unique (sauf pour la formation actuelle)
+    if (body.code_formation && body.code_formation !== existingFormation.code_formation) {
+      const duplicateFormation = await collection.findOne({ 
+        code_formation: body.code_formation,
         _id: { $ne: id }
       });
       
-      if (duplicateProgramme) {
+      if (duplicateFormation) {
         await client.close();
         return NextResponse.json(
-          { success: false, error: 'Un programme avec ce code formation existe déjà' },
+          { success: false, error: 'Une formation avec ce code formation existe déjà' },
           { status: 400 }
         );
       }
     }
     
-    // Mettre à jour le programme
+    // Mettre à jour la formation
     const updateData = {
       ...body,
       updatedAt: new Date()
@@ -101,7 +101,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     if (result.matchedCount === 0) {
       return NextResponse.json(
-        { success: false, error: 'Programme non trouvé' },
+        { success: false, error: 'Formation non trouvée' },
         { status: 404 }
       );
     }
@@ -111,9 +111,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       data: { id: params.id, ...updateData }
     });
   } catch (error) {
-    console.error('Erreur lors de la modification du programme:', error);
+    console.error('Erreur lors de la modification de la formation:', error);
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la modification du programme' },
+      { success: false, error: 'Erreur lors de la modification de la formation' },
       { status: 500 }
     );
   }
@@ -130,7 +130,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     await client.connect();
     
     const db = client.db();
-    const collection = db.collection('programmes');
+    const collection = db.collection('formations_personnalisees');
     
     const id = new ObjectId(params.id);
     
@@ -140,19 +140,19 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
     if (result.deletedCount === 0) {
       return NextResponse.json(
-        { success: false, error: 'Programme non trouvé' },
+        { success: false, error: 'Formation non trouvée' },
         { status: 404 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      message: 'Programme supprimé avec succès'
+      message: 'Formation supprimée avec succès'
     });
   } catch (error) {
-    console.error('Erreur lors de la suppression du programme:', error);
+    console.error('Erreur lors de la suppression de la formation:', error);
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la suppression du programme' },
+      { success: false, error: 'Erreur lors de la suppression de la formation' },
       { status: 500 }
     );
   }

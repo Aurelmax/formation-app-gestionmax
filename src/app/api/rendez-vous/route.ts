@@ -17,12 +17,24 @@ export async function GET(request: NextRequest) {
     };
 
     console.log('📋 Filtres:', filters);
-    const result = await ApiRouteService.getRendezVous();
-    console.log('✅ Résultat:', result);
+    const rendezVous = await ApiRouteService.getRendezVous();
+    console.log('✅ Rendez-vous:', rendezVous);
+
+    // Calculer les stats basiques
+    const stats = {
+      total: rendezVous.length,
+      en_attente: rendezVous.filter(rdv => rdv.statut === 'en_attente').length,
+      confirme: rendezVous.filter(rdv => rdv.statut === 'confirme').length,
+      annule: rendezVous.filter(rdv => rdv.statut === 'annule').length,
+      termine: rendezVous.filter(rdv => rdv.statut === 'termine').length
+    };
 
     return NextResponse.json({
       success: true,
-      data: result
+      data: {
+        rendezVous,
+        stats
+      }
     });
   } catch (error) {
     console.error('❌ Erreur API rendez-vous:', error);

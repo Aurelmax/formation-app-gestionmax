@@ -1,14 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { rendezVousService } from '@/lib/rendez-vous-service';
+import { MongoClient, ObjectId } from 'mongodb';
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const rendezVous = await rendezVousService.getRendezVousById(params.id);
+    const { id } = await params;
+    
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri) {
+      throw new Error('MONGODB_URI not defined');
+    }
 
-    if (!rendezVous) {
+    const client = new MongoClient(mongoUri);
+    await client.connect();
+    
+    const db = client.db();
+    const collection = db.collection('rendez-vous');
+    
+    // Essayer de trouver par ObjectId d'abord
+    let rdv = await collection.findOne({ _id: new ObjectId(id) });
+    
+    // Si pas trouvé, essayer par id string
+    if (!rdv) {
+      rdv = await collection.findOne({ id: id });
+    }
+    
+    await client.close();
+    
+    if (!rdv) {
       return NextResponse.json(
         { success: false, error: 'Rendez-vous non trouvé' },
         { status: 404 }
@@ -17,54 +42,12 @@ export async function GET(
 
     return NextResponse.json({
       success: true,
-      data: rendezVous
+      data: rdv
     });
   } catch (error) {
-    console.error('Erreur API rendez-vous:', error);
+    console.error('Erreur lors de la récupération du RDV:', error);
     return NextResponse.json(
       { success: false, error: 'Erreur lors de la récupération du rendez-vous' },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const body = await request.json();
-    
-    const rendezVous = await rendezVousService.updateRendezVous(params.id, body);
-
-    return NextResponse.json({
-      success: true,
-      data: rendezVous
-    });
-  } catch (error) {
-    console.error('Erreur mise à jour rendez-vous:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erreur lors de la mise à jour du rendez-vous' },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    await rendezVousService.deleteRendezVous(params.id);
-
-    return NextResponse.json({
-      success: true,
-      message: 'Rendez-vous supprimé avec succès'
-    });
-  } catch (error) {
-    console.error('Erreur suppression rendez-vous:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erreur lors de la suppression du rendez-vous' },
       { status: 500 }
     );
   }

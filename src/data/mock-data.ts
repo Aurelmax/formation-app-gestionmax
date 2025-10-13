@@ -36,14 +36,91 @@ export const MOCK_PROGRAMMES: Programme[] = [
     id: '1',
     codeFormation: 'A001-WP-DD',
     titre: 'Création de son site internet (WordPress) + Stratégie de développement digital',
-    description: 'Formation complète en 2 jours : création et gestion d\'un site WordPress + stratégie de développement digital (SEO, réseaux sociaux, publicité en ligne)',
+    description: `Formation complète en 2 jours pour artisans, commerçants et professions libérales.
+
+PRÉREQUIS : Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur.
+
+PUBLIC CONCERNÉ : Artisans, commerçants ou professions libérales.
+
+DURÉE : 14 heures ou 2 jours
+HORAIRES : 9h à 13h et de 14h à 17h
+
+OBJECTIFS PÉDAGOGIQUES :
+Jour 1 : Apprendre à créer, personnaliser et gérer un site internet avec WordPress, en mettant l'accent sur la gestion du contenu, la personnalisation du design et l'ajout de fonctionnalités essentielles.
+
+Jour 2 : Comprendre les bases d'une stratégie de développement digital, incluant le SEO, la gestion des réseaux sociaux et l'utilisation de la publicité en ligne pour attirer et convertir des clients potentiels.
+
+PROGRAMME DÉTAILLÉ :
+
+JOUR 1 - Création et gestion d'un site internet avec WordPress (7 heures)
+MATIN (9h - 13h) :
+1. Introduction à WordPress
+   - Qu'est-ce que WordPress ? Pourquoi choisir WordPress
+   - Installation de WordPress : guide pratique
+   - Configuration initiale : thème, paramètres généraux
+
+2. Gestion de la structure du site
+   - Création des pages essentielles (Accueil, À propos, Contact, Politique de confidentialité)
+   - Gestion des articles et catégories
+   - Mise en place des menus de navigation
+
+APRÈS-MIDI (14h - 17h) :
+3. Personnalisation de l'apparence
+   - Choix d'un thème adapté à votre activité
+   - Personnalisation via le customizer
+   - Introduction à l'éditeur Gutenberg
+
+4. Ajout de fonctionnalités essentielles
+   - Installation de plugins (sécurité, SEO, formulaires)
+   - Introduction à Elementor
+   - Gestion de la sécurité et sauvegardes
+
+JOUR 2 - Stratégie de développement digital (7 heures)
+MATIN (9h - 13h) :
+1. Définir les objectifs commerciaux
+   - Objectifs spécifiques du site
+   - Identification de l'audience cible
+   - Analyse de la concurrence
+
+2. Introduction au SEO
+   - Bases du référencement naturel
+   - Optimisation on-page
+   - Utilisation de plugins SEO
+
+APRÈS-MIDI (14h - 17h) :
+3. Stratégie sur les réseaux sociaux
+   - Importance des réseaux sociaux
+   - Choix des plateformes
+   - Stratégie de contenu
+
+4. Publicité en ligne et outils
+   - Introduction aux publicités payantes
+   - Définir un budget et cibler
+   - Outils d'analyse (Google Analytics, Matomo)
+   - Automatisation de la communication
+
+5. Conclusion et plan d'action
+   - Élaboration d'un plan d'action
+   - Suivi et ajustement
+   - Questions-réponses
+
+MODALITÉS :
+- Formation en présentiel individuel
+- Méthode expositive et démonstrative
+- Alternance d'exposés théoriques et de cas pratiques
+- Support de cours sur Notion
+- Évaluation par quizz sur EVALBOX
+- Certificat de réalisation de formation
+
+FORMATEUR : Aurélien LAVAYSSIERE
+Contact : aurelien@gestionmax.fr - 06.46.02.24.68`,
     duree: 14,
     niveau: 'DEBUTANT',
     modalites: 'PRESENTIEL',
     prix: 980,
     statut: 'PUBLIE',
     formateurs: ['2'],
-    competences: ['WordPress', 'SEO', 'Réseaux sociaux', 'Publicité en ligne', 'Google Analytics', 'Elementor', 'Yoast SEO'],
+    competences: ['WordPress', 'SEO', 'Réseaux sociaux', 'Publicité en ligne', 'Google Analytics', 'Elementor', 'Yoast SEO', 'Gutenberg', 'Elementor', 'Wordfence', 'Contact Form 7', 'Mailchimp', 'Brevo'],
     createdAt: new Date('2025-01-30T10:00:00Z'),
     updatedAt: new Date('2025-01-30T10:00:00Z'),
   },
@@ -188,31 +265,76 @@ export const MOCK_APPRENANTS: Apprenant[] = [
 export const MOCK_RENDEZ_VOUS: RendezVous[] = [
   {
     id: '1',
-    titre: 'Entretien de positionnement',
-    type: 'ENTRETIEN',
-    date: '2025-10-10T10:00:00Z',
+    programmeId: '1',
+    programmeTitre: 'Création de son site internet (WordPress) + Stratégie de développement digital',
+    client: {
+      nom: 'Dupont',
+      prenom: 'Marie',
+      email: 'marie.dupont@email.com',
+      telephone: '06.12.34.56.78',
+      entreprise: 'Boulangerie Dupont'
+    },
+    type: 'positionnement',
+    statut: 'confirme',
+    date: '2025-02-15',
+    heure: '10:00',
     duree: 60,
-    statut: 'CONFIRME',
-    formateurId: '2',
-    apprenantId: '1',
-    notes: 'Premier contact pour évaluer le niveau',
-    lieu: 'Salle A - Bâtiment 1',
-    createdAt: new Date('2025-09-20T10:00:00Z'),
-    updatedAt: new Date('2025-09-20T10:00:00Z'),
+    lieu: 'presentiel',
+    adresse: '123 Rue de la Paix, 06000 Nice',
+    notes: 'Premier contact pour évaluer le niveau et les besoins',
+    rappelEnvoye: true,
+    createdAt: '2025-01-30T10:00:00Z',
+    updatedAt: '2025-01-30T10:00:00Z',
+    createdBy: '2'
   },
   {
     id: '2',
-    titre: 'Session React Avancé',
-    type: 'FORMATION',
-    date: '2025-10-12T14:00:00Z',
-    duree: 180,
-    statut: 'PLANIFIE',
-    formateurId: '2',
-    apprenantId: '1',
-    lieu: 'Salle B - Bâtiment 2',
-    createdAt: new Date('2025-09-25T10:00:00Z'),
-    updatedAt: new Date('2025-09-25T10:00:00Z'),
+    programmeId: '2',
+    programmeTitre: 'Marketing digital avec Brevo + Techniques de vente en ligne avec WooCommerce',
+    client: {
+      nom: 'Martin',
+      prenom: 'Pierre',
+      email: 'pierre.martin@email.com',
+      telephone: '06.87.65.43.21',
+      entreprise: 'Électricité Martin'
+    },
+    type: 'information',
+    statut: 'en_attente',
+    date: '2025-02-20',
+    heure: '14:30',
+    duree: 45,
+    lieu: 'visio',
+    lienVisio: 'https://meet.google.com/abc-defg-hij',
+    notes: 'Demande d\'informations sur les formations marketing digital',
+    rappelEnvoye: false,
+    createdAt: '2025-01-31T14:00:00Z',
+    updatedAt: '2025-01-31T14:00:00Z',
+    createdBy: '2'
   },
+  {
+    id: '3',
+    programmeId: '3',
+    programmeTitre: 'Gestion de la sécurité de votre site & analyse Web',
+    client: {
+      nom: 'Bernard',
+      prenom: 'Sophie',
+      email: 'sophie.bernard@email.com',
+      telephone: '06.98.76.54.32',
+      entreprise: 'Cabinet d\'avocats Bernard'
+    },
+    type: 'inscription',
+    statut: 'termine',
+    date: '2025-01-25',
+    heure: '09:00',
+    duree: 90,
+    lieu: 'presentiel',
+    adresse: '456 Avenue des Champs, 06000 Nice',
+    notes: 'Inscription confirmée, formation réalisée avec succès',
+    rappelEnvoye: true,
+    createdAt: '2025-01-20T09:00:00Z',
+    updatedAt: '2025-01-25T18:00:00Z',
+    createdBy: '2'
+  }
 ];
 
 // KPIs pour le dashboard

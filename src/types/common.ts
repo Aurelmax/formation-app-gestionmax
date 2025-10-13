@@ -50,14 +50,32 @@ export interface Programme extends Timestamped {
   codeFormation: string; // Code formation interne (ex: A009-SW-MA)
   titre: string;
   description: string;
+  objectifs?: string; // Objectifs pédagogiques
+  prerequis?: string; // Prérequis
+  publicConcerne?: string; // Public concerné
   duree: number; // heures
+  horaires?: string; // Horaires de formation
+  delaisMiseEnPlace?: string; // Délais de mise en place
   niveau: Niveau;
   modalites: Modalite;
   prix: number;
+  modalitesReglement?: string; // Modalités de règlement
   statut: ProgrammeStatut;
   image?: string;
   formateurs: ID[]; // IDs
   competences: string[];
+  ressources?: string[]; // Ressources et matériel
+  modalitesEvaluation?: string; // Modalités d'évaluation
+  sanctionFormation?: string; // Sanction de la formation
+  niveauCertification?: string; // Niveau/Certification
+  accessibiliteHandicap?: string; // Accessibilité handicap
+  cessationAbandon?: string; // Cessation anticipée/Abandon
+  // Informations formateur
+  formateurNom?: string;
+  formateurEmail?: string;
+  formateurTelephone?: string;
+  formateurRole?: string;
+  formateurBiographie?: string;
 }
 // Statuts apprenant
 export const APPRENANT_STATUTS = {

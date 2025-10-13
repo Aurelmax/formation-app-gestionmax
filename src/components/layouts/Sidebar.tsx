@@ -19,11 +19,13 @@ import {
   PenTool,
   Image,
   Mail,
+  GraduationCap,
 } from 'lucide-react';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Programmes', href: '/admin/programmes', icon: BookOpen },
+  { name: 'Formations Personnalisées', href: '/admin/formation-programmes', icon: GraduationCap },
   { name: 'Apprenants', href: '/admin/apprenants', icon: Users },
   { name: 'Rendez-vous', href: '/admin/rendez-vous', icon: Calendar },
   { name: 'Blog', href: '/admin/blog', icon: PenTool },
