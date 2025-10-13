@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { BlogService } from '@/lib/blog-service';
+import { ApiRouteService } from '@/lib/api-route-service';
 
 export async function GET() {
   try {
-    const tags = await BlogService.getTags();
+    const tags = await ApiRouteService.getTags();
     
     return NextResponse.json({
       success: true,

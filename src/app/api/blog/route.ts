@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { BlogService } from '@/lib/blog-service';
+import { ApiRouteService } from '@/lib/api-route-service';
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,13 +17,13 @@ export async function GET(request: NextRequest) {
     };
 
     // Récupérer les articles
-    const articles = await BlogService.getArticles(filters);
+    const articles = await ApiRouteService.getArticles(filters);
     
     // Appliquer la pagination
     const paginatedArticles = articles.slice(filters.offset, filters.offset + filters.limit);
     
     // Récupérer les statistiques
-    const stats = await BlogService.getArticleStats();
+    const stats = await ApiRouteService.getArticleStats();
     
     return NextResponse.json({
       success: true,

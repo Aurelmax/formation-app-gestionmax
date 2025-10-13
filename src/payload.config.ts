@@ -661,6 +661,78 @@ export default buildConfig({
       ],
     },
     {
+      slug: 'contacts',
+      fields: [
+        {
+          name: 'nom',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'email',
+          type: 'email',
+          required: true,
+        },
+        {
+          name: 'telephone',
+          type: 'text',
+        },
+        {
+          name: 'type',
+          type: 'select',
+          options: [
+            { label: 'Question générale', value: 'question' },
+            { label: 'Réclamation', value: 'reclamation' },
+            { label: 'Demande de formation', value: 'formation' },
+            { label: 'Demande de devis', value: 'devis' },
+          ],
+          required: true,
+        },
+        {
+          name: 'sujet',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'message',
+          type: 'textarea',
+          required: true,
+        },
+        {
+          name: 'statut',
+          type: 'select',
+          options: [
+            { label: 'Nouveau', value: 'nouveau' },
+            { label: 'En cours', value: 'en_cours' },
+            { label: 'Traité', value: 'traite' },
+            { label: 'Fermé', value: 'ferme' },
+          ],
+          defaultValue: 'nouveau',
+          required: true,
+        },
+        {
+          name: 'priorite',
+          type: 'select',
+          options: [
+            { label: 'Basse', value: 'basse' },
+            { label: 'Normale', value: 'normale' },
+            { label: 'Haute', value: 'haute' },
+            { label: 'Urgente', value: 'urgente' },
+          ],
+          defaultValue: 'normale',
+          required: true,
+        },
+        {
+          name: 'reponse',
+          type: 'textarea',
+        },
+        {
+          name: 'dateReponse',
+          type: 'date',
+        },
+      ],
+    },
+    {
       slug: 'media',
       upload: {
         staticDir: 'media',

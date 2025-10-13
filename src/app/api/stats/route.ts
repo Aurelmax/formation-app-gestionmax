@@ -3,16 +3,16 @@ import { ApiRouteService } from '@/lib/api-route-service';
 
 export async function GET() {
   try {
-    const categories = await ApiRouteService.getCategories();
+    const stats = await ApiRouteService.getStats();
     
     return NextResponse.json({
       success: true,
-      data: categories
+      data: stats
     });
   } catch (error) {
-    console.error('Erreur API catégories:', error);
+    console.error('Erreur API statistiques:', error);
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la récupération des catégories' },
+      { success: false, error: 'Erreur lors de la récupération des statistiques' },
       { status: 500 }
     );
   }

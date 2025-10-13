@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { BlogService } from '@/lib/blog-service';
+import { ApiRouteService } from '@/lib/api-route-service';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     
     // Récupérer l'article par son slug
-    const article = await BlogService.getArticleBySlug(slug);
+    const article = await ApiRouteService.getArticleBySlug(slug);
     
     if (!article) {
       return NextResponse.json(
@@ -25,9 +25,6 @@ export async function GET(
         { status: 404 }
       );
     }
-    
-    // Incrémenter le compteur de vues
-    await BlogService.incrementViews(article.id);
     
     return NextResponse.json({
       success: true,

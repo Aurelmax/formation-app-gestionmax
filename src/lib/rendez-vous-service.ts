@@ -271,3 +271,4 @@ class RendezVousService {
 }
 
 export const rendezVousService = new RendezVousService();
+export { RendezVousService };

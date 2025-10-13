@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { User, Permission, hasPermission, isUserActive } from '@/types/users';
-import { userService } from '@/lib/user-service';
+import { useUserService } from '@/hooks/useApiService';
 
 interface AuthState {
   user: User | null;
@@ -22,6 +22,7 @@ interface AuthActions {
 }
 
 export function useAuth(): AuthState & AuthActions {
+  const { service: userService } = useUserService();
   const [state, setState] = useState<AuthState>({
     user: null,
     isAuthenticated: false,
@@ -95,25 +96,30 @@ export function useAuth(): AuthState & AuthActions {
     };
 
     initializeAuth();
-  }, []);
+  }, [userService]);
 
   // Fonction de connexion
   const login = useCallback(async (email: string, password: string) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
-      const response = await userService.login({ email, password });
+      // Pour l'instant, utiliser une authentification simplifiée
+      const user = await userService.getUserByEmail(email);
       
-      // Stocker le token
-      localStorage.setItem('auth_token', response.token);
-      localStorage.setItem('refresh_token', response.refreshToken);
-      
-      setState({
-        user: response.user,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      });
+      if (user && user.password === password) {
+        // Stocker le token
+        const token = `token_${user.id}_${Date.now()}`;
+        localStorage.setItem('auth_token', token);
+        
+        setState({
+          user,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+      } else {
+        throw new Error('Email ou mot de passe incorrect');
+      }
     } catch (error) {
       setState({
         user: null,
@@ -122,7 +128,7 @@ export function useAuth(): AuthState & AuthActions {
         error: error instanceof Error ? error.message : 'Erreur de connexion',
       });
     }
-  }, []);
+  }, [userService]);
 
   // Fonction de déconnexion
   const logout = useCallback(() => {
@@ -174,7 +180,7 @@ export function useAuth(): AuthState & AuthActions {
     } catch (error) {
       console.error('Erreur lors du rafraîchissement de l\'utilisateur:', error);
     }
-  }, [state.user]);
+  }, [state.user, userService]);
 
   return {
     ...state,

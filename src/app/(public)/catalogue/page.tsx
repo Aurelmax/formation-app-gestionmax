@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FormationCard } from '@/components/shared/FormationCard';
-import { MockService } from '@/lib/mock-service';
+import { useMainService } from '@/hooks/useApiService';
 import Image from 'next/image';
 import { Search, SortAsc, SortDesc } from 'lucide-react';
 
 export default function CataloguePage() {
+  const { service } = useMainService();
   const [programmes, setProgrammes] = useState<Array<{
     id: string;
     titre: string;
@@ -31,7 +32,7 @@ export default function CataloguePage() {
   useEffect(() => {
     const loadProgrammes = async () => {
       try {
-        const data = await MockService.getProgrammes();
+        const data = await service.getProgrammes();
         setProgrammes(data);
       } catch (error) {
         console.error('Erreur lors du chargement des programmes:', error);
@@ -40,7 +41,7 @@ export default function CataloguePage() {
       }
     };
     loadProgrammes();
-  }, []);
+  }, [service]);
 
   // Filtrage et tri des programmes
   const filteredAndSortedProgrammes = useMemo(() => {

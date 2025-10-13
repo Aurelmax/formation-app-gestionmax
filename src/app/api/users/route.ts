@@ -3,16 +3,16 @@ import { ApiRouteService } from '@/lib/api-route-service';
 
 export async function GET() {
   try {
-    const categories = await ApiRouteService.getCategories();
+    const users = await ApiRouteService.getUsers();
     
     return NextResponse.json({
       success: true,
-      data: categories
+      data: users
     });
   } catch (error) {
-    console.error('Erreur API catégories:', error);
+    console.error('Erreur API utilisateurs:', error);
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la récupération des catégories' },
+      { success: false, error: 'Erreur lors de la récupération des utilisateurs' },
       { status: 500 }
     );
   }

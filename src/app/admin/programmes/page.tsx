@@ -5,11 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus } from 'lucide-react';
-import { MockService } from '@/lib/mock-service';
+import { useMainService } from '@/hooks/useApiService';
 import { formatCurrency } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
 export default function ProgrammesPage() {
+  const { service } = useMainService();
   const [programmes, setProgrammes] = useState<Array<{
     id: string;
     codeFormation: string;
@@ -30,7 +31,7 @@ export default function ProgrammesPage() {
   useEffect(() => {
     const loadProgrammes = async () => {
       try {
-        const data = await MockService.getProgrammes();
+        const data = await service.getProgrammes();
         setProgrammes(data);
       } catch (error) {
         console.error('Erreur lors du chargement des programmes:', error);
@@ -39,7 +40,7 @@ export default function ProgrammesPage() {
       }
     };
     loadProgrammes();
-  }, []);
+  }, [service]);
 
   return (
     <div className="space-y-6">

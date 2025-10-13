@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,6 +18,7 @@ import {
   LogOut,
   PenTool,
   Image,
+  Mail,
 } from 'lucide-react';
 
 const navigation = [
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Apprenants', href: '/admin/apprenants', icon: Users },
   { name: 'Rendez-vous', href: '/admin/rendez-vous', icon: Calendar },
   { name: 'Blog', href: '/admin/blog', icon: PenTool },
+  { name: 'Contacts', href: '/admin/contacts', icon: Mail },
   { name: 'Médias', href: '/admin/medias', icon: Image },
   { name: 'Utilisateurs', href: '/admin/utilisateurs', icon: UserCog },
   { name: 'Documents', href: '/admin/documents', icon: FileText },
@@ -35,8 +37,7 @@ const navigation = [
 export function Sidebar() {
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     setIsMounted(true);

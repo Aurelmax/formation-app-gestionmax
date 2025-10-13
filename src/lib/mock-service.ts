@@ -98,6 +98,11 @@ export class MockService {
     MOCK_USERS.splice(userIndex, 1);
   }
 
+  static async getUserByEmail(email: string): Promise<User | null> {
+    await delay();
+    return MOCK_USERS.find(u => u.email === email) || null;
+  }
+
   static async changePassword(userId: string, passwordData: any): Promise<void> {
     await delay();
     const user = MOCK_USERS.find(u => u.id === userId);

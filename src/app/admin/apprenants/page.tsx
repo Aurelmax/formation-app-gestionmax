@@ -8,10 +8,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Plus, Search, User, Mail, Phone, Calendar } from 'lucide-react';
-import { MockService } from '@/lib/mock-service';
+import { useMainService } from '@/hooks/useApiService';
 import type { Apprenant } from '@/types/common';
 
 export default function ApprenantsPage() {
+  const { service } = useMainService();
   const [apprenants, setApprenants] = useState<Apprenant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,7 +20,7 @@ export default function ApprenantsPage() {
   const loadApprenants = async () => {
     try {
       setIsLoading(true);
-      const data = await MockService.getApprenants();
+      const data = await service.getApprenants();
       setApprenants(data);
     } catch (error) {
       console.error('Erreur lors du chargement des apprenants:', error);
@@ -30,7 +31,7 @@ export default function ApprenantsPage() {
 
   useEffect(() => {
     loadApprenants();
-  }, []);
+  }, [service]);
 
   const filteredApprenants = apprenants.filter(apprenant =>
     apprenant.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||

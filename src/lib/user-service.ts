@@ -355,4 +355,5 @@ class UserService {
 
 // Instance singleton
 export const userService = new UserService();
+export { UserService };
 export default userService;

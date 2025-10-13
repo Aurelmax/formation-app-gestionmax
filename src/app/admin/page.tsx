@@ -1,38 +1,74 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, BookOpen, Calendar, TrendingUp } from 'lucide-react';
-import { MockService } from '@/lib/mock-service';
+import { useMainService } from '@/hooks/useApiService';
 
-export default async function AdminDashboard() {
-  const stats = await MockService.getStats();
+export default function AdminDashboard() {
+  const { service } = useMainService();
+  const [stats, setStats] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const data = await service.getStats();
+        setStats(data);
+      } catch (error) {
+        console.error('Erreur lors du chargement des statistiques:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadStats();
+  }, [service]);
 
   const cards = [
     {
-      title: 'Apprenants actifs',
-      value: stats.apprenantActifs,
-      total: stats.totalApprenants,
+      title: 'Apprenants',
+      value: stats?.apprenants || 0,
       icon: Users,
       color: 'text-blue-600',
     },
     {
-      title: 'Programmes actifs',
-      value: stats.programmesActifs,
-      total: stats.totalProgrammes,
+      title: 'Programmes',
+      value: stats?.programmes || 0,
       icon: BookOpen,
       color: 'text-green-600',
     },
     {
-      title: 'Prochains RDV',
-      value: stats.prochainRendezVous,
+      title: 'Rendez-vous',
+      value: stats?.rendezVous || 0,
       icon: Calendar,
       color: 'text-orange-600',
     },
     {
-      title: 'Taux de réussite',
-      value: `${stats.tauxReussite}%`,
+      title: 'Articles',
+      value: stats?.articles || 0,
       icon: TrendingUp,
       color: 'text-purple-600',
     },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Vue d&apos;ensemble de votre activité
+          </p>
+        </div>
+        <div className="flex justify-center items-center py-20">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Chargement des statistiques...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -56,11 +92,6 @@ export default async function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{card.value}</div>
-                {card.total && (
-                  <p className="text-xs text-muted-foreground">
-                    sur {card.total} total
-                  </p>
-                )}
               </CardContent>
             </Card>
           );

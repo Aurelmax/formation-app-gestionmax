@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
 import { FormationCard } from '@/components/shared/FormationCard';
 import { ModernFAQ } from '@/components/shared/ModernFAQ';
-import { MockService } from '@/lib/mock-service';
+import { useMainService } from '@/hooks/useApiService';
 import { 
   ArrowRight, 
   BookOpen, 
@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
+  const { service } = useMainService();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [formations, setFormations] = useState<Array<{
@@ -40,7 +41,7 @@ export default function HomePage() {
   useEffect(() => {
     const loadFormations = async () => {
       try {
-        const data = await MockService.getProgrammes();
+        const data = await service.getProgrammes();
         setFormations(data);
       } catch (error) {
         console.error('Erreur lors du chargement des formations:', error);
@@ -49,7 +50,7 @@ export default function HomePage() {
       }
     };
     loadFormations();
-  }, []);
+  }, [service]);
 
   // Stats pour le formateur (utilisées dans la section "Votre formateur certifié")
   const formateurStats = [
