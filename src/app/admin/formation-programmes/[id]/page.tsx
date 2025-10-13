@@ -92,12 +92,6 @@ export default function FormationPersonnaliseeDetailPage() {
   const params = useParams();
   const formationId = params.id as string;
 
-  useEffect(() => {
-    if (formationId) {
-      loadFormation();
-    }
-  }, [formationId, loadFormation]);
-
   const loadFormation = useCallback(async () => {
     try {
       const response = await fetch(`/api/formation-programmes/${formationId}`);
@@ -117,6 +111,12 @@ export default function FormationPersonnaliseeDetailPage() {
       setIsLoading(false);
     }
   }, [formationId, router]);
+
+  useEffect(() => {
+    if (formationId) {
+      loadFormation();
+    }
+  }, [formationId, loadFormation]);
 
   const handleDelete = async () => {
     if (!formation) return;
