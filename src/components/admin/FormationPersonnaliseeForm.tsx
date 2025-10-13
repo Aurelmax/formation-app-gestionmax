@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { 
@@ -15,16 +14,13 @@ import {
   Plus, 
   Trash2, 
   GraduationCap,
-  Clock,
   Euro,
-  Users,
   Target,
   FileText,
   BookOpen,
   User,
   Phone,
   Mail,
-  MapPin,
   CheckCircle,
   AlertTriangle
 } from 'lucide-react';
@@ -35,7 +31,7 @@ interface FormationPersonnalisee {
   title: string;
   code_formation: string;
   statut: 'EN_COURS' | 'FINALISEE' | 'LIVREE' | 'ARCHIVE';
-  objectifs: any; // RichText structure
+  objectifs: Record<string, unknown>; // RichText structure
   programme_detail: Array<{
     jour: string;
     duree: string;
@@ -43,7 +39,7 @@ interface FormationPersonnalisee {
       titre: string;
       description: string;
       duree: string;
-      contenu: any; // RichText structure
+      contenu: Record<string, unknown>; // RichText structure
     }>;
   }>;
   modalites_acces: {
@@ -62,7 +58,7 @@ interface FormationPersonnalisee {
     role: string;
     biographie: string;
   };
-  modalites_pedagogiques: any; // RichText structure
+  modalites_pedagogiques: Record<string, unknown>; // RichText structure
   ressources_dispo: Array<{
     ressource: string;
     description: string;
@@ -93,13 +89,13 @@ interface FormationPersonnaliseeFormProps {
   onSave: (formation: FormationPersonnalisee) => void;
   onCancel: () => void;
   isLoading?: boolean;
-  rdvData?: any;
+  rdvData?: Record<string, unknown>;
 }
 
 export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoading = false, rdvData }: FormationPersonnaliseeFormProps) {
   const [formData, setFormData] = useState<FormationPersonnalisee>({
-    title: formation?.title || (rdvData ? `${rdvData.programmeTitre} - ${rdvData.client?.prenom} ${rdvData.client?.nom}` : ''),
-    code_formation: formation?.code_formation || (rdvData ? `A${Date.now().toString().slice(-6)}-${rdvData.client?.nom?.toUpperCase()}` : ''),
+    title: formation?.title || (rdvData ? `${(rdvData.programmeTitre as string) || ''} - ${(rdvData.client as Record<string, unknown>)?.prenom} ${(rdvData.client as Record<string, unknown>)?.nom}` : ''),
+    code_formation: formation?.code_formation || (rdvData ? `A${Date.now().toString().slice(-6)}-${((rdvData.client as Record<string, unknown>)?.nom as string)?.toUpperCase()}` : ''),
     statut: formation?.statut || 'EN_COURS',
     objectifs: formation?.objectifs || { root: { type: 'root', children: [] } },
     programme_detail: formation?.programme_detail || [
@@ -162,14 +158,14 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
     { value: 'ARCHIVE', label: 'Archivée' }
   ];
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: unknown) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleNestedInputChange = (parent: string, field: string, value: any) => {
+  const handleNestedInputChange = (parent: string, field: string, value: unknown) => {
     setFormData(prev => ({
       ...prev,
       [parent]: {
@@ -284,7 +280,7 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
                 
                 <div className="space-y-2">
                   <Label htmlFor="statut">Statut</Label>
-                  <Select value={formData.statut} onValueChange={(value: any) => handleInputChange('statut', value)}>
+                  <Select value={formData.statut} onValueChange={(value: string) => handleInputChange('statut', value)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -335,7 +331,7 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
             <div className="space-y-4">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 <Target className="h-4 w-4" />
-                Modalités d'accès
+                Modalités d&apos;accès
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -560,14 +556,14 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
             <div className="space-y-4">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
-                Modalités d'évaluation
+                Modalités d&apos;évaluation
               </h3>
               
               <div className="flex gap-2">
                 <Input
                   value={newEvaluationType}
                   onChange={(e) => setNewEvaluationType(e.target.value)}
-                  placeholder="Ajouter un type d'évaluation..."
+                  placeholder="Ajouter un type d&apos;évaluation..."
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddEvaluationType())}
                 />
                 <Button type="button" onClick={handleAddEvaluationType} size="sm">
@@ -626,7 +622,7 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="plateforme_evaluation">Plateforme d'évaluation</Label>
+                  <Label htmlFor="plateforme_evaluation">Plateforme d&apos;évaluation</Label>
                   <Input
                     id="plateforme_evaluation"
                     value={formData.modalites_evaluation.plateforme_evaluation}
@@ -636,12 +632,12 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="grille_analyse">Grille d'analyse</Label>
+                  <Label htmlFor="grille_analyse">Grille d&apos;analyse</Label>
                   <Input
                     id="grille_analyse"
                     value={formData.modalites_evaluation.grille_analyse}
                     onChange={(e) => handleNestedInputChange('modalites_evaluation', 'grille_analyse', e.target.value)}
-                    placeholder="Ex: Grille d'analyse des compétences"
+                    placeholder="Ex: Grille d&apos;analyse des compétences"
                   />
                 </div>
               </div>
@@ -728,7 +724,7 @@ export function FormationPersonnaliseeForm({ formation, onSave, onCancel, isLoad
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="facturation_abandon">Facturation en cas d'abandon</Label>
+                  <Label htmlFor="facturation_abandon">Facturation en cas d&apos;abandon</Label>
                   <Textarea
                     id="facturation_abandon"
                     value={formData.cessation_abandon.facturation_abandon}

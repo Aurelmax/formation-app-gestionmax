@@ -13,7 +13,7 @@ interface ProgrammePageProps {
 
 export default function ProgrammePage({ params }: ProgrammePageProps) {
   const { id } = use(params);
-  const [programme, setProgramme] = useState<any>(null);
+  const [programme, setProgramme] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -32,8 +32,8 @@ export default function ProgrammePage({ params }: ProgrammePageProps) {
             niveau: result.data.niveau,
             modalites: result.data.modalites,
             prix: result.data.prix,
-            competences: (result.data.competences || []).map((comp: any) => 
-              typeof comp === 'string' ? comp : comp.competence
+            competences: (result.data.competences as unknown[] || []).map((comp: unknown) => 
+              typeof comp === 'string' ? comp : (comp as { competence: string }).competence
             ).filter((comp: string, index: number, arr: string[]) => 
               arr.indexOf(comp) === index // Supprimer les doublons
             ),

@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Eye, Edit, Trash2, FileText, Download } from 'lucide-react';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 
 interface FormationProgramme {
   _id: string;
@@ -28,7 +27,6 @@ interface FormationProgramme {
 export default function FormationProgrammesPage() {
   const [programmes, setProgrammes] = useState<FormationProgramme[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const loadProgrammes = async () => {
@@ -71,9 +69,9 @@ export default function FormationProgrammesPage() {
       if (data.success) {
         setProgrammes(data.data);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erreur lors de la suppression:', error);
-      toast.error(error.message || 'Erreur lors de la suppression de la formation');
+      toast.error((error as Error).message || 'Erreur lors de la suppression de la formation');
     }
   };
 
@@ -100,9 +98,9 @@ export default function FormationProgrammesPage() {
       document.body.removeChild(a);
 
       toast.success('PDF téléchargé avec succès !');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erreur lors du téléchargement du PDF:', error);
-      toast.error(error.message || 'Erreur lors du téléchargement du PDF');
+      toast.error((error as Error).message || 'Erreur lors du téléchargement du PDF');
     }
   };
 

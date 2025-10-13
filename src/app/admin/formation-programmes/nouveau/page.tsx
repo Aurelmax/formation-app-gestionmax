@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FormationPersonnaliseeForm } from '@/components/admin/FormationPersonnaliseeForm';
+import { FormationPersonnaliseeFormRefactored } from '@/components/admin/FormationPersonnaliseeFormRefactored';
 import { toast } from 'sonner';
 
 export default function NouvelleFormationPersonnaliseePage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [rdvData, setRdvData] = useState<any>(null);
+  const [rdvData, setRdvData] = useState<Record<string, unknown> | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const rdvId = searchParams.get('rdvId');
@@ -16,9 +16,9 @@ export default function NouvelleFormationPersonnaliseePage() {
     if (rdvId) {
       loadRdvData();
     }
-  }, [rdvId]);
+  }, [rdvId, loadRdvData]);
 
-  const loadRdvData = async () => {
+  const loadRdvData = useCallback(async () => {
     try {
       const response = await fetch(`/api/rendez-vous/${rdvId}`);
       const result = await response.json();
@@ -29,9 +29,9 @@ export default function NouvelleFormationPersonnaliseePage() {
     } catch (error) {
       console.error('Erreur lors du chargement du RDV:', error);
     }
-  };
+  }, [rdvId]);
 
-  const handleSave = async (formationData: any) => {
+  const handleSave = async (formationData: Record<string, unknown>) => {
     setIsLoading(true);
     
     try {
@@ -52,9 +52,9 @@ export default function NouvelleFormationPersonnaliseePage() {
       toast.success('Formation personnalisée créée avec succès !');
       router.push('/admin/formation-programmes');
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erreur lors de la création de la formation:', error);
-      toast.error(error.message || 'Erreur lors de la création de la formation');
+      toast.error((error as Error).message || 'Erreur lors de la création de la formation');
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +82,7 @@ export default function NouvelleFormationPersonnaliseePage() {
             <div className="mt-2 text-sm text-blue-800">
               <p><strong>Client :</strong> {rdvData.client?.prenom} {rdvData.client?.nom}</p>
               <p><strong>Email :</strong> {rdvData.client?.email}</p>
-              <p><strong>Programme d'intérêt :</strong> {rdvData.programmeTitre}</p>
+              <p><strong>Programme d&apos;intérêt :</strong> {rdvData.programmeTitre}</p>
               <p><strong>Date du RDV :</strong> {new Date(rdvData.date).toLocaleDateString('fr-FR')} à {rdvData.heure}</p>
               {rdvData.notes && <p><strong>Notes :</strong> {rdvData.notes}</p>}
             </div>
@@ -90,7 +90,7 @@ export default function NouvelleFormationPersonnaliseePage() {
         )}
       </div>
       
-      <FormationPersonnaliseeForm
+        <FormationPersonnaliseeFormRefactored
         onSave={handleSave}
         onCancel={handleCancel}
         isLoading={isLoading}

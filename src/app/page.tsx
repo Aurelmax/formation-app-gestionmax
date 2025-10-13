@@ -43,7 +43,7 @@ export default function HomePage() {
         const result = await response.json();
         if (result.success) {
           // Transformer les données MongoDB pour correspondre à l'interface attendue
-          const transformedData = result.data.map((programme: any) => ({
+          const transformedData = result.data.map((programme: Record<string, unknown>) => ({
             id: programme._id,
             codeFormation: programme.codeFormation,
             titre: programme.titre,
@@ -52,8 +52,8 @@ export default function HomePage() {
             niveau: programme.niveau,
             modalites: programme.modalites,
             prix: programme.prix,
-            competences: (programme.competences || []).map((comp: any) => 
-              typeof comp === 'string' ? comp : comp.competence
+            competences: (programme.competences as unknown[] || []).map((comp: unknown) => 
+              typeof comp === 'string' ? comp : (comp as { competence: string }).competence
             ).filter((comp: string, index: number, arr: string[]) => 
               arr.indexOf(comp) === index // Supprimer les doublons
             )

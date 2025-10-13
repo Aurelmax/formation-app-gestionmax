@@ -14,7 +14,6 @@ import {
   Save, 
   X, 
   Plus, 
-  Trash2, 
   BookOpen,
   Clock,
   Euro,
@@ -79,7 +78,7 @@ export function ProgrammeForm({ programme, onSave, onCancel, isLoading = false }
     { value: 'ARCHIVE', label: 'Archivé' }
   ];
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: unknown) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -465,12 +464,12 @@ export function ProgrammeForm({ programme, onSave, onCancel, isLoading = false }
               </h3>
               
               <div className="space-y-2">
-                <Label htmlFor="modalitesEvaluation">Modalités d'évaluation</Label>
+                <Label htmlFor="modalitesEvaluation">Modalités d&apos;évaluation</Label>
                 <Textarea
                   id="modalitesEvaluation"
                   value={formData.modalitesEvaluation}
                   onChange={(e) => handleInputChange('modalitesEvaluation', e.target.value)}
-                  placeholder="Décrivez les modalités d'évaluation..."
+                  placeholder="Décrivez les modalités d&apos;évaluation..."
                   rows={2}
                 />
               </div>

@@ -260,7 +260,6 @@ export function UserManagement() {
               />
             </DialogContent>
           </Dialog>
-        )}
       </div>
 
       {/* Statistiques */}

@@ -1,18 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { 
   ArrowLeft, 
   Edit, 
   Trash2, 
   Clock, 
   Euro, 
-  Users, 
   Target, 
   FileText, 
   User, 
@@ -23,7 +21,6 @@ import {
   BookOpen,
   Download,
   Calendar,
-  MapPin
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -33,7 +30,7 @@ interface FormationPersonnalisee {
   title: string;
   code_formation: string;
   statut: string;
-  objectifs?: any;
+  objectifs?: Record<string, unknown>;
   programme_detail?: Array<{
     jour: string;
     duree: string;
@@ -41,7 +38,7 @@ interface FormationPersonnalisee {
       titre: string;
       description?: string;
       duree?: string;
-      contenu?: any;
+      contenu?: Record<string, unknown>;
     }>;
   }>;
   modalites_acces?: {
@@ -60,7 +57,7 @@ interface FormationPersonnalisee {
     role?: string;
     biographie?: string;
   };
-  modalites_pedagogiques?: any;
+  modalites_pedagogiques?: Record<string, unknown>;
   ressources_dispo?: Array<{
     ressource: string;
     description?: string;
@@ -99,9 +96,9 @@ export default function FormationPersonnaliseeDetailPage() {
     if (formationId) {
       loadFormation();
     }
-  }, [formationId]);
+  }, [formationId, loadFormation]);
 
-  const loadFormation = async () => {
+  const loadFormation = useCallback(async () => {
     try {
       const response = await fetch(`/api/formation-programmes/${formationId}`);
       const result = await response.json();
@@ -119,7 +116,7 @@ export default function FormationPersonnaliseeDetailPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [formationId, router]);
 
   const handleDelete = async () => {
     if (!formation) return;
@@ -141,9 +138,9 @@ export default function FormationPersonnaliseeDetailPage() {
 
       toast.success('Formation supprimée avec succès !');
       router.push('/admin/formation-programmes');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erreur lors de la suppression:', error);
-      toast.error(error.message || 'Erreur lors de la suppression de la formation');
+      toast.error((error as Error).message || 'Erreur lors de la suppression de la formation');
     }
   };
 
@@ -172,20 +169,24 @@ export default function FormationPersonnaliseeDetailPage() {
       document.body.removeChild(a);
 
       toast.success('Document téléchargé avec succès !');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erreur lors du téléchargement:', error);
       toast.error(error.message || 'Erreur lors du téléchargement du document');
     }
   };
 
-  const formatRichText = (richText: any): string => {
+  const formatRichText = (richText: Record<string, unknown>): string => {
     if (!richText || !richText.root || !richText.root.children) {
       return '';
     }
     
-    return richText.root.children.map((child: any) => {
-      if (child.type === 'p') {
-        return child.children.map((textChild: any) => textChild.text || '').join('');
+    return (richText.root.children as unknown[]).map((child: unknown) => {
+      const childObj = child as { type: string; children?: unknown[] };
+      if (childObj.type === 'p') {
+        return (childObj.children || []).map((textChild: unknown) => {
+          const textObj = textChild as { text?: string };
+          return textObj.text || '';
+        }).join('');
       }
       return '';
     }).join('\n');
@@ -209,7 +210,7 @@ export default function FormationPersonnaliseeDetailPage() {
       <div className="container mx-auto py-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600 mb-4">Formation non trouvée</h1>
-          <p className="text-muted-foreground mb-4">La formation demandée n'existe pas ou a été supprimée.</p>
+          <p className="text-muted-foreground mb-4">La formation demandée n&apos;existe pas ou a été supprimée.</p>
           <Button onClick={() => router.push('/admin/formation-programmes')}>
             Retour à la liste
           </Button>
@@ -348,13 +349,13 @@ export default function FormationPersonnaliseeDetailPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5" />
-                  Modalités d'évaluation
+                  Modalités d&apos;évaluation
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {formation.modalites_evaluation.types_evaluation && formation.modalites_evaluation.types_evaluation.length > 0 && (
                   <div>
-                    <h4 className="font-semibold mb-2">Types d'évaluation</h4>
+                    <h4 className="font-semibold mb-2">Types d&apos;évaluation</h4>
                     <ul className="space-y-1">
                       {formation.modalites_evaluation.types_evaluation.map((evaluation, index) => (
                         <li key={index} className="flex items-start gap-2">
@@ -372,13 +373,13 @@ export default function FormationPersonnaliseeDetailPage() {
                 )}
                 {formation.modalites_evaluation.plateforme_evaluation && (
                   <div>
-                    <h4 className="font-semibold mb-1">Plateforme d'évaluation</h4>
+                    <h4 className="font-semibold mb-1">Plateforme d&apos;évaluation</h4>
                     <p className="text-muted-foreground">{formation.modalites_evaluation.plateforme_evaluation}</p>
                   </div>
                 )}
                 {formation.modalites_evaluation.grille_analyse && (
                   <div>
-                    <h4 className="font-semibold mb-1">Grille d'analyse</h4>
+                    <h4 className="font-semibold mb-1">Grille d&apos;analyse</h4>
                     <p className="text-muted-foreground">{formation.modalites_evaluation.grille_analyse}</p>
                   </div>
                 )}
@@ -412,7 +413,7 @@ export default function FormationPersonnaliseeDetailPage() {
                 )}
                 {formation.cessation_abandon && (
                   <div>
-                    <h4 className="font-semibold mb-2">Conditions d'abandon</h4>
+                    <h4 className="font-semibold mb-2">Conditions d&apos;abandon</h4>
                     {formation.cessation_abandon.conditions_renonciation && (
                       <p><strong>Conditions de renonciation:</strong> {formation.cessation_abandon.conditions_renonciation}</p>
                     )}

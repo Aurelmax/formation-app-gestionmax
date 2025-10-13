@@ -99,7 +99,7 @@ export default function AdminLoginPage() {
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Connexion</CardTitle>
             <CardDescription className="text-center">
-              Connectez-vous à votre espace d'administration
+                  Connectez-vous à votre espace d&apos;administration
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -197,7 +197,7 @@ export default function AdminLoginPage() {
               </div>
               <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
                 <p className="text-xs text-green-800">
-                  💡 <strong>Astuce:</strong> Vous pouvez créer de nouveaux utilisateurs via l'interface admin une fois connecté !
+                  💡 <strong>Astuce:</strong> Vous pouvez créer de nouveaux utilisateurs via l&apos;interface admin une fois connecté !
                 </p>
               </div>
             </div>
