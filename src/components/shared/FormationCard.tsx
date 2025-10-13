@@ -71,7 +71,7 @@ export function FormationCard({ programme, showDetails = true }: FormationCardPr
               
               return (
                 <Badge 
-                  key={comp} 
+                  key={`${comp}-${index}`} 
                   variant="outline" 
                   className={`text-xs border ${colorClass}`}
                 >

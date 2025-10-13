@@ -52,7 +52,11 @@ export default function HomePage() {
             niveau: programme.niveau,
             modalites: programme.modalites,
             prix: programme.prix,
-            competences: programme.competences || []
+            competences: (programme.competences || []).map((comp: any) => 
+              typeof comp === 'string' ? comp : comp.competence
+            ).filter((comp: string, index: number, arr: string[]) => 
+              arr.indexOf(comp) === index // Supprimer les doublons
+            )
           }));
           setFormations(transformedData);
         }
