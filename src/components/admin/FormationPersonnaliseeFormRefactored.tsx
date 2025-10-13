@@ -88,8 +88,8 @@ export function FormationPersonnaliseeFormRefactored({
   rdvData 
 }: FormationPersonnaliseeFormProps) {
   const [formData, setFormData] = useState<FormationPersonnalisee>({
-    title: formation?.title || (rdvData ? `${(rdvData.programmeTitre as string) || ''} - ${(rdvData.client as Record<string, unknown>)?.prenom} ${(rdvData.client as Record<string, unknown>)?.nom}` : ''),
-    code_formation: formation?.code_formation || (rdvData ? `A${Date.now().toString().slice(-6)}-${((rdvData.client as Record<string, unknown>)?.nom as string)?.toUpperCase()}` : ''),
+    title: formation?.title || (rdvData ? `${(rdvData['programmeTitre'] as string) || ''} - ${(rdvData['client'] as Record<string, unknown>)?.['prenom']} ${(rdvData['client'] as Record<string, unknown>)?.['nom']}` : ''),
+    code_formation: formation?.code_formation || (rdvData ? `A${Date.now().toString().slice(-6)}-${((rdvData['client'] as Record<string, unknown>)?.['nom'] as string)?.toUpperCase()}` : ''),
     statut: formation?.statut || 'EN_COURS',
     objectifs: formation?.objectifs || { root: { type: 'root', children: [] } },
     programme_detail: formation?.programme_detail || [

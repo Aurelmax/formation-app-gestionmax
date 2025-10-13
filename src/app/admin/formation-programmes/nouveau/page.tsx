@@ -12,12 +12,6 @@ export default function NouvelleFormationPersonnaliseePage() {
   const searchParams = useSearchParams();
   const rdvId = searchParams.get('rdvId');
 
-  useEffect(() => {
-    if (rdvId) {
-      loadRdvData();
-    }
-  }, [rdvId, loadRdvData]);
-
   const loadRdvData = useCallback(async () => {
     try {
       const response = await fetch(`/api/rendez-vous/${rdvId}`);
@@ -30,6 +24,12 @@ export default function NouvelleFormationPersonnaliseePage() {
       console.error('Erreur lors du chargement du RDV:', error);
     }
   }, [rdvId]);
+
+  useEffect(() => {
+    if (rdvId) {
+      loadRdvData();
+    }
+  }, [rdvId, loadRdvData]);
 
   const handleSave = async (formationData: Record<string, unknown>) => {
     setIsLoading(true);
