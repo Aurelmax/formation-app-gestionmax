@@ -25,6 +25,21 @@ interface SimpleModalProps {
     modalites: string;
     prix: number;
     competences: string[];
+    // Champs détaillés pour le programme
+    objectifs?: string;
+    prerequis?: string;
+    publicConcerne?: string;
+    horaires?: string;
+    modalitesPedagogiques?: string;
+    evaluation?: string;
+    certification?: string;
+    accessibiliteHandicap?: string;
+    cessationAbandon?: string;
+    formateurNom?: string;
+    formateurEmail?: string;
+    formateurTelephone?: string;
+    formateurRole?: string;
+    formateurBiographie?: string;
   };
 }
 
@@ -141,6 +156,65 @@ export function SimpleModal({ programme }: SimpleModalProps) {
               </CardContent>
             </Card>
 
+            {/* Programme détaillé */}
+            {(programme.objectifs || programme.prerequis || programme.publicConcerne || programme.horaires) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg text-[#1f3b8e]">Programme détaillé</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {programme.objectifs && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Objectifs pédagogiques</h4>
+                      <p className="text-sm text-gray-700 whitespace-pre-line">{programme.objectifs}</p>
+                    </div>
+                  )}
+                  
+                  {programme.prerequis && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Prérequis</h4>
+                      <p className="text-sm text-gray-700">{programme.prerequis}</p>
+                    </div>
+                  )}
+                  
+                  {programme.publicConcerne && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Public concerné</h4>
+                      <p className="text-sm text-gray-700">{programme.publicConcerne}</p>
+                    </div>
+                  )}
+                  
+                  {programme.horaires && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Horaires</h4>
+                      <p className="text-sm text-gray-700">{programme.horaires}</p>
+                    </div>
+                  )}
+                  
+                  {programme.modalitesPedagogiques && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Modalités pédagogiques</h4>
+                      <p className="text-sm text-gray-700">{programme.modalitesPedagogiques}</p>
+                    </div>
+                  )}
+                  
+                  {programme.evaluation && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Évaluation</h4>
+                      <p className="text-sm text-gray-700">{programme.evaluation}</p>
+                    </div>
+                  )}
+                  
+                  {programme.certification && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Certification</h4>
+                      <p className="text-sm text-gray-700">{programme.certification}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             {/* Informations pratiques */}
             <Card>
               <CardHeader>
@@ -167,6 +241,52 @@ export function SimpleModal({ programme }: SimpleModalProps) {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Formateur */}
+            {(programme.formateurNom || programme.formateurEmail || programme.formateurTelephone || programme.formateurRole || programme.formateurBiographie) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg text-[#1f3b8e]">Votre formateur</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {programme.formateurNom && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Nom</h4>
+                      <p className="text-sm text-gray-700">{programme.formateurNom}</p>
+                    </div>
+                  )}
+                  
+                  {programme.formateurRole && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Rôle</h4>
+                      <p className="text-sm text-gray-700">{programme.formateurRole}</p>
+                    </div>
+                  )}
+                  
+                  {programme.formateurBiographie && (
+                    <div>
+                      <h4 className="font-semibold text-[#1f3b8e] mb-2">Biographie</h4>
+                      <p className="text-sm text-gray-700">{programme.formateurBiographie}</p>
+                    </div>
+                  )}
+                  
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    {programme.formateurEmail && (
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-5 w-5 text-[#1f3b8e]" />
+                        <span className="text-sm">{programme.formateurEmail}</span>
+                      </div>
+                    )}
+                    {programme.formateurTelephone && (
+                      <div className="flex items-center gap-2">
+                        <Phone className="h-5 w-5 text-[#1f3b8e]" />
+                        <span className="text-sm">{programme.formateurTelephone}</span>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Contact */}
             <Card>
