@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
@@ -47,9 +47,9 @@ export default function ArticlePage() {
     if (slug) {
       loadArticle();
     }
-  }, [slug]);
+  }, [slug, loadArticle]);
 
-  const loadArticle = async () => {
+  const loadArticle = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
@@ -68,7 +68,7 @@ export default function ArticlePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [slug]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {

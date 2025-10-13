@@ -157,8 +157,8 @@ export default function ProgrammesPage() {
                   {programme.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {getCompetences(programme.competences).slice(0, 3).map((comp) => (
-                    <Badge key={comp} variant="outline">
+                  {getCompetences(programme.competences).slice(0, 3).map((comp, index) => (
+                    <Badge key={`${comp}-${index}`} variant="outline">
                       {comp}
                     </Badge>
                   ))}

@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Plus, Search, User, Mail, Phone, Calendar } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Plus, Search, User, Phone, Calendar } from 'lucide-react';
 import { useMainService } from '@/hooks/useApiService';
 import type { Apprenant } from '@/types/common';
 
@@ -17,7 +17,7 @@ export default function ApprenantsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const loadApprenants = async () => {
+  const loadApprenants = useCallback(async () => {
     try {
       setIsLoading(true);
       const data = await service.getApprenants();
@@ -27,11 +27,11 @@ export default function ApprenantsPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [service]);
 
   useEffect(() => {
     loadApprenants();
-  }, [service]);
+  }, [loadApprenants]);
 
   const filteredApprenants = apprenants.filter(apprenant =>
     apprenant.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -147,7 +147,7 @@ export default function ApprenantsPage() {
                 <TableHead>Statut</TableHead>
                 <TableHead>Contact</TableHead>
                 <TableHead>Formations</TableHead>
-                <TableHead>Date d'inscription</TableHead>
+                <TableHead>Date d&apos;inscription</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>

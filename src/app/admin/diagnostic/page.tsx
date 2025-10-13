@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { userService } from '@/lib/user-service';
 import { toast } from 'sonner';
 
 export default function DiagnosticPage() {
-  const [diagnostic, setDiagnostic] = useState<any>(null);
+  const [diagnostic, setDiagnostic] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const runDiagnostic = async () => {
@@ -85,7 +85,7 @@ export default function DiagnosticPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Diagnostic du Système</h1>
-          <p className="text-gray-600">Vérification de l'état du système d'authentification</p>
+          <p className="text-gray-600">Vérification de l&apos;état du système d&apos;authentification</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -117,7 +117,7 @@ export default function DiagnosticPage() {
                   <p className="text-sm text-gray-600">{diagnostic.userCount} utilisateur(s)</p>
                   {diagnostic.users && diagnostic.users.length > 0 && (
                     <div className="mt-2">
-                      {diagnostic.users.map((user: any, index: number) => (
+                      {(diagnostic.users as Array<{email: string, role: string}>).map((user, index: number) => (
                         <div key={index} className="text-sm bg-gray-100 p-2 rounded">
                           {user.email} ({user.role})
                         </div>
@@ -158,7 +158,7 @@ export default function DiagnosticPage() {
             <CardTitle>Instructions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <p>1. <strong>Lancer le diagnostic</strong> pour vérifier l'état du système</p>
+            <p>1. <strong>Lancer le diagnostic</strong> pour vérifier l&apos;état du système</p>
             <p>2. <strong>Vider localStorage</strong> si vous voulez repartir à zéro</p>
             <p>3. <strong>Forcer la sauvegarde</strong> pour recréer les utilisateurs dans localStorage</p>
             <p>4. Ouvrez la console (F12) pour voir les logs détaillés</p>

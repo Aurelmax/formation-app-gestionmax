@@ -475,8 +475,8 @@ export function ProgrammeFormComplet({ programme, onSave, onCancel, isLoading = 
               
               {formData.competences.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {formData.competences.map((competence) => (
-                    <Badge key={competence} variant="secondary" className="flex items-center gap-1">
+                  {formData.competences.map((competence, index) => (
+                    <Badge key={`${competence}-${index}`} variant="secondary" className="flex items-center gap-1">
                       {competence}
                       <button
                         type="button"

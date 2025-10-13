@@ -9,7 +9,6 @@ import {
   Calendar, 
   User, 
   Clock, 
-  AlertTriangle,
   Mail,
   Star,
   Eye

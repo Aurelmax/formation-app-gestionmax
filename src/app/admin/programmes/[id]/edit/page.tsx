@@ -5,7 +5,6 @@ import { useRouter, useParams } from 'next/navigation';
 import { ProgrammeFormComplet } from '@/components/admin/ProgrammeFormComplet';
 import { Programme } from '@/types/index';
 import { toast } from 'sonner';
-import { DashboardLayout } from '@/components/layouts/DashboardLayout';
 
 export default function EditProgrammePage() {
   const [programme, setProgramme] = useState<Programme | null>(null);
@@ -76,55 +75,49 @@ export default function EditProgrammePage() {
 
   if (isLoading) {
     return (
-      <DashboardLayout>
-        <div className="container mx-auto py-6">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-muted-foreground">Chargement du programme...</p>
-            </div>
+      <div className="container mx-auto py-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Chargement du programme...</p>
           </div>
         </div>
-      </DashboardLayout>
+      </div>
     );
   }
 
   if (!programme) {
     return (
-      <DashboardLayout>
-        <div className="container mx-auto py-6">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-red-600 mb-4">Programme non trouvé</h1>
-            <p className="text-muted-foreground mb-4">Le programme demandé n'existe pas ou a été supprimé.</p>
-            <button
-              onClick={() => router.push('/admin/programmes')}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Retour à la liste
-            </button>
-          </div>
+      <div className="container mx-auto py-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Programme non trouvé</h1>
+          <p className="text-muted-foreground mb-4">Le programme demandé n&apos;existe pas ou a été supprimé.</p>
+          <button
+            onClick={() => router.push('/admin/programmes')}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Retour à la liste
+          </button>
         </div>
-      </DashboardLayout>
+      </div>
     );
   }
 
   return (
-    <DashboardLayout>
-      <div className="container mx-auto py-6">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">Modifier le programme</h1>
-          <p className="text-muted-foreground">
-            Modifiez les informations du programme : {programme.titre}
-          </p>
-        </div>
-        
-        <ProgrammeFormComplet
-          programme={programme}
-          onSave={handleSave}
-          onCancel={handleCancel}
-          isLoading={isSaving}
-        />
+    <div className="container mx-auto py-6">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Modifier le programme</h1>
+        <p className="text-muted-foreground">
+          Modifiez les informations du programme : {programme.titre}
+        </p>
       </div>
-    </DashboardLayout>
+      
+      <ProgrammeFormComplet
+        programme={programme}
+        onSave={handleSave}
+        onCancel={handleCancel}
+        isLoading={isSaving}
+      />
+    </div>
   );
 }

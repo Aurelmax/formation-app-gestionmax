@@ -241,8 +241,8 @@ function generateFormationHTML(formation: any): string {
         ${formation.modalites_evaluation.types_evaluation && formation.modalites_evaluation.types_evaluation.length > 0 ? `
         <h3>Types d'évaluation</h3>
         <ul>
-            ${formation.modalites_evaluation.types_evaluation.map((eval: any) => `
-            <li><strong>${eval.type}:</strong> ${eval.description || ''}</li>
+            ${formation.modalites_evaluation.types_evaluation.map((evaluation: any) => `
+            <li><strong>${evaluation.type}:</strong> ${evaluation.description || ''}</li>
             `).join('')}
         </ul>
         ` : ''}
