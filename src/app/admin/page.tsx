@@ -7,7 +7,7 @@ import { useMainService } from '@/hooks/useApiService';
 
 export default function AdminDashboard() {
   const { service } = useMainService();
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

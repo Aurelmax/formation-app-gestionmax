@@ -159,6 +159,32 @@ export interface ContactFormState extends FormState {
   data: ContactFormData;
 }
 
+// Interface pour les messages de contact
+export interface ContactMessage {
+  id: string;
+  nom: string;
+  email: string;
+  telephone?: string;
+  type: 'question' | 'reclamation' | 'formation' | 'devis';
+  sujet: string;
+  message: string;
+  statut: 'nouveau' | 'en_cours' | 'traite' | 'ferme';
+  dateReception: Date;
+  dateReponse?: Date;
+  reponse?: string;
+  priorite: 'basse' | 'normale' | 'haute' | 'urgente';
+}
+
+// Interface pour les filtres de contact
+export interface ContactFilters {
+  searchTerm?: string;
+  statut?: string;
+  type?: string;
+  priorite?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
+}
+
 // Types pour les formulaires de recherche
 export interface SearchFormData {
   query: string;

@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
   experimental: {
     esmExternals: false,
   },
+  // ESLint et TypeScript activés pour le développement
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // },
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals.push('mongoose')

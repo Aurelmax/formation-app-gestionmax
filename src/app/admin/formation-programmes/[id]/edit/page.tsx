@@ -12,7 +12,7 @@ export default function EditFormationPersonnaliseePage() {
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
   const params = useParams();
-  const formationId = params.id as string;
+  const formationId = params['id'] as string;
 
   const loadFormation = useCallback(async () => {
     try {
@@ -94,7 +94,7 @@ export default function EditFormationPersonnaliseePage() {
         <div className="container mx-auto py-6">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-red-600 mb-4">Formation non trouvée</h1>
-            <p className="text-muted-foreground mb-4">La formation demandée n'existe pas ou a été supprimée.</p>
+            <p className="text-muted-foreground mb-4">La formation demandée n&apos;existe pas ou a été supprimée.</p>
             <button
               onClick={() => router.push('/admin/formation-programmes')}
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -113,13 +113,13 @@ export default function EditFormationPersonnaliseePage() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold">Modifier la formation personnalisée</h1>
           <p className="text-muted-foreground">
-            Modifiez les informations de la formation : {formation.title}
+            Modifiez les informations de la formation : {formation['title'] as string}
           </p>
         </div>
         
         <FormationPersonnaliseeForm
-          formation={formation}
-          onSave={handleSave}
+          formation={formation as Record<string, unknown>}
+          onSave={handleSave as (formation: Record<string, unknown>) => void}
           onCancel={handleCancel}
           isLoading={isSaving}
         />

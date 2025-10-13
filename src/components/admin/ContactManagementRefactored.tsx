@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -13,27 +13,16 @@ import {
   Calendar, 
   Search, 
   Filter,
-  Reply,
-  Trash2,
   CheckCircle,
   Clock,
   AlertCircle
 } from 'lucide-react';
 
-interface ContactMessage {
-  id: string;
-  nom: string;
-  email: string;
-  telephone?: string;
-  type: 'question' | 'reclamation' | 'formation' | 'devis';
-  sujet: string;
-  message: string;
-  statut: 'nouveau' | 'en_cours' | 'traite' | 'ferme';
-  dateReception: Date;
-  dateReponse?: Date;
-  reponse?: string;
-  priorite: 'basse' | 'normale' | 'haute' | 'urgente';
-}
+// Import de nos nouveaux hooks et composants
+import { useListManagement, useDialog, useAsyncOperation } from '@/hooks';
+import { FormField, FormSection, FormActions } from '@/components/forms';
+import { ContactBusinessLogic } from '@/lib/business-logic';
+import { ContactMessage } from '@/types/forms';
 
 const mockMessages: ContactMessage[] = [
   {
@@ -103,55 +92,68 @@ const prioriteColors = {
   urgente: 'bg-red-100 text-red-800'
 };
 
-export function ContactManagement() {
-  const [messages, setMessages] = useState<ContactMessage[]>(mockMessages);
-  const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatut, setFilterStatut] = useState<string>('all');
-  const [filterType, setFilterType] = useState<string>('all');
-  const [reponse, setReponse] = useState('');
-
-  const filteredMessages = messages.filter(message => {
-    const matchesSearch = message.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         message.sujet.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatut = filterStatut === 'all' || message.statut === filterStatut;
-    const matchesType = filterType === 'all' || message.type === filterType;
-    
-    return matchesSearch && matchesStatut && matchesType;
+export function ContactManagementRefactored() {
+  // Utilisation de nos nouveaux hooks
+  const {
+    items: messages,
+    searchTerm,
+    filters,
+    setSearchTerm,
+    setFilter,
+    clearFilters,
+    updateItem
+  } = useListManagement<ContactMessage>({
+    initialItems: mockMessages,
+    searchFields: ['nom', 'email', 'sujet', 'message']
   });
 
+  const responseDialog = useDialog<ContactMessage>();
+  const { execute: executeResponse, isLoading: isResponding } = useAsyncOperation();
+
+  const [reponse, setReponse] = useState('');
+
+  // Filtrage avec la logique métier
+  const filteredMessages = ContactBusinessLogic.filterMessages(messages, {
+    searchTerm,
+    statut: filters.statut,
+    type: filters.type,
+    priorite: filters.priorite
+  });
+
+  // Statistiques calculées par la logique métier
+  const stats = ContactBusinessLogic.calculateMessageStats(messages);
+
   const handleStatutChange = (messageId: string, newStatut: ContactMessage['statut']) => {
-    setMessages(prev => prev.map(msg => 
-      msg.id === messageId 
-        ? { ...msg, statut: newStatut, dateReponse: newStatut === 'traite' ? new Date() : msg.dateReponse }
-        : msg
-    ));
+    updateItem(messageId, { 
+      statut: newStatut, 
+      dateReponse: newStatut === 'traite' ? new Date() : undefined 
+    });
   };
 
-  const handleRepondre = (messageId: string) => {
-    if (reponse.trim()) {
-      setMessages(prev => prev.map(msg => 
-        msg.id === messageId 
-          ? { 
-              ...msg, 
-              statut: 'traite' as const,
-              reponse: reponse,
-              dateReponse: new Date()
-            }
-          : msg
-      ));
-      setReponse('');
-      setSelectedMessage(null);
-    }
+  const handleRepondre = async (message: ContactMessage) => {
+    if (!reponse.trim()) return;
+
+    await executeResponse(
+      async () => {
+        // Simulation d'un appel API
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return true;
+      },
+      {
+        onSuccess: () => {
+          updateItem(message.id, {
+            statut: 'traite',
+            reponse: reponse,
+            dateReponse: new Date()
+          });
+          setReponse('');
+          responseDialog.close();
+        },
+        successMessage: 'Réponse envoyée avec succès'
+      }
+    );
   };
 
-  const handleSupprimer = (messageId: string) => {
-    setMessages(prev => prev.filter(msg => msg.id !== messageId));
-    if (selectedMessage?.id === messageId) {
-      setSelectedMessage(null);
-    }
-  };
 
   const getStatutIcon = (statut: ContactMessage['statut']) => {
     switch (statut) {
@@ -163,6 +165,8 @@ export function ContactManagement() {
         return <CheckCircle className="h-4 w-4" />;
       case 'ferme':
         return <CheckCircle className="h-4 w-4" />;
+      default:
+        return <AlertCircle className="h-4 w-4" />;
     }
   };
 
@@ -177,13 +181,16 @@ export function ContactManagement() {
           <Badge variant="outline" className="text-sm">
             {filteredMessages.length} message{filteredMessages.length > 1 ? 's' : ''}
           </Badge>
+          <Badge variant="outline" className="text-sm">
+            {stats.nonTraites} non traités
+          </Badge>
         </div>
       </div>
 
       {/* Filtres et recherche */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <FormSection title="Filtres et recherche">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <FormField label="Recherche">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
@@ -193,8 +200,10 @@ export function ContactManagement() {
                 className="pl-10"
               />
             </div>
-            
-            <Select value={filterStatut} onValueChange={setFilterStatut}>
+          </FormField>
+          
+          <FormField label="Statut">
+            <Select value={filters.statut || 'all'} onValueChange={(value) => setFilter('statut', value === 'all' ? undefined : value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Statut" />
               </SelectTrigger>
@@ -206,8 +215,10 @@ export function ContactManagement() {
                 <SelectItem value="ferme">Fermé</SelectItem>
               </SelectContent>
             </Select>
+          </FormField>
 
-            <Select value={filterType} onValueChange={setFilterType}>
+          <FormField label="Type">
+            <Select value={filters.type || 'all'} onValueChange={(value) => setFilter('type', value === 'all' ? undefined : value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
@@ -219,25 +230,27 @@ export function ContactManagement() {
                 <SelectItem value="devis">Demande de devis</SelectItem>
               </SelectContent>
             </Select>
+          </FormField>
 
-            <Button variant="outline" className="flex items-center gap-2">
+          <div className="flex items-end">
+            <Button variant="outline" className="flex items-center gap-2" onClick={clearFilters}>
               <Filter className="h-4 w-4" />
-              Filtres avancés
+              Effacer
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </FormSection>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Liste des messages */}
         <div className="lg:col-span-1 space-y-4">
-          {filteredMessages.map((message) => (
+          {filteredMessages.map((message: ContactMessage) => (
             <Card 
               key={message.id} 
               className={`cursor-pointer transition-all hover:shadow-md ${
-                selectedMessage?.id === message.id ? 'ring-2 ring-blue-500' : ''
+                responseDialog.data?.id === message.id ? 'ring-2 ring-blue-500' : ''
               }`}
-              onClick={() => setSelectedMessage(message)}
+              onClick={() => responseDialog.open(message)}
             >
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-2">
@@ -272,72 +285,82 @@ export function ContactManagement() {
 
         {/* Détail du message sélectionné */}
         <div className="lg:col-span-2">
-          {selectedMessage ? (
-            <Card>
-              <CardHeader>
-                <div className="flex items-start justify-between">
+          {responseDialog.data ? (
+            <FormSection title={`Message de ${responseDialog.data.nom}`}>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <CardTitle className="text-xl">{selectedMessage.nom}</CardTitle>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Mail className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">{selectedMessage.email}</span>
-                    </div>
-                    {selectedMessage.telephone && (
-                      <div className="flex items-center gap-2 mt-1">
-                        <Phone className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm text-gray-600">{selectedMessage.telephone}</span>
+                    <h4 className="font-semibold text-gray-900 mb-2">Informations de contact</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-gray-500" />
+                        <span className="text-sm text-gray-600">{responseDialog.data.email}</span>
                       </div>
-                    )}
+                      {responseDialog.data.telephone && (
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-600">{responseDialog.data.telephone}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className={statutColors[selectedMessage.statut]}>
-                      {statutLabels[selectedMessage.statut]}
-                    </Badge>
-                    <Badge variant="outline" className={prioriteColors[selectedMessage.priorite]}>
-                      {selectedMessage.priorite}
-                    </Badge>
+                  
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Statut et priorité</h4>
+                    <div className="flex items-center gap-2">
+                      <Badge className={statutColors[responseDialog.data.statut as keyof typeof statutColors]}>
+                        {statutLabels[responseDialog.data.statut as keyof typeof statutLabels]}
+                      </Badge>
+                      <Badge variant="outline" className={prioriteColors[responseDialog.data.priorite as keyof typeof prioriteColors]}>
+                        {responseDialog.data.priorite}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
-              </CardHeader>
-              
-              <CardContent className="space-y-6">
+
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Type de demande</h4>
-                  <Badge variant="outline">{typeLabels[selectedMessage.type]}</Badge>
+                  <Badge variant="outline">{typeLabels[responseDialog.data.type as keyof typeof typeLabels]}</Badge>
                 </div>
 
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Sujet</h4>
-                  <p className="text-gray-700">{selectedMessage.sujet}</p>
+                  <p className="text-gray-700">{responseDialog.data.sujet}</p>
                 </div>
 
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Message</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap">{selectedMessage.message}</p>
+                  <p className="text-gray-700 whitespace-pre-wrap">{responseDialog.data.message}</p>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <Calendar className="h-4 w-4" />
-                  <span>Reçu le {selectedMessage.dateReception.toLocaleString('fr-FR')}</span>
+                  <span>Reçu le {responseDialog.data.dateReception.toLocaleString('fr-FR')}</span>
                 </div>
 
-                {selectedMessage.reponse && (
+                {responseDialog.data.reponse && (
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2">Réponse envoyée</h4>
                     <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-gray-700 whitespace-pre-wrap">{selectedMessage.reponse}</p>
+                      <p className="text-gray-700 whitespace-pre-wrap">{responseDialog.data.reponse}</p>
                       <p className="text-sm text-gray-500 mt-2">
-                        Répondu le {selectedMessage.dateReponse?.toLocaleString('fr-FR')}
+                        Répondu le {responseDialog.data.dateReponse?.toLocaleString('fr-FR')}
                       </p>
                     </div>
                   </div>
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center gap-4 pt-4 border-t">
+                <FormActions
+                  onSave={() => handleRepondre(responseDialog.data!)}
+                  onCancel={() => responseDialog.close()}
+                  isLoading={isResponding}
+                  saveLabel="Envoyer la réponse"
+                  cancelLabel="Fermer"
+                >
                   <Select 
-                    value={selectedMessage.statut} 
-                    onValueChange={(value) => handleStatutChange(selectedMessage.id, value as ContactMessage['statut'])}
+                    value={responseDialog.data.statut} 
+                    onValueChange={(value) => handleStatutChange(responseDialog.data!.id, value as ContactMessage['statut'])}
                   >
                     <SelectTrigger className="w-40">
                       <SelectValue />
@@ -350,39 +373,23 @@ export function ContactManagement() {
                     </SelectContent>
                   </Select>
 
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => handleSupprimer(selectedMessage.id)}
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Supprimer
-                  </Button>
-                </div>
+                </FormActions>
 
                 {/* Zone de réponse */}
-                {selectedMessage.statut !== 'traite' && (
+                {responseDialog.data.statut !== 'traite' && (
                   <div className="pt-4 border-t">
-                    <h4 className="font-semibold text-gray-900 mb-2">Répondre au message</h4>
-                    <Textarea
-                      placeholder="Tapez votre réponse..."
-                      value={reponse}
-                      onChange={(e) => setReponse(e.target.value)}
-                      rows={4}
-                      className="mb-3"
-                    />
-                    <Button 
-                      onClick={() => handleRepondre(selectedMessage.id)}
-                      disabled={!reponse.trim()}
-                    >
-                      <Reply className="h-4 w-4 mr-2" />
-                      Envoyer la réponse
-                    </Button>
+                    <FormField label="Répondre au message">
+                      <Textarea
+                        placeholder="Tapez votre réponse..."
+                        value={reponse}
+                        onChange={(e) => setReponse(e.target.value)}
+                        rows={4}
+                      />
+                    </FormField>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </FormSection>
           ) : (
             <Card>
               <CardContent className="p-8 text-center">

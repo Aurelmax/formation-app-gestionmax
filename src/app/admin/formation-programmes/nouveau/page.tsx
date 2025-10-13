@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FormationPersonnaliseeFormRefactored } from '@/components/admin/FormationPersonnaliseeFormRefactored';
+import { FormationPersonnaliseeForm } from '@/components/admin/FormationPersonnaliseeForm';
 import { toast } from 'sonner';
 
 export default function NouvelleFormationPersonnaliseePage() {
@@ -90,7 +90,7 @@ export default function NouvelleFormationPersonnaliseePage() {
         )}
       </div>
       
-        <FormationPersonnaliseeFormRefactored
+        <FormationPersonnaliseeForm
         onSave={handleSave}
         onCancel={handleCancel}
         isLoading={isLoading}
