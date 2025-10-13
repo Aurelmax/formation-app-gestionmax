@@ -1,196 +1,200 @@
-'use client';
+'use client'
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { 
-  ArrowLeft, 
-  Edit, 
-  Trash2, 
-  Clock, 
-  Euro, 
-  Target, 
-  FileText, 
-  User, 
-  Phone, 
-  Mail, 
-  CheckCircle, 
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter, useParams } from 'next/navigation'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  ArrowLeft,
+  Edit,
+  Trash2,
+  Clock,
+  Euro,
+  Target,
+  FileText,
+  User,
+  Phone,
+  Mail,
+  CheckCircle,
   AlertTriangle,
   BookOpen,
   Download,
   Calendar,
-} from 'lucide-react';
-import { toast } from 'sonner';
-import Link from 'next/link';
+} from 'lucide-react'
+import { toast } from 'sonner'
+import Link from 'next/link'
 
 interface FormationPersonnalisee {
-  _id: string;
-  title: string;
-  code_formation: string;
-  statut: string;
-  objectifs?: Record<string, unknown>;
-  programme_detail?: Array<{
-    jour: string;
-    duree: string;
+  _id: string
+  title: string
+  codeFormation: string
+  statut: string
+  objectifs?: Record<string, unknown>
+  programmeDetail?: Array<{
+    jour: string
+    duree: string
     modules: Array<{
-      titre: string;
-      description?: string;
-      duree?: string;
-      contenu?: Record<string, unknown>;
-    }>;
-  }>;
-  modalites_acces?: {
-    prerequis?: string;
-    public_concerne?: string;
-    duree?: string;
-    horaires?: string;
-    delais_mise_en_place?: string;
-    tarif?: number;
-    modalites_reglement?: string;
-  };
-  contact_formateur?: {
-    nom: string;
-    email: string;
-    telephone?: string;
-    role?: string;
-    biographie?: string;
-  };
-  modalites_pedagogiques?: Record<string, unknown>;
-  ressources_dispo?: Array<{
-    ressource: string;
-    description?: string;
-  }>;
-  modalites_evaluation?: {
-    types_evaluation: Array<{
-      type: string;
-      description?: string;
-    }>;
-    plateforme_evaluation?: string;
-    grille_analyse?: string;
-  };
-  sanction_formation?: string;
-  niveau_certification?: string;
+      titre: string
+      description?: string
+      duree?: string
+      contenu?: Record<string, unknown>
+    }>
+  }>
+  modalitesAcces?: {
+    prerequis?: string
+    publicConcerne?: string
+    duree?: string
+    horaires?: string
+    delaisMiseEnPlace?: string
+    tarif?: number
+    modalitesReglement?: string
+  }
+  contactFormateur?: {
+    nom: string
+    email: string
+    telephone?: string
+    role?: string
+    biographie?: string
+  }
+  modalitesPedagogiques?: Record<string, unknown>
+  ressourcesDispo?: Array<{
+    ressource: string
+    description?: string
+  }>
+  modalitesEvaluation?: {
+    typesEvaluation: Array<{
+      type: string
+      description?: string
+    }>
+    plateformeEvaluation?: string
+    grilleAnalyse?: string
+  }
+  sanction_formation?: string
+  niveau_certification?: string
   accessibilite_handicap?: {
-    referent_handicap?: string;
-    contact_referent?: string;
-    adaptations_proposees?: string;
-  };
+    referent_handicap?: string
+    contact_referent?: string
+    adaptations_proposees?: string
+  }
   cessation_abandon?: {
-    conditions_renonciation?: string;
-    facturation_abandon?: string;
-  };
-  createdAt: string;
-  updatedAt: string;
+    conditions_renonciation?: string
+    facturation_abandon?: string
+  }
+  createdAt: string
+  updatedAt: string
 }
 
 export default function FormationPersonnaliseeDetailPage() {
-  const [formation, setFormation] = useState<FormationPersonnalisee | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-  const params = useParams();
-  const formationId = params.id as string;
+  const [formation, setFormation] = useState<FormationPersonnalisee | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+  const params = useParams()
+  const formationId = params.id as string
 
   const loadFormation = useCallback(async () => {
     try {
-      const response = await fetch(`/api/formation-programmes/${formationId}`);
-      const result = await response.json();
-      
+      const response = await fetch(`/api/formation-programmes/${formationId}`)
+      const result = await response.json()
+
       if (result.success) {
-        setFormation(result.data);
+        setFormation(result.data)
       } else {
-        toast.error('Erreur lors du chargement de la formation');
-        router.push('/admin/formation-programmes');
+        toast.error('Erreur lors du chargement de la formation')
+        router.push('/admin/formation-programmes')
       }
     } catch (error) {
-      console.error('Erreur lors du chargement de la formation:', error);
-      toast.error('Erreur lors du chargement de la formation');
-      router.push('/admin/formation-programmes');
+      console.error('Erreur lors du chargement de la formation:', error)
+      toast.error('Erreur lors du chargement de la formation')
+      router.push('/admin/formation-programmes')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [formationId, router]);
+  }, [formationId, router])
 
   useEffect(() => {
     if (formationId) {
-      loadFormation();
+      loadFormation()
     }
-  }, [formationId, loadFormation]);
+  }, [formationId, loadFormation])
 
   const handleDelete = async () => {
-    if (!formation) return;
-    
+    if (!formation) return
+
     if (!confirm(`Êtes-vous sûr de vouloir supprimer la formation "${formation.title}" ?`)) {
-      return;
+      return
     }
 
     try {
       const response = await fetch(`/api/formation-programmes/${formationId}`, {
         method: 'DELETE',
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.error || 'Erreur lors de la suppression');
+        throw new Error(result.error || 'Erreur lors de la suppression')
       }
 
-      toast.success('Formation supprimée avec succès !');
-      router.push('/admin/formation-programmes');
+      toast.success('Formation supprimée avec succès !')
+      router.push('/admin/formation-programmes')
     } catch (error: unknown) {
-      console.error('Erreur lors de la suppression:', error);
-      toast.error((error as Error).message || 'Erreur lors de la suppression de la formation');
+      console.error('Erreur lors de la suppression:', error)
+      toast.error((error as Error).message || 'Erreur lors de la suppression de la formation')
     }
-  };
+  }
 
   const handleDownloadPDF = async () => {
-    if (!formation) return;
+    if (!formation) return
 
     try {
       const response = await fetch(`/api/formation-programmes/${formationId}/pdf`, {
         method: 'GET',
-      });
+      })
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la génération du PDF');
+        throw new Error('Erreur lors de la génération du PDF')
       }
 
       // Créer un blob et télécharger le fichier
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `${formation.title.replace(/[^a-zA-Z0-9]/g, '_')}.html`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = `${formation.title.replace(/[^a-zA-Z0-9]/g, '_')}.html`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
 
-      toast.success('Document téléchargé avec succès !');
+      toast.success('Document téléchargé avec succès !')
     } catch (error: unknown) {
-      console.error('Erreur lors du téléchargement:', error);
-      toast.error(error.message || 'Erreur lors du téléchargement du document');
+      console.error('Erreur lors du téléchargement:', error)
+      toast.error(error.message || 'Erreur lors du téléchargement du document')
     }
-  };
+  }
 
   const formatRichText = (richText: Record<string, unknown>): string => {
     if (!richText || !richText.root || !richText.root.children) {
-      return '';
+      return ''
     }
-    
-    return (richText.root.children as unknown[]).map((child: unknown) => {
-      const childObj = child as { type: string; children?: unknown[] };
-      if (childObj.type === 'p') {
-        return (childObj.children || []).map((textChild: unknown) => {
-          const textObj = textChild as { text?: string };
-          return textObj.text || '';
-        }).join('');
-      }
-      return '';
-    }).join('\n');
-  };
+
+    return (richText.root.children as unknown[])
+      .map((child: unknown) => {
+        const childObj = child as { type: string; children?: unknown[] }
+        if (childObj.type === 'p') {
+          return (childObj.children || [])
+            .map((textChild: unknown) => {
+              const textObj = textChild as { text?: string }
+              return textObj.text || ''
+            })
+            .join('')
+        }
+        return ''
+      })
+      .join('\n')
+  }
 
   if (isLoading) {
     return (
@@ -202,7 +206,7 @@ export default function FormationPersonnaliseeDetailPage() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (!formation) {
@@ -210,13 +214,15 @@ export default function FormationPersonnaliseeDetailPage() {
       <div className="container mx-auto py-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600 mb-4">Formation non trouvée</h1>
-          <p className="text-muted-foreground mb-4">La formation demandée n&apos;existe pas ou a été supprimée.</p>
+          <p className="text-muted-foreground mb-4">
+            La formation demandée n'existe pas ou a été supprimée.
+          </p>
           <Button onClick={() => router.push('/admin/formation-programmes')}>
             Retour à la liste
           </Button>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -230,7 +236,7 @@ export default function FormationPersonnaliseeDetailPage() {
           </Button>
           <div>
             <h1 className="text-3xl font-bold">{formation.title}</h1>
-            <p className="text-muted-foreground">Code: {formation.code_formation}</p>
+            <p className="text-muted-foreground">Code: {formation.codeFormation}</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -270,7 +276,7 @@ export default function FormationPersonnaliseeDetailPage() {
           )}
 
           {/* Programme détaillé */}
-          {formation.programme_detail && formation.programme_detail.length > 0 && (
+          {formation.programmeDetail && formation.programmeDetail.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -279,22 +285,28 @@ export default function FormationPersonnaliseeDetailPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {formation.programme_detail.map((jour, index) => (
+                {formation.programmeDetail.map((jour, index) => (
                   <div key={index} className="border rounded-lg p-4 bg-blue-50">
-                    <h3 className="font-semibold text-blue-900 mb-3">{jour.jour} - {jour.duree}</h3>
-                    {jour.modules && jour.modules.map((module, moduleIndex) => (
-                      <div key={moduleIndex} className="ml-4 mb-3">
-                        <h4 className="font-medium text-blue-800">{module.titre}{module.duree && ` (${module.duree})`}</h4>
-                        {module.description && (
-                          <p className="text-sm text-blue-700 mt-1">{module.description}</p>
-                        )}
-                        {module.contenu && (
-                          <div className="text-sm text-blue-700 mt-2 whitespace-pre-line">
-                            {formatRichText(module.contenu)}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                    <h3 className="font-semibold text-blue-900 mb-3">
+                      {jour.jour} - {jour.duree}
+                    </h3>
+                    {jour.modules &&
+                      jour.modules.map((module, moduleIndex) => (
+                        <div key={moduleIndex} className="ml-4 mb-3">
+                          <h4 className="font-medium text-blue-800">
+                            {module.titre}
+                            {module.duree && ` (${module.duree})`}
+                          </h4>
+                          {module.description && (
+                            <p className="text-sm text-blue-700 mt-1">{module.description}</p>
+                          )}
+                          {module.contenu && (
+                            <div className="text-sm text-blue-700 mt-2 whitespace-pre-line">
+                              {formatRichText(module.contenu)}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                   </div>
                 ))}
               </CardContent>
@@ -302,7 +314,7 @@ export default function FormationPersonnaliseeDetailPage() {
           )}
 
           {/* Modalités pédagogiques */}
-          {formation.modalites_pedagogiques && (
+          {formation.modalitesPedagogiques && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -311,13 +323,15 @@ export default function FormationPersonnaliseeDetailPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="whitespace-pre-line">{formatRichText(formation.modalites_pedagogiques)}</p>
+                <p className="whitespace-pre-line">
+                  {formatRichText(formation.modalitesPedagogiques)}
+                </p>
               </CardContent>
             </Card>
           )}
 
           {/* Ressources */}
-          {formation.ressources_dispo && formation.ressources_dispo.length > 0 && (
+          {formation.ressourcesDispo && formation.ressourcesDispo.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -327,7 +341,7 @@ export default function FormationPersonnaliseeDetailPage() {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {formation.ressources_dispo.map((ressource, index) => (
+                  {formation.ressourcesDispo.map((ressource, index) => (
                     <li key={index} className="flex items-start gap-2">
                       <span className="text-blue-600 mt-1">•</span>
                       <div>
@@ -344,43 +358,53 @@ export default function FormationPersonnaliseeDetailPage() {
           )}
 
           {/* Évaluation */}
-          {formation.modalites_evaluation && (
+          {formation.modalitesEvaluation && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5" />
-                  Modalités d&apos;évaluation
+                  Modalités d'évaluation
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {formation.modalites_evaluation.types_evaluation && formation.modalites_evaluation.types_evaluation.length > 0 && (
+                {formation.modalitesEvaluation.typesEvaluation &&
+                  formation.modalitesEvaluation.typesEvaluation.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">Types d'évaluation</h4>
+                      <ul className="space-y-1">
+                        {formation.modalitesEvaluation.typesEvaluation.map(
+                          (evaluation, index) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <span className="text-blue-600 mt-1">•</span>
+                              <div>
+                                <span className="font-medium">{evaluation.type}</span>
+                                {evaluation.description && (
+                                  <span className="text-muted-foreground">
+                                    {' '}
+                                    - {evaluation.description}
+                                  </span>
+                                )}
+                              </div>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                {formation.modalitesEvaluation.plateformeEvaluation && (
                   <div>
-                    <h4 className="font-semibold mb-2">Types d&apos;évaluation</h4>
-                    <ul className="space-y-1">
-                      {formation.modalites_evaluation.types_evaluation.map((evaluation, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <span className="text-blue-600 mt-1">•</span>
-                          <div>
-                            <span className="font-medium">{evaluation.type}</span>
-                            {evaluation.description && (
-                              <span className="text-muted-foreground"> - {evaluation.description}</span>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    <h4 className="font-semibold mb-1">Plateforme d'évaluation</h4>
+                    <p className="text-muted-foreground">
+                      {formation.modalitesEvaluation.plateformeEvaluation}
+                    </p>
                   </div>
                 )}
-                {formation.modalites_evaluation.plateforme_evaluation && (
+                {formation.modalitesEvaluation.grilleAnalyse && (
                   <div>
-                    <h4 className="font-semibold mb-1">Plateforme d&apos;évaluation</h4>
-                    <p className="text-muted-foreground">{formation.modalites_evaluation.plateforme_evaluation}</p>
-                  </div>
-                )}
-                {formation.modalites_evaluation.grille_analyse && (
-                  <div>
-                    <h4 className="font-semibold mb-1">Grille d&apos;analyse</h4>
-                    <p className="text-muted-foreground">{formation.modalites_evaluation.grille_analyse}</p>
+                    <h4 className="font-semibold mb-1">Grille d'analyse</h4>
+                    <p className="text-muted-foreground">
+                      {formation.modalitesEvaluation.grilleAnalyse}
+                    </p>
                   </div>
                 )}
               </CardContent>
@@ -401,24 +425,38 @@ export default function FormationPersonnaliseeDetailPage() {
                   <div>
                     <h4 className="font-semibold mb-2">Accessibilité handicap</h4>
                     {formation.accessibilite_handicap.referent_handicap && (
-                      <p><strong>Référent:</strong> {formation.accessibilite_handicap.referent_handicap}</p>
+                      <p>
+                        <strong>Référent:</strong>{' '}
+                        {formation.accessibilite_handicap.referent_handicap}
+                      </p>
                     )}
                     {formation.accessibilite_handicap.contact_referent && (
-                      <p><strong>Contact:</strong> {formation.accessibilite_handicap.contact_referent}</p>
+                      <p>
+                        <strong>Contact:</strong>{' '}
+                        {formation.accessibilite_handicap.contact_referent}
+                      </p>
                     )}
                     {formation.accessibilite_handicap.adaptations_proposees && (
-                      <p className="whitespace-pre-line">{formation.accessibilite_handicap.adaptations_proposees}</p>
+                      <p className="whitespace-pre-line">
+                        {formation.accessibilite_handicap.adaptations_proposees}
+                      </p>
                     )}
                   </div>
                 )}
                 {formation.cessation_abandon && (
                   <div>
-                    <h4 className="font-semibold mb-2">Conditions d&apos;abandon</h4>
+                    <h4 className="font-semibold mb-2">Conditions d'abandon</h4>
                     {formation.cessation_abandon.conditions_renonciation && (
-                      <p><strong>Conditions de renonciation:</strong> {formation.cessation_abandon.conditions_renonciation}</p>
+                      <p>
+                        <strong>Conditions de renonciation:</strong>{' '}
+                        {formation.cessation_abandon.conditions_renonciation}
+                      </p>
                     )}
                     {formation.cessation_abandon.facturation_abandon && (
-                      <p><strong>Facturation:</strong> {formation.cessation_abandon.facturation_abandon}</p>
+                      <p>
+                        <strong>Facturation:</strong>{' '}
+                        {formation.cessation_abandon.facturation_abandon}
+                      </p>
                     )}
                   </div>
                 )}
@@ -437,37 +475,46 @@ export default function FormationPersonnaliseeDetailPage() {
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Statut</span>
-                <Badge variant={
-                  formation.statut === 'FINALISEE' ? 'default' :
-                  formation.statut === 'LIVREE' ? 'outline' :
-                  formation.statut === 'ARCHIVE' ? 'destructive' :
-                  'secondary'
-                }>
-                  {formation.statut === 'EN_COURS' ? 'En cours' :
-                   formation.statut === 'FINALISEE' ? 'Finalisée' :
-                   formation.statut === 'LIVREE' ? 'Livrée' :
-                   formation.statut === 'ARCHIVE' ? 'Archivée' :
-                   formation.statut}
+                <Badge
+                  variant={
+                    formation.statut === 'FINALISEE'
+                      ? 'default'
+                      : formation.statut === 'LIVREE'
+                        ? 'outline'
+                        : formation.statut === 'ARCHIVE'
+                          ? 'destructive'
+                          : 'secondary'
+                  }
+                >
+                  {formation.statut === 'EN_COURS'
+                    ? 'En cours'
+                    : formation.statut === 'FINALISEE'
+                      ? 'Finalisée'
+                      : formation.statut === 'LIVREE'
+                        ? 'Livrée'
+                        : formation.statut === 'ARCHIVE'
+                          ? 'Archivée'
+                          : formation.statut}
                 </Badge>
               </div>
-              
-              {formation.modalites_acces?.duree && (
+
+              {formation.modalitesAcces?.duree && (
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium flex items-center gap-2">
                     <Clock className="h-4 w-4" />
                     Durée
                   </span>
-                  <span className="font-semibold">{formation.modalites_acces.duree}</span>
+                  <span className="font-semibold">{formation.modalitesAcces.duree}</span>
                 </div>
               )}
-              
-              {formation.modalites_acces?.tarif && (
+
+              {formation.modalitesAcces?.tarif && (
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium flex items-center gap-2">
                     <Euro className="h-4 w-4" />
                     Tarif
                   </span>
-                  <span className="font-semibold">{formation.modalites_acces.tarif}€</span>
+                  <span className="font-semibold">{formation.modalitesAcces.tarif}€</span>
                 </div>
               )}
             </CardContent>
@@ -479,31 +526,37 @@ export default function FormationPersonnaliseeDetailPage() {
               <CardTitle>Informations pratiques</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {formation.modalites_acces?.horaires && (
+              {formation.modalitesAcces?.horaires && (
                 <div>
                   <h4 className="font-semibold mb-1">Horaires</h4>
-                  <p className="text-sm text-muted-foreground">{formation.modalites_acces.horaires}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {formation.modalitesAcces.horaires}
+                  </p>
                 </div>
               )}
-              
-              {formation.modalites_acces?.delais_mise_en_place && (
+
+              {formation.modalitesAcces?.delaisMiseEnPlace && (
                 <div>
                   <h4 className="font-semibold mb-1">Délais de mise en place</h4>
-                  <p className="text-sm text-muted-foreground">{formation.modalites_acces.delais_mise_en_place}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {formation.modalitesAcces.delaisMiseEnPlace}
+                  </p>
                 </div>
               )}
-              
-              {formation.modalites_acces?.modalites_reglement && (
+
+              {formation.modalitesAcces?.modalitesReglement && (
                 <div>
                   <h4 className="font-semibold mb-1">Modalités de règlement</h4>
-                  <p className="text-sm text-muted-foreground">{formation.modalites_acces.modalites_reglement}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {formation.modalitesAcces.modalitesReglement}
+                  </p>
                 </div>
               )}
             </CardContent>
           </Card>
 
           {/* Contact formateur */}
-          {formation.contact_formateur && (
+          {formation.contactFormateur && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -513,34 +566,44 @@ export default function FormationPersonnaliseeDetailPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
-                  <h4 className="font-semibold">{formation.contact_formateur.nom}</h4>
-                  {formation.contact_formateur.role && (
-                    <p className="text-sm text-muted-foreground">{formation.contact_formateur.role}</p>
+                  <h4 className="font-semibold">{formation.contactFormateur.nom}</h4>
+                  {formation.contactFormateur.role && (
+                    <p className="text-sm text-muted-foreground">
+                      {formation.contactFormateur.role}
+                    </p>
                   )}
                 </div>
-                
-                {formation.contact_formateur.email && (
+
+                {formation.contactFormateur.email && (
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <a href={`mailto:${formation.contact_formateur.email}`} className="text-sm text-blue-600 hover:underline">
-                      {formation.contact_formateur.email}
+                    <a
+                      href={`mailto:${formation.contactFormateur.email}`}
+                      className="text-sm text-blue-600 hover:underline"
+                    >
+                      {formation.contactFormateur.email}
                     </a>
                   </div>
                 )}
-                
-                {formation.contact_formateur.telephone && (
+
+                {formation.contactFormateur.telephone && (
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4 text-muted-foreground" />
-                    <a href={`tel:${formation.contact_formateur.telephone}`} className="text-sm text-blue-600 hover:underline">
-                      {formation.contact_formateur.telephone}
+                    <a
+                      href={`tel:${formation.contactFormateur.telephone}`}
+                      className="text-sm text-blue-600 hover:underline"
+                    >
+                      {formation.contactFormateur.telephone}
                     </a>
                   </div>
                 )}
-                
-                {formation.contact_formateur.biographie && (
+
+                {formation.contactFormateur.biographie && (
                   <div>
                     <h4 className="font-semibold mb-1">Biographie</h4>
-                    <p className="text-sm text-muted-foreground whitespace-pre-line">{formation.contact_formateur.biographie}</p>
+                    <p className="text-sm text-muted-foreground whitespace-pre-line">
+                      {formation.contactFormateur.biographie}
+                    </p>
                   </div>
                 )}
               </CardContent>
@@ -566,7 +629,9 @@ export default function FormationPersonnaliseeDetailPage() {
                 {formation.niveau_certification && (
                   <div>
                     <h4 className="font-semibold mb-1">Niveau</h4>
-                    <p className="text-sm text-muted-foreground">{formation.niveau_certification}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {formation.niveau_certification}
+                    </p>
                   </div>
                 )}
               </CardContent>
@@ -575,5 +640,5 @@ export default function FormationPersonnaliseeDetailPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

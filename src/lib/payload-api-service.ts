@@ -67,7 +67,7 @@ class PayloadApiService {
               collection,
               id,
               depth,
-              locale
+              locale,
             })
           } else {
             // Récupérer une liste de documents
@@ -78,7 +78,7 @@ class PayloadApiService {
               page,
               sort,
               depth,
-              locale
+              locale,
             })
           }
 
@@ -88,7 +88,7 @@ class PayloadApiService {
             collection,
             data,
             depth,
-            locale
+            locale,
           })
 
         case 'PUT':
@@ -101,7 +101,7 @@ class PayloadApiService {
             id,
             data,
             depth,
-            locale
+            locale,
           })
 
         case 'DELETE':
@@ -112,7 +112,7 @@ class PayloadApiService {
           return await payload.delete({
             collection,
             id,
-            locale
+            locale,
           })
 
         default:
@@ -141,7 +141,7 @@ class PayloadApiService {
     return this.request<PayloadApiResponse<T>>({
       collection,
       method: 'GET',
-      ...options
+      ...options,
     })
   }
 
@@ -160,7 +160,7 @@ class PayloadApiService {
       collection,
       method: 'GET',
       id,
-      ...options
+      ...options,
     })
   }
 
@@ -179,7 +179,7 @@ class PayloadApiService {
       collection,
       method: 'POST',
       data,
-      ...options
+      ...options,
     })
   }
 
@@ -200,7 +200,7 @@ class PayloadApiService {
       method: 'PUT',
       id,
       data,
-      ...options
+      ...options,
     })
   }
 
@@ -218,7 +218,7 @@ class PayloadApiService {
       collection,
       method: 'DELETE',
       id,
-      ...options
+      ...options,
     })
   }
 
@@ -236,7 +236,7 @@ class PayloadApiService {
     return await payload.count({
       collection,
       where,
-      ...options
+      ...options,
     })
   }
 
@@ -256,19 +256,19 @@ class PayloadApiService {
     } = {}
   ): Promise<PayloadApiResponse<T>> {
     const { fields = [], ...otherOptions } = options
-    
+
     // Construire la requête de recherche
     const where: any = {
       or: fields.map(field => ({
         [field]: {
-          contains: query
-        }
-      }))
+          contains: query,
+        },
+      })),
     }
 
     return this.findAll<T>(collection, {
       where,
-      ...otherOptions
+      ...otherOptions,
     })
   }
 }

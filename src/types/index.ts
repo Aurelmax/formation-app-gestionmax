@@ -3,14 +3,14 @@
  */
 
 // Types communs
-export * from './common';
+export * from './common'
 // Types utilisateurs et permissions
-export * from './users';
+export * from './users'
 // Types utilitaires
-export * from './utils';
+export * from './utils'
 // Types API
-export * from './api';
+export * from './api'
 // Types blog
-export * from './blog';
+export * from './blog'
 // Types rendez-vous
-export * from './rendez-vous';
+export * from './rendez-vous'

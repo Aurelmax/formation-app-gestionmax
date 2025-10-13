@@ -8,13 +8,13 @@ const testUnifiedService = async () => {
   console.log('🧪 Test du service unifié...')
   console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
-  
+
   try {
     // Test 1: Programmes
     console.log('\n📚 Test des programmes...')
     const programmes = await UnifiedService.getProgrammes()
     console.log(`   ✅ ${programmes.length} programmes récupérés`)
-    
+
     if (programmes.length > 0) {
       const programme = programmes[0]
       console.log(`   📋 Premier programme: ${programme.titre}`)
@@ -26,7 +26,7 @@ const testUnifiedService = async () => {
     console.log('\n👥 Test des apprenants...')
     const apprenants = await UnifiedService.getApprenants()
     console.log(`   ✅ ${apprenants.length} apprenants récupérés`)
-    
+
     if (apprenants.length > 0) {
       const apprenant = apprenants[0]
       console.log(`   📋 Premier apprenant: ${apprenant.nom} ${apprenant.prenom}`)
@@ -38,7 +38,7 @@ const testUnifiedService = async () => {
     console.log('\n👤 Test des utilisateurs...')
     const users = await UnifiedService.getUsers()
     console.log(`   ✅ ${users.length} utilisateurs récupérés`)
-    
+
     if (users.length > 0) {
       const user = users[0]
       console.log(`   📋 Premier utilisateur: ${user.name}`)
@@ -47,7 +47,7 @@ const testUnifiedService = async () => {
     }
 
     // Test 4: Utilisateur actuel
-    console.log('\n👤 Test de l\'utilisateur actuel...')
+    console.log("\n👤 Test de l'utilisateur actuel...")
     const currentUser = await UnifiedService.getCurrentUser()
     console.log(`   ✅ Utilisateur actuel: ${currentUser.name} (${currentUser.role})`)
 
@@ -72,7 +72,6 @@ const testUnifiedService = async () => {
     console.log(`     - Articles: ${stats.articles}`)
 
     console.log('\n🎉 Tests terminés avec succès!')
-    
   } catch (error) {
     console.error('❌ Erreur lors des tests:', error)
   }
@@ -84,7 +83,7 @@ testUnifiedService()
     console.log('\n✅ Tests terminés avec succès!')
     process.exit(0)
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('\n❌ Erreur fatale lors des tests:', error)
     process.exit(1)
   })

@@ -21,9 +21,9 @@ export class ApprenantService {
     try {
       const response = await payloadApi.findAll('apprenants', {
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToApprenant)
     } catch (error) {
       console.error('Erreur lors de la récupération des apprenants:', error)
@@ -52,13 +52,13 @@ export class ApprenantService {
       const response = await payloadApi.findAll('apprenants', {
         where: {
           email: {
-            equals: email
-          }
+            equals: email,
+          },
         },
         limit: 1,
-        depth: 1
+        depth: 1,
       })
-      
+
       if (response.docs.length > 0) {
         return this.transformPayloadToApprenant(response.docs[0])
       }
@@ -78,7 +78,7 @@ export class ApprenantService {
       const apprenant = await payloadApi.create('apprenants', payloadData, { depth: 1 })
       return this.transformPayloadToApprenant(apprenant)
     } catch (error) {
-      console.error('Erreur lors de la création de l\'apprenant:', error)
+      console.error("Erreur lors de la création de l'apprenant:", error)
       throw error
     }
   }
@@ -117,12 +117,12 @@ export class ApprenantService {
       const response = await payloadApi.search('apprenants', query, {
         fields: ['nom', 'prenom', 'email'],
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToApprenant)
     } catch (error) {
-      console.error('Erreur lors de la recherche d\'apprenants:', error)
+      console.error("Erreur lors de la recherche d'apprenants:", error)
       throw error
     }
   }
@@ -135,13 +135,13 @@ export class ApprenantService {
       const response = await payloadApi.findAll('apprenants', {
         where: {
           statut: {
-            equals: statut
-          }
+            equals: statut,
+          },
         },
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToApprenant)
     } catch (error) {
       console.error(`Erreur lors de la récupération des apprenants ${statut}:`, error)
@@ -175,12 +175,15 @@ export class ApprenantService {
         actifs: apprenants.filter((a: any) => a.statut === 'ACTIF').length,
         inactifs: apprenants.filter((a: any) => a.statut === 'INACTIF').length,
         termines: apprenants.filter((a: any) => a.statut === 'TERMINE').length,
-        progressionMoyenne: 0
+        progressionMoyenne: 0,
       }
 
       // Calculer la progression moyenne
       if (apprenants.length > 0) {
-        const totalProgression = apprenants.reduce((sum: number, a: any) => sum + (a.progression || 0), 0)
+        const totalProgression = apprenants.reduce(
+          (sum: number, a: any) => sum + (a.progression || 0),
+          0
+        )
         stats.progressionMoyenne = Math.round(totalProgression / apprenants.length)
       }
 
@@ -208,7 +211,7 @@ export class ApprenantService {
       progression: payloadData.progression || 0,
       avatar: payloadData.avatar,
       createdAt: payloadData.createdAt,
-      updatedAt: payloadData.updatedAt
+      updatedAt: payloadData.updatedAt,
     }
   }
 
@@ -226,7 +229,7 @@ export class ApprenantService {
       statut: apprenantData.statut || 'ACTIF',
       programmes: apprenantData.programmes || [],
       progression: apprenantData.progression || 0,
-      avatar: apprenantData.avatar
+      avatar: apprenantData.avatar,
     }
   }
 }

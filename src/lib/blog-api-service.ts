@@ -3,7 +3,15 @@
  */
 
 import { payloadApi } from './payload-api-service'
-import type { Article, Categorie, Tag, CreateArticleRequest, UpdateArticleRequest, ArticleFilters, ArticleStats } from '@/types/blog'
+import type {
+  Article,
+  Categorie,
+  Tag,
+  CreateArticleRequest,
+  UpdateArticleRequest,
+  ArticleFilters,
+  ArticleStats,
+} from '@/types/blog'
 
 export class BlogApiService {
   /**
@@ -12,7 +20,7 @@ export class BlogApiService {
   static async getArticles(filters?: ArticleFilters): Promise<Article[]> {
     try {
       const where: any = {}
-      
+
       if (filters) {
         if (filters.statut) {
           where.statut = { equals: filters.statut }
@@ -31,15 +39,15 @@ export class BlogApiService {
         }
         if (filters.dateDebut && filters.dateFin) {
           where.datePublication = {
-            greater_than_equal: filters.dateDebut,
-            less_than_equal: filters.dateFin
+            greaterThanEqual: filters.dateDebut,
+            lessThanEqual: filters.dateFin,
           }
         }
         if (filters.recherche) {
           where.or = [
             { titre: { contains: filters.recherche } },
             { resume: { contains: filters.recherche } },
-            { contenu: { contains: filters.recherche } }
+            { contenu: { contains: filters.recherche } },
           ]
         }
       }
@@ -47,9 +55,9 @@ export class BlogApiService {
       const response = await payloadApi.findAll('articles', {
         where,
         sort: '-datePublication',
-        depth: 2
+        depth: 2,
       })
-      
+
       return response.docs.map(this.transformPayloadToArticle)
     } catch (error) {
       console.error('Erreur lors de la récupération des articles:', error)
@@ -78,13 +86,13 @@ export class BlogApiService {
       const response = await payloadApi.findAll('articles', {
         where: {
           slug: {
-            equals: slug
-          }
+            equals: slug,
+          },
         },
         limit: 1,
-        depth: 2
+        depth: 2,
       })
-      
+
       if (response.docs.length > 0) {
         return this.transformPayloadToArticle(response.docs[0])
       }
@@ -104,7 +112,7 @@ export class BlogApiService {
       const article = await payloadApi.create('articles', payloadData, { depth: 2 })
       return this.transformPayloadToArticle(article)
     } catch (error) {
-      console.error('Erreur lors de la création de l\'article:', error)
+      console.error("Erreur lors de la création de l'article:", error)
       throw error
     }
   }
@@ -145,9 +153,14 @@ export class BlogApiService {
         throw new Error('Article non trouvé')
       }
 
-      const updatedArticle = await payloadApi.update('articles', id, {
-        vue: (article.vue || 0) + 1
-      }, { depth: 2 })
+      const updatedArticle = await payloadApi.update(
+        'articles',
+        id,
+        {
+          vue: (article.vue || 0) + 1,
+        },
+        { depth: 2 }
+      )
 
       return this.transformPayloadToArticle(updatedArticle)
     } catch (error) {
@@ -163,12 +176,12 @@ export class BlogApiService {
     try {
       const response = await payloadApi.findAll('articles', {
         where: {
-          statut: { equals: 'publie' }
+          statut: { equals: 'publie' },
         },
         sort: '-datePublication',
-        depth: 2
+        depth: 2,
       })
-      
+
       return response.docs.map(this.transformPayloadToArticle)
     } catch (error) {
       console.error('Erreur lors de la récupération des articles publiés:', error)
@@ -184,12 +197,12 @@ export class BlogApiService {
       const response = await payloadApi.findAll('articles', {
         where: {
           featured: { equals: true },
-          statut: { equals: 'publie' }
+          statut: { equals: 'publie' },
         },
         sort: '-datePublication',
-        depth: 2
+        depth: 2,
       })
-      
+
       return response.docs.map(this.transformPayloadToArticle)
     } catch (error) {
       console.error('Erreur lors de la récupération des articles en vedette:', error)
@@ -204,9 +217,9 @@ export class BlogApiService {
     try {
       const response = await payloadApi.findAll('categories', {
         sort: 'nom',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToCategorie)
     } catch (error) {
       console.error('Erreur lors de la récupération des catégories:', error)
@@ -221,12 +234,12 @@ export class BlogApiService {
     try {
       const response = await payloadApi.findAll('categories', {
         where: {
-          slug: { equals: slug }
+          slug: { equals: slug },
         },
         limit: 1,
-        depth: 1
+        depth: 1,
       })
-      
+
       if (response.docs.length > 0) {
         return this.transformPayloadToCategorie(response.docs[0])
       }
@@ -244,9 +257,9 @@ export class BlogApiService {
     try {
       const response = await payloadApi.findAll('tags', {
         sort: 'nom',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToTag)
     } catch (error) {
       console.error('Erreur lors de la récupération des tags:', error)
@@ -261,12 +274,12 @@ export class BlogApiService {
     try {
       const response = await payloadApi.findAll('tags', {
         where: {
-          slug: { equals: slug }
+          slug: { equals: slug },
         },
         limit: 1,
-        depth: 1
+        depth: 1,
       })
-      
+
       if (response.docs.length > 0) {
         return this.transformPayloadToTag(response.docs[0])
       }
@@ -293,7 +306,7 @@ export class BlogApiService {
         vuesTotal: articles.reduce((sum: number, a: any) => sum + (a.vue || 0), 0),
         articlesPopulaires: [],
         categoriesPopulaires: [],
-        auteursActifs: []
+        auteursActifs: [],
       }
 
       // Articles populaires (top 5 par vues)
@@ -362,7 +375,7 @@ export class BlogApiService {
       tempsLecture: payloadData.tempsLecture,
       featured: payloadData.featured || false,
       createdAt: payloadData.createdAt,
-      updatedAt: payloadData.updatedAt
+      updatedAt: payloadData.updatedAt,
     }
   }
 
@@ -386,7 +399,7 @@ export class BlogApiService {
       metaKeywords: articleData.metaKeywords,
       vue: articleData.vue,
       tempsLecture: articleData.tempsLecture,
-      featured: articleData.featured
+      featured: articleData.featured,
     }
   }
 
@@ -402,7 +415,7 @@ export class BlogApiService {
       couleur: payloadData.couleur,
       icone: payloadData.icone,
       createdAt: payloadData.createdAt,
-      updatedAt: payloadData.updatedAt
+      updatedAt: payloadData.updatedAt,
     }
   }
 
@@ -416,7 +429,7 @@ export class BlogApiService {
       slug: payloadData.slug,
       couleur: payloadData.couleur,
       createdAt: payloadData.createdAt,
-      updatedAt: payloadData.updatedAt
+      updatedAt: payloadData.updatedAt,
     }
   }
 }

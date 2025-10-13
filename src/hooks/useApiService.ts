@@ -14,13 +14,13 @@ export interface UseApiServiceReturn {
   UserService: typeof UserService
   RendezVousService: typeof RendezVousService
   BlogService: typeof BlogService
-  
+
   // Service actuel (toujours mock côté client)
   currentService: typeof MockService
   currentUserService: typeof UserService
   currentRendezVousService: typeof RendezVousService
   currentBlogService: typeof BlogService
-  
+
   // État du mode
   isMockMode: boolean
   isApiMode: boolean
@@ -33,23 +33,26 @@ export function useApiService(): UseApiServiceReturn {
   const isApiMode = false
 
   // Retourner les services appropriés
-  return useMemo(() => ({
-    // Services disponibles
-    MockService,
-    UserService,
-    RendezVousService,
-    BlogService,
-    
-    // Services actuellement utilisés (toujours mock côté client)
-    currentService: MockService,
-    currentUserService: UserService,
-    currentRendezVousService: RendezVousService,
-    currentBlogService: BlogService,
-    
-    // État du mode
-    isMockMode,
-    isApiMode
-  }), [])
+  return useMemo(
+    () => ({
+      // Services disponibles
+      MockService,
+      UserService,
+      RendezVousService,
+      BlogService,
+
+      // Services actuellement utilisés (toujours mock côté client)
+      currentService: MockService,
+      currentUserService: UserService,
+      currentRendezVousService: RendezVousService,
+      currentBlogService: BlogService,
+
+      // État du mode
+      isMockMode,
+      isApiMode,
+    }),
+    []
+  )
 }
 
 // Hook simplifié pour obtenir le service principal

@@ -1,46 +1,48 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { FormationCard } from '@/components/shared/FormationCard';
-import { ModernFAQ } from '@/components/shared/ModernFAQ';
-import { 
-  ArrowRight, 
-  BookOpen, 
-  Users, 
-  Award, 
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+import { FormationCard } from '@/components/shared/FormationCard'
+import { ModernFAQ } from '@/components/shared/ModernFAQ'
+import {
+  ArrowRight,
+  BookOpen,
+  Users,
+  Award,
   TrendingUp,
   Search,
   Filter,
   CheckCircle,
   User,
-  Target
-} from 'lucide-react';
+  Target,
+} from 'lucide-react'
 
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [formations, setFormations] = useState<Array<{
-    id: string;
-    titre: string;
-    description: string;
-    duree: number;
-    niveau: string;
-    modalites: string;
-    prix: number;
-    competences: string[];
-  }>>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [formations, setFormations] = useState<
+    Array<{
+      id: string
+      titre: string
+      description: string
+      duree: number
+      niveau: string
+      modalites: string
+      prix: number
+      competences: string[]
+    }>
+  >([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const loadFormations = async () => {
       try {
-        const response = await fetch('/api/programmes');
-        const result = await response.json();
+        const response = await fetch('/api/programmes')
+        const result = await response.json()
         if (result.success) {
           // Transformer les données MongoDB pour correspondre à l'interface attendue
           const transformedData = result.data.map((programme: Record<string, unknown>) => ({
@@ -52,22 +54,24 @@ export default function HomePage() {
             niveau: programme.niveau,
             modalites: programme.modalites,
             prix: programme.prix,
-            competences: (programme.competences as unknown[] || []).map((comp: unknown) => 
-              typeof comp === 'string' ? comp : (comp as { competence: string }).competence
-            ).filter((comp: string, index: number, arr: string[]) => 
-              arr.indexOf(comp) === index // Supprimer les doublons
-            )
-          }));
-          setFormations(transformedData);
+            competences: ((programme.competences as unknown[]) || [])
+              .map((comp: unknown) =>
+                typeof comp === 'string' ? comp : (comp as { competence: string }).competence
+              )
+              .filter(
+                (comp: string, index: number, arr: string[]) => arr.indexOf(comp) === index // Supprimer les doublons
+              ),
+          }))
+          setFormations(transformedData)
         }
       } catch (error) {
-        console.error('Erreur lors du chargement des formations:', error);
+        console.error('Erreur lors du chargement des formations:', error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
-    loadFormations();
-  }, []);
+    }
+    loadFormations()
+  }, [])
 
   // Stats pour le formateur (utilisées dans la section "Votre formateur certifié")
   const formateurStats = [
@@ -75,29 +79,32 @@ export default function HomePage() {
     { label: 'Formations', value: '50+', icon: BookOpen },
     { label: 'Taux de réussite', value: '95%', icon: TrendingUp },
     { label: 'Certifié Qualiopi', value: '2024', icon: Award },
-  ];
+  ]
 
   // Filtrage des formations
-  const filteredFormations = formations.filter((formation) => {
-    const matchesSearch = formation.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         formation.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         formation.competences.some((comp: string) => comp.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    return matchesSearch;
-  });
+  const filteredFormations = formations.filter(formation => {
+    const matchesSearch =
+      formation.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      formation.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      formation.competences.some((comp: string) =>
+        comp.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+
+    return matchesSearch
+  })
 
   const categories = [
     { id: 'all', label: 'Toutes les formations' },
     { id: 'developpement', label: 'Développement' },
     { id: 'design', label: 'Design' },
     { id: 'data', label: 'Data Science' },
-    { id: 'marketing', label: 'Marketing' }
-  ];
+    { id: 'marketing', label: 'Marketing' },
+  ]
 
   return (
     <PublicLayout>
-            {/* Hero Section */}
-            <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         <Image
           src="/formation-wordpress-antibes.webp"
           alt="Formation WordPress Antibes"
@@ -105,20 +112,30 @@ export default function HomePage() {
           className="object-cover"
           priority
         />
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-bold mb-6">Formations WordPress Professionnelles</h1>
           <p className="text-xl text-gray-100 max-w-4xl mx-auto mb-8">
-            Développez vos compétences WordPress avec un formateur certifié. Formations éligibles FAF & OPCO et conformes Qualiopi.
+            Développez vos compétences WordPress avec un formateur certifié. Formations éligibles
+            FAF & OPCO et conformes Qualiopi.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-brand-primary hover:bg-brand-secondary text-white" asChild>
+            <Button
+              size="lg"
+              className="bg-brand-primary hover:bg-brand-secondary text-white"
+              asChild
+            >
               <Link href="/catalogue">
                 Découvrir nos formations
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-                  <Button size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-brand-primary" asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="bg-transparent text-white border-white hover:bg-white hover:text-brand-primary"
+              asChild
+            >
               <Link href="/contact">Demander un devis</Link>
             </Button>
           </div>
@@ -132,13 +149,14 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Votre formateur certifié</h2>
               <p className="text-lg text-gray-600 mb-6">
-                Formateur indépendant certifié Qualiopi avec plus de 8 ans d&apos;expérience dans l&apos;enseignement WordPress. 
-                Passionné par la transmission de connaissances et l&apos;accompagnement personnalisé de chaque apprenant.
+                Formateur indépendant certifié Qualiopi avec plus de 8 ans d'expérience dans
+                l'enseignement WordPress. Passionné par la transmission de connaissances et
+                l'accompagnement personnalisé de chaque apprenant.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 {formateurStats.map((stat, index) => (
                   <div key={index} className="text-center">
-                        <div className="text-3xl font-bold text-brand-primary mb-2">{stat.value}</div>
+                    <div className="text-3xl font-bold text-brand-primary mb-2">{stat.value}</div>
                     <div className="text-sm text-gray-600">{stat.label}</div>
                   </div>
                 ))}
@@ -158,7 +176,9 @@ export default function HomePage() {
                     <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-white/30">
                       <User className="h-12 w-12 text-white" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Formateur WordPress à Antibes</h3>
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      Formateur WordPress à Antibes
+                    </h3>
                     <p className="text-white/90 text-sm mb-1">Aurélien LAVAYSSIERE</p>
                     <p className="text-white/90 text-sm">Certifié Qualiopi</p>
                   </div>
@@ -174,7 +194,9 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Notre Catalogue de Formations</h2>
-            <p className="text-lg text-gray-600">Découvrez nos programmes de formation WordPress adaptés à tous les niveaux</p>
+            <p className="text-lg text-gray-600">
+              Découvrez nos programmes de formation WordPress adaptés à tous les niveaux
+            </p>
           </div>
 
           {/* Barre de recherche et filtres */}
@@ -185,7 +207,7 @@ export default function HomePage() {
                 <Input
                   placeholder="Rechercher une formation..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -199,10 +221,10 @@ export default function HomePage() {
 
             {/* Catégories */}
             <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
+              {categories.map(category => (
                 <Button
                   key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  variant={selectedCategory === category.id ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setSelectedCategory(category.id)}
                 >
@@ -222,12 +244,8 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredFormations.slice(0, 6).map((formation) => (
-                <FormationCard 
-                  key={formation.id} 
-                  programme={formation}
-                  showDetails={true}
-                />
+              {filteredFormations.slice(0, 6).map(formation => (
+                <FormationCard key={formation.id} programme={formation} showDetails={true} />
               ))}
             </div>
           )}
@@ -254,28 +272,36 @@ export default function HomePage() {
                 <User className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Positionnement</h3>
-              <p className="text-sm text-gray-600">Évaluation de votre niveau et définition de vos objectifs</p>
+              <p className="text-sm text-gray-600">
+                Évaluation de votre niveau et définition de vos objectifs
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Target className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Planification</h3>
-              <p className="text-sm text-gray-600">Création d&apos;un parcours personnalisé adapté à votre rythme</p>
+              <p className="text-sm text-gray-600">
+                Création d'un parcours personnalisé adapté à votre rythme
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <BookOpen className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Formation</h3>
-              <p className="text-sm text-gray-600">Apprentissage progressif avec accompagnement individuel</p>
+              <p className="text-sm text-gray-600">
+                Apprentissage progressif avec accompagnement individuel
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Certification</h3>
-              <p className="text-sm text-gray-600">Validation des acquis et obtention de votre certification</p>
+              <p className="text-sm text-gray-600">
+                Validation des acquis et obtention de votre certification
+              </p>
             </div>
           </div>
         </div>
@@ -291,16 +317,11 @@ export default function HomePage() {
           <p className="text-lg mb-8 text-gray-100">
             Contactez-nous pour discuter de votre projet de formation
           </p>
-          <Button 
-            size="lg" 
-            className="bg-[#7eb33f] hover:bg-[#1f3b8e] text-white"
-            asChild
-          >
+          <Button size="lg" className="bg-[#7eb33f] hover:bg-[#1f3b8e] text-white" asChild>
             <Link href="/contact">Demander un devis</Link>
           </Button>
         </div>
-        </section>
-
-      </PublicLayout>
-    );
-  }
+      </section>
+    </PublicLayout>
+  )
+}

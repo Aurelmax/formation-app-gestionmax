@@ -1,37 +1,45 @@
-'use client';
+'use client'
 
-import { useState, useMemo, useEffect } from 'react';
-import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FormationCard } from '@/components/shared/FormationCard';
-import Image from 'next/image';
-import { Search, SortAsc, SortDesc } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react'
+import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { FormationCard } from '@/components/shared/FormationCard'
+import Image from 'next/image'
+import { Search, SortAsc, SortDesc } from 'lucide-react'
 
 export default function CataloguePage() {
-  const [programmes, setProgrammes] = useState<Array<{
-    id: string;
-    titre: string;
-    description: string;
-    duree: number;
-    niveau: string;
-    modalites: string;
-    prix: number;
-    competences: string[];
-  }>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedNiveau, setSelectedNiveau] = useState('all');
-  const [selectedModalite, setSelectedModalite] = useState('all');
-  const [sortBy, setSortBy] = useState('default');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [programmes, setProgrammes] = useState<
+    Array<{
+      id: string
+      titre: string
+      description: string
+      duree: number
+      niveau: string
+      modalites: string
+      prix: number
+      competences: string[]
+    }>
+  >([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedNiveau, setSelectedNiveau] = useState('all')
+  const [selectedModalite, setSelectedModalite] = useState('all')
+  const [sortBy, setSortBy] = useState('default')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     const loadProgrammes = async () => {
       try {
-        const response = await fetch('/api/programmes');
-        const result = await response.json();
+        const response = await fetch('/api/programmes')
+        const result = await response.json()
         if (result.success) {
           // Transformer les données MongoDB pour correspondre à l'interface attendue
           const transformedData = result.data.map((programme: Record<string, unknown>) => ({
@@ -43,61 +51,66 @@ export default function CataloguePage() {
             niveau: programme.niveau,
             modalites: programme.modalites,
             prix: programme.prix,
-            competences: (programme.competences as unknown[] || []).map((comp: unknown) => 
-              typeof comp === 'string' ? comp : (comp as { competence: string }).competence
-            ).filter((comp: string, index: number, arr: string[]) => 
-              arr.indexOf(comp) === index // Supprimer les doublons
-            )
-          }));
-          setProgrammes(transformedData);
+            competences: ((programme.competences as unknown[]) || [])
+              .map((comp: unknown) =>
+                typeof comp === 'string' ? comp : (comp as { competence: string }).competence
+              )
+              .filter(
+                (comp: string, index: number, arr: string[]) => arr.indexOf(comp) === index // Supprimer les doublons
+              ),
+          }))
+          setProgrammes(transformedData)
         }
       } catch (error) {
-        console.error('Erreur lors du chargement des programmes:', error);
+        console.error('Erreur lors du chargement des programmes:', error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
-    loadProgrammes();
-  }, []);
+    }
+    loadProgrammes()
+  }, [])
 
   // Filtrage et tri des programmes
   const filteredAndSortedProgrammes = useMemo(() => {
-    const filtered = programmes.filter((programme) => {
-      const matchesSearch = programme.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           programme.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           programme.competences.some((comp: string) => comp.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesNiveau = selectedNiveau === 'all' || programme.niveau === selectedNiveau;
-      const matchesModalite = selectedModalite === 'all' || programme.modalites === selectedModalite;
-      
-      return matchesSearch && matchesNiveau && matchesModalite;
-    });
+    const filtered = programmes.filter(programme => {
+      const matchesSearch =
+        programme.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        programme.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        programme.competences.some((comp: string) =>
+          comp.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+
+      const matchesNiveau = selectedNiveau === 'all' || programme.niveau === selectedNiveau
+      const matchesModalite = selectedModalite === 'all' || programme.modalites === selectedModalite
+
+      return matchesSearch && matchesNiveau && matchesModalite
+    })
 
     // Tri des programmes
     if (sortBy !== 'default') {
       filtered.sort((a, b) => {
-        let comparison = 0;
-        
+        let comparison = 0
+
         switch (sortBy) {
           case 'prix':
-            comparison = a.prix - b.prix;
-            break;
+            comparison = a.prix - b.prix
+            break
           case 'duree':
-            comparison = a.duree - b.duree;
-            break;
+            comparison = a.duree - b.duree
+            break
           case 'titre':
-            comparison = a.titre.localeCompare(b.titre);
-            break;
+            comparison = a.titre.localeCompare(b.titre)
+            break
           default:
-            return 0;
+            return 0
         }
-        
-        return sortOrder === 'asc' ? comparison : -comparison;
-      });
+
+        return sortOrder === 'asc' ? comparison : -comparison
+      })
     }
 
-    return filtered;
-  }, [programmes, searchQuery, selectedNiveau, selectedModalite, sortBy, sortOrder]);
+    return filtered
+  }, [programmes, searchQuery, selectedNiveau, selectedModalite, sortBy, sortOrder])
 
   return (
     <PublicLayout>
@@ -114,8 +127,8 @@ export default function CataloguePage() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-bold mb-6">Catalogue de Formations</h1>
           <p className="text-xl text-gray-100 max-w-4xl mx-auto">
-            Découvrez notre catalogue complet de formations WordPress professionnelles. 
-            Formations éligibles CPF, adaptées aux entreprises et particuliers.
+            Découvrez notre catalogue complet de formations WordPress professionnelles. Formations
+            éligibles CPF, adaptées aux entreprises et particuliers.
           </p>
         </div>
       </section>
@@ -136,10 +149,16 @@ export default function CataloguePage() {
                 </h3>
                 <div className="text-gray-700 space-y-3">
                   <p>
-                    Les formations présentées dans ce catalogue sont conçues pour répondre aux besoins spécifiques des artisans, commerçants et très petites entreprises (TPE). Elles constituent une base structurée, construite à partir de situations professionnelles courantes.
+                    Les formations présentées dans ce catalogue sont conçues pour répondre aux
+                    besoins spécifiques des artisans, commerçants et très petites entreprises (TPE).
+                    Elles constituent une base structurée, construite à partir de situations
+                    professionnelles courantes.
                   </p>
                   <p>
-                    Toutefois, chaque module peut être entièrement adapté en fonction des résultats du rendez-vous de positionnement initial, afin de tenir compte de vos objectifs, contraintes et compétences déjà acquises. Cette phase d&apos;analyse garantit la pertinence du parcours proposé et son alignement avec vos besoins réels.
+                    Toutefois, chaque module peut être entièrement adapté en fonction des résultats
+                    du rendez-vous de positionnement initial, afin de tenir compte de vos objectifs,
+                    contraintes et compétences déjà acquises. Cette phase d'analyse garantit la
+                    pertinence du parcours proposé et son alignement avec vos besoins réels.
                   </p>
                 </div>
               </div>
@@ -161,7 +180,7 @@ export default function CataloguePage() {
                     type="text"
                     placeholder="Rechercher une formation..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={e => setSearchQuery(e.target.value)}
                     className="pl-10 border-[#1f3b8e] focus:border-[#7eb33f] focus:ring-[#7eb33f]"
                   />
                 </div>
@@ -211,14 +230,20 @@ export default function CataloguePage() {
                   onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
                   className="w-10 h-10 border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#1f3b8e] hover:text-white"
                 >
-                  {sortOrder === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
+                  {sortOrder === 'asc' ? (
+                    <SortAsc className="h-4 w-4" />
+                  ) : (
+                    <SortDesc className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
             </div>
 
             {/* Résultats */}
             <div className="mt-4 text-sm text-gray-600">
-              {filteredAndSortedProgrammes.length} formation{filteredAndSortedProgrammes.length > 1 ? 's' : ''} trouvée{filteredAndSortedProgrammes.length > 1 ? 's' : ''}
+              {filteredAndSortedProgrammes.length} formation
+              {filteredAndSortedProgrammes.length > 1 ? 's' : ''} trouvée
+              {filteredAndSortedProgrammes.length > 1 ? 's' : ''}
             </div>
           </div>
         </div>
@@ -243,12 +268,12 @@ export default function CataloguePage() {
               <p className="text-gray-600 mb-6">
                 Essayez de modifier vos critères de recherche ou vos filtres.
               </p>
-              <Button 
+              <Button
                 onClick={() => {
-                  setSearchQuery('');
-                  setSelectedNiveau('all');
-                  setSelectedModalite('all');
-                  setSortBy('default');
+                  setSearchQuery('')
+                  setSelectedNiveau('all')
+                  setSelectedModalite('all')
+                  setSortBy('default')
                 }}
                 className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white"
               >
@@ -257,17 +282,13 @@ export default function CataloguePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredAndSortedProgrammes.map((programme) => (
-                <FormationCard 
-                  key={programme.id} 
-                  programme={programme}
-                  showDetails={true}
-                />
+              {filteredAndSortedProgrammes.map(programme => (
+                <FormationCard key={programme.id} programme={programme} showDetails={true} />
               ))}
             </div>
           )}
         </div>
       </section>
     </PublicLayout>
-  );
+  )
 }

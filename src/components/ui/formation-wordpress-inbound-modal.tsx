@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Clock,
   MapPin,
@@ -17,16 +17,19 @@ import {
   BookOpen,
   Target,
   TrendingUp,
-  Share2
-} from 'lucide-react';
+  Share2,
+} from 'lucide-react'
 
 interface FormationWordPressInboundModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
-export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWordPressInboundModalProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+export function FormationWordPressInboundModal({
+  isOpen,
+  onClose,
+}: FormationWordPressInboundModalProps) {
+  const [activeTab, setActiveTab] = useState('overview')
 
   const formationData = {
     titre: 'Créer et Gérer un Site WordPress + Stratégie de Contenu Inbound Marketing',
@@ -40,8 +43,8 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
     publicConcerne: 'Artisans, commerçants ou professions libérales',
     objectifs: [
       'Jour 1 : Créer et gérer un site WordPress de manière autonome, avec une maîtrise des bases techniques et des fonctionnalités essentielles.',
-      'Jour 2 : Comprendre les principes de l\'Inbound Marketing et élaborer une stratégie de contenu performante',
-      'Jour 3 : Mettre en place des outils et méthodes pour attirer, convertir et fidéliser une audience en ligne.'
+      "Jour 2 : Comprendre les principes de l'Inbound Marketing et élaborer une stratégie de contenu performante",
+      'Jour 3 : Mettre en place des outils et méthodes pour attirer, convertir et fidéliser une audience en ligne.',
     ],
     programme: [
       {
@@ -49,49 +52,49 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
         matin: {
           titre: 'Matin (9h - 13h) - Introduction à WordPress',
           contenu: [
-            'Qu\'est-ce que WordPress ? Ses avantages pour la création de sites web.',
+            "Qu'est-ce que WordPress ? Ses avantages pour la création de sites web.",
             'Présentation des fonctionnalités principales : pages, articles, médias.',
-            'Installation et configuration initiale : choix d\'un hébergeur, installation de WordPress.',
+            "Installation et configuration initiale : choix d'un hébergeur, installation de WordPress.",
             'Configuration de base : permaliens, fuseau horaire, langue.',
             'Création des premières pages : Accueil, À propos, Contact.',
-            'Gestion des menus de navigation et des widgets.'
-          ]
+            'Gestion des menus de navigation et des widgets.',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Personnalisation et fonctionnalités',
           contenu: [
             'Choisir et installer un thème adapté à son activité.',
             'Introduction au Customizer : typographies, couleurs, mise en page.',
-            'Introduction à l\'éditeur Gutenberg : ajouter et organiser des blocs.',
+            "Introduction à l'éditeur Gutenberg : ajouter et organiser des blocs.",
             'Installer des plugins indispensables : SEO, sécurité, formulaires de contact.',
-            'Premiers réglages pour la sécurité et les sauvegardes.'
-          ]
-        }
+            'Premiers réglages pour la sécurité et les sauvegardes.',
+          ],
+        },
       },
       {
-        jour: 'Jour 2 : Bases de l\'Inbound Marketing et stratégie de contenu (7 heures)',
+        jour: "Jour 2 : Bases de l'Inbound Marketing et stratégie de contenu (7 heures)",
         matin: {
-          titre: 'Matin (9h - 13h) - Introduction à l\'Inbound Marketing',
+          titre: "Matin (9h - 13h) - Introduction à l'Inbound Marketing",
           contenu: [
-            'Qu\'est-ce que l\'Inbound Marketing ? Principes et avantages.',
-            'Comprendre le parcours client : de l\'attraction à la fidélisation.',
+            "Qu'est-ce que l'Inbound Marketing ? Principes et avantages.",
+            "Comprendre le parcours client : de l'attraction à la fidélisation.",
             'Définir ses objectifs de contenu : trafic, conversion, engagement.',
             'Identifier son audience cible : qui sont vos clients potentiels ?',
             'Définir les besoins, attentes et comportements des personas.',
-            'Élaborer des contenus adaptés à chaque étape du parcours client.'
-          ]
+            'Élaborer des contenus adaptés à chaque étape du parcours client.',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Planification et optimisation',
           contenu: [
             'Choisir les types de contenu : articles de blog, vidéos, infographies, études de cas.',
             'Introduction à la recherche de mots-clés pour le SEO.',
-            'Création d\'un calendrier éditorial : fréquence, sujets, canaux.',
+            "Création d'un calendrier éditorial : fréquence, sujets, canaux.",
             'Rédiger des titres accrocheurs et optimiser les balises (title, meta description).',
             'Structurer les contenus avec des balises HTML (H1, H2, H3).',
-            'Insérer des appels à l\'action (CTA) pour inciter à l\'engagement.'
-          ]
-        }
+            "Insérer des appels à l'action (CTA) pour inciter à l'engagement.",
+          ],
+        },
       },
       {
         jour: 'Jour 3 : Mise en pratique avec les outils (7 heures)',
@@ -100,11 +103,11 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
           contenu: [
             'Publier un article optimisé pour le SEO avec Gutenberg.',
             'Ajouter des images, des vidéos et des liens internes/externes.',
-            'Introduction aux outils de suivi d\'impact du contenu (Google Analytics VS Matomo).',
+            "Introduction aux outils de suivi d'impact du contenu (Google Analytics VS Matomo).",
             'Planifier et partager des contenus sur les réseaux sociaux.',
             'Découverte de plateformes comme Buffer ou Hootsuite pour gérer les publications.',
-            'Introduction aux automatisations de campagnes avec Brevo.'
-          ]
+            'Introduction aux automatisations de campagnes avec Brevo.',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Fidélisation et suivi',
@@ -113,25 +116,30 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
             'Introduction aux indicateurs de performance (taux de clics, engagement, conversions).',
             'Ajuster la stratégie en fonction des données collectées.',
             'Quiz de fin de formation et mise en pratique.',
-            'Ateliers pratiques pour consolider les compétences : création d\'un article, planification d\'une campagne.'
-          ]
-        }
-      }
+            "Ateliers pratiques pour consolider les compétences : création d'un article, planification d'une campagne.",
+          ],
+        },
+      },
     ],
     modalites: {
-      pedagogiques: 'Formation en présentiel individuel (méthode expositive et démonstrative) avec alternance d\'exposés théoriques et de cas pratiques. Cette méthode permet de varier les modes d\'apprentissage pour favoriser l\'acquisition des connaissances et des compétences.',
-      techniques: 'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques).',
-      evaluation: 'Quizz d\'une dizaine de questions par l\'intermédiaire de notre plateforme d\'évaluation en ligne EVALBOX. Grille d\'analyse des compétences, travaux pratiques.',
-      sanction: 'Un certificat de réalisation de formation. Une feuille d\'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.',
-      niveau: 'Aucune certification obtenue'
+      pedagogiques:
+        "Formation en présentiel individuel (méthode expositive et démonstrative) avec alternance d'exposés théoriques et de cas pratiques. Cette méthode permet de varier les modes d'apprentissage pour favoriser l'acquisition des connaissances et des compétences.",
+      techniques:
+        'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques).',
+      evaluation:
+        "Quizz d'une dizaine de questions par l'intermédiaire de notre plateforme d'évaluation en ligne EVALBOX. Grille d'analyse des compétences, travaux pratiques.",
+      sanction:
+        "Un certificat de réalisation de formation. Une feuille d'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.",
+      niveau: 'Aucune certification obtenue',
     },
     contact: {
       email: 'aurelien@gestionmax.fr',
       telephone: '06.46.02.24.68',
-      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité'
+      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité',
     },
-    accessibilite: 'Votre organisme est engagé dans une démarche d\'accueil et d\'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D\'évaluer vos besoins spécifiques au regard d\'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.'
-  };
+    accessibilite:
+      "Votre organisme est engagé dans une démarche d'accueil et d'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D'évaluer vos besoins spécifiques au regard d'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.",
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -152,10 +160,18 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge className="bg-[#1f3b8e] text-white">{formationData.niveau}</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{formationData.modalite}</Badge>
-            <Badge variant="default" className="bg-[#7eb33f]">{formationData.duree}</Badge>
-            <Badge variant="default" className="bg-[#1f3b8e]">{formationData.prix}</Badge>
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">Code: {formationData.code}</Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {formationData.modalite}
+            </Badge>
+            <Badge variant="default" className="bg-[#7eb33f]">
+              {formationData.duree}
+            </Badge>
+            <Badge variant="default" className="bg-[#1f3b8e]">
+              {formationData.prix}
+            </Badge>
+            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+              Code: {formationData.code}
+            </Badge>
           </div>
         </DialogHeader>
 
@@ -169,7 +185,7 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d&apos;ensemble
+            Vue d'ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -212,7 +228,9 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Objectifs pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Objectifs pédagogiques
+                </h3>
                 <ul className="space-y-2">
                   {formationData.objectifs.map((objectif, index) => (
                     <li key={index} className="flex items-start gap-2">
@@ -226,23 +244,33 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Informations pratiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Informations pratiques
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Horaires:</strong> {formationData.horaires}</span>
+                    <span>
+                      <strong>Horaires:</strong> {formationData.horaires}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Modalité:</strong> {formationData.modalite}</span>
+                    <span>
+                      <strong>Modalité:</strong> {formationData.modalite}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Euro className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Tarif:</strong> {formationData.prix} nets de taxes</span>
+                    <span>
+                      <strong>Tarif:</strong> {formationData.prix} nets de taxes
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Niveau:</strong> {formationData.niveau}</span>
+                    <span>
+                      <strong>Niveau:</strong> {formationData.niveau}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -251,7 +279,9 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
             {/* Compétences clés */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Compétences développées</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Compétences développées
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
@@ -347,7 +377,9 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
           <div className="space-y-6 text-gray-700">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Modalités pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Modalités pédagogiques
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.pedagogiques}</p>
                 <p className="text-gray-600">{formationData.modalites.techniques}</p>
               </CardContent>
@@ -355,7 +387,9 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Évaluation et sanction</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Évaluation et sanction
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.evaluation}</p>
                 <p className="text-gray-600 mb-4">{formationData.modalites.sanction}</p>
                 <p className="text-gray-600">{formationData.modalites.niveau}</p>
@@ -364,14 +398,18 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Accessibilité handicap</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Accessibilité handicap
+                </h3>
                 <p className="text-gray-600">{formationData.accessibilite}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Contact et informations</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Contact et informations
+                </h3>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-[#1f3b8e]" />
@@ -399,5 +437,5 @@ export function FormationWordPressInboundModal({ isOpen, onClose }: FormationWor
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { Menu, X } from 'lucide-react'
+import { useState } from 'react'
 
 const navigation = [
   { name: 'Accueil', href: '/' },
@@ -14,11 +14,11 @@ const navigation = [
   { name: 'À propos', href: '/apropos' },
   { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
-];
+]
 
 export function PublicHeader() {
-  const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -52,7 +52,7 @@ export function PublicHeader() {
         </div>
 
         <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
+          {navigation.map(item => (
             <Link
               key={item.name}
               href={item.href}
@@ -69,7 +69,11 @@ export function PublicHeader() {
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-4">
-          <Button variant="ghost" className="text-[#1f3b8e] hover:bg-[#1f3b8e]/10 hover:text-[#1f3b8e]" asChild>
+          <Button
+            variant="ghost"
+            className="text-[#1f3b8e] hover:bg-[#1f3b8e]/10 hover:text-[#1f3b8e]"
+            asChild
+          >
             <Link href="/admin">Connexion</Link>
           </Button>
           <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white" asChild>
@@ -82,7 +86,7 @@ export function PublicHeader() {
       {mobileMenuOpen && (
         <div className="lg:hidden">
           <div className="space-y-2 px-6 pb-6 pt-2">
-            {navigation.map((item) => (
+            {navigation.map(item => (
               <Link
                 key={item.name}
                 href={item.href}
@@ -98,7 +102,11 @@ export function PublicHeader() {
               </Link>
             ))}
             <div className="mt-4 space-y-2">
-              <Button variant="outline" className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white" asChild>
+              <Button
+                variant="outline"
+                className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white"
+                asChild
+              >
                 <Link href="/admin">Connexion</Link>
               </Button>
               <Button className="w-full bg-[#1f3b8e] hover:bg-[#7eb33f] text-white" asChild>
@@ -109,5 +117,5 @@ export function PublicHeader() {
         </div>
       )}
     </header>
-  );
+  )
 }

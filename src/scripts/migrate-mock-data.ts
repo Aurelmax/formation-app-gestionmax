@@ -17,13 +17,13 @@ const migrateMockData = async () => {
   console.log('🚀 Début de la migration des données mock vers MongoDB...')
   console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
-  
+
   const payload = await getPayload({ config: payloadConfig })
   const stats: MigrationStats = {
     users: { imported: 0, errors: 0 },
     programmes: { imported: 0, errors: 0 },
     apprenants: { imported: 0, errors: 0 },
-    rendezVous: { imported: 0, errors: 0 }
+    rendezVous: { imported: 0, errors: 0 },
   }
 
   try {
@@ -36,9 +36,9 @@ const migrateMockData = async () => {
           collection: 'users',
           where: {
             email: {
-              equals: user.email
-            }
-          }
+              equals: user.email,
+            },
+          },
         })
 
         const userData = {
@@ -50,7 +50,7 @@ const migrateMockData = async () => {
           phone: '',
           address: '',
           createdAt: user.createdAt.toISOString(),
-          updatedAt: user.updatedAt.toISOString()
+          updatedAt: user.updatedAt.toISOString(),
         }
 
         if (existingUsers.docs.length > 0) {
@@ -58,7 +58,7 @@ const migrateMockData = async () => {
         } else {
           await payload.create({
             collection: 'users',
-            data: userData
+            data: userData,
           })
           console.log(`✅ Utilisateur importé: ${user.email}`)
           stats.users.imported++
@@ -78,9 +78,9 @@ const migrateMockData = async () => {
           collection: 'programmes',
           where: {
             codeFormation: {
-              equals: programme.codeFormation
-            }
-          }
+              equals: programme.codeFormation,
+            },
+          },
         })
 
         const programmeData = {
@@ -96,13 +96,16 @@ const migrateMockData = async () => {
           eligibleCPF: true,
           codeCPF: `RS${Math.floor(Math.random() * 10000)}`,
           objectifs: `Formation ${programme.niveau.toLowerCase()} de ${programme.duree} heures sur ${programme.titre}`,
-          prerequis: programme.niveau === 'DEBUTANT' ? 'Aucun prérequis technique' : 'Connaissances de base en informatique',
+          prerequis:
+            programme.niveau === 'DEBUTANT'
+              ? 'Aucun prérequis technique'
+              : 'Connaissances de base en informatique',
           programme: `Programme détaillé de la formation ${programme.titre}`,
           modalitesPedagogiques: `Formation en ${programme.modalites.toLowerCase()} avec approche pratique`,
           evaluation: 'Évaluation continue et projet final',
           certification: 'Attestation de formation délivrée',
           createdAt: programme.createdAt.toISOString(),
-          updatedAt: programme.updatedAt.toISOString()
+          updatedAt: programme.updatedAt.toISOString(),
         }
 
         if (existingProgrammes.docs.length > 0) {
@@ -110,7 +113,7 @@ const migrateMockData = async () => {
         } else {
           await payload.create({
             collection: 'programmes',
-            data: programmeData
+            data: programmeData,
           })
           console.log(`✅ Programme importé: ${programme.titre}`)
           stats.programmes.imported++
@@ -139,12 +142,12 @@ const migrateMockData = async () => {
               statut: apprenant.statut,
               progression: apprenant.progression,
               createdAt: apprenant.createdAt.toISOString(),
-              updatedAt: apprenant.updatedAt.toISOString()
+              updatedAt: apprenant.updatedAt.toISOString(),
             }
 
             await payload.create({
               collection: 'apprenants',
-              data: apprenantData
+              data: apprenantData,
             })
             console.log(`✅ Apprenant importé: ${apprenant.nom} ${apprenant.prenom}`)
             stats.apprenants.imported++
@@ -173,7 +176,7 @@ const migrateMockData = async () => {
                 prenom: rdv.client.prenom,
                 email: rdv.client.email,
                 telephone: rdv.client.telephone,
-                entreprise: rdv.client.entreprise
+                entreprise: rdv.client.entreprise,
               },
               type: rdv.type,
               statut: rdv.statut,
@@ -186,12 +189,12 @@ const migrateMockData = async () => {
               notes: rdv.notes,
               rappelEnvoye: rdv.rappelEnvoye,
               createdAt: rdv.createdAt,
-              updatedAt: rdv.updatedAt
+              updatedAt: rdv.updatedAt,
             }
 
             await payload.create({
               collection: 'rendez-vous',
-              data: rdvData
+              data: rdvData,
             })
             console.log(`✅ Rendez-vous importé: ${rdv.client.nom} ${rdv.client.prenom}`)
             stats.rendezVous.imported++
@@ -210,10 +213,18 @@ const migrateMockData = async () => {
     // Résumé final
     console.log('\n🎉 Migration terminée!')
     console.log('📊 Résultats:')
-    console.log(`   👤 Utilisateurs: ${stats.users.imported} importés, ${stats.users.errors} erreurs`)
-    console.log(`   📚 Programmes: ${stats.programmes.imported} importés, ${stats.programmes.errors} erreurs`)
-    console.log(`   👥 Apprenants: ${stats.apprenants.imported} importés, ${stats.apprenants.errors} erreurs`)
-    console.log(`   📅 Rendez-vous: ${stats.rendezVous.imported} importés, ${stats.rendezVous.errors} erreurs`)
+    console.log(
+      `   👤 Utilisateurs: ${stats.users.imported} importés, ${stats.users.errors} erreurs`
+    )
+    console.log(
+      `   📚 Programmes: ${stats.programmes.imported} importés, ${stats.programmes.errors} erreurs`
+    )
+    console.log(
+      `   👥 Apprenants: ${stats.apprenants.imported} importés, ${stats.apprenants.errors} erreurs`
+    )
+    console.log(
+      `   📅 Rendez-vous: ${stats.rendezVous.imported} importés, ${stats.rendezVous.errors} erreurs`
+    )
 
     // Vérification des données importées
     console.log('\n🔍 Vérification des données importées:')
@@ -221,7 +232,6 @@ const migrateMockData = async () => {
     const programmesCount = await payload.count({ collection: 'programmes' })
     console.log(`   👤 Utilisateurs dans la DB: ${usersCount.totalDocs}`)
     console.log(`   📚 Programmes dans la DB: ${programmesCount.totalDocs}`)
-
   } catch (error) {
     console.error('❌ Erreur lors de la migration:', error)
   }
@@ -233,7 +243,7 @@ migrateMockData()
     console.log('\n✅ Migration terminée avec succès!')
     process.exit(0)
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('\n❌ Erreur fatale lors de la migration:', error)
     process.exit(1)
   })

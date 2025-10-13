@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Clock,
   MapPin,
@@ -18,16 +18,16 @@ import {
   Share2,
   Monitor,
   Target,
-  Calendar
-} from 'lucide-react';
+  Calendar,
+} from 'lucide-react'
 
 interface FormationCanvaModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('overview')
 
   const formationData = {
     titre: 'Maîtriser Canva pour le web, les réseaux sociaux et la vente en ligne',
@@ -43,7 +43,7 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
       'Créer et optimiser des visuels professionnels attractifs adaptés au web et aux réseaux sociaux',
       'Respecter les principes du design graphique',
       'Maîtriser les fonctionnalités essentielles de Canva',
-      'Optimiser la création de contenus visuels pour une utilisation professionnelle'
+      'Optimiser la création de contenus visuels pour une utilisation professionnelle',
     ],
     programme: [
       {
@@ -52,12 +52,12 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
           titre: 'Matin (9h00 - 13h00) - Introduction à Canva',
           contenu: [
             'Présentation de Canva : version gratuite et Pro',
-            'Création d\'un compte et prise en main de l\'interface',
+            "Création d'un compte et prise en main de l'interface",
             'Exploration des modèles existants : affiches, posts, bannières, stories',
             'Les fondamentaux du design : couleurs, typographies, alignements',
             'Choisir les formats adaptés pour chaque plateforme (Facebook, Instagram, LinkedIn)',
-            'Optimiser les visuels pour une communication professionnelle et cohérente'
-          ]
+            'Optimiser les visuels pour une communication professionnelle et cohérente',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h00 - 17h00) - Création de visuels pour les réseaux sociaux',
@@ -66,9 +66,9 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
             'Pratique : création de visuels pour Instagram et Facebook',
             'Ajouter des éléments interactifs : icônes, stickers, animations',
             'Importer des images, polices et logos pour une identité de marque unique',
-            'Utiliser les bibliothèques Canva : photos, vidéos et illustrations'
-          ]
-        }
+            'Utiliser les bibliothèques Canva : photos, vidéos et illustrations',
+          ],
+        },
       },
       {
         jour: 'Jour 2 : Stratégie de contenu et optimisation pour le web (7 heures)',
@@ -80,38 +80,44 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
             'Intégrer les visuels dans un site WordPress ou blog',
             'Créer des fiches produits optimisées et intégrer des images professionnelles',
             'Réaliser des visuels adaptés aux publicités Facebook Ads et Google Ads',
-            'Exercice pratique : création d\'une annonce visuelle'
-          ]
+            "Exercice pratique : création d'une annonce visuelle",
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h00 - 17h00) - Planifier et diffuser le contenu visuel',
           contenu: [
             'Planification des publications avec des outils gratuits (Meta Business Suite, Canva Planner)',
             'Analyse des performances des visuels grâce aux statistiques des réseaux sociaux',
-            'Création d\'une série de visuels adaptés aux besoins professionnels de chaque participant',
-            'Présentation et feedback'
-          ]
-        }
-      }
+            "Création d'une série de visuels adaptés aux besoins professionnels de chaque participant",
+            'Présentation et feedback',
+          ],
+        },
+      },
     ],
     modalites: {
-      pedagogiques: 'Formation en présentiel individuel en utilisant une méthode expositive et démonstrative, adaptée aux besoins des professionnels en formation continue. Elle repose sur une alternance d\'exposés théoriques et de cas pratiques.',
-      techniques: 'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques) et un accès à Canva Pro.',
-      evaluation: 'Quizz d\'une dizaine de questions par l\'intermédiaire de notre plateforme d\'évaluation en ligne EVALBOX. Grille d\'analyse des compétences, travaux pratiques.',
-      sanction: 'Un certificat de réalisation de formation. Une feuille d\'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.',
-      niveau: 'Cette formation n\'est pas certifiante, cependant, elle permet de maîtriser les fonctionnalités essentielles de Canva et d\'optimiser la création de contenus visuels pour une utilisation professionnelle sur le web et les réseaux sociaux'
+      pedagogiques:
+        "Formation en présentiel individuel en utilisant une méthode expositive et démonstrative, adaptée aux besoins des professionnels en formation continue. Elle repose sur une alternance d'exposés théoriques et de cas pratiques.",
+      techniques:
+        'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques) et un accès à Canva Pro.',
+      evaluation:
+        "Quizz d'une dizaine de questions par l'intermédiaire de notre plateforme d'évaluation en ligne EVALBOX. Grille d'analyse des compétences, travaux pratiques.",
+      sanction:
+        "Un certificat de réalisation de formation. Une feuille d'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.",
+      niveau:
+        "Cette formation n'est pas certifiante, cependant, elle permet de maîtriser les fonctionnalités essentielles de Canva et d'optimiser la création de contenus visuels pour une utilisation professionnelle sur le web et les réseaux sociaux",
     },
     contact: {
       email: 'aurelien@gestionmax.fr',
       telephone: '06.46.02.24.68',
-      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité'
+      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité',
     },
-    accessibilite: 'Votre organisme est engagé dans une démarche d\'accueil et d\'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D\'évaluer vos besoins spécifiques au regard d\'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.',
+    accessibilite:
+      "Votre organisme est engagé dans une démarche d'accueil et d'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D'évaluer vos besoins spécifiques au regard d'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.",
     dates: {
       creation: '25/11/24',
-      version: 'Version 1'
-    }
-  };
+      version: 'Version 1',
+    },
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -132,10 +138,18 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge className="bg-[#1f3b8e] text-white">{formationData.niveau}</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{formationData.modalite}</Badge>
-            <Badge variant="default" className="bg-[#7eb33f]">{formationData.duree}</Badge>
-            <Badge variant="default" className="bg-[#1f3b8e]">{formationData.prix}</Badge>
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">Code: {formationData.code}</Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {formationData.modalite}
+            </Badge>
+            <Badge variant="default" className="bg-[#7eb33f]">
+              {formationData.duree}
+            </Badge>
+            <Badge variant="default" className="bg-[#1f3b8e]">
+              {formationData.prix}
+            </Badge>
+            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+              Code: {formationData.code}
+            </Badge>
           </div>
           {/* Dates réglementaires */}
           <div className="flex gap-4 text-sm text-gray-600 mt-2">
@@ -160,7 +174,7 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d&apos;ensemble
+            Vue d'ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -203,7 +217,9 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Objectifs pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Objectifs pédagogiques
+                </h3>
                 <ul className="space-y-2">
                   {formationData.objectifs.map((objectif, index) => (
                     <li key={index} className="flex items-start gap-2">
@@ -217,23 +233,33 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Informations pratiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Informations pratiques
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Horaires:</strong> {formationData.horaires}</span>
+                    <span>
+                      <strong>Horaires:</strong> {formationData.horaires}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Modalité:</strong> {formationData.modalite}</span>
+                    <span>
+                      <strong>Modalité:</strong> {formationData.modalite}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Euro className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Tarif:</strong> {formationData.prix} nets de taxes</span>
+                    <span>
+                      <strong>Tarif:</strong> {formationData.prix} nets de taxes
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Niveau:</strong> {formationData.niveau}</span>
+                    <span>
+                      <strong>Niveau:</strong> {formationData.niveau}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -242,7 +268,9 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
             {/* Compétences clés */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Compétences développées</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Compétences développées
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
@@ -251,7 +279,7 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
                     </div>
                     <ul className="ml-7 space-y-1 text-sm text-gray-600">
                       <li>• Principes du design (couleurs, typographies)</li>
-                      <li>• Création d&apos;identité visuelle</li>
+                      <li>• Création d'identité visuelle</li>
                       <li>• Optimisation des visuels</li>
                       <li>• Formats adaptés par plateforme</li>
                     </ul>
@@ -338,7 +366,9 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
           <div className="space-y-6 text-gray-700">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Modalités pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Modalités pédagogiques
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.pedagogiques}</p>
                 <p className="text-gray-600">{formationData.modalites.techniques}</p>
               </CardContent>
@@ -346,7 +376,9 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Évaluation et sanction</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Évaluation et sanction
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.evaluation}</p>
                 <p className="text-gray-600 mb-4">{formationData.modalites.sanction}</p>
                 <p className="text-gray-600">{formationData.modalites.niveau}</p>
@@ -355,14 +387,18 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Accessibilité handicap</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Accessibilité handicap
+                </h3>
                 <p className="text-gray-600">{formationData.accessibilite}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Contact et informations</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Contact et informations
+                </h3>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-[#1f3b8e]" />
@@ -390,5 +426,5 @@ export function FormationCanvaModal({ isOpen, onClose }: FormationCanvaModalProp
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

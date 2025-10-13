@@ -2,36 +2,82 @@
  * Composant de gestion des utilisateurs
  */
 
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { User, CreateUserRequest, UpdateUserRequest, UserRole, USER_ROLES, USER_STATUS } from '@/types/users';
-import { userService } from '@/lib/user-service';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Plus, Edit, Trash2, Shield, User as UserIcon, Mail, Phone, Calendar, Key, MoreVertical, Eye, EyeOff } from 'lucide-react';
-import { toast } from 'sonner';
-import { useAuth } from '@/hooks/useAuth';
+import { useState, useEffect } from 'react'
+import {
+  User,
+  CreateUserRequest,
+  UpdateUserRequest,
+  UserRole,
+  USER_ROLES,
+  USER_STATUS,
+} from '@/types/users'
+import { userService } from '@/lib/user-service'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Shield,
+  User as UserIcon,
+  Mail,
+  Phone,
+  Calendar,
+  Key,
+  MoreVertical,
+  Eye,
+  EyeOff,
+} from 'lucide-react'
+import { toast } from 'sonner'
+import { useAuth } from '@/hooks/useAuth'
 
 export function UserManagement() {
-  const { user: currentUser, checkPermission } = useAuth();
-  const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const { user: currentUser, checkPermission } = useAuth()
+  const [users, setUsers] = useState<User[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [passwordData, setPasswordData] = useState({
     newPassword: '',
     confirmPassword: '',
-  });
+  })
   const [formData, setFormData] = useState<CreateUserRequest>({
     email: '',
     password: '',
@@ -41,41 +87,41 @@ export function UserManagement() {
     role: 'apprenant',
     phone: '',
     address: '',
-  });
+  })
 
   // Charger les utilisateurs
   useEffect(() => {
-    loadUsers();
-  }, []);
+    loadUsers()
+  }, [])
 
   const loadUsers = async () => {
     try {
-      setIsLoading(true);
-      const usersData = await userService.getUsers();
-      setUsers(usersData);
+      setIsLoading(true)
+      const usersData = await userService.getUsers()
+      setUsers(usersData)
     } catch (error) {
-      toast.error('Erreur lors du chargement des utilisateurs');
+      toast.error('Erreur lors du chargement des utilisateurs')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   // Créer un utilisateur
   const handleCreateUser = async () => {
     try {
-      await userService.createUser(formData);
-      toast.success('Utilisateur créé avec succès');
-      setIsCreateDialogOpen(false);
-      resetForm();
-      loadUsers();
+      await userService.createUser(formData)
+      toast.success('Utilisateur créé avec succès')
+      setIsCreateDialogOpen(false)
+      resetForm()
+      loadUsers()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de la création');
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de la création')
     }
-  };
+  }
 
   // Mettre à jour un utilisateur
   const handleUpdateUser = async () => {
-    if (!selectedUser) return;
+    if (!selectedUser) return
 
     try {
       const updateData: UpdateUserRequest = {
@@ -85,44 +131,44 @@ export function UserManagement() {
         role: formData.role,
         phone: formData.phone,
         address: formData.address,
-      };
+      }
 
-      await userService.updateUser(selectedUser.id, updateData);
-      toast.success('Utilisateur mis à jour avec succès');
-      setIsEditDialogOpen(false);
-      setSelectedUser(null);
-      resetForm();
-      loadUsers();
+      await userService.updateUser(selectedUser.id, updateData)
+      toast.success('Utilisateur mis à jour avec succès')
+      setIsEditDialogOpen(false)
+      setSelectedUser(null)
+      resetForm()
+      loadUsers()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de la mise à jour');
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de la mise à jour')
     }
-  };
+  }
 
   // Supprimer un utilisateur
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) return;
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) return
 
     try {
-      await userService.deleteUser(userId);
-      toast.success('Utilisateur supprimé avec succès');
-      loadUsers();
+      await userService.deleteUser(userId)
+      toast.success('Utilisateur supprimé avec succès')
+      loadUsers()
     } catch (error) {
-      toast.error('Erreur lors de la suppression');
+      toast.error('Erreur lors de la suppression')
     }
-  };
+  }
 
   // Réinitialiser le mot de passe
   const handleResetPassword = async () => {
-    if (!selectedUser) return;
+    if (!selectedUser) return
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error('Les mots de passe ne correspondent pas');
-      return;
+      toast.error('Les mots de passe ne correspondent pas')
+      return
     }
 
     if (passwordData.newPassword.length < 6) {
-      toast.error('Le mot de passe doit contenir au moins 6 caractères');
-      return;
+      toast.error('Le mot de passe doit contenir au moins 6 caractères')
+      return
     }
 
     try {
@@ -130,39 +176,39 @@ export function UserManagement() {
         currentPassword: '', // Pas besoin en mode admin
         newPassword: passwordData.newPassword,
         confirmPassword: passwordData.confirmPassword,
-      });
-      toast.success('Mot de passe réinitialisé avec succès');
-      setIsPasswordDialogOpen(false);
-      setPasswordData({ newPassword: '', confirmPassword: '' });
-      setSelectedUser(null);
+      })
+      toast.success('Mot de passe réinitialisé avec succès')
+      setIsPasswordDialogOpen(false)
+      setPasswordData({ newPassword: '', confirmPassword: '' })
+      setSelectedUser(null)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de la réinitialisation');
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de la réinitialisation')
     }
-  };
+  }
 
   // Ouvrir le dialogue de réinitialisation de mot de passe
   const openPasswordDialog = (user: User) => {
-    setSelectedUser(user);
-    setPasswordData({ newPassword: '', confirmPassword: '' });
-    setIsPasswordDialogOpen(true);
-  };
+    setSelectedUser(user)
+    setPasswordData({ newPassword: '', confirmPassword: '' })
+    setIsPasswordDialogOpen(true)
+  }
 
   // Activer/Désactiver un utilisateur
   const handleToggleUserStatus = async (userId: string, currentStatus: string) => {
-    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-    
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active'
+
     try {
-      await userService.updateUser(userId, { status: newStatus as any });
-      toast.success(`Utilisateur ${newStatus === 'active' ? 'activé' : 'désactivé'} avec succès`);
-      loadUsers();
+      await userService.updateUser(userId, { status: newStatus as any })
+      toast.success(`Utilisateur ${newStatus === 'active' ? 'activé' : 'désactivé'} avec succès`)
+      loadUsers()
     } catch (error) {
-      toast.error('Erreur lors de la modification du statut');
+      toast.error('Erreur lors de la modification du statut')
     }
-  };
+  }
 
   // Ouvrir le dialogue d'édition
   const openEditDialog = (user: User) => {
-    setSelectedUser(user);
+    setSelectedUser(user)
     setFormData({
       email: user.email,
       password: '',
@@ -172,9 +218,9 @@ export function UserManagement() {
       role: user.role,
       phone: user.phone || '',
       address: user.address || '',
-    });
-    setIsEditDialogOpen(true);
-  };
+    })
+    setIsEditDialogOpen(true)
+  }
 
   // Réinitialiser le formulaire
   const resetForm = () => {
@@ -187,44 +233,54 @@ export function UserManagement() {
       role: 'apprenant',
       phone: '',
       address: '',
-    });
-  };
+    })
+  }
 
   // Obtenir la couleur du badge selon le statut
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-gray-100 text-gray-800';
-      case 'suspended': return 'bg-red-100 text-red-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active':
+        return 'bg-green-100 text-green-800'
+      case 'inactive':
+        return 'bg-gray-100 text-gray-800'
+      case 'suspended':
+        return 'bg-red-100 text-red-800'
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   // Obtenir la couleur du badge selon le rôle
   const getRoleBadgeColor = (role: UserRole) => {
     switch (role) {
-      case 'super_admin': return 'bg-purple-100 text-purple-800';
-      case 'admin': return 'bg-blue-100 text-blue-800';
-      case 'formateur': return 'bg-green-100 text-green-800';
-      case 'gestionnaire': return 'bg-orange-100 text-orange-800';
-      case 'apprenant': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'superAdmin':
+        return 'bg-purple-100 text-purple-800'
+      case 'admin':
+        return 'bg-blue-100 text-blue-800'
+      case 'formateur':
+        return 'bg-green-100 text-green-800'
+      case 'gestionnaire':
+        return 'bg-orange-100 text-orange-800'
+      case 'apprenant':
+        return 'bg-gray-100 text-gray-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   // Vérifier les permissions
-  const canCreate = checkPermission('users:create');
-  const canUpdate = checkPermission('users:update');
-  const canDelete = checkPermission('users:delete');
-
+  const canCreate = checkPermission('users:create')
+  const canUpdate = checkPermission('users:update')
+  const canDelete = checkPermission('users:delete')
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
+    )
   }
 
   return (
@@ -233,9 +289,7 @@ export function UserManagement() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
-          <p className="text-gray-600 mt-1">
-            Gérez les utilisateurs et leurs permissions
-          </p>
+          <p className="text-gray-600 mt-1">Gérez les utilisateurs et leurs permissions</p>
         </div>
         {/* Bouton d'ajout d'utilisateur - toujours visible pour le moment */}
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
@@ -245,21 +299,21 @@ export function UserManagement() {
               Nouvel utilisateur
             </Button>
           </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Créer un nouvel utilisateur</DialogTitle>
-                <DialogDescription>
-                  Remplissez les informations pour créer un nouvel utilisateur.
-                </DialogDescription>
-              </DialogHeader>
-              <UserForm
-                formData={formData}
-                setFormData={setFormData}
-                onSubmit={handleCreateUser}
-                isEdit={false}
-              />
-            </DialogContent>
-          </Dialog>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Créer un nouvel utilisateur</DialogTitle>
+              <DialogDescription>
+                Remplissez les informations pour créer un nouvel utilisateur.
+              </DialogDescription>
+            </DialogHeader>
+            <UserForm
+              formData={formData}
+              setFormData={setFormData}
+              onSubmit={handleCreateUser}
+              isEdit={false}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Statistiques */}
@@ -312,9 +366,7 @@ export function UserManagement() {
       <Card>
         <CardHeader>
           <CardTitle>Liste des utilisateurs</CardTitle>
-          <CardDescription>
-            Gérez tous les utilisateurs du système
-          </CardDescription>
+          <CardDescription>Gérez tous les utilisateurs du système</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -329,14 +381,15 @@ export function UserManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
+              {users.map(user => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <div className="flex items-center space-x-3">
                       <Avatar>
                         <AvatarImage src={user.avatar} />
                         <AvatarFallback>
-                          {user.firstName?.[0]}{user.lastName?.[0]}
+                          {user.firstName?.[0]}
+                          {user.lastName?.[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div>
@@ -346,14 +399,10 @@ export function UserManagement() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge className={getRoleBadgeColor(user.role)}>
-                      {user.role}
-                    </Badge>
+                    <Badge className={getRoleBadgeColor(user.role)}>{user.role}</Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge className={getStatusBadgeColor(user.status)}>
-                      {user.status}
-                    </Badge>
+                    <Badge className={getStatusBadgeColor(user.status)}>{user.status}</Badge>
                   </TableCell>
                   <TableCell>
                     <div className="space-y-1">
@@ -389,13 +438,13 @@ export function UserManagement() {
                             Modifier
                           </DropdownMenuItem>
                         )}
-                        
+
                         <DropdownMenuItem onClick={() => openPasswordDialog(user)}>
                           <Key className="h-4 w-4 mr-2" />
                           Réinitialiser mot de passe
                         </DropdownMenuItem>
-                        
-                        <DropdownMenuItem 
+
+                        <DropdownMenuItem
                           onClick={() => handleToggleUserStatus(user.id, user.status)}
                         >
                           {user.status === 'active' ? (
@@ -410,11 +459,11 @@ export function UserManagement() {
                             </>
                           )}
                         </DropdownMenuItem>
-                        
+
                         <DropdownMenuSeparator />
-                        
+
                         {canDelete && user.id !== currentUser?.id && (
-                          <DropdownMenuItem 
+                          <DropdownMenuItem
                             onClick={() => handleDeleteUser(user.id)}
                             className="text-red-600 focus:text-red-600"
                           >
@@ -437,9 +486,7 @@ export function UserManagement() {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Modifier l'utilisateur</DialogTitle>
-            <DialogDescription>
-              Modifiez les informations de l'utilisateur.
-            </DialogDescription>
+            <DialogDescription>Modifiez les informations de l'utilisateur.</DialogDescription>
           </DialogHeader>
           <UserForm
             formData={formData}
@@ -465,7 +512,7 @@ export function UserManagement() {
               <Input
                 type="password"
                 value={passwordData.newPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                onChange={e => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                 placeholder="••••••••"
               />
             </div>
@@ -474,34 +521,31 @@ export function UserManagement() {
               <Input
                 type="password"
                 value={passwordData.confirmPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                onChange={e =>
+                  setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                }
                 placeholder="••••••••"
               />
             </div>
             <div className="flex justify-end space-x-2 pt-4">
-              <Button 
-                variant="outline" 
-                onClick={() => setIsPasswordDialogOpen(false)}
-              >
+              <Button variant="outline" onClick={() => setIsPasswordDialogOpen(false)}>
                 Annuler
               </Button>
-              <Button onClick={handleResetPassword}>
-                Réinitialiser
-              </Button>
+              <Button onClick={handleResetPassword}>Réinitialiser</Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }
 
 // Composant de formulaire utilisateur
 interface UserFormProps {
-  formData: CreateUserRequest;
-  setFormData: (data: CreateUserRequest) => void;
-  onSubmit: () => void;
-  isEdit: boolean;
+  formData: CreateUserRequest
+  setFormData: (data: CreateUserRequest) => void
+  onSubmit: () => void
+  isEdit: boolean
 }
 
 function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
@@ -513,7 +557,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
           <Input
             type="email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={e => setFormData({ ...formData, email: e.target.value })}
             disabled={isEdit}
             placeholder="email@exemple.com"
           />
@@ -524,7 +568,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
             <Input
               type="password"
               value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              onChange={e => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••"
             />
           </div>
@@ -536,7 +580,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
           <label className="text-sm font-medium">Prénom</label>
           <Input
             value={formData.firstName}
-            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            onChange={e => setFormData({ ...formData, firstName: e.target.value })}
             placeholder="Prénom"
           />
         </div>
@@ -544,7 +588,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
           <label className="text-sm font-medium">Nom</label>
           <Input
             value={formData.lastName}
-            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            onChange={e => setFormData({ ...formData, lastName: e.target.value })}
             placeholder="Nom"
           />
         </div>
@@ -554,7 +598,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
         <label className="text-sm font-medium">Nom complet *</label>
         <Input
           value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          onChange={e => setFormData({ ...formData, name: e.target.value })}
           placeholder="Nom complet"
         />
       </div>
@@ -582,7 +626,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
           <label className="text-sm font-medium">Téléphone</label>
           <Input
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={e => setFormData({ ...formData, phone: e.target.value })}
             placeholder="+33 6 12 34 56 78"
           />
         </div>
@@ -592,7 +636,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
         <label className="text-sm font-medium">Adresse</label>
         <Input
           value={formData.address}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+          onChange={e => setFormData({ ...formData, address: e.target.value })}
           placeholder="Adresse complète"
         />
       </div>
@@ -601,10 +645,8 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
         <Button variant="outline" type="button">
           Annuler
         </Button>
-        <Button onClick={onSubmit}>
-          {isEdit ? 'Mettre à jour' : 'Créer'}
-        </Button>
+        <Button onClick={onSubmit}>{isEdit ? 'Mettre à jour' : 'Créer'}</Button>
       </div>
     </div>
-  );
+  )
 }

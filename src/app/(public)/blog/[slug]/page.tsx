@@ -1,82 +1,74 @@
-'use client';
+'use client'
 
-import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { 
-  Calendar, 
-  User, 
-  Clock, 
-  ArrowLeft,
-  Star,
-  Eye,
-  Share2
-} from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Calendar, User, Clock, ArrowLeft, Star, Eye, Share2 } from 'lucide-react'
 
 interface Article {
-  id: string;
-  titre: string;
-  slug: string;
-  contenu: string;
-  resume: string;
-  auteur: string;
-  datePublication: string;
-  statut: string;
-  categories: string[];
-  tags: string[];
-  vue: number;
-  tempsLecture: number;
-  featured: boolean;
-  metaDescription: string;
-  metaKeywords: string[];
+  id: string
+  titre: string
+  slug: string
+  contenu: string
+  resume: string
+  auteur: string
+  datePublication: string
+  statut: string
+  categories: string[]
+  tags: string[]
+  vue: number
+  tempsLecture: number
+  featured: boolean
+  metaDescription: string
+  metaKeywords: string[]
 }
 
 export default function ArticlePage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  
-  const [article, setArticle] = useState<Article | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const params = useParams()
+  const slug = params.slug as string
+
+  const [article, setArticle] = useState<Article | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (slug) {
-      loadArticle();
+      loadArticle()
     }
-  }, [slug, loadArticle]);
+  }, [slug, loadArticle])
 
   const loadArticle = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    
+    setIsLoading(true)
+    setError(null)
+
     try {
-      const response = await fetch(`/api/blog/${slug}`);
-      const data = await response.json();
+      const response = await fetch(`/api/blog/${slug}`)
+      const data = await response.json()
 
       if (data.success) {
-        setArticle(data.data);
+        setArticle(data.data)
       } else {
-        setError(data.error || 'Article non trouvé');
+        setError(data.error || 'Article non trouvé')
       }
     } catch (error) {
-      console.error('Erreur lors du chargement de l\'article:', error);
-      setError('Erreur lors du chargement de l\'article');
+      console.error("Erreur lors du chargement de l'article:", error)
+      setError("Erreur lors du chargement de l'article")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [slug]);
+  }, [slug])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
-    });
-  };
+      day: 'numeric',
+    })
+  }
 
   const shareArticle = () => {
     if (navigator.share && article) {
@@ -84,13 +76,13 @@ export default function ArticlePage() {
         title: article.titre,
         text: article.resume,
         url: window.location.href,
-      });
+      })
     } else {
       // Fallback: copier l'URL dans le presse-papier
-      navigator.clipboard.writeText(window.location.href);
-      alert('Lien copié dans le presse-papier !');
+      navigator.clipboard.writeText(window.location.href)
+      alert('Lien copié dans le presse-papier !')
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -111,7 +103,7 @@ export default function ArticlePage() {
           </div>
         </div>
       </PublicLayout>
-    );
+    )
   }
 
   if (error || !article) {
@@ -124,7 +116,8 @@ export default function ArticlePage() {
                 <CardContent className="py-12">
                   <h1 className="text-2xl font-bold mb-4">Article non trouvé</h1>
                   <p className="text-muted-foreground mb-6">
-                    {error || 'L\'article que vous recherchez n\'existe pas ou n\'est plus disponible.'}
+                    {error ||
+                      "L'article que vous recherchez n'existe pas ou n'est plus disponible."}
                   </p>
                   <Button asChild>
                     <Link href="/blog">
@@ -138,7 +131,7 @@ export default function ArticlePage() {
           </div>
         </div>
       </PublicLayout>
-    );
+    )
   }
 
   return (
@@ -173,12 +166,10 @@ export default function ArticlePage() {
                       {article.titre}
                     </h1>
                   </div>
-                  
+
                   {/* Résumé */}
-                  <p className="text-xl text-gray-600 leading-relaxed">
-                    {article.resume}
-                  </p>
-                  
+                  <p className="text-xl text-gray-600 leading-relaxed">{article.resume}</p>
+
                   {/* Métadonnées */}
                   <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
                     <div className="flex items-center gap-2">
@@ -198,15 +189,15 @@ export default function ArticlePage() {
                       <span>{article.vue} vues</span>
                     </div>
                   </div>
-                  
+
                   {/* Catégories et tags */}
                   <div className="flex flex-wrap gap-2">
-                    {article.categories.map((category) => (
+                    {article.categories.map(category => (
                       <Badge key={category} variant="secondary" className="flex items-center gap-1">
                         {category}
                       </Badge>
                     ))}
-                    {article.tags.map((tag) => (
+                    {article.tags.map(tag => (
                       <Badge key={tag} variant="outline" className="text-xs">
                         #{tag}
                       </Badge>
@@ -221,8 +212,8 @@ export default function ArticlePage() {
               <Card>
                 <CardContent className="p-0">
                   <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                    <img 
-                      src={article.imagePrincipale} 
+                    <img
+                      src={article.imagePrincipale}
                       alt={article.titre}
                       className="w-full h-full object-cover"
                     />
@@ -234,7 +225,7 @@ export default function ArticlePage() {
             {/* Contenu de l'article */}
             <Card>
               <CardContent className="p-8">
-                <div 
+                <div
                   dangerouslySetInnerHTML={{ __html: article.contenu }}
                   className="prose prose-lg max-w-none article-content"
                 />
@@ -250,10 +241,10 @@ export default function ArticlePage() {
               <meta property="og:type" content="article" />
               <meta property="article:author" content={article.auteur} />
               <meta property="article:published_time" content={article.datePublication} />
-              {article.categories.map((category) => (
+              {article.categories.map(category => (
                 <meta key={category} property="article:section" content={category} />
               ))}
-              {article.tags.map((tag) => (
+              {article.tags.map(tag => (
                 <meta key={tag} property="article:tag" content={tag} />
               ))}
             </div>
@@ -261,5 +252,5 @@ export default function ArticlePage() {
         </div>
       </div>
     </PublicLayout>
-  );
+  )
 }

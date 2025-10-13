@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Clock,
   MapPin,
@@ -15,16 +15,19 @@ import {
   Users,
   X,
   Shield,
-  BarChart3
-} from 'lucide-react';
+  BarChart3,
+} from 'lucide-react'
 
 interface FormationSecuriteMatomoModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
-export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecuriteMatomoModalProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+export function FormationSecuriteMatomoModal({
+  isOpen,
+  onClose,
+}: FormationSecuriteMatomoModalProps) {
+  const [activeTab, setActiveTab] = useState('overview')
 
   const formationData = {
     titre: 'Gestion de la sécurité de votre site & analyse Web',
@@ -37,8 +40,8 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
     prerequis: 'Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur',
     publicConcerne: 'Artisans, commerçants ou professions libérales',
     objectifs: [
-      'Jour 1 : À l\'issue de la première journée, l\'apprenant(e) sera capable de mettre en place une stratégie globale de gestion de la sécurité de son site WordPress, incluant l\'exécution des mises à jour de sécurité, de maintenance et fonctionnelles, ainsi que la sécurisation et la sauvegarde de son site.',
-      'Jour 2 : À l\'issue de la deuxième journée, l\'apprenant(e) sera capable d\'installer et de configurer Matomo pour Suivre et comprendre les statistiques de son sites web grâce à un outil gratuit et en conformité RGPD : Matomo Analytics.'
+      "Jour 1 : À l'issue de la première journée, l'apprenant(e) sera capable de mettre en place une stratégie globale de gestion de la sécurité de son site WordPress, incluant l'exécution des mises à jour de sécurité, de maintenance et fonctionnelles, ainsi que la sécurisation et la sauvegarde de son site.",
+      "Jour 2 : À l'issue de la deuxième journée, l'apprenant(e) sera capable d'installer et de configurer Matomo pour Suivre et comprendre les statistiques de son sites web grâce à un outil gratuit et en conformité RGPD : Matomo Analytics.",
     ],
     programme: [
       {
@@ -49,23 +52,23 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
             'Importance des mises à jour (sécurité, maintenance, fonctionnelles).',
             'Meilleures pratiques pour les identifiants et mots de passe.',
             'Création d\'un compte administrateur "fantôme".',
-            'Modification de l\'accès à la page de connexion.',
+            "Modification de l'accès à la page de connexion.",
             'Techniques de blocage des tentatives de connexion excessives.',
             'Blocage des URL malicieuses.',
-            'Présentation d\'un plugin tout-en-un pour sécuriser le site.'
-          ]
+            "Présentation d'un plugin tout-en-un pour sécuriser le site.",
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Mise en pratique',
           contenu: [
             'Installation du plugin de sécurité.',
-            'Exercices d\'application et simulations.',
+            "Exercices d'application et simulations.",
             'Sauvegarde de votre site (méthodes et outils).',
             'Restauration de votre site.',
             'Import et export de données.',
-            'Quiz de fin de journée pour évaluer les connaissances acquises.'
-          ]
-        }
+            'Quiz de fin de journée pour évaluer les connaissances acquises.',
+          ],
+        },
       },
       {
         jour: 'Jour 2 : Analyse statistique Web avec Matomo (7 heures)',
@@ -75,8 +78,8 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
             'Présentation de Matomo et de ses fonctionnalités.',
             'Installation de Matomo sur un serveur.',
             'Configuration initiale et intégration avec WordPress.',
-            'Mise en place de balises de suivi.'
-          ]
+            'Mise en place de balises de suivi.',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Analyse et interprétation des données',
@@ -84,26 +87,31 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
             'Lecture et interprétation des rapports de Matomo.',
             'Mise en place et suivi des objectifs (conversions).',
             'Analyse du comportement des utilisateurs sur le site.',
-            'Stratégies d\'amélioration basées sur les données analytiques.',
-            'Cas pratiques : interprétation de rapports et élaboration de recommandations.'
-          ]
-        }
-      }
+            "Stratégies d'amélioration basées sur les données analytiques.",
+            'Cas pratiques : interprétation de rapports et élaboration de recommandations.',
+          ],
+        },
+      },
     ],
     modalites: {
-      pedagogiques: 'Formation en présentiel individuel (méthode expositive et démonstrative) avec alternance d\'exposés théoriques et de cas pratiques. Cette méthode permet de varier les modes d\'apprentissage pour favoriser l\'acquisition des connaissances et des compétences.',
-      techniques: 'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques).',
-      evaluation: 'Quizz d\'une vingtaine de questions par l\'intermédiaire de notre plateforme d\'évaluation en ligne EVALBOX. Grille d\'analyse des compétences, travaux pratiques.',
-      sanction: 'Un certificat de réalisation de formation. Une feuille d\'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.',
-      niveau: 'Aucune certification obtenue'
+      pedagogiques:
+        "Formation en présentiel individuel (méthode expositive et démonstrative) avec alternance d'exposés théoriques et de cas pratiques. Cette méthode permet de varier les modes d'apprentissage pour favoriser l'acquisition des connaissances et des compétences.",
+      techniques:
+        'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques).',
+      evaluation:
+        "Quizz d'une vingtaine de questions par l'intermédiaire de notre plateforme d'évaluation en ligne EVALBOX. Grille d'analyse des compétences, travaux pratiques.",
+      sanction:
+        "Un certificat de réalisation de formation. Une feuille d'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.",
+      niveau: 'Aucune certification obtenue',
     },
     contact: {
       email: 'aurelien@gestionmax.fr',
       telephone: '06.46.02.24.68',
-      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité'
+      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité',
     },
-    accessibilite: 'Votre organisme est engagé dans une démarche d\'accueil et d\'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D\'évaluer vos besoins spécifiques au regard d\'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.'
-  };
+    accessibilite:
+      "Votre organisme est engagé dans une démarche d'accueil et d'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D'évaluer vos besoins spécifiques au regard d'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.",
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -124,10 +132,18 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge className="bg-[#1f3b8e] text-white">{formationData.niveau}</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{formationData.modalite}</Badge>
-            <Badge variant="default" className="bg-[#7eb33f]">{formationData.duree}</Badge>
-            <Badge variant="default" className="bg-[#1f3b8e]">{formationData.prix}</Badge>
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">Code: {formationData.code}</Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {formationData.modalite}
+            </Badge>
+            <Badge variant="default" className="bg-[#7eb33f]">
+              {formationData.duree}
+            </Badge>
+            <Badge variant="default" className="bg-[#1f3b8e]">
+              {formationData.prix}
+            </Badge>
+            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+              Code: {formationData.code}
+            </Badge>
           </div>
         </DialogHeader>
 
@@ -141,7 +157,7 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d&apos;ensemble
+            Vue d'ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -184,7 +200,9 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Objectifs pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Objectifs pédagogiques
+                </h3>
                 <ul className="space-y-2">
                   {formationData.objectifs.map((objectif, index) => (
                     <li key={index} className="flex items-start gap-2">
@@ -198,23 +216,33 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Informations pratiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Informations pratiques
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Horaires:</strong> {formationData.horaires}</span>
+                    <span>
+                      <strong>Horaires:</strong> {formationData.horaires}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Modalité:</strong> {formationData.modalite}</span>
+                    <span>
+                      <strong>Modalité:</strong> {formationData.modalite}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Euro className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Tarif:</strong> {formationData.prix} nets de taxes</span>
+                    <span>
+                      <strong>Tarif:</strong> {formationData.prix} nets de taxes
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Niveau:</strong> {formationData.niveau}</span>
+                    <span>
+                      <strong>Niveau:</strong> {formationData.niveau}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -223,7 +251,9 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
             {/* Compétences clés */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Compétences développées</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Compétences développées
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
@@ -295,7 +325,9 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
           <div className="space-y-6 text-gray-700">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Modalités pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Modalités pédagogiques
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.pedagogiques}</p>
                 <p className="text-gray-600">{formationData.modalites.techniques}</p>
               </CardContent>
@@ -303,7 +335,9 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Évaluation et sanction</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Évaluation et sanction
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.evaluation}</p>
                 <p className="text-gray-600 mb-4">{formationData.modalites.sanction}</p>
                 <p className="text-gray-600">{formationData.modalites.niveau}</p>
@@ -312,14 +346,18 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Accessibilité handicap</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Accessibilité handicap
+                </h3>
                 <p className="text-gray-600">{formationData.accessibilite}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Contact et informations</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Contact et informations
+                </h3>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-[#1f3b8e]" />
@@ -347,5 +385,5 @@ export function FormationSecuriteMatomoModal({ isOpen, onClose }: FormationSecur
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

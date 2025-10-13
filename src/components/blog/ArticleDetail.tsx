@@ -1,63 +1,54 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { 
-  Calendar, 
-  User, 
-  Clock, 
-  Eye, 
-  ArrowLeft,
-  Star,
-  Tag,
-  Share2
-} from 'lucide-react';
-import { Article } from '@/types/blog';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Calendar, User, Clock, Eye, ArrowLeft, Star, Tag, Share2 } from 'lucide-react'
+import { Article } from '@/types/blog'
 
 interface ArticleDetailProps {
-  slug: string;
+  slug: string
 }
 
 export function ArticleDetail({ slug }: ArticleDetailProps) {
-  const [article, setArticle] = useState<Article | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [article, setArticle] = useState<Article | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    loadArticle();
-  }, [slug]);
+    loadArticle()
+  }, [slug])
 
   const loadArticle = async () => {
-    setIsLoading(true);
-    setError(null);
-    
+    setIsLoading(true)
+    setError(null)
+
     try {
-      const response = await fetch(`/api/blog/${slug}`);
-      const data = await response.json();
+      const response = await fetch(`/api/blog/${slug}`)
+      const data = await response.json()
 
       if (data.success) {
-        setArticle(data.data);
+        setArticle(data.data)
       } else {
-        setError(data.error || 'Article non trouvé');
+        setError(data.error || 'Article non trouvé')
       }
     } catch (error) {
-      console.error('Erreur lors du chargement de l\'article:', error);
-      setError('Erreur lors du chargement de l\'article');
+      console.error("Erreur lors du chargement de l'article:", error)
+      setError("Erreur lors du chargement de l'article")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
-    });
-  };
+      day: 'numeric',
+    })
+  }
 
   const shareArticle = () => {
     if (navigator.share && article) {
@@ -65,13 +56,13 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
         title: article.titre,
         text: article.resume,
         url: window.location.href,
-      });
+      })
     } else {
       // Fallback: copier l'URL dans le presse-papier
-      navigator.clipboard.writeText(window.location.href);
-      alert('Lien copié dans le presse-papier !');
+      navigator.clipboard.writeText(window.location.href)
+      alert('Lien copié dans le presse-papier !')
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -86,7 +77,7 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (error || !article) {
@@ -96,7 +87,7 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
           <CardContent className="py-12">
             <h1 className="text-2xl font-bold mb-4">Article non trouvé</h1>
             <p className="text-muted-foreground mb-6">
-              {error || 'L\'article que vous recherchez n\'existe pas ou n\'est plus disponible.'}
+              {error || "L'article que vous recherchez n'existe pas ou n'est plus disponible."}
             </p>
             <Button asChild>
               <Link href="/blog">
@@ -107,7 +98,7 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   return (
@@ -132,19 +123,13 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
           <div className="space-y-4">
             {/* Titre */}
             <div className="flex items-start gap-2">
-              {article.featured && (
-                <Star className="h-6 w-6 text-yellow-500 fill-current mt-1" />
-              )}
-              <CardTitle className="text-3xl font-bold leading-tight">
-                {article.titre}
-              </CardTitle>
+              {article.featured && <Star className="h-6 w-6 text-yellow-500 fill-current mt-1" />}
+              <CardTitle className="text-3xl font-bold leading-tight">{article.titre}</CardTitle>
             </div>
-            
+
             {/* Résumé */}
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {article.resume}
-            </p>
-            
+            <p className="text-lg text-muted-foreground leading-relaxed">{article.resume}</p>
+
             {/* Métadonnées */}
             <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -164,16 +149,16 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
                 <span>{article.vue} vues</span>
               </div>
             </div>
-            
+
             {/* Catégories et tags */}
             <div className="flex flex-wrap gap-2">
-              {article.categories.map((category) => (
+              {article.categories.map(category => (
                 <Badge key={category} variant="secondary" className="flex items-center gap-1">
                   <Tag className="h-3 w-3" />
                   {category}
                 </Badge>
               ))}
-              {article.tags.map((tag) => (
+              {article.tags.map(tag => (
                 <Badge key={tag} variant="outline" className="text-xs">
                   #{tag}
                 </Badge>
@@ -186,10 +171,7 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
       {/* Contenu de l'article */}
       <Card>
         <CardContent className="prose prose-lg max-w-none py-8">
-          <div 
-            dangerouslySetInnerHTML={{ __html: article.contenu }}
-            className="article-content"
-          />
+          <div dangerouslySetInnerHTML={{ __html: article.contenu }} className="article-content" />
         </CardContent>
       </Card>
 
@@ -202,13 +184,13 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
         <meta property="og:type" content="article" />
         <meta property="article:author" content={article.auteur} />
         <meta property="article:published_time" content={article.datePublication} />
-        {article.categories.map((category) => (
+        {article.categories.map(category => (
           <meta key={category} property="article:section" content={category} />
         ))}
-        {article.tags.map((tag) => (
+        {article.tags.map(tag => (
           <meta key={tag} property="article:tag" content={tag} />
         ))}
       </div>
     </div>
-  );
+  )
 }

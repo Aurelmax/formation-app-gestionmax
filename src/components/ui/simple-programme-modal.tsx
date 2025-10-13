@@ -1,77 +1,74 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Clock, 
-  MapPin, 
-  Euro, 
-  Award,
-  Phone,
-  Mail,
-  Download,
-  X
-} from 'lucide-react';
+import { useState } from 'react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Clock, MapPin, Euro, Award, Phone, Mail, Download, X } from 'lucide-react'
 
 interface SimpleProgrammeModalProps {
   programme: {
-    id: string;
-    titre: string;
-    description: string;
-    duree: number;
-    niveau: string;
-    modalites: string;
-    prix: number;
-    competences: string[];
-  };
-  isOpen: boolean;
-  onClose: () => void;
+    id: string
+    titre: string
+    description: string
+    duree: number
+    niveau: string
+    modalites: string
+    prix: number
+    competences: string[]
+  }
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function SimpleProgrammeModal({ programme, isOpen, onClose }: SimpleProgrammeModalProps) {
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
 
   const handleDownloadPDF = async () => {
-    setIsGeneratingPDF(true);
-    
+    setIsGeneratingPDF(true)
+
     try {
       // Simulation du téléchargement PDF
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise(resolve => setTimeout(resolve, 2000))
+
       // Créer un blob avec le contenu du programme
-      const content = `PROGRAMME DE FORMATION\n\n${programme.titre}\n\nDescription: ${programme.description}\n\nDurée: ${programme.duree} heures\nNiveau: ${programme.niveau}\nModalités: ${programme.modalites}\nPrix: ${programme.prix}€\n\nCompétences:\n${programme.competences.map(comp => `- ${comp}`).join('\n')}`;
-      
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Programme_${programme.titre.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      const content = `PROGRAMME DE FORMATION\n\n${programme.titre}\n\nDescription: ${programme.description}\n\nDurée: ${programme.duree} heures\nNiveau: ${programme.niveau}\nModalités: ${programme.modalites}\nPrix: ${programme.prix}€\n\nCompétences:\n${programme.competences.map(comp => `- ${comp}`).join('\n')}`
+
+      const blob = new Blob([content], { type: 'text/plain' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `Programme_${programme.titre.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
     } catch (error) {
-      console.error('Erreur lors de la génération du PDF:', error);
-      alert('Erreur lors de la génération du PDF. Veuillez réessayer.');
+      console.error('Erreur lors de la génération du PDF:', error)
+      alert('Erreur lors de la génération du PDF. Veuillez réessayer.')
     } finally {
-      setIsGeneratingPDF(false);
+      setIsGeneratingPDF(false)
     }
-  };
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className="max-w-4xl max-h-[90vh] overflow-y-auto relative" 
+      <DialogContent
+        className="max-w-4xl max-h-[90vh] overflow-y-auto relative"
         showCloseButton={false}
       >
         {/* Croix rouge en haut à droite */}
         <button
           onClick={() => {
-            console.log('Clic sur la croix de fermeture');
-            onClose();
+            console.log('Clic sur la croix de fermeture')
+            onClose()
           }}
           className="absolute top-4 right-4 z-10 p-2 rounded-full bg-red-500 hover:bg-red-600 text-white transition-colors duration-200 shadow-lg"
           aria-label="Fermer le modal"
@@ -79,19 +76,26 @@ export function SimpleProgrammeModal({ programme, isOpen, onClose }: SimpleProgr
         >
           <X className="h-5 w-5" />
         </button>
-        
+
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[#1f3b8e] mb-4 pr-12">
             {programme.titre}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            Modal détaillé pour la formation {programme.titre} - {programme.duree} heures - Niveau {programme.niveau} - {programme.modalites} - {programme.prix}€
+            Modal détaillé pour la formation {programme.titre} - {programme.duree} heures - Niveau{' '}
+            {programme.niveau} - {programme.modalites} - {programme.prix}€
           </DialogDescription>
           <div className="flex flex-wrap gap-2 mb-4">
             <Badge className="bg-[#1f3b8e] text-white">{programme.niveau}</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{programme.modalites}</Badge>
-            <Badge variant="outline" className="border-[#1f3b8e] text-[#1f3b8e]">{programme.duree}h</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{programme.prix}€</Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {programme.modalites}
+            </Badge>
+            <Badge variant="outline" className="border-[#1f3b8e] text-[#1f3b8e]">
+              {programme.duree}h
+            </Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {programme.prix}€
+            </Badge>
           </div>
         </DialogHeader>
 
@@ -122,19 +126,19 @@ export function SimpleProgrammeModal({ programme, isOpen, onClose }: SimpleProgr
                     'bg-pink-100 text-pink-800 border-pink-200',
                     'bg-cyan-100 text-cyan-800 border-cyan-200',
                     'bg-yellow-100 text-yellow-800 border-yellow-200',
-                    'bg-indigo-100 text-indigo-800 border-indigo-200'
-                  ];
-                  const colorClass = colors[index % colors.length];
+                    'bg-indigo-100 text-indigo-800 border-indigo-200',
+                  ]
+                  const colorClass = colors[index % colors.length]
 
                   return (
-                    <Badge 
-                      key={competence} 
-                      variant="outline" 
+                    <Badge
+                      key={competence}
+                      variant="outline"
                       className={`text-xs border ${colorClass}`}
                     >
                       {competence}
                     </Badge>
-                  );
+                  )
                 })}
               </div>
             </CardContent>
@@ -217,12 +221,12 @@ export function SimpleProgrammeModal({ programme, isOpen, onClose }: SimpleProgr
               </>
             )}
           </Button>
-          
+
           <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white">
             RDV de Positionnement
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -1,18 +1,15 @@
-'use client';
+'use client'
 
-import { Bell, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Bell, Search } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 export function Header() {
   return (
     <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
       <div className="flex items-center gap-4 flex-1 max-w-xl">
         <Search className="h-5 w-5 text-gray-400" />
-        <Input
-          placeholder="Rechercher..."
-          className="border-0 focus-visible:ring-0"
-        />
+        <Input placeholder="Rechercher..." className="border-0 focus-visible:ring-0" />
       </div>
 
       <div className="flex items-center gap-4">
@@ -22,5 +19,5 @@ export function Header() {
         </Button>
       </div>
     </header>
-  );
+  )
 }

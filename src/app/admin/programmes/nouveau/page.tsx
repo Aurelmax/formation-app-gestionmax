@@ -1,18 +1,18 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ProgrammeFormComplet } from '@/components/admin/ProgrammeFormComplet';
-import { Programme } from '@/types/index';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { ProgrammeFormComplet } from '@/components/admin/ProgrammeFormComplet'
+import { Programme } from '@/types/index'
+import { toast } from 'sonner'
 
 export default function NouveauProgrammePage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const handleSave = async (programmeData: Omit<Programme, 'id' | 'createdAt' | 'updatedAt'>) => {
-    setIsLoading(true);
-    
+    setIsLoading(true)
+
     try {
       const response = await fetch('/api/programmes', {
         method: 'POST',
@@ -20,28 +20,27 @@ export default function NouveauProgrammePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(programmeData),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.error || 'Erreur lors de la création du programme');
+        throw new Error(result.error || 'Erreur lors de la création du programme')
       }
 
-      toast.success('Programme créé avec succès !');
-      router.push('/admin/programmes');
-      
+      toast.success('Programme créé avec succès !')
+      router.push('/admin/programmes')
     } catch (error: any) {
-      console.error('Erreur lors de la création du programme:', error);
-      toast.error(error.message || 'Erreur lors de la création du programme');
+      console.error('Erreur lors de la création du programme:', error)
+      toast.error(error.message || 'Erreur lors de la création du programme')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleCancel = () => {
-    router.push('/admin/programmes');
-  };
+    router.push('/admin/programmes')
+  }
 
   return (
     <div className="container mx-auto py-6">
@@ -51,12 +50,8 @@ export default function NouveauProgrammePage() {
           Créez un nouveau programme de formation pour votre catalogue
         </p>
       </div>
-      
-      <ProgrammeFormComplet
-        onSave={handleSave}
-        onCancel={handleCancel}
-        isLoading={isLoading}
-      />
+
+      <ProgrammeFormComplet onSave={handleSave} onCancel={handleCancel} isLoading={isLoading} />
     </div>
-  );
+  )
 }

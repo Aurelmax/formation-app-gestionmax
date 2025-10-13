@@ -1,65 +1,78 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Copy, Eye, EyeOff, User, Mail, Key } from 'lucide-react';
-import { userService } from '@/lib/user-service';
-import { User as UserType } from '@/types/users';
-import { toast } from 'sonner';
+import { useState, useEffect } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Copy, Eye, EyeOff, User, Mail, Key } from 'lucide-react'
+import { userService } from '@/lib/user-service'
+import { User as UserType } from '@/types/users'
+import { toast } from 'sonner'
 
 export function UserCredentials() {
-  const [users, setUsers] = useState<UserType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
+  const [users, setUsers] = useState<UserType[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({})
 
   const loadUsers = async () => {
     try {
-      setIsLoading(true);
-      const usersData = await userService.getUsers();
-      setUsers(usersData);
+      setIsLoading(true)
+      const usersData = await userService.getUsers()
+      setUsers(usersData)
     } catch (error) {
-      toast.error('Erreur lors du chargement des utilisateurs');
+      toast.error('Erreur lors du chargement des utilisateurs')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    loadUsers();
-  }, []);
+    loadUsers()
+  }, [])
 
   const togglePasswordVisibility = (userId: string) => {
     setShowPasswords(prev => ({
       ...prev,
-      [userId]: !prev[userId]
-    }));
-  };
+      [userId]: !prev[userId],
+    }))
+  }
 
   const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success(`${label} copié dans le presse-papiers`);
-  };
+    navigator.clipboard.writeText(text)
+    toast.success(`${label} copié dans le presse-papiers`)
+  }
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case 'super_admin': return 'bg-purple-100 text-purple-800';
-      case 'admin': return 'bg-blue-100 text-blue-800';
-      case 'formateur': return 'bg-green-100 text-green-800';
-      case 'gestionnaire': return 'bg-orange-100 text-orange-800';
-      case 'apprenant': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'superAdmin':
+        return 'bg-purple-100 text-purple-800'
+      case 'admin':
+        return 'bg-blue-100 text-blue-800'
+      case 'formateur':
+        return 'bg-green-100 text-green-800'
+      case 'gestionnaire':
+        return 'bg-orange-100 text-orange-800'
+      case 'apprenant':
+        return 'bg-gray-100 text-gray-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
+    )
   }
 
   return (
@@ -85,12 +98,13 @@ export function UserCredentials() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((user) => (
+            {users.map(user => (
               <TableRow key={user.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-sm">
-                      {user.firstName?.[0]}{user.lastName?.[0] || user.name?.[0]}
+                      {user.firstName?.[0]}
+                      {user.lastName?.[0] || user.name?.[0]}
                     </div>
                     <div>
                       <div className="font-medium">{user.name}</div>
@@ -101,9 +115,7 @@ export function UserCredentials() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge className={getRoleBadgeColor(user.role)}>
-                    {user.role}
-                  </Badge>
+                  <Badge className={getRoleBadgeColor(user.role)}>{user.role}</Badge>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
@@ -148,10 +160,9 @@ export function UserCredentials() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => copyToClipboard(
-                        `${user.email} / password123`,
-                        'Identifiants complets'
-                      )}
+                      onClick={() =>
+                        copyToClipboard(`${user.email} / password123`, 'Identifiants complets')
+                      }
                     >
                       <Copy className="h-3 w-3 mr-1" />
                       Copier tout
@@ -168,12 +179,15 @@ export function UserCredentials() {
             ⚠️ Informations importantes :
           </h3>
           <ul className="text-xs text-yellow-800 space-y-1">
-            <li>• Tous les nouveaux utilisateurs ont le mot de passe par défaut : <code>password123</code></li>
+            <li>
+              • Tous les nouveaux utilisateurs ont le mot de passe par défaut :{' '}
+              <code>password123</code>
+            </li>
             <li>• Changez les mots de passe après la première connexion</li>
             <li>• Ces identifiants sont uniquement pour le développement</li>
           </ul>
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

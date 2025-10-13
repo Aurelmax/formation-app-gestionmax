@@ -1,60 +1,60 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Database, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
+import { useEffect, useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Database, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 
 export default function PayloadRealPage() {
-  const [payloadStatus, setPayloadStatus] = useState<'checking' | 'running' | 'error' | 'not-running'>('checking');
-  const [error, setError] = useState<string | null>(null);
+  const [payloadStatus, setPayloadStatus] = useState<
+    'checking' | 'running' | 'error' | 'not-running'
+  >('checking')
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    checkPayloadStatus();
-  }, []);
+    checkPayloadStatus()
+  }, [])
 
   const checkPayloadStatus = async () => {
     try {
       // Vérifier si Payload est accessible
-      const response = await fetch('/api/payload/health');
+      const response = await fetch('/api/payload/health')
       if (response.ok) {
-        setPayloadStatus('running');
+        setPayloadStatus('running')
       } else {
-        setPayloadStatus('not-running');
-        setError('Payload CMS n\'est pas accessible');
+        setPayloadStatus('not-running')
+        setError("Payload CMS n'est pas accessible")
       }
     } catch {
-      setPayloadStatus('error');
-      setError('Erreur de connexion à Payload CMS');
+      setPayloadStatus('error')
+      setError('Erreur de connexion à Payload CMS')
     }
-  };
+  }
 
   const startPayload = async () => {
     try {
       // Essayer de démarrer Payload via l'API
       const response = await fetch('/api/payload/start', {
         method: 'POST',
-      });
-      
+      })
+
       if (response.ok) {
-        setPayloadStatus('running');
-        setError(null);
+        setPayloadStatus('running')
+        setError(null)
       } else {
-        setError('Impossible de démarrer Payload CMS');
+        setError('Impossible de démarrer Payload CMS')
       }
     } catch {
-      setError('Erreur lors du démarrage de Payload CMS');
+      setError('Erreur lors du démarrage de Payload CMS')
     }
-  };
+  }
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Interface Payload CMS Réelle</h1>
-        <p className="text-muted-foreground">
-          Accès direct à l&apos;interface Payload CMS
-        </p>
+        <p className="text-muted-foreground">Accès direct à l'interface Payload CMS</p>
       </div>
 
       {/* Statut de Payload */}
@@ -78,7 +78,7 @@ export default function PayloadRealPage() {
               <Alert>
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
-                  Payload CMS est en cours d&apos;exécution et accessible.
+                  Payload CMS est en cours d'exécution et accessible.
                 </AlertDescription>
               </Alert>
             )}
@@ -86,35 +86,25 @@ export default function PayloadRealPage() {
             {payloadStatus === 'not-running' && (
               <Alert variant="destructive">
                 <XCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Payload CMS n&apos;est pas en cours d&apos;exécution.
-                </AlertDescription>
+                <AlertDescription>Payload CMS n'est pas en cours d'exécution.</AlertDescription>
               </Alert>
             )}
 
             {payloadStatus === 'error' && (
               <Alert variant="destructive">
                 <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
-                  Erreur: {error}
-                </AlertDescription>
+                <AlertDescription>Erreur: {error}</AlertDescription>
               </Alert>
             )}
 
-            {error && (
-              <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
-                {error}
-              </div>
-            )}
+            {error && <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">{error}</div>}
 
             <div className="flex gap-2">
               <Button onClick={checkPayloadStatus} variant="outline">
                 Vérifier le statut
               </Button>
               {payloadStatus !== 'running' && (
-                <Button onClick={startPayload}>
-                  Démarrer Payload CMS
-                </Button>
+                <Button onClick={startPayload}>Démarrer Payload CMS</Button>
               )}
             </div>
           </div>
@@ -133,7 +123,7 @@ export default function PayloadRealPage() {
                 src="/admin"
                 className="w-full h-full border-0"
                 title="Payload CMS Interface"
-                onError={() => setError('Erreur de chargement de l\'interface Payload')}
+                onError={() => setError("Erreur de chargement de l'interface Payload")}
               />
             </div>
           </CardContent>
@@ -149,11 +139,9 @@ export default function PayloadRealPage() {
                 <Database className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Payload CMS non disponible</h3>
                 <p className="text-muted-foreground mb-4">
-                  Payload CMS doit être démarré pour accéder à l&apos;interface.
+                  Payload CMS doit être démarré pour accéder à l'interface.
                 </p>
-                <Button onClick={startPayload}>
-                  Démarrer Payload CMS
-                </Button>
+                <Button onClick={startPayload}>Démarrer Payload CMS</Button>
               </div>
             </div>
           </CardContent>
@@ -170,10 +158,11 @@ export default function PayloadRealPage() {
             <div>
               <h4 className="font-semibold mb-2">Problème identifié :</h4>
               <p className="text-muted-foreground">
-                Payload CMS ne peut pas démarrer à cause d&apos;un conflit entre Node.js 20 et la bibliothèque &apos;undici&apos;.
+                Payload CMS ne peut pas démarrer à cause d'un conflit entre Node.js 20 et la
+                bibliothèque 'undici'.
               </p>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-2">Solutions possibles :</h4>
               <ul className="list-disc list-inside space-y-1 text-muted-foreground">
@@ -187,12 +176,13 @@ export default function PayloadRealPage() {
             <div>
               <h4 className="font-semibold mb-2">Solution temporaire :</h4>
               <p className="text-muted-foreground">
-                Utilisez l&apos;interface simulée dans <code>/admin/payload</code> pour gérer vos données.
+                Utilisez l'interface simulée dans <code>/admin/payload</code> pour gérer vos
+                données.
               </p>
             </div>
           </div>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

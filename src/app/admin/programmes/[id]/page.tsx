@@ -1,119 +1,121 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { 
-  ArrowLeft, 
-  Edit, 
-  Trash2, 
-  Clock, 
-  Euro, 
-  Target, 
-  FileText, 
-  User, 
-  Phone, 
-  Mail, 
-  CheckCircle, 
+import { useState, useEffect } from 'react'
+import { useRouter, useParams } from 'next/navigation'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  ArrowLeft,
+  Edit,
+  Trash2,
+  Clock,
+  Euro,
+  Target,
+  FileText,
+  User,
+  Phone,
+  Mail,
+  CheckCircle,
   AlertTriangle,
   BookOpen,
-  Download
-} from 'lucide-react';
-import { toast } from 'sonner';
-import { formatCurrency } from '@/lib/utils';
-import Link from 'next/link';
+  Download,
+} from 'lucide-react'
+import { toast } from 'sonner'
+import { formatCurrency } from '@/lib/utils'
+import Link from 'next/link'
 
 export default function ProgrammeDetailPage() {
-  const [programme, setProgramme] = useState<Record<string, unknown> | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-  const params = useParams();
-  const programmeId = params.id as string;
+  const [programme, setProgramme] = useState<Record<string, unknown> | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+  const params = useParams()
+  const programmeId = params.id as string
 
   useEffect(() => {
     if (programmeId) {
-      loadProgramme();
+      loadProgramme()
     }
-  }, [programmeId]);
+  }, [programmeId])
 
   const loadProgramme = async () => {
     try {
-      const response = await fetch(`/api/programmes/${programmeId}`);
-      const result = await response.json();
-      
+      const response = await fetch(`/api/programmes/${programmeId}`)
+      const result = await response.json()
+
       if (result.success) {
-        setProgramme(result.data);
+        setProgramme(result.data)
       } else {
-        toast.error('Erreur lors du chargement du programme');
-        router.push('/admin/programmes');
+        toast.error('Erreur lors du chargement du programme')
+        router.push('/admin/programmes')
       }
     } catch (error: unknown) {
-      console.error('Erreur lors du chargement du programme:', error);
-      toast.error('Erreur lors du chargement du programme');
-      router.push('/admin/programmes');
+      console.error('Erreur lors du chargement du programme:', error)
+      toast.error('Erreur lors du chargement du programme')
+      router.push('/admin/programmes')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleDelete = async () => {
-    if (!programme) return;
-    
-    if (!confirm(`Êtes-vous sûr de vouloir supprimer le programme "${programme.titre as string}" ?`)) {
-      return;
+    if (!programme) return
+
+    if (
+      !confirm(`Êtes-vous sûr de vouloir supprimer le programme "${programme.titre as string}" ?`)
+    ) {
+      return
     }
 
     try {
       const response = await fetch(`/api/programmes/${programmeId}`, {
         method: 'DELETE',
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.error || 'Erreur lors de la suppression');
+        throw new Error(result.error || 'Erreur lors de la suppression')
       }
 
-      toast.success('Programme supprimé avec succès !');
-      router.push('/admin/programmes');
+      toast.success('Programme supprimé avec succès !')
+      router.push('/admin/programmes')
     } catch (error: unknown) {
-      console.error('Erreur lors de la suppression:', error);
-      toast.error((error as Error).message || 'Erreur lors de la suppression du programme');
+      console.error('Erreur lors de la suppression:', error)
+      toast.error((error as Error).message || 'Erreur lors de la suppression du programme')
     }
-  };
+  }
 
   const handleDownloadPDF = async () => {
-    if (!programme) return;
+    if (!programme) return
 
     try {
       const response = await fetch(`/api/programmes/${programmeId}/pdf`, {
         method: 'GET',
-      });
+      })
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la génération du PDF');
+        throw new Error('Erreur lors de la génération du PDF')
       }
 
       // Créer un blob et télécharger le fichier
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `${(programme.titre as string).replace(/[^a-zA-Z0-9]/g, '_')}.html`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = `${(programme.titre as string).replace(/[^a-zA-Z0-9]/g, '_')}.html`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
 
-      toast.success('Document téléchargé avec succès !');
+      toast.success('Document téléchargé avec succès !')
     } catch (error: unknown) {
-      console.error('Erreur lors du téléchargement:', error);
-      toast.error((error as Error).message || 'Erreur lors du téléchargement du document');
+      console.error('Erreur lors du téléchargement:', error)
+      toast.error((error as Error).message || 'Erreur lors du téléchargement du document')
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -125,7 +127,7 @@ export default function ProgrammeDetailPage() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (!programme) {
@@ -133,13 +135,13 @@ export default function ProgrammeDetailPage() {
       <div className="container mx-auto py-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600 mb-4">Programme non trouvé</h1>
-          <p className="text-muted-foreground mb-4">Le programme demandé n&apos;existe pas ou a été supprimé.</p>
-          <Button onClick={() => router.push('/admin/programmes')}>
-            Retour à la liste
-          </Button>
+          <p className="text-muted-foreground mb-4">
+            Le programme demandé n'existe pas ou a été supprimé.
+          </p>
+          <Button onClick={() => router.push('/admin/programmes')}>Retour à la liste</Button>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -188,77 +190,89 @@ export default function ProgrammeDetailPage() {
             <CardContent className="space-y-4">
               <div>
                 <h4 className="font-semibold mb-2">Description</h4>
-                <p className="text-muted-foreground whitespace-pre-line">{programme.description as string}</p>
+                <p className="text-muted-foreground whitespace-pre-line">
+                  {programme.description as string}
+                </p>
               </div>
-              
+
               {programme.objectifs && (
                 <div>
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
                     <Target className="h-4 w-4" />
                     Objectifs pédagogiques
                   </h4>
-                  <p className="text-muted-foreground whitespace-pre-line">{programme.objectifs as string}</p>
+                  <p className="text-muted-foreground whitespace-pre-line">
+                    {programme.objectifs as string}
+                  </p>
                 </div>
               )}
 
               {programme.prerequis && (
                 <div>
                   <h4 className="font-semibold mb-2">Prérequis</h4>
-                  <p className="text-muted-foreground whitespace-pre-line">{programme.prerequis as string}</p>
+                  <p className="text-muted-foreground whitespace-pre-line">
+                    {programme.prerequis as string}
+                  </p>
                 </div>
               )}
 
               {programme.publicConcerne && (
                 <div>
                   <h4 className="font-semibold mb-2">Public concerné</h4>
-                  <p className="text-muted-foreground whitespace-pre-line">{programme.publicConcerne as string}</p>
+                  <p className="text-muted-foreground whitespace-pre-line">
+                    {programme.publicConcerne as string}
+                  </p>
                 </div>
               )}
             </CardContent>
           </Card>
 
           {/* Compétences */}
-          {programme.competences && Array.isArray(programme.competences) && (programme.competences as string[]).length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Compétences développées
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {(programme.competences as string[]).map((competence, index) => (
-                    <Badge key={`${competence}-${index}`} variant="secondary">
-                      {competence}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          {programme.competences &&
+            Array.isArray(programme.competences) &&
+            (programme.competences as string[]).length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    Compétences développées
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {(programme.competences as string[]).map((competence, index) => (
+                      <Badge key={`${competence}-${index}`} variant="secondary">
+                        {competence}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
           {/* Ressources */}
-          {programme.ressources && Array.isArray(programme.ressources) && (programme.ressources as string[]).length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
-                  Ressources et matériel
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {(programme.ressources as string[]).map((ressource, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-blue-600 mt-1">•</span>
-                      <span>{ressource}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
+          {programme.ressources &&
+            Array.isArray(programme.ressources) &&
+            (programme.ressources as string[]).length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    Ressources et matériel
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {(programme.ressources as string[]).map((ressource, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-blue-600 mt-1">•</span>
+                        <span>{ressource}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
 
           {/* Évaluation et certification */}
           <Card>
@@ -271,8 +285,10 @@ export default function ProgrammeDetailPage() {
             <CardContent className="space-y-4">
               {programme.modalitesEvaluation && (
                 <div>
-                  <h4 className="font-semibold mb-2">Modalités d&apos;évaluation</h4>
-                  <p className="text-muted-foreground whitespace-pre-line">{programme.modalitesEvaluation as string}</p>
+                  <h4 className="font-semibold mb-2">Modalités d'évaluation</h4>
+                  <p className="text-muted-foreground whitespace-pre-line">
+                    {programme.modalitesEvaluation as string}
+                  </p>
                 </div>
               )}
 
@@ -283,11 +299,13 @@ export default function ProgrammeDetailPage() {
                     <p className="text-muted-foreground">{programme.sanctionFormation as string}</p>
                   </div>
                 )}
-                
+
                 {programme.niveauCertification && (
                   <div>
                     <h4 className="font-semibold mb-2">Niveau/Certification</h4>
-                    <p className="text-muted-foreground">{programme.niveauCertification as string}</p>
+                    <p className="text-muted-foreground">
+                      {programme.niveauCertification as string}
+                    </p>
                   </div>
                 )}
               </div>
@@ -306,14 +324,18 @@ export default function ProgrammeDetailPage() {
               {programme.accessibiliteHandicap && (
                 <div>
                   <h4 className="font-semibold mb-2">Accessibilité handicap</h4>
-                  <p className="text-muted-foreground whitespace-pre-line">{programme.accessibiliteHandicap as string}</p>
+                  <p className="text-muted-foreground whitespace-pre-line">
+                    {programme.accessibiliteHandicap as string}
+                  </p>
                 </div>
               )}
 
               {programme.cessationAbandon && (
                 <div>
                   <h4 className="font-semibold mb-2">Cessation anticipée/Abandon</h4>
-                  <p className="text-muted-foreground whitespace-pre-line">{programme.cessationAbandon as string}</p>
+                  <p className="text-muted-foreground whitespace-pre-line">
+                    {programme.cessationAbandon as string}
+                  </p>
                 </div>
               )}
             </CardContent>
@@ -334,7 +356,7 @@ export default function ProgrammeDetailPage() {
                   {programme.statut as string}
                 </Badge>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium flex items-center gap-2">
                   <Clock className="h-4 w-4" />
@@ -342,7 +364,7 @@ export default function ProgrammeDetailPage() {
                 </span>
                 <span className="font-semibold">{programme.duree as number}h</span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium flex items-center gap-2">
                   <Euro className="h-4 w-4" />
@@ -350,12 +372,12 @@ export default function ProgrammeDetailPage() {
                 </span>
                 <span className="font-semibold">{formatCurrency(programme.prix as number)}</span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Niveau</span>
                 <Badge variant="outline">{programme.niveau as string}</Badge>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Modalités</span>
                 <Badge variant="outline">{programme.modalites as string}</Badge>
@@ -375,18 +397,22 @@ export default function ProgrammeDetailPage() {
                   <p className="text-sm text-muted-foreground">{programme.horaires as string}</p>
                 </div>
               )}
-              
+
               {programme.delaisMiseEnPlace && (
                 <div>
                   <h4 className="font-semibold mb-1">Délais de mise en place</h4>
-                  <p className="text-sm text-muted-foreground">{programme.delaisMiseEnPlace as string}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {programme.delaisMiseEnPlace as string}
+                  </p>
                 </div>
               )}
-              
+
               {programme.modalitesReglement && (
                 <div>
                   <h4 className="font-semibold mb-1">Modalités de règlement</h4>
-                  <p className="text-sm text-muted-foreground">{programme.modalitesReglement as string}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {programme.modalitesReglement as string}
+                  </p>
                 </div>
               )}
             </CardContent>
@@ -405,32 +431,42 @@ export default function ProgrammeDetailPage() {
                 <div>
                   <h4 className="font-semibold">{programme.formateurNom as string}</h4>
                   {programme.formateurRole && (
-                    <p className="text-sm text-muted-foreground">{programme.formateurRole as string}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {programme.formateurRole as string}
+                    </p>
                   )}
                 </div>
-                
+
                 {programme.formateurEmail && (
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    <a href={`mailto:${programme.formateurEmail as string}`} className="text-sm text-blue-600 hover:underline">
+                    <a
+                      href={`mailto:${programme.formateurEmail as string}`}
+                      className="text-sm text-blue-600 hover:underline"
+                    >
                       {programme.formateurEmail as string}
                     </a>
                   </div>
                 )}
-                
+
                 {programme.formateurTelephone && (
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4 text-muted-foreground" />
-                    <a href={`tel:${programme.formateurTelephone as string}`} className="text-sm text-blue-600 hover:underline">
+                    <a
+                      href={`tel:${programme.formateurTelephone as string}`}
+                      className="text-sm text-blue-600 hover:underline"
+                    >
                       {programme.formateurTelephone as string}
                     </a>
                   </div>
                 )}
-                
+
                 {programme.formateurBiographie && (
                   <div>
                     <h4 className="font-semibold mb-1">Biographie</h4>
-                    <p className="text-sm text-muted-foreground whitespace-pre-line">{programme.formateurBiographie as string}</p>
+                    <p className="text-sm text-muted-foreground whitespace-pre-line">
+                      {programme.formateurBiographie as string}
+                    </p>
                   </div>
                 )}
               </CardContent>
@@ -439,5 +475,5 @@ export default function ProgrammeDetailPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

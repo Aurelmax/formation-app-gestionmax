@@ -1,23 +1,23 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
     // Vérifier si Payload est configuré
-    const payloadConfig = process.env['PAYLOAD_SECRET'];
-    const mongoUri = process.env['MONGODB_URI'];
-    
+    const payloadConfig = process.env['PAYLOAD_SECRET']
+    const mongoUri = process.env['MONGODB_URI']
+
     if (!payloadConfig || !mongoUri) {
       return NextResponse.json(
-        { 
-          status: 'error', 
+        {
+          status: 'error',
           message: 'Configuration Payload manquante',
           details: {
             hasPayloadSecret: !!payloadConfig,
-            hasMongoUri: !!mongoUri
-          }
+            hasMongoUri: !!mongoUri,
+          },
         },
         { status: 500 }
-      );
+      )
     }
 
     // Simuler une vérification de santé
@@ -28,17 +28,17 @@ export async function GET() {
       config: {
         hasPayloadSecret: true,
         hasMongoUri: true,
-        collections: ['users', 'formations', 'apprenants', 'media']
-      }
-    });
+        collections: ['users', 'formations', 'apprenants', 'media'],
+      },
+    })
   } catch (error) {
     return NextResponse.json(
-      { 
-        status: 'error', 
+      {
+        status: 'error',
         message: 'Erreur lors de la vérification de Payload',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
-    );
+    )
   }
 }

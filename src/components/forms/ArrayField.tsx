@@ -1,19 +1,19 @@
-import { ReactNode } from 'react&apos;;
-import { Button } from '@/components/ui/button&apos;;
-import { Card, CardContent } from '@/components/ui/card&apos;;
-import { Plus, Trash2 } from 'lucide-react&apos;;
-import { cn } from '@/lib/utils&apos;;
+import { ReactNode } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Plus, Trash2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface ArrayFieldProps<T> {
-  items: T[];
-  onAdd: () => void;
-  onRemove: (index: number) => void;
-  renderItem: (item: T, index: number) => ReactNode;
-  addLabel?: string;
-  emptyMessage?: string;
-  className?: string;
-  maxItems?: number;
-  minItems?: number;
+  items: T[]
+  onAdd: () => void
+  onRemove: (index: number) => void
+  renderItem: (item: T, index: number) => ReactNode
+  addLabel?: string
+  emptyMessage?: string
+  className?: string
+  maxItems?: number
+  minItems?: number
 }
 
 export function ArrayField<T>({
@@ -21,14 +21,14 @@ export function ArrayField<T>({
   onAdd,
   onRemove,
   renderItem,
-  addLabel = 'Ajouter un élément&apos;,
-  emptyMessage = 'Aucun élément&apos;,
+  addLabel = 'Ajouter un élément',
+  emptyMessage = 'Aucun élément',
   className,
   maxItems,
-  minItems = 0
+  minItems = 0,
 }: ArrayFieldProps<T>) {
-  const canAdd = maxItems ? items.length < maxItems : true;
-  const canRemove = items.length > minItems;
+  const canAdd = maxItems ? items.length < maxItems : true
+  const canRemove = items.length > minItems
 
   return (
     <div className={cn('space-y-4', className)}>
@@ -42,9 +42,7 @@ export function ArrayField<T>({
             <Card key={index} className="relative">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    {renderItem(item, index)}
-                  </div>
+                  <div className="flex-1">{renderItem(item, index)}</div>
                   {canRemove && (
                     <Button
                       type="button"
@@ -62,18 +60,13 @@ export function ArrayField<T>({
           ))}
         </div>
       )}
-      
+
       {canAdd && (
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onAdd}
-          className="w-full"
-        >
+        <Button type="button" variant="outline" onClick={onAdd} className="w-full">
           <Plus className="h-4 w-4 mr-2" />
           {addLabel}
         </Button>
       )}
     </div>
-  );
+  )
 }

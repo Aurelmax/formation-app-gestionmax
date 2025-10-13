@@ -55,17 +55,19 @@ export class ApiService {
       return adminUser
     }
     // Fallback vers le premier utilisateur
-    return users[0] || {
-      id: '1',
-      email: 'admin@gestionmax.fr',
-      name: 'Admin',
-      firstName: 'Admin',
-      role: 'admin',
-      status: 'active',
-      permissions: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
+    return (
+      users[0] || {
+        id: '1',
+        email: 'admin@gestionmax.fr',
+        name: 'Admin',
+        firstName: 'Admin',
+        role: 'admin',
+        status: 'active',
+        permissions: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    )
   }
 
   // Blog
@@ -81,7 +83,7 @@ export class ApiService {
         ApprenantService.getApprenants(),
         RendezVousApiService.getRendezVous(),
         BlogApiService.getPublishedArticles(),
-        UserApiService.getUsers()
+        UserApiService.getUsers(),
       ])
 
       return {
@@ -89,7 +91,7 @@ export class ApiService {
         apprenants: apprenants.length,
         rendezVous: rendezVous.length,
         articles: articles.length,
-        utilisateurs: utilisateurs.length
+        utilisateurs: utilisateurs.length,
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des statistiques:', error)
@@ -98,7 +100,7 @@ export class ApiService {
         apprenants: 0,
         rendezVous: 0,
         articles: 0,
-        utilisateurs: 0
+        utilisateurs: 0,
       }
     }
   }

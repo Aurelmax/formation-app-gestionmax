@@ -6,7 +6,10 @@ let cached = (global as unknown as { payload: { client: any; promise: any } }).p
 
 if (!cached) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  cached = (global as unknown as { payload: { client: any; promise: any } }).payload = { client: null, promise: null }
+  cached = (global as unknown as { payload: { client: any; promise: any } }).payload = {
+    client: null,
+    promise: null,
+  }
 }
 
 export const getPayloadClient = async () => {

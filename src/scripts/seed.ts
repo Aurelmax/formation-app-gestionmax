@@ -7,14 +7,14 @@ config({ path: '.env.local' })
 
 // Vérifier que PAYLOAD_SECRET est défini
 if (!process.env['PAYLOAD_SECRET']) {
-  console.error('❌ PAYLOAD_SECRET n\'est pas défini dans .env.local')
+  console.error("❌ PAYLOAD_SECRET n'est pas défini dans .env.local")
   process.exit(1)
 }
 
 const seed = async () => {
   console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
-  
+
   const payload = await getPayload({ config: payloadConfig })
 
   try {
@@ -39,7 +39,8 @@ const seed = async () => {
       {
         codeFormation: 'WP-DEB-001',
         titre: 'Formation WordPress Débutant',
-        description: 'Apprenez les bases de WordPress pour créer et gérer votre site web professionnel.',
+        description:
+          'Apprenez les bases de WordPress pour créer et gérer votre site web professionnel.',
         duree: 21,
         niveau: 'DEBUTANT',
         modalites: 'HYBRIDE',
@@ -57,7 +58,8 @@ const seed = async () => {
       {
         codeFormation: 'SEO-AV-002',
         titre: 'Formation SEO Avancé',
-        description: 'Maîtrisez les techniques avancées de référencement naturel pour optimiser vos sites web.',
+        description:
+          'Maîtrisez les techniques avancées de référencement naturel pour optimiser vos sites web.',
         duree: 14,
         niveau: 'AVANCE',
         modalites: 'DISTANCIEL',
@@ -75,7 +77,8 @@ const seed = async () => {
       {
         codeFormation: 'MD-DEB-003',
         titre: 'Formation Marketing Digital',
-        description: 'Découvrez les stratégies de marketing digital pour développer votre activité en ligne.',
+        description:
+          'Découvrez les stratégies de marketing digital pour développer votre activité en ligne.',
         duree: 28,
         niveau: 'INTERMEDIAIRE',
         modalites: 'PRESENTIEL',
@@ -109,8 +112,9 @@ const seed = async () => {
     console.log('📊 Données créées:')
     console.log('   - 1 utilisateur admin')
     console.log('   - 3 programmes de formation')
-    console.log('   - Collections: users, programmes, rendez-vous, articles, categories, tags, media')
-
+    console.log(
+      '   - Collections: users, programmes, rendez-vous, articles, categories, tags, media'
+    )
   } catch (error) {
     console.error('❌ Erreur lors du seed:', error)
   }

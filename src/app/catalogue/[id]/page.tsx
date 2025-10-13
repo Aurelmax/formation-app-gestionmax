@@ -1,26 +1,26 @@
-'use client';
+'use client'
 
-import { use, useState, useEffect } from 'react';
-import { notFound } from 'next/navigation';
-import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { ProgrammeModalWrapper } from '@/components/ui/programme-modal-wrapper';
+import { use, useState, useEffect } from 'react'
+import { notFound } from 'next/navigation'
+import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+import { ProgrammeModalWrapper } from '@/components/ui/programme-modal-wrapper'
 
 interface ProgrammePageProps {
   params: Promise<{
-    id: string;
-  }>;
+    id: string
+  }>
 }
 
 export default function ProgrammePage({ params }: ProgrammePageProps) {
-  const { id } = use(params);
-  const [programme, setProgramme] = useState<Record<string, unknown> | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { id } = use(params)
+  const [programme, setProgramme] = useState<Record<string, unknown> | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const loadProgramme = async () => {
       try {
-        const response = await fetch(`/api/programmes/${id}`);
-        const result = await response.json();
+        const response = await fetch(`/api/programmes/${id}`)
+        const result = await response.json()
         if (result.success) {
           // Transformer les données MongoDB pour correspondre à l'interface attendue
           const transformedProgramme = {
@@ -32,11 +32,13 @@ export default function ProgrammePage({ params }: ProgrammePageProps) {
             niveau: result.data.niveau,
             modalites: result.data.modalites,
             prix: result.data.prix,
-            competences: (result.data.competences as unknown[] || []).map((comp: unknown) => 
-              typeof comp === 'string' ? comp : (comp as { competence: string }).competence
-            ).filter((comp: string, index: number, arr: string[]) => 
-              arr.indexOf(comp) === index // Supprimer les doublons
-            ),
+            competences: ((result.data.competences as unknown[]) || [])
+              .map((comp: unknown) =>
+                typeof comp === 'string' ? comp : (comp as { competence: string }).competence
+              )
+              .filter(
+                (comp: string, index: number, arr: string[]) => arr.indexOf(comp) === index // Supprimer les doublons
+              ),
             // Ajouter les champs détaillés pour le programme
             objectifs: result.data.objectifs,
             prerequis: result.data.prerequis,
@@ -51,21 +53,21 @@ export default function ProgrammePage({ params }: ProgrammePageProps) {
             formateurEmail: result.data.formateurEmail,
             formateurTelephone: result.data.formateurTelephone,
             formateurRole: result.data.formateurRole,
-            formateurBiographie: result.data.formateurBiographie
-          };
-          setProgramme(transformedProgramme);
+            formateurBiographie: result.data.formateurBiographie,
+          }
+          setProgramme(transformedProgramme)
         } else {
-          notFound();
+          notFound()
         }
       } catch (error) {
-        console.error('Erreur lors du chargement du programme:', error);
-        notFound();
+        console.error('Erreur lors du chargement du programme:', error)
+        notFound()
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
-    loadProgramme();
-  }, [id]);
+    }
+    loadProgramme()
+  }, [id])
 
   if (isLoading) {
     return (
@@ -81,11 +83,11 @@ export default function ProgrammePage({ params }: ProgrammePageProps) {
           </div>
         </div>
       </PublicLayout>
-    );
+    )
   }
 
   if (!programme) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -96,5 +98,5 @@ export default function ProgrammePage({ params }: ProgrammePageProps) {
         </div>
       </div>
     </PublicLayout>
-  );
+  )
 }

@@ -1,90 +1,82 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { 
-  Calendar, 
-  User, 
-  Clock, 
-  Eye, 
-  Search, 
-  Filter,
-  Star,
-  Tag
-} from 'lucide-react';
-import { Article, Categorie, Tag } from '@/types/blog';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Calendar, User, Clock, Eye, Search, Filter, Star, Tag } from 'lucide-react'
+import { Article, Categorie, Tag } from '@/types/blog'
 
 interface ArticleListProps {
-  initialArticles?: Article[];
-  showFilters?: boolean;
-  limit?: number;
+  initialArticles?: Article[]
+  showFilters?: boolean
+  limit?: number
 }
 
-export function ArticleList({ initialArticles = [], showFilters = true, limit = 6 }: ArticleListProps) {
-  const [articles, setArticles] = useState<Article[]>(initialArticles);
-  const [categories, setCategories] = useState<Categorie[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+export function ArticleList({
+  initialArticles = [],
+  showFilters = true,
+  limit = 6,
+}: ArticleListProps) {
+  const [articles, setArticles] = useState<Article[]>(initialArticles)
+  const [categories, setCategories] = useState<Categorie[]>([])
+  const [tags, setTags] = useState<Tag[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const [filters, setFilters] = useState({
     recherche: '',
     categorie: '',
     tag: '',
     featured: false,
-  });
+  })
 
   useEffect(() => {
-    loadData();
-  }, [filters]);
+    loadData()
+  }, [filters])
 
   const loadData = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const params = new URLSearchParams();
-      
-      if (filters.recherche) params.append('recherche', filters.recherche);
-      if (filters.categorie) params.append('categorie', filters.categorie);
-      if (filters.tag) params.append('tag', filters.tag);
-      if (filters.featured) params.append('featured', 'true');
-      
-      params.append('limit', limit.toString());
-      params.append('statut', 'publie');
+      const params = new URLSearchParams()
 
-      const response = await fetch(`/api/blog?${params}`);
-      const data = await response.json();
+      if (filters.recherche) params.append('recherche', filters.recherche)
+      if (filters.categorie) params.append('categorie', filters.categorie)
+      if (filters.tag) params.append('tag', filters.tag)
+      if (filters.featured) params.append('featured', 'true')
+
+      params.append('limit', limit.toString())
+      params.append('statut', 'publie')
+
+      const response = await fetch(`/api/blog?${params}`)
+      const data = await response.json()
 
       if (data.success) {
-        setArticles(data.data.articles);
+        setArticles(data.data.articles)
       }
 
       // Charger les catégories et tags pour les filtres
       if (showFilters) {
         const [categoriesRes, tagsRes] = await Promise.all([
           fetch('/api/blog/categories'),
-          fetch('/api/blog/tags')
-        ]);
-        
-        const [categoriesData, tagsData] = await Promise.all([
-          categoriesRes.json(),
-          tagsRes.json()
-        ]);
+          fetch('/api/blog/tags'),
+        ])
 
-        if (categoriesData.success) setCategories(categoriesData.data);
-        if (tagsData.success) setTags(tagsData.data);
+        const [categoriesData, tagsData] = await Promise.all([categoriesRes.json(), tagsRes.json()])
+
+        if (categoriesData.success) setCategories(categoriesData.data)
+        if (tagsData.success) setTags(tagsData.data)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des articles:', error);
+      console.error('Erreur lors du chargement des articles:', error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleFilterChange = (key: string, value: string | boolean) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
+    setFilters(prev => ({ ...prev, [key]: value }))
+  }
 
   const clearFilters = () => {
     setFilters({
@@ -92,16 +84,16 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
       categorie: '',
       tag: '',
       featured: false,
-    });
-  };
+    })
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
-    });
-  };
+      day: 'numeric',
+    })
+  }
 
   return (
     <div className="space-y-6">
@@ -122,42 +114,42 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
                   placeholder="Rechercher..."
                   className="pl-9"
                   value={filters.recherche}
-                  onChange={(e) => handleFilterChange('recherche', e.target.value)}
+                  onChange={e => handleFilterChange('recherche', e.target.value)}
                 />
               </div>
-              
+
               <select
                 className="px-3 py-2 border rounded-md text-sm"
                 value={filters.categorie}
-                onChange={(e) => handleFilterChange('categorie', e.target.value)}
+                onChange={e => handleFilterChange('categorie', e.target.value)}
               >
                 <option value="">Toutes les catégories</option>
-                {categories.map((category) => (
+                {categories.map(category => (
                   <option key={category.id} value={category.slug}>
                     {category.icone} {category.nom}
                   </option>
                 ))}
               </select>
-              
+
               <select
                 className="px-3 py-2 border rounded-md text-sm"
                 value={filters.tag}
-                onChange={(e) => handleFilterChange('tag', e.target.value)}
+                onChange={e => handleFilterChange('tag', e.target.value)}
               >
                 <option value="">Tous les tags</option>
-                {tags.map((tag) => (
+                {tags.map(tag => (
                   <option key={tag.id} value={tag.slug}>
                     {tag.nom}
                   </option>
                 ))}
               </select>
-              
+
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="featured"
                   checked={filters.featured}
-                  onChange={(e) => handleFilterChange('featured', e.target.checked)}
+                  onChange={e => handleFilterChange('featured', e.target.checked)}
                   className="rounded"
                 />
                 <label htmlFor="featured" className="text-sm flex items-center gap-1">
@@ -166,7 +158,7 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
                 </label>
               </div>
             </div>
-            
+
             {(filters.recherche || filters.categorie || filters.tag || filters.featured) && (
               <div className="mt-4">
                 <Button variant="outline" size="sm" onClick={clearFilters}>
@@ -198,7 +190,7 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
+          {articles.map(article => (
             <Card key={article.id} className="group hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -217,12 +209,12 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent>
                 <div className="space-y-3">
                   {/* Catégories et tags */}
                   <div className="flex flex-wrap gap-1">
-                    {article.categories.slice(0, 2).map((category) => (
+                    {article.categories.slice(0, 2).map(category => (
                       <Badge key={category} variant="secondary" className="text-xs">
                         {category}
                       </Badge>
@@ -233,7 +225,7 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
                       </Badge>
                     )}
                   </div>
-                  
+
                   {/* Métadonnées */}
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
@@ -253,12 +245,10 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
                       {article.vue}
                     </div>
                   </div>
-                  
+
                   {/* Lien vers l'article */}
                   <Button asChild className="w-full">
-                    <Link href={`/blog/${article.slug}`}>
-                      Lire l'article
-                    </Link>
+                    <Link href={`/blog/${article.slug}`}>Lire l'article</Link>
                   </Button>
                 </div>
               </CardContent>
@@ -275,5 +265,5 @@ export function ArticleList({ initialArticles = [], showFilters = true, limit = 
         </Card>
       )}
     </div>
-  );
+  )
 }

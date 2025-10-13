@@ -3,13 +3,13 @@
  */
 
 // Types de méthodes HTTP
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 // Configuration de requête
 export interface RequestConfig {
-  method: HttpMethod;
-  headers?: Record<string, string>;
-  body?: unknown;
+  method: HttpMethod
+  headers?: Record<string, string>
+  body?: unknown
 }
 
 // Codes d'erreur API
@@ -30,7 +30,7 @@ export class ApiError extends Error {
     public statusCode: number = 500,
     public details?: unknown
   ) {
-    super(message);
-    this.name = 'ApiError';
+    super(message)
+    this.name = 'ApiError'
   }
 }

@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Clock,
   MapPin,
@@ -18,16 +18,19 @@ import {
   BarChart3,
   Calendar,
   Facebook,
-  Linkedin
-} from 'lucide-react';
+  Linkedin,
+} from 'lucide-react'
 
 interface FormationFacebookLinkedinModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
-export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFacebookLinkedinModalProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+export function FormationFacebookLinkedinModal({
+  isOpen,
+  onClose,
+}: FormationFacebookLinkedinModalProps) {
+  const [activeTab, setActiveTab] = useState('overview')
 
   const formationData = {
     titre: 'Maîtriser Facebook Ads et LinkedIn Ads pour une stratégie publicitaire efficace',
@@ -43,7 +46,7 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
       'Comprendre les fondamentaux de la publicité sur Facebook et LinkedIn',
       'Créer et gérer des campagnes publicitaires performantes',
       'Utiliser les outils avancés de Meta Business Suite et de LinkedIn Ads',
-      'Optimiser les performances des campagnes grâce à l\'analyse des données et aux stratégies de retargeting'
+      "Optimiser les performances des campagnes grâce à l'analyse des données et aux stratégies de retargeting",
     ],
     programme: [
       {
@@ -52,20 +55,20 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
           titre: 'Matin (9h - 13h) - Introduction aux publicités',
           contenu: [
             'Différences clés entre Facebook Ads et LinkedIn Ads',
-            'Présentation des objectifs publicitaires et cas d\'utilisation',
-            'Création et optimisation d\'une page Facebook professionnelle',
-            'Configuration du compte publicitaire Facebook et LinkedIn'
-          ]
+            "Présentation des objectifs publicitaires et cas d'utilisation",
+            "Création et optimisation d'une page Facebook professionnelle",
+            'Configuration du compte publicitaire Facebook et LinkedIn',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Fondamentaux Facebook',
           contenu: [
             'Présentation de Meta Business Suite et des fonctionnalités principales',
-            'Création de votre première campagne avec l\'outil Boost',
+            "Création de votre première campagne avec l'outil Boost",
             'Définir et créer des audiences cibles sur Facebook et LinkedIn',
-            'Utilisation d\'audiences personnalisées et lookalike'
-          ]
-        }
+            "Utilisation d'audiences personnalisées et lookalike",
+          ],
+        },
       },
       {
         jour: 'Jour 2 : Techniques avancées pour des campagnes performantes (7 heures)',
@@ -75,8 +78,8 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
             'Optimisation des campagnes Facebook Ads et LinkedIn Ads',
             'Stratégies de contenu pour des publicités engageantes',
             'Suivi des performances publicitaires via Facebook Analytics et LinkedIn Campaign Manager',
-            'Utilisation d\'outils de veille concurrentielle'
-          ]
+            "Utilisation d'outils de veille concurrentielle",
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Création de publicités sponsorisées',
@@ -84,9 +87,9 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
             'Publicités interactives et multi-objectifs (engagement, trafic, conversion)',
             'Techniques pour augmenter les taux de clics et de conversion',
             'Gestion des budgets publicitaires sur Facebook et LinkedIn',
-            'Résolution des problèmes fréquents (ex : compte désactivé)'
-          ]
-        }
+            'Résolution des problèmes fréquents (ex : compte désactivé)',
+          ],
+        },
       },
       {
         jour: 'Jour 3 : Retargeting et stratégie de scaling (7 heures)',
@@ -94,10 +97,10 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
           titre: 'Matin (9h - 13h) - Retargeting et remarketing',
           contenu: [
             'Mise en place de campagnes de retargeting sur Facebook et LinkedIn',
-            'Création d\'audiences basées sur les visiteurs du site web',
+            "Création d'audiences basées sur les visiteurs du site web",
             'Ajustement des budgets pour maximiser les résultats',
-            'Optimisation des campagnes à grande échelle'
-          ]
+            'Optimisation des campagnes à grande échelle',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Analyse et optimisation',
@@ -105,9 +108,9 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
             'Analyse des KPI : CTR, CPM, ROAS',
             'Amélioration continue grâce aux rapports publicitaires',
             'Alignement des publicités sur les objectifs commerciaux',
-            'Optimisation des visuels et des textes publicitaires'
-          ]
-        }
+            'Optimisation des visuels et des textes publicitaires',
+          ],
+        },
       },
       {
         jour: 'Jour 4 : Gestion avancée et mise en pratique (7 heures)',
@@ -116,39 +119,44 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
           contenu: [
             'Création et gestion des publicités LinkedIn (text ads, sponsored content)',
             'Stratégies pour une audience professionnelle',
-            'Création et gestion d\'une boutique Facebook',
-            'Introduction aux fonctionnalités Facebook Live et Instagram Ads'
-          ]
+            "Création et gestion d'une boutique Facebook",
+            'Introduction aux fonctionnalités Facebook Live et Instagram Ads',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h) - Mise en pratique complète',
           contenu: [
-            'Mise en place d\'une campagne complète Facebook et LinkedIn avec suivi des résultats',
-            'Élaboration d\'un plan publicitaire personnalisé pour chaque participant',
+            "Mise en place d'une campagne complète Facebook et LinkedIn avec suivi des résultats",
+            "Élaboration d'un plan publicitaire personnalisé pour chaque participant",
             'Revue des acquis et des résultats',
-            'Questions-réponses et conseils pour aller plus loin'
-          ]
-        }
-      }
+            'Questions-réponses et conseils pour aller plus loin',
+          ],
+        },
+      },
     ],
     modalites: {
-      pedagogiques: 'Formation en présentiel individuel, utilisant une méthode expositive et démonstrative, avec une alternance d\'exposés théoriques et de cas pratiques. Cette approche pédagogique est conçue pour diversifier les modes d\'apprentissage et ainsi favoriser l\'acquisition des connaissances et compétences des apprenants.',
-      techniques: 'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables disponibles sur votre espace apprenant sur Notion, un hébergement Web, quizz, fiches pratiques).',
-      evaluation: 'Quiz en ligne via EVALBOX (20 questions par bloc), travaux pratiques, grille d\'analyse des compétences. Ces modalités d\'évaluation permettent d\'assurer une validation progressive et complète des acquis tout au long de la formation.',
-      sanction: 'Un certificat de réalisation de formation. Une feuille d\'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.',
-      niveau: 'Aucune certification obtenue'
+      pedagogiques:
+        "Formation en présentiel individuel, utilisant une méthode expositive et démonstrative, avec une alternance d'exposés théoriques et de cas pratiques. Cette approche pédagogique est conçue pour diversifier les modes d'apprentissage et ainsi favoriser l'acquisition des connaissances et compétences des apprenants.",
+      techniques:
+        'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables disponibles sur votre espace apprenant sur Notion, un hébergement Web, quizz, fiches pratiques).',
+      evaluation:
+        "Quiz en ligne via EVALBOX (20 questions par bloc), travaux pratiques, grille d'analyse des compétences. Ces modalités d'évaluation permettent d'assurer une validation progressive et complète des acquis tout au long de la formation.",
+      sanction:
+        "Un certificat de réalisation de formation. Une feuille d'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.",
+      niveau: 'Aucune certification obtenue',
     },
     contact: {
       email: 'aurelien@gestionmax.fr',
       telephone: '06.46.02.24.68',
-      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité'
+      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité',
     },
-    accessibilite: 'Votre organisme est engagé dans une démarche d\'accueil et d\'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D\'évaluer vos besoins spécifiques au regard d\'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.',
+    accessibilite:
+      "Votre organisme est engagé dans une démarche d'accueil et d'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D'évaluer vos besoins spécifiques au regard d'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.",
     dates: {
       creation: '28/11/24',
-      version: 'Version 1'
-    }
-  };
+      version: 'Version 1',
+    },
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -169,10 +177,18 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge className="bg-[#1f3b8e] text-white">{formationData.niveau}</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{formationData.modalite}</Badge>
-            <Badge variant="default" className="bg-[#7eb33f]">{formationData.duree}</Badge>
-            <Badge variant="default" className="bg-[#1f3b8e]">{formationData.prix}</Badge>
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">Code: {formationData.code}</Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {formationData.modalite}
+            </Badge>
+            <Badge variant="default" className="bg-[#7eb33f]">
+              {formationData.duree}
+            </Badge>
+            <Badge variant="default" className="bg-[#1f3b8e]">
+              {formationData.prix}
+            </Badge>
+            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+              Code: {formationData.code}
+            </Badge>
           </div>
           {/* Dates réglementaires */}
           <div className="flex gap-4 text-sm text-gray-600 mt-2">
@@ -197,7 +213,7 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d&apos;ensemble
+            Vue d'ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -240,7 +256,9 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Objectifs pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Objectifs pédagogiques
+                </h3>
                 <ul className="space-y-2">
                   {formationData.objectifs.map((objectif, index) => (
                     <li key={index} className="flex items-start gap-2">
@@ -254,23 +272,33 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Informations pratiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Informations pratiques
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Horaires:</strong> {formationData.horaires}</span>
+                    <span>
+                      <strong>Horaires:</strong> {formationData.horaires}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Modalité:</strong> {formationData.modalite}</span>
+                    <span>
+                      <strong>Modalité:</strong> {formationData.modalite}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Euro className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Tarif:</strong> {formationData.prix} nets de taxes</span>
+                    <span>
+                      <strong>Tarif:</strong> {formationData.prix} nets de taxes
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Niveau:</strong> {formationData.niveau}</span>
+                    <span>
+                      <strong>Niveau:</strong> {formationData.niveau}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -279,7 +307,9 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
             {/* Compétences clés */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Compétences développées</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Compétences développées
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
@@ -289,7 +319,7 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
                     <ul className="ml-7 space-y-1 text-sm text-gray-600">
                       <li>• Meta Business Suite</li>
                       <li>• Création de campagnes</li>
-                      <li>• Ciblage d&apos;audiences</li>
+                      <li>• Ciblage d'audiences</li>
                       <li>• Optimisation des performances</li>
                     </ul>
                   </div>
@@ -375,7 +405,9 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
           <div className="space-y-6 text-gray-700">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Modalités pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Modalités pédagogiques
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.pedagogiques}</p>
                 <p className="text-gray-600">{formationData.modalites.techniques}</p>
               </CardContent>
@@ -383,7 +415,9 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Évaluation et sanction</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Évaluation et sanction
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.evaluation}</p>
                 <p className="text-gray-600 mb-4">{formationData.modalites.sanction}</p>
                 <p className="text-gray-600">{formationData.modalites.niveau}</p>
@@ -392,14 +426,18 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Accessibilité handicap</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Accessibilité handicap
+                </h3>
                 <p className="text-gray-600">{formationData.accessibilite}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Contact et informations</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Contact et informations
+                </h3>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-[#1f3b8e]" />
@@ -427,5 +465,5 @@ export function FormationFacebookLinkedinModal({ isOpen, onClose }: FormationFac
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

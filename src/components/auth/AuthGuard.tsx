@@ -1,55 +1,55 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Shield, LogOut } from 'lucide-react';
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/useAuth'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Shield, LogOut } from 'lucide-react'
 
 interface AuthGuardProps {
-  children: React.ReactNode;
-  requiredRole?: string;
-  requiredPermission?: string;
+  children: React.ReactNode
+  requiredRole?: string
+  requiredPermission?: string
 }
 
 export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGuardProps) {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
-  const router = useRouter();
-  const [isChecking, setIsChecking] = useState(true);
+  const { user, isAuthenticated, isLoading, logout } = useAuth()
+  const router = useRouter()
+  const [isChecking, setIsChecking] = useState(true)
 
   // Mode debug temporaire - bypasser l'authentification
-  const isDebugMode = typeof window !== 'undefined' && 
-    (localStorage.getItem('debug_mode') === 'true' || 
-     window.location.search.includes('debug=true'));
+  const isDebugMode =
+    typeof window !== 'undefined' &&
+    (localStorage.getItem('debug_mode') === 'true' || window.location.search.includes('debug=true'))
 
   useEffect(() => {
     if (!isLoading) {
-      setIsChecking(false);
-      
+      setIsChecking(false)
+
       // En mode debug, bypasser l'authentification
       if (isDebugMode) {
-        return;
+        return
       }
-      
+
       if (!isAuthenticated || !user) {
-        router.push('/admin/login');
-        return;
+        router.push('/admin/login')
+        return
       }
 
       // Vérifier le rôle requis
       if (requiredRole && user.role !== requiredRole) {
-        router.push('/admin/login?error=insufficient_permissions');
-        return;
+        router.push('/admin/login?error=insufficient_permissions')
+        return
       }
 
       // Vérifier la permission requise
       if (requiredPermission && !user.permissions?.includes(requiredPermission as any)) {
-        router.push('/admin/login?error=insufficient_permissions');
-        return;
+        router.push('/admin/login?error=insufficient_permissions')
+        return
       }
     }
-  }, [isAuthenticated, user, isLoading, requiredRole, requiredPermission, router]);
+  }, [isAuthenticated, user, isLoading, requiredRole, requiredPermission, router])
 
   // Affichage de chargement
   if (isLoading || isChecking) {
@@ -63,12 +63,12 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   // En mode debug, autoriser l'accès
   if (isDebugMode) {
-    return <>{children}</>;
+    return <>{children}</>
   }
 
   // Utilisateur non authentifié
@@ -86,11 +86,11 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
               <Button onClick={() => router.push('/admin/login')} className="w-full">
                 Se connecter
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => {
-                  localStorage.setItem('debug_mode', 'true');
-                  window.location.reload();
+                  localStorage.setItem('debug_mode', 'true')
+                  window.location.reload()
                 }}
                 className="w-full"
               >
@@ -100,7 +100,7 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   // Permissions insuffisantes
@@ -128,7 +128,7 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   // Permission spécifique requise
@@ -156,9 +156,9 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   // Utilisateur authentifié avec les bonnes permissions
-  return <>{children}</>;
+  return <>{children}</>
 }

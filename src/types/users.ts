@@ -2,7 +2,7 @@
  * Types pour la gestion des utilisateurs et permissions
  */
 
-import { ID, Timestamped } from './utils';
+import { ID, Timestamped } from './utils'
 
 // Rôles utilisateur étendus
 export const USER_ROLES = {
@@ -11,9 +11,9 @@ export const USER_ROLES = {
   FORMATEUR: 'formateur',
   APPRENANT: 'apprenant',
   GESTIONNAIRE: 'gestionnaire',
-} as const;
+} as const
 
-export type UserRole = typeof USER_ROLES[keyof typeof USER_ROLES];
+export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES]
 
 // Permissions disponibles
 export const PERMISSIONS = {
@@ -22,38 +22,38 @@ export const PERMISSIONS = {
   USERS_CREATE: 'users:create',
   USERS_UPDATE: 'users:update',
   USERS_DELETE: 'users:delete',
-  
+
   // Gestion des formations
   FORMATIONS_READ: 'formations:read',
   FORMATIONS_CREATE: 'formations:create',
   FORMATIONS_UPDATE: 'formations:update',
   FORMATIONS_DELETE: 'formations:delete',
-  
+
   // Gestion des apprenants
   APPRENANTS_READ: 'apprenants:read',
   APPRENANTS_CREATE: 'apprenants:create',
   APPRENANTS_UPDATE: 'apprenants:update',
   APPRENANTS_DELETE: 'apprenants:delete',
-  
+
   // Gestion des rendez-vous
   RENDEZ_VOUS_READ: 'rendez_vous:read',
   RENDEZ_VOUS_CREATE: 'rendez_vous:create',
   RENDEZ_VOUS_UPDATE: 'rendez_vous:update',
   RENDEZ_VOUS_DELETE: 'rendez_vous:delete',
-  
+
   // Gestion des documents
   DOCUMENTS_READ: 'documents:read',
   DOCUMENTS_CREATE: 'documents:create',
   DOCUMENTS_UPDATE: 'documents:update',
   DOCUMENTS_DELETE: 'documents:delete',
-  
+
   // Administration
   ADMIN_ACCESS: 'admin:access',
   SYSTEM_SETTINGS: 'system:settings',
   REPORTS_ACCESS: 'reports:access',
-} as const;
+} as const
 
-export type Permission = typeof PERMISSIONS[keyof typeof PERMISSIONS];
+export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
 
 // Statuts utilisateur
 export const USER_STATUS = {
@@ -61,75 +61,75 @@ export const USER_STATUS = {
   INACTIVE: 'inactive',
   SUSPENDED: 'suspended',
   PENDING: 'pending',
-} as const;
+} as const
 
-export type UserStatus = typeof USER_STATUS[keyof typeof USER_STATUS];
+export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS]
 
 // Interface utilisateur étendue
 export interface User extends Timestamped {
-  id: ID;
-  email: string;
-  password?: string; // Hashé, jamais en plain text
-  name: string;
-  firstName?: string;
-  lastName?: string;
-  role: UserRole;
-  status: UserStatus;
-  avatar?: string;
-  phone?: string;
-  address?: string;
-  dateOfBirth?: string;
-  lastLoginAt?: string;
-  permissions: Permission[];
-  metadata?: Record<string, any>;
+  id: ID
+  email: string
+  password?: string // Hashé, jamais en plain text
+  name: string
+  firstName?: string
+  lastName?: string
+  role: UserRole
+  status: UserStatus
+  avatar?: string
+  phone?: string
+  address?: string
+  dateOfBirth?: string
+  lastLoginAt?: string
+  permissions: Permission[]
+  metadata?: Record<string, any>
 }
 
 // Interface pour la création d'utilisateur
 export interface CreateUserRequest {
-  email: string;
-  password: string;
-  name: string;
-  firstName?: string;
-  lastName?: string;
-  role: UserRole;
-  phone?: string;
-  address?: string;
-  dateOfBirth?: string;
-  permissions?: Permission[];
+  email: string
+  password: string
+  name: string
+  firstName?: string
+  lastName?: string
+  role: UserRole
+  phone?: string
+  address?: string
+  dateOfBirth?: string
+  permissions?: Permission[]
 }
 
 // Interface pour la mise à jour d'utilisateur
 export interface UpdateUserRequest {
-  name?: string;
-  firstName?: string;
-  lastName?: string;
-  role?: UserRole;
-  status?: UserStatus;
-  phone?: string;
-  address?: string;
-  dateOfBirth?: string;
-  permissions?: Permission[];
-  avatar?: string;
+  name?: string
+  firstName?: string
+  lastName?: string
+  role?: UserRole
+  status?: UserStatus
+  phone?: string
+  address?: string
+  dateOfBirth?: string
+  permissions?: Permission[]
+  avatar?: string
 }
 
 // Interface pour le changement de mot de passe
 export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
 }
 
 // Interface pour la connexion
 export interface LoginRequest {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 // Interface pour la réponse de connexion
 export interface LoginResponse {
-  user: Omit<User, 'password'>;
-  token: string;
-  refreshToken: string;
+  user: Omit<User, 'password'>
+  token: string
+  refreshToken: string
 }
 
 // Configuration des permissions par rôle
@@ -172,24 +172,22 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     PERMISSIONS.RENDEZ_VOUS_UPDATE,
     PERMISSIONS.DOCUMENTS_READ,
   ],
-  [USER_ROLES.APPRENANT]: [
-    PERMISSIONS.FORMATIONS_READ,
-    PERMISSIONS.DOCUMENTS_READ,
-  ],
-};
+  [USER_ROLES.APPRENANT]: [PERMISSIONS.FORMATIONS_READ, PERMISSIONS.DOCUMENTS_READ],
+}
 
 // Fonction utilitaire pour vérifier les permissions
 export function hasPermission(user: User, permission: Permission): boolean {
-  return user.permissions.includes(permission) || 
-         user.permissions.includes(PERMISSIONS.ADMIN_ACCESS);
+  return (
+    user.permissions.includes(permission) || user.permissions.includes(PERMISSIONS.ADMIN_ACCESS)
+  )
 }
 
 // Fonction utilitaire pour vérifier le rôle
 export function hasRole(user: User, role: UserRole): boolean {
-  return user.role === role;
+  return user.role === role
 }
 
 // Fonction utilitaire pour vérifier si l'utilisateur est actif
 export function isUserActive(user: User): boolean {
-  return user.status === USER_STATUS.ACTIVE;
+  return user.status === USER_STATUS.ACTIVE
 }

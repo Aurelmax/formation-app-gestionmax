@@ -21,9 +21,9 @@ export class ProgrammeService {
     try {
       const response = await payloadApi.findAll('programmes', {
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       // Transformer les données Payload vers le format attendu
       return response.docs.map(this.transformPayloadToProgramme)
     } catch (error) {
@@ -53,13 +53,13 @@ export class ProgrammeService {
       const response = await payloadApi.findAll('programmes', {
         where: {
           codeFormation: {
-            equals: codeFormation
-          }
+            equals: codeFormation,
+          },
         },
         limit: 1,
-        depth: 1
+        depth: 1,
       })
-      
+
       if (response.docs.length > 0) {
         return this.transformPayloadToProgramme(response.docs[0])
       }
@@ -118,9 +118,9 @@ export class ProgrammeService {
       const response = await payloadApi.search('programmes', query, {
         fields: ['titre', 'description', 'codeFormation'],
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToProgramme)
     } catch (error) {
       console.error('Erreur lors de la recherche de programmes:', error)
@@ -141,7 +141,7 @@ export class ProgrammeService {
         actifs: programmes.filter((p: any) => p.statut === 'actif').length,
         inactifs: programmes.filter((p: any) => p.statut === 'inactif').length,
         parNiveau: {},
-        parModalite: {}
+        parModalite: {},
       }
 
       // Compter par niveau
@@ -181,7 +181,7 @@ export class ProgrammeService {
       formateurs: payloadData.formateurs || [],
       competences: payloadData.competences?.map((c: any) => c.competence) || [],
       createdAt: payloadData.createdAt,
-      updatedAt: payloadData.updatedAt
+      updatedAt: payloadData.updatedAt,
     }
   }
 
@@ -201,14 +201,23 @@ export class ProgrammeService {
       image: programmeData.image,
       formateurs: programmeData.formateurs,
       competences: programmeData.competences?.map(competence => ({ competence })) || [],
-      objectifs: programmeData.objectifs || `Formation ${programmeData.niveau?.toLowerCase()} de ${programmeData.duree} heures sur ${programmeData.titre}`,
-      prerequis: programmeData.prerequis || (programmeData.niveau === 'DEBUTANT' ? 'Aucun prérequis technique' : 'Connaissances de base en informatique'),
-      programme: programmeData.programme || `Programme détaillé de la formation ${programmeData.titre}`,
-      modalitesPedagogiques: programmeData.modalitesPedagogiques || `Formation en ${programmeData.modalites?.toLowerCase()} avec approche pratique`,
+      objectifs:
+        programmeData.objectifs ||
+        `Formation ${programmeData.niveau?.toLowerCase()} de ${programmeData.duree} heures sur ${programmeData.titre}`,
+      prerequis:
+        programmeData.prerequis ||
+        (programmeData.niveau === 'DEBUTANT'
+          ? 'Aucun prérequis technique'
+          : 'Connaissances de base en informatique'),
+      programme:
+        programmeData.programme || `Programme détaillé de la formation ${programmeData.titre}`,
+      modalitesPedagogiques:
+        programmeData.modalitesPedagogiques ||
+        `Formation en ${programmeData.modalites?.toLowerCase()} avec approche pratique`,
       evaluation: programmeData.evaluation || 'Évaluation continue et projet final',
       certification: programmeData.certification || 'Attestation de formation délivrée',
       eligibleCPF: programmeData.eligibleCPF || true,
-      codeCPF: programmeData.codeCPF || `RS${Math.floor(Math.random() * 10000)}`
+      codeCPF: programmeData.codeCPF || `RS${Math.floor(Math.random() * 10000)}`,
     }
   }
 }

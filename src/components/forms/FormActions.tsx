@@ -1,19 +1,19 @@
-import { ReactNode } from 'react&apos;;
-import { Button } from '@/components/ui/button&apos;;
-import { cn } from '@/lib/utils&apos;;
+import { ReactNode } from 'react'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface FormActionsProps {
-  onSave?: () => void;
-  onCancel?: () => void;
-  onReset?: () => void;
-  isLoading?: boolean;
-  isDirty?: boolean;
-  saveLabel?: string;
-  cancelLabel?: string;
-  resetLabel?: string;
-  className?: string;
-  children?: ReactNode;
-  showReset?: boolean;
+  onSave?: () => void
+  onCancel?: () => void
+  onReset?: () => void
+  isLoading?: boolean
+  isDirty?: boolean
+  saveLabel?: string
+  cancelLabel?: string
+  resetLabel?: string
+  className?: string
+  children?: ReactNode
+  showReset?: boolean
 }
 
 export function FormActions({
@@ -27,10 +27,10 @@ export function FormActions({
   resetLabel = 'Réinitialiser',
   className,
   children,
-  showReset = false
+  showReset = false,
 }: FormActionsProps) {
   return (
-    <div className={cn('flex items-center justify-between pt-6 border-t&apos;, className)}>
+    <div className={cn('flex items-center justify-between pt-6 border-t', className)}>
       <div className="flex items-center gap-2">
         {showReset && onReset && (
           <Button
@@ -44,29 +44,19 @@ export function FormActions({
         )}
         {children}
       </div>
-      
+
       <div className="flex items-center gap-2">
         {onCancel && (
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onCancel}
-            disabled={isLoading}
-          >
+          <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
             {cancelLabel}
           </Button>
         )}
         {onSave && (
-          <Button
-            type="button"
-            onClick={onSave}
-            disabled={isLoading}
-            className="min-w-[120px]"
-          >
+          <Button type="button" onClick={onSave} disabled={isLoading} className="min-w-[120px]">
             {isLoading ? 'Enregistrement...' : saveLabel}
           </Button>
         )}
       </div>
     </div>
-  );
+  )
 }

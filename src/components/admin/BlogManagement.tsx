@@ -1,150 +1,163 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
-import { 
-  FileText, 
-  Plus, 
-  Search, 
-  Filter, 
-  MoreVertical, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  EyeOff, 
+import { useState, useEffect } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  FileText,
+  Plus,
+  Search,
+  Filter,
+  MoreVertical,
+  Edit,
+  Trash2,
+  Eye,
+  EyeOff,
   Star,
   Calendar,
   User,
   Tag,
   TrendingUp,
   Clock,
-  BarChart3
-} from 'lucide-react';
-import { Article, ArticleFilters, ArticleStats } from '@/types/blog';
-import { BlogService } from '@/lib/blog-service';
-import { toast } from 'sonner';
+  BarChart3,
+} from 'lucide-react'
+import { Article, ArticleFilters, ArticleStats } from '@/types/blog'
+import { BlogService } from '@/lib/blog-service'
+import { toast } from 'sonner'
 
 export function BlogManagement() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [stats, setStats] = useState<ArticleStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [filters, setFilters] = useState<ArticleFilters>({});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [articles, setArticles] = useState<Article[]>([])
+  const [stats, setStats] = useState<ArticleStats | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [filters, setFilters] = useState<ArticleFilters>({})
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    loadData();
-  }, [filters]);
+    loadData()
+  }, [filters])
 
   const loadData = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       const [articlesData, statsData] = await Promise.all([
         BlogService.getArticles(filters),
-        BlogService.getArticleStats()
-      ]);
-      setArticles(articlesData);
-      setStats(statsData);
+        BlogService.getArticleStats(),
+      ])
+      setArticles(articlesData)
+      setStats(statsData)
     } catch (error) {
-      console.error('Erreur lors du chargement des données:', error);
-      toast.error('Erreur lors du chargement des articles');
+      console.error('Erreur lors du chargement des données:', error)
+      toast.error('Erreur lors du chargement des articles')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleSearch = (value: string) => {
-    setSearchTerm(value);
-    setFilters(prev => ({ ...prev, recherche: value || undefined }));
-  };
+    setSearchTerm(value)
+    setFilters(prev => ({ ...prev, recherche: value || undefined }))
+  }
 
   const handleFilterChange = (key: keyof ArticleFilters, value: string) => {
-    setFilters(prev => ({ 
-      ...prev, 
-      [key]: value === 'all' ? undefined : value 
-    }));
-  };
+    setFilters(prev => ({
+      ...prev,
+      [key]: value === 'all' ? undefined : value,
+    }))
+  }
 
   const handleDeleteArticle = async (id: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       try {
-        await BlogService.deleteArticle(id);
-        toast.success('Article supprimé avec succès');
-        loadData();
+        await BlogService.deleteArticle(id)
+        toast.success('Article supprimé avec succès')
+        loadData()
       } catch (error) {
-        toast.error('Erreur lors de la suppression');
+        toast.error('Erreur lors de la suppression')
       }
     }
-  };
+  }
 
   const handleToggleFeatured = async (article: Article) => {
     try {
       await BlogService.updateArticle(article.id, {
-        featured: !article.featured
-      });
-      toast.success(`Article ${article.featured ? 'retiré des' : 'ajouté aux'} favoris`);
-      loadData();
+        featured: !article.featured,
+      })
+      toast.success(`Article ${article.featured ? 'retiré des' : 'ajouté aux'} favoris`)
+      loadData()
     } catch (error) {
-      toast.error('Erreur lors de la mise à jour');
+      toast.error('Erreur lors de la mise à jour')
     }
-  };
+  }
 
   const handleToggleStatus = async (article: Article) => {
-    const newStatus = article.statut === 'publie' ? 'brouillon' : 'publie';
+    const newStatus = article.statut === 'publie' ? 'brouillon' : 'publie'
     try {
       await BlogService.updateArticle(article.id, {
-        statut: newStatus
-      });
-      toast.success(`Article ${newStatus === 'publie' ? 'publié' : 'mis en brouillon'}`);
-      loadData();
+        statut: newStatus,
+      })
+      toast.success(`Article ${newStatus === 'publie' ? 'publié' : 'mis en brouillon'}`)
+      loadData()
     } catch (error) {
-      toast.error('Erreur lors de la mise à jour');
+      toast.error('Erreur lors de la mise à jour')
     }
-  };
+  }
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case 'publie': return 'bg-green-100 text-green-800';
-      case 'brouillon': return 'bg-yellow-100 text-yellow-800';
-      case 'archive': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'publie':
+        return 'bg-green-100 text-green-800'
+      case 'brouillon':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'archive':
+        return 'bg-gray-100 text-gray-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'publie': return 'Publié';
-      case 'brouillon': return 'Brouillon';
-      case 'archive': return 'Archivé';
-      default: return status;
+      case 'publie':
+        return 'Publié'
+      case 'brouillon':
+        return 'Brouillon'
+      case 'archive':
+        return 'Archivé'
+      default:
+        return status
     }
-  };
+  }
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
+    )
   }
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Gestion du Blog</h1>
-        <p className="text-muted-foreground">
-          Gérez vos articles de blog et leur publication
-        </p>
+        <p className="text-muted-foreground">Gérez vos articles de blog et leur publication</p>
       </div>
 
       {/* Statistiques */}
@@ -161,19 +174,17 @@ export function BlogManagement() {
               <div className="text-2xl font-bold">{stats.total}</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Publiés
-              </CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Publiés</CardTitle>
               <Eye className="h-5 w-5 text-green-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.publies}</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -185,7 +196,7 @@ export function BlogManagement() {
               <div className="text-2xl font-bold">{stats.brouillons}</div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -208,9 +219,9 @@ export function BlogManagement() {
               <CardTitle>Liste des Articles</CardTitle>
               <p className="text-muted-foreground">Gérez tous vos articles de blog</p>
             </div>
-            <Button 
+            <Button
               className="flex items-center gap-2"
-              onClick={() => window.location.href = '/admin/blog/nouveau'}
+              onClick={() => (window.location.href = '/admin/blog/nouveau')}
             >
               <Plus className="h-4 w-4" />
               Nouvel Article
@@ -225,26 +236,41 @@ export function BlogManagement() {
                 placeholder="Rechercher un article..."
                 className="pl-9"
                 value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={e => handleSearch(e.target.value)}
               />
             </div>
-            
+
             <div className="flex gap-2">
               <select
                 className="px-3 py-2 border rounded-md text-sm appearance-none bg-white"
                 value={filters.statut || 'all'}
-                onChange={(e) => handleFilterChange('statut', e.target.value)}
+                onChange={e => handleFilterChange('statut', e.target.value)}
               >
                 <option value="all">Tous les statuts</option>
                 <option value="publie">Publiés</option>
                 <option value="brouillon">Brouillons</option>
                 <option value="archive">Archivés</option>
               </select>
-              
+
               <select
                 className="px-3 py-2 border rounded-md text-sm appearance-none bg-white"
-                value={filters.featured === undefined ? 'all' : filters.featured ? 'featured' : 'not-featured'}
-                onChange={(e) => handleFilterChange('featured', e.target.value === 'featured' ? 'true' : e.target.value === 'not-featured' ? 'false' : 'all')}
+                value={
+                  filters.featured === undefined
+                    ? 'all'
+                    : filters.featured
+                      ? 'featured'
+                      : 'not-featured'
+                }
+                onChange={e =>
+                  handleFilterChange(
+                    'featured',
+                    e.target.value === 'featured'
+                      ? 'true'
+                      : e.target.value === 'not-featured'
+                        ? 'false'
+                        : 'all'
+                  )
+                }
               >
                 <option value="all">Tous</option>
                 <option value="featured">Favoris</option>
@@ -266,7 +292,7 @@ export function BlogManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {articles.map((article) => (
+              {articles.map(article => (
                 <TableRow key={article.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -282,23 +308,23 @@ export function BlogManagement() {
                       </div>
                     </div>
                   </TableCell>
-                  
+
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-gray-400" />
                       {article.auteur}
                     </div>
                   </TableCell>
-                  
+
                   <TableCell>
                     <Badge className={getStatusBadgeColor(article.statut)}>
                       {getStatusLabel(article.statut)}
                     </Badge>
                   </TableCell>
-                  
+
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      {article.categories.slice(0, 2).map((category) => (
+                      {article.categories.slice(0, 2).map(category => (
                         <Badge key={category} variant="outline" className="text-xs">
                           {category}
                         </Badge>
@@ -310,21 +336,21 @@ export function BlogManagement() {
                       )}
                     </div>
                   </TableCell>
-                  
+
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <BarChart3 className="h-4 w-4 text-gray-400" />
                       {article.vue.toLocaleString()}
                     </div>
                   </TableCell>
-                  
+
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4 text-gray-400" />
                       {new Date(article.datePublication).toLocaleDateString()}
                     </div>
                   </TableCell>
-                  
+
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -333,11 +359,13 @@ export function BlogManagement() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => window.location.href = `/admin/blog/${article.id}`}>
+                        <DropdownMenuItem
+                          onClick={() => (window.location.href = `/admin/blog/${article.id}`)}
+                        >
                           <Edit className="h-4 w-4 mr-2" />
                           Modifier
                         </DropdownMenuItem>
-                        
+
                         <DropdownMenuItem onClick={() => handleToggleStatus(article)}>
                           {article.statut === 'publie' ? (
                             <>
@@ -351,14 +379,14 @@ export function BlogManagement() {
                             </>
                           )}
                         </DropdownMenuItem>
-                        
+
                         <DropdownMenuItem onClick={() => handleToggleFeatured(article)}>
                           <Star className="h-4 w-4 mr-2" />
                           {article.featured ? 'Retirer des favoris' : 'Ajouter aux favoris'}
                         </DropdownMenuItem>
-                        
+
                         <DropdownMenuSeparator />
-                        
+
                         <DropdownMenuItem
                           onClick={() => handleDeleteArticle(article.id)}
                           className="text-red-600 focus:text-red-600"
@@ -373,14 +401,12 @@ export function BlogManagement() {
               ))}
             </TableBody>
           </Table>
-          
+
           {articles.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              Aucun article trouvé
-            </div>
+            <div className="text-center py-8 text-muted-foreground">Aucun article trouvé</div>
           )}
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

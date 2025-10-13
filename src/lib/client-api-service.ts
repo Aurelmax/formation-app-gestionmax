@@ -148,13 +148,15 @@ export class ClientApiService {
         throw new Error(`Erreur ${response.status}: ${response.statusText}`)
       }
       const data = await response.json()
-      return data.success ? data.data : {
-        programmes: 0,
-        apprenants: 0,
-        users: 0,
-        rdvs: 0,
-        articles: 0
-      }
+      return data.success
+        ? data.data
+        : {
+            programmes: 0,
+            apprenants: 0,
+            users: 0,
+            rdvs: 0,
+            articles: 0,
+          }
     } catch (error) {
       console.error('Erreur lors de la récupération des statistiques:', error)
       return {
@@ -162,7 +164,7 @@ export class ClientApiService {
         apprenants: 0,
         users: 0,
         rdvs: 0,
-        articles: 0
+        articles: 0,
       }
     }
   }

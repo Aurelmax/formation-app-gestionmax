@@ -1,11 +1,10 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
+import { Button } from '@/components/ui/button'
 import {
   LayoutDashboard,
   BookOpen,
@@ -20,7 +19,7 @@ import {
   Image,
   Mail,
   GraduationCap,
-} from 'lucide-react';
+} from 'lucide-react'
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -34,35 +33,11 @@ const navigation = [
   { name: 'Utilisateurs', href: '/admin/utilisateurs', icon: UserCog },
   { name: 'Documents', href: '/admin/documents', icon: FileText },
   { name: 'Paramètres', href: '/admin/parametres', icon: Settings },
-];
+]
 
 export function Sidebar() {
-  const [isMounted, setIsMounted] = useState(false);
-  const pathname = usePathname();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Rendu côté client uniquement pour éviter les erreurs d'hydratation
-  if (!isMounted) {
-    return (
-      <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-6 border-b">
-          <h1 className="text-2xl font-bold text-primary">GestionMax</h1>
-          <p className="text-sm text-muted-foreground">Formation Pro</p>
-        </div>
-        <div className="flex-1 p-4 space-y-1">
-          <div className="animate-pulse space-y-2">
-            {[...Array(7)].map((_, i) => (
-              <div key={i} className="h-10 bg-gray-200 rounded-lg"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const pathname = usePathname()
+  const { user } = useAuth()
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
@@ -72,9 +47,9 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 p-4 space-y-1">
-        {navigation.map((item) => {
-          const isActive = isMounted && pathname === item.href;
-          const Icon = item.icon;
+        {navigation.map(item => {
+          const isActive = pathname === item.href
+          const Icon = item.icon
 
           return (
             <Link
@@ -82,15 +57,13 @@ export function Sidebar() {
               href={item.href}
               className={cn(
                 'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-gray-700 hover:bg-gray-100'
+                isActive ? 'bg-primary text-primary-foreground' : 'text-gray-700 hover:bg-gray-100'
               )}
             >
               <Icon className="h-5 w-5" />
               {item.name}
             </Link>
-          );
+          )
         })}
 
         {/* Lien vers l'interface CMS */}
@@ -115,20 +88,23 @@ export function Sidebar() {
       <div className="p-4 border-t">
         <div className="flex items-center gap-3 px-3 py-2 mb-3">
           <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
-            {user?.firstName?.[0]}{user?.lastName?.[0] || user?.name?.[0]}
+            {user?.firstName?.[0]}
+            {user?.lastName?.[0] || user?.name?.[0]}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium truncate">{user?.name || 'Utilisateur'}</p>
-            <p className="text-xs text-muted-foreground capitalize">{user?.role || 'Utilisateur'}</p>
+            <p className="text-xs text-muted-foreground capitalize">
+              {user?.role || 'Utilisateur'}
+            </p>
           </div>
         </div>
         <Button
           variant="outline"
           size="sm"
           onClick={() => {
-            console.log('🚪 Clic sur déconnexion');
+            console.log('🚪 Clic sur déconnexion')
             // Rediriger vers la page de déconnexion dédiée
-            window.location.href = '/admin/logout';
+            window.location.href = '/admin/logout'
           }}
           className="w-full justify-start"
         >
@@ -137,5 +113,5 @@ export function Sidebar() {
         </Button>
       </div>
     </div>
-  );
+  )
 }

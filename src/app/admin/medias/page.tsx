@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import { MediaManager } from '@/components/admin/MediaManager';
+import { MediaManager } from '@/components/admin/MediaManager'
 
 export default function MediasPage() {
   return (
@@ -11,8 +11,8 @@ export default function MediasPage() {
           Gérez vos images et fichiers pour le blog et les articles
         </p>
       </div>
-      
+
       <MediaManager />
     </div>
-  );
+  )
 }

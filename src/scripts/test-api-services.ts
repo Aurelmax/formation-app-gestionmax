@@ -13,18 +13,18 @@ const testApiServices = async () => {
   console.log('🧪 Test des services API Payload...')
   console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
-  
+
   try {
     // Test 1: Service des programmes
     console.log('\n📚 Test ProgrammeService...')
     try {
       const programmes = await ProgrammeService.getProgrammes()
       console.log(`   ✅ ${programmes.length} programmes récupérés`)
-      
+
       if (programmes.length > 0) {
         const programme = programmes[0]
         console.log(`   📋 Premier programme: ${programme.titre}`)
-        
+
         // Test de récupération par ID
         const programmeById = await ProgrammeService.getProgramme(programme.id)
         if (programmeById) {
@@ -40,7 +40,7 @@ const testApiServices = async () => {
     try {
       const apprenants = await ApprenantService.getApprenants()
       console.log(`   ✅ ${apprenants.length} apprenants récupérés`)
-      
+
       if (apprenants.length > 0) {
         const apprenant = apprenants[0]
         console.log(`   📋 Premier apprenant: ${apprenant.nom} ${apprenant.prenom}`)
@@ -54,7 +54,7 @@ const testApiServices = async () => {
     try {
       const users = await UserApiService.getUsers()
       console.log(`   ✅ ${users.length} utilisateurs récupérés`)
-      
+
       if (users.length > 0) {
         const user = users[0]
         console.log(`   📋 Premier utilisateur: ${user.name} (${user.role})`)
@@ -68,7 +68,7 @@ const testApiServices = async () => {
     try {
       const rdvs = await RendezVousApiService.getRendezVous()
       console.log(`   ✅ ${rdvs.length} rendez-vous récupérés`)
-      
+
       if (rdvs.length > 0) {
         const rdv = rdvs[0]
         console.log(`   📋 Premier RDV: ${rdv.client.nom} ${rdv.client.prenom}`)
@@ -82,10 +82,10 @@ const testApiServices = async () => {
     try {
       const articles = await BlogApiService.getPublishedArticles()
       console.log(`   ✅ ${articles.length} articles publiés récupérés`)
-      
+
       const categories = await BlogApiService.getCategories()
       console.log(`   ✅ ${categories.length} catégories récupérées`)
-      
+
       const tags = await BlogApiService.getTags()
       console.log(`   ✅ ${tags.length} tags récupérés`)
     } catch (error) {
@@ -102,7 +102,7 @@ const testApiServices = async () => {
       console.log(`     - Rendez-vous: ${stats.rendezVous}`)
       console.log(`     - Articles: ${stats.articles}`)
       console.log(`     - Utilisateurs: ${stats.utilisateurs}`)
-      
+
       const currentUser = await ApiService.getCurrentUser()
       console.log(`   👤 Utilisateur actuel: ${currentUser.name} (${currentUser.role})`)
     } catch (error) {
@@ -117,19 +117,19 @@ const testApiServices = async () => {
       console.log(`     - Total: ${programmeStats.total}`)
       console.log(`     - Actifs: ${programmeStats.actifs}`)
       console.log(`     - Inactifs: ${programmeStats.inactifs}`)
-      
+
       const apprenantStats = await ApprenantService.getApprenantStats()
       console.log('   👥 Statistiques apprenants:')
       console.log(`     - Total: ${apprenantStats.total}`)
       console.log(`     - Actifs: ${apprenantStats.actifs}`)
       console.log(`     - Progression moyenne: ${apprenantStats.progressionMoyenne}%`)
-      
+
       const rdvStats = await RendezVousApiService.getRendezVousStats()
       console.log('   📅 Statistiques rendez-vous:')
       console.log(`     - Total: ${rdvStats.total}`)
       console.log(`     - Confirmés: ${rdvStats.confirmes}`)
       console.log(`     - Aujourd'hui: ${rdvStats.aujourdhui}`)
-      
+
       const blogStats = await BlogApiService.getBlogStats()
       console.log('   📝 Statistiques blog:')
       console.log(`     - Total articles: ${blogStats.total}`)
@@ -140,7 +140,6 @@ const testApiServices = async () => {
     }
 
     console.log('\n🎉 Tests terminés!')
-    
   } catch (error) {
     console.error('❌ Erreur lors des tests:', error)
   }
@@ -152,7 +151,7 @@ testApiServices()
     console.log('\n✅ Tests terminés avec succès!')
     process.exit(0)
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('\n❌ Erreur fatale lors des tests:', error)
     process.exit(1)
   })

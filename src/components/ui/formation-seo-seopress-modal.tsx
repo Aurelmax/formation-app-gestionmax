@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Clock,
   MapPin,
@@ -17,16 +17,16 @@ import {
   Search,
   Target,
   BarChart3,
-  Settings
-} from 'lucide-react';
+  Settings,
+} from 'lucide-react'
 
 interface FormationSeoSeopressModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopressModalProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('overview')
 
   const formationData = {
     titre: 'SEO les fondamentaux (SEOPRESS) & Techniques de Vente WooCommerce',
@@ -36,13 +36,14 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
     modalite: 'Présentiel individuel',
     prix: '980€',
     horaires: '9h à 13h et de 14h à 17h (pauses incluses)',
-    prerequis: 'Avoir des connaissances de base sur WordPress, ou avoir suivi un module d\'initiation',
+    prerequis:
+      "Avoir des connaissances de base sur WordPress, ou avoir suivi un module d'initiation",
     publicConcerne: 'Artisans, commerçants ou professions libérales',
     objectifs: [
       'Comprendre les bases du référencement naturel (SEO)',
       'Configurer et utiliser SEOPress pour optimiser un site WordPress',
-      'Améliorer la visibilité d\'un site web dans les moteurs de recherche',
-      'Mettre en place une stratégie SEO durable et efficace'
+      "Améliorer la visibilité d'un site web dans les moteurs de recherche",
+      'Mettre en place une stratégie SEO durable et efficace',
     ],
     programme: [
       {
@@ -54,9 +55,9 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
             'Fonctionnement des moteurs de recherche (Google, Bing)',
             'Les trois piliers du SEO : optimisation technique, contenu optimisé, netlinking',
             'Les bonnes pratiques du SEO',
-            'Qu\'est-ce qu\'un bon contenu ?',
-            'Les erreurs SEO courantes à éviter'
-          ]
+            "Qu'est-ce qu'un bon contenu ?",
+            'Les erreurs SEO courantes à éviter',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h00 - 17h00) - Découverte et configuration de SEOPress',
@@ -67,9 +68,9 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
             'Paramétrage des titres et méta-descriptions',
             'Configuration du sitemap XML et soumission à Google Search Console',
             'Personnalisation des permaliens et gestion des redirections',
-            'Exercice pratique : mise en place des paramètres SEOPress sur un site WordPress'
-          ]
-        }
+            'Exercice pratique : mise en place des paramètres SEOPress sur un site WordPress',
+          ],
+        },
       },
       {
         jour: 'Jour 2 : Optimisation SEO On-Page et suivi des performances (7 heures)',
@@ -81,8 +82,8 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
             'Optimisation des images (poids, balise ALT)',
             'Audit On-Page avec SEOPress',
             'Identification et correction des problèmes techniques',
-            'Exercice pratique : optimisation d\'un article ou d\'une page pour le SEO'
-          ]
+            "Exercice pratique : optimisation d'un article ou d'une page pour le SEO",
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h00 - 17h00) - Suivi et amélioration continue',
@@ -93,25 +94,31 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
             'Stratégie de netlinking et création de backlinks',
             'Gestion des erreurs 404 et des redirections',
             'Audit final du site et recommandations',
-            'Mise en place d\'une feuille de route SEO pour les prochains mois'
-          ]
-        }
-      }
+            "Mise en place d'une feuille de route SEO pour les prochains mois",
+          ],
+        },
+      },
     ],
     modalites: {
-      pedagogiques: 'Formation en présentiel individuel, en utilisant une méthode expositive et démonstrative. Elle repose sur une alternance entre exposés théoriques et cas pratiques, afin de répondre aux besoins des apprenants adultes en formation professionnelle.',
-      techniques: 'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables disponibles sur votre espace apprenant sur Notion, un accès à ubersuggest et Answer the public, quizz, fiches pratiques).',
-      evaluation: 'Quiz en ligne via EVALBOX (environ 20 questions), travaux pratiques, grille d\'analyse des compétences. Ces modalités permettent d\'assurer une validation progressive et complète des acquis tout au long de la formation.',
-      sanction: 'Un certificat de réalisation de formation. Une feuille d\'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.',
-      niveau: 'Cette formation n\'est pas certifiante, mais un certificat de réalisation sera délivré à l\'issue de la formation'
+      pedagogiques:
+        'Formation en présentiel individuel, en utilisant une méthode expositive et démonstrative. Elle repose sur une alternance entre exposés théoriques et cas pratiques, afin de répondre aux besoins des apprenants adultes en formation professionnelle.',
+      techniques:
+        'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables disponibles sur votre espace apprenant sur Notion, un accès à ubersuggest et Answer the public, quizz, fiches pratiques).',
+      evaluation:
+        "Quiz en ligne via EVALBOX (environ 20 questions), travaux pratiques, grille d'analyse des compétences. Ces modalités permettent d'assurer une validation progressive et complète des acquis tout au long de la formation.",
+      sanction:
+        "Un certificat de réalisation de formation. Une feuille d'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.",
+      niveau:
+        "Cette formation n'est pas certifiante, mais un certificat de réalisation sera délivré à l'issue de la formation",
     },
     contact: {
       email: 'aurelien@gestionmax.fr',
       telephone: '06.46.02.24.68',
-      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité'
+      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité',
     },
-    accessibilite: 'Votre organisme est engagé dans une démarche d\'accueil et d\'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D\'évaluer vos besoins spécifiques au regard d\'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.'
-  };
+    accessibilite:
+      "Votre organisme est engagé dans une démarche d'accueil et d'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D'évaluer vos besoins spécifiques au regard d'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.",
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -132,10 +139,18 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge className="bg-[#1f3b8e] text-white">{formationData.niveau}</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{formationData.modalite}</Badge>
-            <Badge variant="default" className="bg-[#7eb33f]">{formationData.duree}</Badge>
-            <Badge variant="default" className="bg-[#1f3b8e]">{formationData.prix}</Badge>
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">Code: {formationData.code}</Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {formationData.modalite}
+            </Badge>
+            <Badge variant="default" className="bg-[#7eb33f]">
+              {formationData.duree}
+            </Badge>
+            <Badge variant="default" className="bg-[#1f3b8e]">
+              {formationData.prix}
+            </Badge>
+            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+              Code: {formationData.code}
+            </Badge>
           </div>
         </DialogHeader>
 
@@ -149,7 +164,7 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d&apos;ensemble
+            Vue d'ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -192,7 +207,9 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Objectifs pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Objectifs pédagogiques
+                </h3>
                 <ul className="space-y-2">
                   {formationData.objectifs.map((objectif, index) => (
                     <li key={index} className="flex items-start gap-2">
@@ -206,23 +223,33 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Informations pratiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Informations pratiques
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Horaires:</strong> {formationData.horaires}</span>
+                    <span>
+                      <strong>Horaires:</strong> {formationData.horaires}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Modalité:</strong> {formationData.modalite}</span>
+                    <span>
+                      <strong>Modalité:</strong> {formationData.modalite}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Euro className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Tarif:</strong> {formationData.prix} nets de taxes</span>
+                    <span>
+                      <strong>Tarif:</strong> {formationData.prix} nets de taxes
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Niveau:</strong> {formationData.niveau}</span>
+                    <span>
+                      <strong>Niveau:</strong> {formationData.niveau}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -231,7 +258,9 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
             {/* Compétences clés */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Compétences développées</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Compétences développées
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
@@ -327,7 +356,9 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
           <div className="space-y-6 text-gray-700">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Modalités pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Modalités pédagogiques
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.pedagogiques}</p>
                 <p className="text-gray-600">{formationData.modalites.techniques}</p>
               </CardContent>
@@ -335,7 +366,9 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Évaluation et sanction</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Évaluation et sanction
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.evaluation}</p>
                 <p className="text-gray-600 mb-4">{formationData.modalites.sanction}</p>
                 <p className="text-gray-600">{formationData.modalites.niveau}</p>
@@ -344,14 +377,18 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Accessibilité handicap</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Accessibilité handicap
+                </h3>
                 <p className="text-gray-600">{formationData.accessibilite}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Contact et informations</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Contact et informations
+                </h3>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-[#1f3b8e]" />
@@ -379,5 +416,5 @@ export function FormationSeoSeopressModal({ isOpen, onClose }: FormationSeoSeopr
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

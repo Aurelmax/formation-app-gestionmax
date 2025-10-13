@@ -1,163 +1,163 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  CheckCircle, 
-  Download
-} from 'lucide-react';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { CheckCircle, Download } from 'lucide-react'
 
 interface ProgrammeModalProps {
   programme: {
-    id: string;
-    titre: string;
-    description: string;
-    duree: number;
-    niveau: string;
-    modalites: string;
-    prix: number;
-    competences: string[];
-  };
-  isOpen: boolean;
-  onClose: () => void;
+    id: string
+    titre: string
+    description: string
+    duree: number
+    niveau: string
+    modalites: string
+    prix: number
+    competences: string[]
+  }
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'programme' | 'modalites'>('overview');
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'programme' | 'modalites'>('overview')
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
 
   // Fonction pour générer et télécharger le PDF
   const handleDownloadPDF = async () => {
-    setIsGeneratingPDF(true);
-    
+    setIsGeneratingPDF(true)
+
     try {
       // Import dynamique de jsPDF
-      const { default: jsPDF } = await import('jspdf');
-      
+      const { default: jsPDF } = await import('jspdf')
+
       // Créer un nouveau document PDF
-      const doc = new jsPDF();
-      
+      const doc = new jsPDF()
+
       // Configuration des couleurs
-      const primaryColor = '#1f3b8e';
-      
+      const primaryColor = '#1f3b8e'
+
       // En-tête
-      doc.setFontSize(20);
-      doc.setTextColor(primaryColor);
-      doc.text('PROGRAMME DE FORMATION', 20, 30);
-      
-      doc.setFontSize(16);
-      doc.setTextColor('#000000');
-      doc.text(programme.titre, 20, 45);
-      
+      doc.setFontSize(20)
+      doc.setTextColor(primaryColor)
+      doc.text('PROGRAMME DE FORMATION', 20, 30)
+
+      doc.setFontSize(16)
+      doc.setTextColor('#000000')
+      doc.text(programme.titre, 20, 45)
+
       // Informations générales
-      doc.setFontSize(12);
-      doc.text(`Durée: ${programme.duree} heures`, 20, 65);
-      doc.text(`Niveau: ${programme.niveau}`, 20, 75);
-      doc.text(`Modalités: ${programme.modalites}`, 20, 85);
-      doc.text(`Prix: ${programme.prix}€`, 20, 95);
-      
+      doc.setFontSize(12)
+      doc.text(`Durée: ${programme.duree} heures`, 20, 65)
+      doc.text(`Niveau: ${programme.niveau}`, 20, 75)
+      doc.text(`Modalités: ${programme.modalites}`, 20, 85)
+      doc.text(`Prix: ${programme.prix}€`, 20, 95)
+
       // Description
-      doc.setFontSize(14);
-      doc.setTextColor(primaryColor);
-      doc.text('DESCRIPTION', 20, 115);
-      
-      doc.setFontSize(10);
-      doc.setTextColor('#000000');
-      const descriptionLines = doc.splitTextToSize(programme.description, 170);
-      doc.text(descriptionLines, 20, 125);
-      
-      let yPosition = 125 + (descriptionLines.length * 5) + 10;
-      
+      doc.setFontSize(14)
+      doc.setTextColor(primaryColor)
+      doc.text('DESCRIPTION', 20, 115)
+
+      doc.setFontSize(10)
+      doc.setTextColor('#000000')
+      const descriptionLines = doc.splitTextToSize(programme.description, 170)
+      doc.text(descriptionLines, 20, 125)
+
+      let yPosition = 125 + descriptionLines.length * 5 + 10
+
       // Objectifs pédagogiques
-      doc.setFontSize(14);
-      doc.setTextColor(primaryColor);
-      doc.text('OBJECTIFS PÉDAGOGIQUES', 20, yPosition);
-      
-      doc.setFontSize(10);
-      doc.setTextColor('#000000');
-      yPosition += 10;
-      
+      doc.setFontSize(14)
+      doc.setTextColor(primaryColor)
+      doc.text('OBJECTIFS PÉDAGOGIQUES', 20, yPosition)
+
+      doc.setFontSize(10)
+      doc.setTextColor('#000000')
+      yPosition += 10
+
       const objectifs = [
         "Comprendre les principes fondamentaux du référencement naturel (SEO) et identifier les facteurs clés pour améliorer la visibilité d'un site web sur les moteurs de recherche.",
         "Mettre en œuvre des techniques avancées de SEO, incluant les optimisations on-page et off-page, et d'analyser les performances pour ajuster ses stratégies.",
-        "Installer, configurer et personnaliser un site e-commerce avec WooCommerce en fonction des besoins commerciaux et techniques de l'apprenant(e)."
-      ];
-      
-      objectifs.forEach((objectif) => {
-        const lines = doc.splitTextToSize(`• ${objectif}`, 170);
-        doc.text(lines, 20, yPosition);
-        yPosition += (lines.length * 5) + 5;
-      });
-      
+        "Installer, configurer et personnaliser un site e-commerce avec WooCommerce en fonction des besoins commerciaux et techniques de l'apprenant(e).",
+      ]
+
+      objectifs.forEach(objectif => {
+        const lines = doc.splitTextToSize(`• ${objectif}`, 170)
+        doc.text(lines, 20, yPosition)
+        yPosition += lines.length * 5 + 5
+      })
+
       // Prérequis et public
-      yPosition += 10;
-      doc.setFontSize(14);
-      doc.setTextColor(primaryColor);
-      doc.text('PRÉREQUIS', 20, yPosition);
-      
-      doc.setFontSize(10);
-      doc.setTextColor('#000000');
-      yPosition += 10;
-      doc.text("Avoir des connaissances de base sur WordPress, ou avoir suivi un module d'initiation.", 20, yPosition);
-      
-      yPosition += 15;
-      doc.setFontSize(14);
-      doc.setTextColor(primaryColor);
-      doc.text('PUBLIC CONCERNÉ', 20, yPosition);
-      
-      doc.setFontSize(10);
-      doc.setTextColor('#000000');
-      yPosition += 10;
-      doc.text("Artisans, commerçants ou professions libérales.", 20, yPosition);
-      
+      yPosition += 10
+      doc.setFontSize(14)
+      doc.setTextColor(primaryColor)
+      doc.text('PRÉREQUIS', 20, yPosition)
+
+      doc.setFontSize(10)
+      doc.setTextColor('#000000')
+      yPosition += 10
+      doc.text(
+        "Avoir des connaissances de base sur WordPress, ou avoir suivi un module d'initiation.",
+        20,
+        yPosition
+      )
+
+      yPosition += 15
+      doc.setFontSize(14)
+      doc.setTextColor(primaryColor)
+      doc.text('PUBLIC CONCERNÉ', 20, yPosition)
+
+      doc.setFontSize(10)
+      doc.setTextColor('#000000')
+      yPosition += 10
+      doc.text('Artisans, commerçants ou professions libérales.', 20, yPosition)
+
       // Compétences développées
-      yPosition += 20;
-      doc.setFontSize(14);
-      doc.setTextColor(primaryColor);
-      doc.text('COMPÉTENCES DÉVELOPPÉES', 20, yPosition);
-      
-      doc.setFontSize(10);
-      doc.setTextColor('#000000');
-      yPosition += 10;
-      
-      programme.competences.forEach((competence) => {
-        doc.text(`• ${competence}`, 20, yPosition);
-        yPosition += 5;
-      });
-      
+      yPosition += 20
+      doc.setFontSize(14)
+      doc.setTextColor(primaryColor)
+      doc.text('COMPÉTENCES DÉVELOPPÉES', 20, yPosition)
+
+      doc.setFontSize(10)
+      doc.setTextColor('#000000')
+      yPosition += 10
+
+      programme.competences.forEach(competence => {
+        doc.text(`• ${competence}`, 20, yPosition)
+        yPosition += 5
+      })
+
       // Pied de page
-      doc.setFontSize(8);
-      doc.setTextColor('#666666');
-      doc.text('GestionMax Formation - Organisme certifié Qualiopi', 20, 280);
-      doc.text('Contact: aurelien@gestionmax.fr - 06.46.02.24.68', 20, 285);
-      
+      doc.setFontSize(8)
+      doc.setTextColor('#666666')
+      doc.text('GestionMax Formation - Organisme certifié Qualiopi', 20, 280)
+      doc.text('Contact: aurelien@gestionmax.fr - 06.46.02.24.68', 20, 285)
+
       // Sauvegarder le PDF
-      doc.save(`Programme_${programme.titre.replace(/\s+/g, '_')}.pdf`);
-      
+      doc.save(`Programme_${programme.titre.replace(/\s+/g, '_')}.pdf`)
     } catch (error) {
-      console.error('Erreur lors de la génération du PDF:', error);
-      alert('Erreur lors de la génération du PDF. Veuillez réessayer.');
+      console.error('Erreur lors de la génération du PDF:', error)
+      alert('Erreur lors de la génération du PDF. Veuillez réessayer.')
     } finally {
-      setIsGeneratingPDF(false);
+      setIsGeneratingPDF(false)
     }
-  };
+  }
 
   const objectifs = [
     "Comprendre les principes fondamentaux du référencement naturel (SEO) et identifier les facteurs clés pour améliorer la visibilité d'un site web sur les moteurs de recherche.",
     "Mettre en œuvre des techniques avancées de SEO, incluant les optimisations on-page et off-page, et d'analyser les performances pour ajuster ses stratégies.",
-    "Installer, configurer et personnaliser un site e-commerce avec WooCommerce en fonction des besoins commerciaux et techniques de l'apprenant(e)."
-  ];
+    "Installer, configurer et personnaliser un site e-commerce avec WooCommerce en fonction des besoins commerciaux et techniques de l'apprenant(e).",
+  ]
 
   const competencesColors = [
     'bg-blue-100 text-blue-800',
-    'bg-green-100 text-green-800', 
+    'bg-green-100 text-green-800',
     'bg-purple-100 text-purple-800',
     'bg-orange-100 text-orange-800',
     'bg-pink-100 text-pink-800',
-    'bg-indigo-100 text-indigo-800'
-  ];
+    'bg-indigo-100 text-indigo-800',
+  ]
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -166,7 +166,7 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
           <DialogTitle className="text-2xl font-bold text-[#1f3b8e] mb-4">
             {programme.titre}
           </DialogTitle>
-          
+
           {/* Badges d'information */}
           <div className="flex flex-wrap gap-2 mb-6">
             <Badge variant="secondary" className="bg-[#1f3b8e] text-white">
@@ -194,7 +194,7 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
                 : 'text-gray-500 hover:text-[#1f3b8e]'
             }`}
           >
-            Vue d&apos;ensemble
+            Vue d'ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -245,7 +245,8 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <h4 className="font-medium text-gray-700 mb-2">Prérequis</h4>
                 <p className="text-sm text-gray-600">
-                  Avoir des connaissances de base sur WordPress, ou avoir suivi un module d&apos;initiation.
+                  Avoir des connaissances de base sur WordPress, ou avoir suivi un module
+                  d'initiation.
                 </p>
               </div>
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -309,9 +310,13 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
               </>
             )}
           </Button>
-          
+
           <div className="flex gap-3">
-            <Button variant="outline" onClick={onClose} className="border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#1f3b8e] hover:text-white">
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#1f3b8e] hover:text-white"
+            >
               Fermer
             </Button>
             <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white">
@@ -321,5 +326,5 @@ export function ProgrammeModal({ programme, isOpen, onClose }: ProgrammeModalPro
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

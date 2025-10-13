@@ -75,13 +75,13 @@ export class UnifiedService {
     if (userIndex === -1) {
       throw new Error('Utilisateur non trouvé')
     }
-    
+
     const updatedUser = {
       ...users[userIndex],
       ...userData,
       updatedAt: new Date().toISOString(),
     }
-    
+
     return updatedUser
   }
 

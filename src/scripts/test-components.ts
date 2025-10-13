@@ -9,13 +9,13 @@ const testComponents = async () => {
   console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
   console.log('🎭 NEXT_PUBLIC_USE_MOCK_DATA:', process.env['NEXT_PUBLIC_USE_MOCK_DATA'])
-  
+
   try {
     // Test 1: Service des programmes
     console.log('\n📚 Test des programmes...')
     const programmes = await ApiRouteService.getProgrammes()
     console.log(`   ✅ ${programmes.length} programmes récupérés`)
-    
+
     if (programmes.length > 0) {
       const programme = programmes[0]
       console.log(`   📋 Premier programme: ${programme.titre}`)
@@ -27,7 +27,7 @@ const testComponents = async () => {
     console.log('\n👥 Test des apprenants...')
     const apprenants = await ApiRouteService.getApprenants()
     console.log(`   ✅ ${apprenants.length} apprenants récupérés`)
-    
+
     if (apprenants.length > 0) {
       const apprenant = apprenants[0]
       console.log(`   📋 Premier apprenant: ${apprenant.nom} ${apprenant.prenom}`)
@@ -39,7 +39,7 @@ const testComponents = async () => {
     console.log('\n👤 Test des utilisateurs...')
     const users = await ApiRouteService.getUsers()
     console.log(`   ✅ ${users.length} utilisateurs récupérés`)
-    
+
     if (users.length > 0) {
       const user = users[0]
       console.log(`   📋 Premier utilisateur: ${user.name}`)
@@ -56,10 +56,10 @@ const testComponents = async () => {
     console.log('\n📝 Test du blog...')
     const articles = await ApiRouteService.getArticles()
     console.log(`   ✅ ${articles.length} articles récupérés`)
-    
+
     const categories = await ApiRouteService.getCategories()
     console.log(`   ✅ ${categories.length} catégories récupérées`)
-    
+
     const tags = await ApiRouteService.getTags()
     console.log(`   ✅ ${tags.length} tags récupérés`)
 
@@ -77,7 +77,7 @@ const testComponents = async () => {
     console.log('\n🔄 Vérification du mode...')
     const isMockMode = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true'
     console.log(`   🎭 Mode mock activé: ${isMockMode}`)
-    
+
     if (isMockMode) {
       console.log('   ✅ Utilisation des données mock')
     } else {
@@ -85,7 +85,6 @@ const testComponents = async () => {
     }
 
     console.log('\n🎉 Tests des composants terminés!')
-    
   } catch (error) {
     console.error('❌ Erreur lors des tests des composants:', error)
   }
@@ -97,7 +96,7 @@ testComponents()
     console.log('\n✅ Tests des composants terminés avec succès!')
     process.exit(0)
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('\n❌ Erreur fatale lors des tests des composants:', error)
     process.exit(1)
   })

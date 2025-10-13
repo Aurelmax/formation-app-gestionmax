@@ -1,26 +1,32 @@
-'use client';
+'use client'
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen } from 'lucide-react';
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { BookOpen } from 'lucide-react'
 
 interface FormationBasicInfoProps {
   formData: {
-    title: string;
-    code_formation: string;
-    statut: string;
-  };
-  onInputChange: (field: string, value: unknown) => void;
+    title: string
+    codeFormation: string
+    statut: string
+  }
+  onInputChange: (field: string, value: unknown) => void
 }
 
 const statuts = [
   { value: 'EN_COURS', label: 'En cours' },
   { value: 'FINALISEE', label: 'Finalisée' },
   { value: 'LIVREE', label: 'Livrée' },
-  { value: 'ARCHIVE', label: 'Archivée' }
-];
+  { value: 'ARCHIVE', label: 'Archivée' },
+]
 
 export function FormationBasicInfo({ formData, onInputChange }: FormationBasicInfoProps) {
   return (
@@ -38,30 +44,33 @@ export function FormationBasicInfo({ formData, onInputChange }: FormationBasicIn
             <Input
               id="title"
               value={formData.title}
-              onChange={(e) => onInputChange('title', e.target.value)}
+              onChange={e => onInputChange('title', e.target.value)}
               placeholder="Nom du programme de formation"
             />
           </div>
-          
+
           <div className="space-y-2">
-            <Label htmlFor="code_formation">Code formation</Label>
+            <Label htmlFor="codeFormation">Code formation</Label>
             <Input
-              id="code_formation"
-              value={formData.code_formation}
-              onChange={(e) => onInputChange('code_formation', e.target.value)}
+              id="codeFormation"
+              value={formData.codeFormation}
+              onChange={e => onInputChange('codeFormation', e.target.value)}
               placeholder="Code unique de la formation"
             />
           </div>
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="statut">Statut</Label>
-          <Select value={formData.statut} onValueChange={(value: string) => onInputChange('statut', value)}>
+          <Select
+            value={formData.statut}
+            onValueChange={(value: string) => onInputChange('statut', value)}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {statuts.map((statut) => (
+              {statuts.map(statut => (
                 <SelectItem key={statut.value} value={statut.value}>
                   {statut.label}
                 </SelectItem>
@@ -71,5 +80,5 @@ export function FormationBasicInfo({ formData, onInputChange }: FormationBasicIn
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

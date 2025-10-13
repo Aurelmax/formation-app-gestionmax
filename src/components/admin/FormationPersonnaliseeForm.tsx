@@ -1,98 +1,47 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Save, X } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { Save, X } from 'lucide-react'
+import { toast } from 'sonner'
 
 // Import des composants refactorisés
-import { FormationBasicInfo } from './forms/FormationBasicInfo';
-import { FormationAccessModalities } from './forms/FormationAccessModalities';
-import { FormationTrainerInfo } from './forms/FormationTrainerInfo';
-import { FormationEvaluation } from './forms/FormationEvaluation';
-import { FormationAbandonConditions } from './forms/FormationAbandonConditions';
+import { FormationBasicInfo } from './forms/FormationBasicInfo'
+import { FormationAccessModalities } from './forms/FormationAccessModalities'
+import { FormationTrainerInfo } from './forms/FormationTrainerInfo'
+import { FormationEvaluation } from './forms/FormationEvaluation'
+import { FormationAbandonConditions } from './forms/FormationAbandonConditions'
+import {
+  FormationPersonnaliseeFormProps,
+  FormationPersonnaliseeFormData,
+  FormationPersonnalisee,
+} from '@/types/payload'
 
-interface FormationPersonnalisee {
-  id?: string;
-  title: string;
-  code_formation: string;
-  statut: 'EN_COURS' | 'FINALISEE' | 'LIVREE' | 'ARCHIVE';
-  objectifs: Record<string, unknown>;
-  programme_detail: Array<{
-    jour: string;
-    duree: string;
-    modules: Array<{
-      titre: string;
-      description: string;
-      duree: string;
-      contenu: Record<string, unknown>;
-    }>;
-  }>;
-  modalites_acces: {
-    prerequis: string;
-    public_concerne: string;
-    duree: string;
-    horaires: string;
-    delais_mise_en_place: string;
-    tarif: number;
-    modalites_reglement: string;
-  };
-  contact_formateur: {
-    nom: string;
-    email: string;
-    telephone: string;
-    role: string;
-    biographie: string;
-  };
-  modalites_pedagogiques: Record<string, unknown>;
-  ressources_dispo: Array<{
-    ressource: string;
-    description: string;
-  }>;
-  modalites_evaluation: {
-    types_evaluation: Array<{
-      type: string;
-      description: string;
-    }>;
-    plateforme_evaluation: string;
-    grille_analyse: string;
-  };
-  sanction_formation: string;
-  niveau_certification: string;
-  accessibilite_handicap: {
-    referent_handicap: string;
-    contact_referent: string;
-    adaptations_proposees: string;
-  };
-  cessation_abandon: {
-    conditions_renonciation: string;
-    facturation_abandon: string;
-  };
-}
-
-interface FormationPersonnaliseeFormProps {
-  formation?: FormationPersonnalisee | Record<string, unknown> | any;
-  onSave: (formation: FormationPersonnalisee | Record<string, unknown> | any) => void;
-  onCancel: () => void;
-  isLoading?: boolean;
-  rdvData?: Record<string, unknown>;
-}
-
-export function FormationPersonnaliseeForm({ 
-  formation, 
-  onSave, 
-  onCancel, 
-  isLoading = false, 
-  rdvData 
-}: FormationPersonnaliseeFormProps) {
-  const [formData, setFormData] = useState<FormationPersonnalisee>({
-    title: (formation as any)?.title || (rdvData ? `${(rdvData['programmeTitre'] as string) || ''} - ${(rdvData['client'] as Record<string, unknown>)?.['prenom']} ${(rdvData['client'] as Record<string, unknown>)?.['nom']}` : ''),
-    code_formation: (formation as any)?.code_formation || (rdvData ? `A${Date.now().toString().slice(-6)}-${((rdvData['client'] as Record<string, unknown>)?.['nom'] as string)?.toUpperCase()}` : ''),
-    statut: (formation as any)?.statut || 'EN_COURS',
-    objectifs: (formation as any)?.objectifs || { root: { type: 'root', children: [] } },
-    programme_detail: (formation as any)?.programme_detail || [
+export function FormationPersonnaliseeForm({
+  formation,
+  onSave,
+  onCancel,
+  isLoading = false,
+  rdvData,
+}: FormationPersonnaliseeFormProps): JSX.Element {
+  const [formData, setFormData] = useState<FormationPersonnaliseeFormData>({
+    title:
+      (formation as FormationPersonnalisee)?.title ||
+      (rdvData
+        ? `${(rdvData['programmeTitre'] as string) || ''} - ${(rdvData['client'] as Record<string, unknown>)?.['prenom']} ${(rdvData['client'] as Record<string, unknown>)?.['nom']}`
+        : ''),
+    codeFormation:
+      (formation as FormationPersonnalisee)?.codeFormation ||
+      (rdvData
+        ? `A${Date.now().toString().slice(-6)}-${((rdvData['client'] as Record<string, unknown>)?.['nom'] as string)?.toUpperCase()}`
+        : ''),
+    statut: (formation as FormationPersonnalisee)?.statut || 'EN_COURS',
+    objectifs: (formation as FormationPersonnalisee)?.objectifs || {
+      root: { type: 'root', children: [] },
+    },
+    programmeDetail: (formation as FormationPersonnalisee)?.programmeDetail || [
       {
         jour: 'Jour 1',
         duree: '7 heures',
@@ -101,80 +50,83 @@ export function FormationPersonnaliseeForm({
             titre: 'Introduction',
             description: 'Présentation et objectifs',
             duree: '1h',
-            contenu: { root: { type: 'root', children: [] } }
-          }
-        ]
-      }
+            contenu: { root: { type: 'root', children: [] } },
+          },
+        ],
+      },
     ],
-    modalites_acces: (formation as any)?.modalites_acces || {
+    modalitesAcces: (formation as FormationPersonnalisee)?.modalitesAcces || {
       prerequis: '',
-      public_concerne: '',
+      publicConcerne: '',
       duree: '',
       horaires: '',
-      delais_mise_en_place: '',
+      delaisMiseEnPlace: '',
       tarif: 0,
-      modalites_reglement: ''
+      modalitesReglement: '',
     },
-    contact_formateur: (formation as any)?.contact_formateur || {
+    contactFormateur: (formation as FormationPersonnalisee)?.contactFormateur || {
       nom: '',
       email: '',
       telephone: '',
       role: '',
-      biographie: ''
+      biographie: '',
     },
-    modalites_pedagogiques: (formation as any)?.modalites_pedagogiques || { root: { type: 'root', children: [] } },
-    ressources_dispo: (formation as any)?.ressources_dispo || [],
-    modalites_evaluation: (formation as any)?.modalites_evaluation || {
-      types_evaluation: [],
-      plateforme_evaluation: '',
-      grille_analyse: ''
+    modalitesPedagogiques: (formation as FormationPersonnalisee)?.modalitesPedagogiques || {
+      root: { type: 'root', children: [] },
     },
-    sanction_formation: (formation as any)?.sanction_formation || '',
-    niveau_certification: (formation as any)?.niveau_certification || '',
-    accessibilite_handicap: (formation as any)?.accessibilite_handicap || {
-      referent_handicap: '',
-      contact_referent: '',
-      adaptations_proposees: ''
+    ressourcesDispo: (formation as FormationPersonnalisee)?.ressourcesDispo || [],
+    modalitesEvaluation: (formation as FormationPersonnalisee)?.modalitesEvaluation || {
+      typesEvaluation: [],
+      plateformeEvaluation: '',
+      grilleAnalyse: '',
     },
-    cessation_abandon: (formation as any)?.cessation_abandon || {
-      conditions_renonciation: '',
-      facturation_abandon: ''
-    }
-  });
+    sanctionFormation: (formation as FormationPersonnalisee)?.sanctionFormation || '',
+    niveauCertification: (formation as FormationPersonnalisee)?.niveauCertification || '',
+    accessibiliteHandicap: (formation as FormationPersonnalisee)?.accessibiliteHandicap || {
+      referentHandicap: '',
+      contactReferent: '',
+      adaptationsProposees: '',
+    },
+    cessationAbandon: (formation as FormationPersonnalisee)?.cessationAbandon || {
+      conditionsRenonciation: '',
+      facturationAbandon: '',
+    },
+  })
 
-  const handleInputChange = (field: string, value: unknown) => {
+  const handleInputChange = (field: string, value: unknown): void => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
-    }));
-  };
+      [field]: value,
+    }))
+  }
 
-  const handleNestedInputChange = (parent: string, field: string, value: unknown) => {
+  const handleNestedInputChange = (parent: string, field: string, value: unknown): void => {
     setFormData(prev => ({
       ...prev,
       [parent]: {
-        ...(prev[parent as keyof FormationPersonnalisee] as Record<string, unknown> || {}),
-        [field]: value
-      }
-    }));
-  };
+        ...((prev[parent as keyof FormationPersonnaliseeFormData] as Record<string, unknown>) ||
+          {}),
+        [field]: value,
+      },
+    }))
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault()
+
     // Validation basique
     if (!formData.title.trim()) {
-      toast.error('Le nom du programme est requis');
-      return;
-    }
-    
-    if (!formData.code_formation.trim()) {
-      toast.error('Le code formation est requis');
-      return;
+      toast.error('Le nom du programme est requis')
+      return
     }
 
-    onSave(formData);
-  };
+    if (!formData.codeFormation.trim()) {
+      toast.error('Le code formation est requis')
+      return
+    }
+
+    onSave(formData)
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -186,11 +138,28 @@ export function FormationPersonnaliseeForm({
           </CardHeader>
           <CardContent>
             <div className="text-sm text-blue-800 space-y-1">
-              <p><strong>Client :</strong> {(rdvData['client'] as Record<string, unknown>)?.['prenom'] as string} {(rdvData['client'] as Record<string, unknown>)?.['nom'] as string}</p>
-              <p><strong>Email :</strong> {(rdvData['client'] as Record<string, unknown>)?.['email'] as string}</p>
-              <p><strong>Programme d&apos;intérêt :</strong> {rdvData['programmeTitre'] as string}</p>
-              <p><strong>Date du RDV :</strong> {new Date(rdvData['date'] as string).toLocaleDateString('fr-FR')} à {rdvData['heure'] as string}</p>
-              {rdvData['notes'] ? <p><strong>Notes :</strong> {String(rdvData['notes'])}</p> : null}
+              <p>
+                <strong>Client :</strong>{' '}
+                {(rdvData['client'] as Record<string, unknown>)?.['prenom'] as string}{' '}
+                {(rdvData['client'] as Record<string, unknown>)?.['nom'] as string}
+              </p>
+              <p>
+                <strong>Email :</strong>{' '}
+                {(rdvData['client'] as Record<string, unknown>)?.['email'] as string}
+              </p>
+              <p>
+                <strong>Programme d&apos;intérêt :</strong> {rdvData['programmeTitre'] as string}
+              </p>
+              <p>
+                <strong>Date du RDV :</strong>{' '}
+                {new Date(rdvData['date'] as string).toLocaleDateString('fr-FR')} à{' '}
+                {rdvData['heure'] as string}
+              </p>
+              {rdvData['notes'] ? (
+                <p>
+                  <strong>Notes :</strong> {String(rdvData['notes'])}
+                </p>
+              ) : null}
             </div>
           </CardContent>
         </Card>
@@ -198,41 +167,32 @@ export function FormationPersonnaliseeForm({
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Informations de base */}
-        <FormationBasicInfo 
-          formData={formData} 
-          onInputChange={handleInputChange} 
-        />
+        <FormationBasicInfo formData={formData} onInputChange={handleInputChange} />
 
         <Separator />
 
         {/* Modalités d'accès */}
-        <FormationAccessModalities 
-          formData={formData} 
-          onNestedInputChange={handleNestedInputChange} 
+        <FormationAccessModalities
+          formData={formData}
+          onNestedInputChange={handleNestedInputChange}
         />
 
         <Separator />
 
         {/* Informations formateur */}
-        <FormationTrainerInfo 
-          formData={formData} 
-          onNestedInputChange={handleNestedInputChange} 
-        />
+        <FormationTrainerInfo formData={formData} onNestedInputChange={handleNestedInputChange} />
 
         <Separator />
 
         {/* Évaluation */}
-        <FormationEvaluation 
-          formData={formData} 
-          onNestedInputChange={handleNestedInputChange} 
-        />
+        <FormationEvaluation formData={formData} onNestedInputChange={handleNestedInputChange} />
 
         <Separator />
 
         {/* Conditions d'abandon */}
-        <FormationAbandonConditions 
-          formData={formData} 
-          onNestedInputChange={handleNestedInputChange} 
+        <FormationAbandonConditions
+          formData={formData}
+          onNestedInputChange={handleNestedInputChange}
         />
 
         {/* Boutons d'action */}
@@ -248,5 +208,5 @@ export function FormationPersonnaliseeForm({
         </div>
       </form>
     </div>
-  );
+  )
 }

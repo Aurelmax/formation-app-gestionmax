@@ -1,29 +1,19 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  Download,
-  Award,
-  CheckCircle,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  User,
-  X
-} from 'lucide-react';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { Download, Award, CheckCircle, Mail, Phone, MapPin, Calendar, User, X } from 'lucide-react'
 
 interface CVModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function CVModal({ isOpen, onClose }: CVModalProps) {
-  const [activeTab, setActiveTab] = useState('cv');
+  const [activeTab, setActiveTab] = useState('cv')
 
   const cvData = {
     personalInfo: {
@@ -32,21 +22,21 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
       email: 'aurelien@gestionmax.fr',
       phone: '06.46.02.24.68',
       location: 'Antibes, France',
-      experience: '8+ années d\'expérience'
+      experience: "8+ années d'expérience",
     },
     certifications: [
       {
         name: 'Certification Qualiopi',
         number: 'QUA230C60046',
         date: '2023',
-        status: 'Active'
+        status: 'Active',
       },
       {
         name: 'Référencement Datadock',
         number: 'Depuis 2020',
         date: '2020',
-        status: 'Active'
-      }
+        status: 'Active',
+      },
     ],
     skills: [
       'WordPress Development',
@@ -56,19 +46,20 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
       'Gestion de Projet',
       'HTML/CSS',
       'PHP/MySQL',
-      'JavaScript'
+      'JavaScript',
     ],
     experience: [
       {
         period: '2020 - Présent',
         title: 'Formateur WordPress Indépendant',
         company: 'GestionMax',
-        description: 'Formation professionnelle WordPress, WooCommerce et SEO. Plus de 500 apprenants formés.',
+        description:
+          'Formation professionnelle WordPress, WooCommerce et SEO. Plus de 500 apprenants formés.',
         achievements: [
           'Certification Qualiopi obtenue',
           'Référencement Datadock',
-          'Formations éligibles CPF'
-        ]
+          'Formations éligibles CPF',
+        ],
       },
       {
         period: '2016 - 2020',
@@ -78,28 +69,26 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
         achievements: [
           'Plus de 100 sites développés',
           'Spécialisation WooCommerce',
-          'Expertise SEO'
-        ]
-      }
+          'Expertise SEO',
+        ],
+      },
     ],
     education: [
       {
         degree: 'Formation Continue',
         institution: 'Divers organismes',
         year: '2015-2024',
-        description: 'Formations continues en développement web, WordPress et pédagogie'
-      }
-    ]
-  };
+        description: 'Formations continues en développement web, WordPress et pédagogie',
+      },
+    ],
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold text-[#1f3b8e]">
-              CV du Formateur
-            </DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-[#1f3b8e]">CV du Formateur</DialogTitle>
             <Button
               variant="ghost"
               size="icon"
@@ -149,9 +138,7 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
                     <h3 className="text-2xl font-bold text-[#1f3b8e] mb-2">
                       {cvData.personalInfo.name}
                     </h3>
-                    <p className="text-lg text-gray-600 mb-4">
-                      {cvData.personalInfo.title}
-                    </p>
+                    <p className="text-lg text-gray-600 mb-4">{cvData.personalInfo.title}</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4 text-[#1f3b8e]" />
@@ -181,7 +168,11 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
                 <h4 className="text-xl font-semibold text-[#1f3b8e] mb-4">Compétences</h4>
                 <div className="flex flex-wrap gap-2">
                   {cvData.skills.map((skill, index) => (
-                    <Badge key={index} variant="secondary" className="bg-[#7eb33f]/10 text-[#7eb33f] border-[#7eb33f]/20">
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="bg-[#7eb33f]/10 text-[#7eb33f] border-[#7eb33f]/20"
+                    >
                       {skill}
                     </Badge>
                   ))}
@@ -192,7 +183,9 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
             {/* Expérience */}
             <Card>
               <CardContent className="p-6">
-                <h4 className="text-xl font-semibold text-[#1f3b8e] mb-4">Expérience Professionnelle</h4>
+                <h4 className="text-xl font-semibold text-[#1f3b8e] mb-4">
+                  Expérience Professionnelle
+                </h4>
                 <div className="space-y-6">
                   {cvData.experience.map((exp, index) => (
                     <div key={index} className="border-l-4 border-[#1f3b8e] pl-4">
@@ -222,10 +215,15 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
           <div className="space-y-6">
             <Card>
               <CardContent className="p-6">
-                <h4 className="text-xl font-semibold text-[#1f3b8e] mb-4">Certifications & Agréments</h4>
+                <h4 className="text-xl font-semibold text-[#1f3b8e] mb-4">
+                  Certifications & Agréments
+                </h4>
                 <div className="space-y-4">
                   {cvData.certifications.map((cert, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                    >
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-[#1f3b8e] rounded-full flex items-center justify-center">
                           <Award className="h-6 w-6 text-white" />
@@ -236,9 +234,7 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
                           <p className="text-xs text-gray-500">Obtenue en {cert.date}</p>
                         </div>
                       </div>
-                      <Badge className="bg-[#7eb33f] text-white">
-                        {cert.status}
-                      </Badge>
+                      <Badge className="bg-[#7eb33f] text-white">{cert.status}</Badge>
                     </div>
                   ))}
                 </div>
@@ -259,5 +255,5 @@ export function CVModal({ isOpen, onClose }: CVModalProps) {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

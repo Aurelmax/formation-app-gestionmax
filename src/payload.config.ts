@@ -43,7 +43,7 @@ export default buildConfig({
           options: [
             {
               label: 'Super Admin',
-              value: 'super_admin',
+              value: 'superAdmin',
             },
             {
               label: 'Admin',
@@ -229,12 +229,22 @@ export default buildConfig({
           label: 'Nom du programme de formation',
         },
         {
+          name: 'codeFormation',
+          type: 'text',
+          required: true,
+          unique: true,
+          label: 'Code formation',
+          admin: {
+            description: 'Code unique de la formation (ex: A123456-DUPONT)',
+          },
+        },
+        {
           name: 'objectifs',
           type: 'richText',
           label: 'Objectifs pédagogiques',
         },
         {
-          name: 'programme_detail',
+          name: 'programmeDetail',
           type: 'array',
           label: 'Détail des modules et séances',
           fields: [
@@ -275,9 +285,9 @@ export default buildConfig({
           ],
         },
         {
-          name: 'modalites_acces',
+          name: 'modalitesAcces',
           type: 'group',
-          label: 'Modalités d\'accès',
+          label: "Modalités d'accès",
           fields: [
             {
               name: 'prerequis',
@@ -285,7 +295,7 @@ export default buildConfig({
               label: 'Prérequis',
             },
             {
-              name: 'public_concerne',
+              name: 'publicConcerne',
               type: 'textarea',
               label: 'Public concerné',
             },
@@ -300,7 +310,7 @@ export default buildConfig({
               label: 'Horaires',
             },
             {
-              name: 'delais_mise_en_place',
+              name: 'delaisMiseEnPlace',
               type: 'text',
               label: 'Délais de mise en place',
             },
@@ -310,14 +320,14 @@ export default buildConfig({
               label: 'Tarif en euros',
             },
             {
-              name: 'modalites_reglement',
+              name: 'modalitesReglement',
               type: 'textarea',
               label: 'Modalités de règlement',
             },
           ],
         },
         {
-          name: 'contact_formateur',
+          name: 'contactFormateur',
           type: 'group',
           label: 'Contact formateur',
           fields: [
@@ -347,12 +357,12 @@ export default buildConfig({
           ],
         },
         {
-          name: 'modalites_pedagogiques',
+          name: 'modalitesPedagogiques',
           type: 'richText',
           label: 'Modalités techniques et pédagogiques',
         },
         {
-          name: 'ressources_dispo',
+          name: 'ressourcesDispo',
           type: 'array',
           label: 'Ressources mises à disposition',
           fields: [
@@ -368,14 +378,14 @@ export default buildConfig({
           ],
         },
         {
-          name: 'modalites_evaluation',
+          name: 'modalitesEvaluation',
           type: 'group',
-          label: 'Modalités d\'évaluation',
+          label: "Modalités d'évaluation",
           fields: [
             {
-              name: 'types_evaluation',
+              name: 'typesEvaluation',
               type: 'array',
-              label: 'Types d\'évaluation',
+              label: "Types d'évaluation",
               fields: [
                 {
                   name: 'type',
@@ -389,63 +399,63 @@ export default buildConfig({
               ],
             },
             {
-              name: 'plateforme_evaluation',
+              name: 'plateformeEvaluation',
               type: 'text',
-              label: 'Plateforme d\'évaluation',
+              label: "Plateforme d'évaluation",
             },
             {
-              name: 'grille_analyse',
+              name: 'grilleAnalyse',
               type: 'textarea',
-              label: 'Grille d\'analyse des compétences',
+              label: "Grille d'analyse des compétences",
             },
           ],
         },
         {
-          name: 'sanction_formation',
+          name: 'sanctionFormation',
           type: 'text',
           label: 'Sanction de la formation',
         },
         {
-          name: 'niveau_certification',
+          name: 'niveauCertification',
           type: 'text',
           label: 'Niveau/Certification obtenue',
         },
         {
-          name: 'accessibilite_handicap',
+          name: 'accessibiliteHandicap',
           type: 'group',
           label: 'Accessibilité handicap',
           fields: [
             {
-              name: 'referent_handicap',
+              name: 'referentHandicap',
               type: 'text',
               label: 'Référent handicap',
             },
             {
-              name: 'contact_referent',
+              name: 'contactReferent',
               type: 'text',
               label: 'Contact référent',
             },
             {
-              name: 'adaptations_proposees',
+              name: 'adaptationsProposees',
               type: 'textarea',
               label: 'Adaptations proposées',
             },
           ],
         },
         {
-          name: 'cessation_abandon',
+          name: 'cessationAbandon',
           type: 'group',
           label: 'Cessation anticipée/Abandon',
           fields: [
             {
-              name: 'conditions_renonciation',
+              name: 'conditionsRenonciation',
               type: 'textarea',
               label: 'Conditions de renonciation',
             },
             {
-              name: 'facturation_abandon',
+              name: 'facturationAbandon',
               type: 'textarea',
-              label: 'Modalités de facturation en cas d\'abandon',
+              label: "Modalités de facturation en cas d'abandon",
             },
           ],
         },
@@ -453,17 +463,12 @@ export default buildConfig({
           name: 'statut',
           type: 'select',
           options: [
-            { label: 'Publié', value: 'PUBLIE' },
-            { label: 'Brouillon', value: 'BROUILLON' },
-            { label: 'Archivé', value: 'ARCHIVE' },
+            { label: 'En cours', value: 'EN_COURS' },
+            { label: 'Finalisée', value: 'FINALISEE' },
+            { label: 'Livrée', value: 'LIVREE' },
+            { label: 'Archivée', value: 'ARCHIVE' },
           ],
-          defaultValue: 'BROUILLON',
-        },
-        {
-          name: 'code_formation',
-          type: 'text',
-          label: 'Code formation',
-          unique: true,
+          defaultValue: 'EN_COURS',
         },
       ],
     },
@@ -495,7 +500,7 @@ export default buildConfig({
           type: 'select',
           options: [
             { label: 'Inscrit', value: 'inscrit' },
-            { label: 'En cours', value: 'en_cours' },
+            { label: 'En cours', value: 'enCours' },
             { label: 'Terminé', value: 'termine' },
             { label: 'Abandonné', value: 'abandonne' },
           ],
@@ -848,13 +853,13 @@ export default buildConfig({
           name: 'statut',
           type: 'select',
           options: [
-            { label: 'En attente', value: 'en_attente' },
+            { label: 'En attente', value: 'enAttente' },
             { label: 'Confirmé', value: 'confirme' },
             { label: 'Terminé', value: 'termine' },
             { label: 'Annulé', value: 'annule' },
             { label: 'Reporté', value: 'reporte' },
           ],
-          defaultValue: 'en_attente',
+          defaultValue: 'enAttente',
           required: true,
         },
         {
@@ -951,7 +956,7 @@ export default buildConfig({
           type: 'select',
           options: [
             { label: 'Nouveau', value: 'nouveau' },
-            { label: 'En cours', value: 'en_cours' },
+            { label: 'En cours', value: 'enCours' },
             { label: 'Traité', value: 'traite' },
             { label: 'Fermé', value: 'ferme' },
           ],

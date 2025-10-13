@@ -1,131 +1,129 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Eye, Download } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils';
-import { useState, useEffect } from 'react';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Plus, Edit, Trash2, Eye, Download } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
+import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 interface Programme {
-  _id: string;
-  codeFormation: string;
-  titre: string;
-  description: string;
-  duree: number;
-  niveau: string;
-  modalites: string;
-  prix: number;
-  statut: string;
-  competences: string[] | Array<{competence: string}>;
-  createdAt: string;
-  updatedAt: string;
+  _id: string
+  codeFormation: string
+  titre: string
+  description: string
+  duree: number
+  niveau: string
+  modalites: string
+  prix: number
+  statut: string
+  competences: string[] | Array<{ competence: string }>
+  createdAt: string
+  updatedAt: string
 }
 
 export default function ProgrammesPage() {
-  const router = useRouter();
-  const [programmes, setProgrammes] = useState<Programme[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter()
+  const [programmes, setProgrammes] = useState<Programme[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    loadProgrammes();
-  }, []);
+    loadProgrammes()
+  }, [])
 
   const loadProgrammes = async () => {
     try {
-      setIsLoading(true);
-      const response = await fetch('/api/programmes');
-      const result = await response.json();
-      
+      setIsLoading(true)
+      const response = await fetch('/api/programmes')
+      const result = await response.json()
+
       if (result.success) {
-        setProgrammes(result.data);
+        setProgrammes(result.data)
       } else {
-        toast.error('Erreur lors du chargement des programmes');
+        toast.error('Erreur lors du chargement des programmes')
       }
     } catch (error: unknown) {
-      console.error('Erreur lors du chargement des programmes:', error);
-      toast.error('Erreur lors du chargement des programmes');
+      console.error('Erreur lors du chargement des programmes:', error)
+      toast.error('Erreur lors du chargement des programmes')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleDelete = async (programmeId: string, programmeTitre: string) => {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer le programme "${programmeTitre}" ?`)) {
-      return;
+      return
     }
 
     try {
       const response = await fetch(`/api/programmes/${programmeId}`, {
         method: 'DELETE',
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.error || 'Erreur lors de la suppression');
+        throw new Error(result.error || 'Erreur lors de la suppression')
       }
 
-      toast.success('Programme supprimé avec succès !');
+      toast.success('Programme supprimé avec succès !')
       // Recharger la liste
-      loadProgrammes();
+      loadProgrammes()
     } catch (error: unknown) {
-      console.error('Erreur lors de la suppression:', error);
-      toast.error((error as Error).message || 'Erreur lors de la suppression du programme');
+      console.error('Erreur lors de la suppression:', error)
+      toast.error((error as Error).message || 'Erreur lors de la suppression du programme')
     }
-  };
+  }
 
   const handleDownloadPDF = async (programmeId: string, programmeTitre: string) => {
     try {
       const response = await fetch(`/api/programmes/${programmeId}/pdf`, {
         method: 'GET',
-      });
+      })
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la génération du PDF');
+        throw new Error('Erreur lors de la génération du PDF')
       }
 
       // Créer un blob et télécharger le fichier
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `${programmeTitre.replace(/[^a-zA-Z0-9]/g, '_')}.html`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = `${programmeTitre.replace(/[^a-zA-Z0-9]/g, '_')}.html`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
 
-      toast.success('PDF téléchargé avec succès !');
+      toast.success('PDF téléchargé avec succès !')
     } catch (error: unknown) {
-      console.error('Erreur lors du téléchargement du PDF:', error);
-      toast.error((error as Error).message || 'Erreur lors du téléchargement du PDF');
+      console.error('Erreur lors du téléchargement du PDF:', error)
+      toast.error((error as Error).message || 'Erreur lors du téléchargement du PDF')
     }
-  };
+  }
 
-  const getCompetences = (competences: string[] | Array<{competence: string}>): string[] => {
+  const getCompetences = (competences: string[] | Array<{ competence: string }>): string[] => {
     if (Array.isArray(competences) && competences.length > 0) {
       if (typeof competences[0] === 'string') {
-        return competences as string[];
+        return competences as string[]
       } else {
-        return (competences as Array<{competence: string}>).map(c => c.competence);
+        return (competences as Array<{ competence: string }>).map(c => c.competence)
       }
     }
-    return [];
-  };
+    return []
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Programmes de formation</h1>
-          <p className="text-muted-foreground">
-            Gérez votre catalogue de formations
-          </p>
+          <p className="text-muted-foreground">Gérez votre catalogue de formations</p>
         </div>
         <Button asChild>
           <Link href="/admin/programmes/nouveau">
@@ -142,7 +140,7 @@ export default function ProgrammesPage() {
             <p className="mt-2 text-gray-600">Chargement des programmes...</p>
           </div>
         ) : (
-          programmes.map((programme) => (
+          programmes.map(programme => (
             <Card key={programme._id} className="hover:shadow-lg transition">
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -153,15 +151,24 @@ export default function ProgrammesPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground overflow-hidden text-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                <p
+                  className="text-sm text-muted-foreground overflow-hidden text-ellipsis"
+                  style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                  }}
+                >
                   {programme.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {getCompetences(programme.competences).slice(0, 3).map((comp, index) => (
-                    <Badge key={`${comp}-${index}`} variant="outline">
-                      {comp}
-                    </Badge>
-                  ))}
+                  {getCompetences(programme.competences)
+                    .slice(0, 3)
+                    .map((comp, index) => (
+                      <Badge key={`${comp}-${index}`} variant="outline">
+                        {comp}
+                      </Badge>
+                    ))}
                 </div>
                 <div className="flex justify-between items-center pt-4 border-t">
                   <div>
@@ -170,9 +177,7 @@ export default function ProgrammesPage() {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Prix</p>
-                    <p className="font-semibold">
-                      {formatCurrency(programme.prix)}
-                    </p>
+                    <p className="font-semibold">{formatCurrency(programme.prix)}</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Niveau</p>
@@ -236,5 +241,5 @@ export default function ProgrammesPage() {
         </Card>
       )}
     </div>
-  );
+  )
 }

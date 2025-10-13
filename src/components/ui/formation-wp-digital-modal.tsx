@@ -1,28 +1,19 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Clock,
-  MapPin,
-  Euro,
-  CheckCircle,
-  Phone,
-  Mail,
-  Users,
-  X
-} from 'lucide-react';
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Clock, MapPin, Euro, CheckCircle, Phone, Mail, Users, X } from 'lucide-react'
 
 interface FormationWPDigitalModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalModalProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('overview')
 
   const formationData = {
     titre: 'Création de son site internet (WordPress) + Stratégie de développement digital',
@@ -35,34 +26,34 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
     prerequis: 'Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur',
     publicConcerne: 'Artisans, commerçants ou professions libérales',
     objectifs: [
-      'Jour 1 : Apprendre à créer, personnaliser et gérer un site internet avec WordPress, en mettant l\'accent sur la gestion du contenu, la personnalisation du design et l\'ajout de fonctionnalités essentielles.',
-      'Jour 2 : Comprendre les bases d\'une stratégie de développement digital, incluant le SEO, la gestion des réseaux sociaux et l\'utilisation de la publicité en ligne pour attirer et convertir des clients potentiels.'
+      "Jour 1 : Apprendre à créer, personnaliser et gérer un site internet avec WordPress, en mettant l'accent sur la gestion du contenu, la personnalisation du design et l'ajout de fonctionnalités essentielles.",
+      "Jour 2 : Comprendre les bases d'une stratégie de développement digital, incluant le SEO, la gestion des réseaux sociaux et l'utilisation de la publicité en ligne pour attirer et convertir des clients potentiels.",
     ],
     programme: [
       {
-        jour: 'Jour 1 : Création et gestion d\'un site internet avec WordPress (7 heures)',
+        jour: "Jour 1 : Création et gestion d'un site internet avec WordPress (7 heures)",
         matin: {
           titre: 'Matin (9h - 13h)',
           contenu: [
-            'Introduction à WordPress : Qu\'est-ce que WordPress ? Pourquoi choisir WordPress pour créer un site internet.',
+            "Introduction à WordPress : Qu'est-ce que WordPress ? Pourquoi choisir WordPress pour créer un site internet.",
             'Installation de WordPress : guide pratique pour installer son site sur son hébergeur.',
             'Configuration initiale : choisir un thème, régler les paramètres généraux (titre, fuseau horaire, langue, permaliens).',
             'Gestion de la structure du site : Création des pages essentielles (Accueil, À propos, Contact, Politique de confidentialité).',
             'Gestion des articles et catégories : pourquoi et comment organiser un blog.',
-            'Mise en place des menus de navigation et sous-menus.'
-          ]
+            'Mise en place des menus de navigation et sous-menus.',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h)',
           contenu: [
-            'Personnalisation de l\'apparence du site : Choisir un thème adapté à votre activité (thèmes gratuits et payants).',
+            "Personnalisation de l'apparence du site : Choisir un thème adapté à votre activité (thèmes gratuits et payants).",
             'Personnalisation via le customizer : couleurs, typographies, menus et widgets.',
-            'Introduction à l\'éditeur Gutenberg (bloc de construction) pour une mise en page avancée sans coder.',
+            "Introduction à l'éditeur Gutenberg (bloc de construction) pour une mise en page avancée sans coder.",
             'Ajout de fonctionnalités essentielles : Installer des plugins (sécurité, SEO, formulaires de contact).',
             'Introduction à un constructeur de pages (ex. Elementor) pour personnaliser davantage le design.',
-            'Gérer la sécurité et les sauvegardes de votre site.'
-          ]
-        }
+            'Gérer la sécurité et les sauvegardes de votre site.',
+          ],
+        },
       },
       {
         jour: 'Jour 2 : Stratégie de développement digital (7 heures)',
@@ -74,8 +65,8 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
             'Analyser la concurrence et les tendances du marché.',
             'Introduction au référencement naturel (SEO) : Comprendre les bases du SEO.',
             'Optimisation on-page : amélioration de la vitesse du site, structure des URL, maillage interne.',
-            'Utilisation de plugins SEO (ex. Yoast SEO) pour optimiser vos pages et articles.'
-          ]
+            'Utilisation de plugins SEO (ex. Yoast SEO) pour optimiser vos pages et articles.',
+          ],
         },
         apresMidi: {
           titre: 'Après-midi (14h - 17h)',
@@ -86,26 +77,31 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
             'Publicité en ligne : Introduction aux publicités payantes (Facebook Ads, Google Ads).',
             'Définir un budget et cibler votre audience : comment atteindre les bonnes personnes avec un petit budget.',
             'Outils pour analyser et suivre la performance : Google Analytics, Matomo.',
-            'Automatisation de la communication : gestion des campagnes d\'emailing (Mailchimp, Brevo).',
-            'Conclusion et mise en place d\'un plan d\'action digital.'
-          ]
-        }
-      }
+            "Automatisation de la communication : gestion des campagnes d'emailing (Mailchimp, Brevo).",
+            "Conclusion et mise en place d'un plan d'action digital.",
+          ],
+        },
+      },
     ],
     modalites: {
-      pedagogiques: 'Formation en présentiel individuel (méthode expositive et démonstrative) avec alternance d\'exposés théoriques et de cas pratiques.',
-      techniques: 'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques).',
-      evaluation: 'Quizz d\'une dizaine de questions par l\'intermédiaire de notre plateforme d\'évaluation en ligne EVALBOX. Grille d\'analyse des compétences, travaux pratiques.',
-      sanction: 'Un certificat de réalisation de formation. Une feuille d\'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.',
-      niveau: 'Aucune certification obtenue'
+      pedagogiques:
+        "Formation en présentiel individuel (méthode expositive et démonstrative) avec alternance d'exposés théoriques et de cas pratiques.",
+      techniques:
+        'Salle de formation équipée de matériel informatique haut de gamme connectée à internet. Support de cours (Projet et ressources téléchargeables sur Notion, un hébergement Web, quizz, fiches pratiques).',
+      evaluation:
+        "Quizz d'une dizaine de questions par l'intermédiaire de notre plateforme d'évaluation en ligne EVALBOX. Grille d'analyse des compétences, travaux pratiques.",
+      sanction:
+        "Un certificat de réalisation de formation. Une feuille d'émargement individuelle sera conjointement signée par le formateur et chaque stagiaire.",
+      niveau: 'Aucune certification obtenue',
     },
     contact: {
       email: 'aurelien@gestionmax.fr',
       telephone: '06.46.02.24.68',
-      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité'
+      referent: 'Aurélien LAVAYSSIERE - Référent pédagogique et qualité',
     },
-    accessibilite: 'Votre organisme est engagé dans une démarche d\'accueil et d\'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D\'évaluer vos besoins spécifiques au regard d\'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.'
-  };
+    accessibilite:
+      "Votre organisme est engagé dans une démarche d'accueil et d'accompagnement en formation des personnes en situation de handicap. Dans ce cadre, nous proposons : Un entretien téléphonique pour vous accompagner individuellement, D'évaluer vos besoins spécifiques au regard d'une situation de handicap, De mettre en œuvre les adaptations pédagogiques, organisationnelles et matériels nécessaires.",
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -126,10 +122,18 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge className="bg-[#1f3b8e] text-white">{formationData.niveau}</Badge>
-            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">{formationData.modalite}</Badge>
-            <Badge variant="default" className="bg-[#7eb33f]">{formationData.duree}</Badge>
-            <Badge variant="default" className="bg-[#1f3b8e]">{formationData.prix}</Badge>
-            <Badge variant="secondary" className="bg-gray-100 text-gray-600">Code: {formationData.code}</Badge>
+            <Badge variant="outline" className="border-[#7eb33f] text-[#7eb33f]">
+              {formationData.modalite}
+            </Badge>
+            <Badge variant="default" className="bg-[#7eb33f]">
+              {formationData.duree}
+            </Badge>
+            <Badge variant="default" className="bg-[#1f3b8e]">
+              {formationData.prix}
+            </Badge>
+            <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+              Code: {formationData.code}
+            </Badge>
           </div>
         </DialogHeader>
 
@@ -143,7 +147,7 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
-            Vue d&apos;ensemble
+            Vue d'ensemble
           </button>
           <button
             onClick={() => setActiveTab('programme')}
@@ -186,7 +190,9 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Objectifs pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Objectifs pédagogiques
+                </h3>
                 <ul className="space-y-2">
                   {formationData.objectifs.map((objectif, index) => (
                     <li key={index} className="flex items-start gap-2">
@@ -200,23 +206,33 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Informations pratiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Informations pratiques
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Horaires:</strong> {formationData.horaires}</span>
+                    <span>
+                      <strong>Horaires:</strong> {formationData.horaires}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Modalité:</strong> {formationData.modalite}</span>
+                    <span>
+                      <strong>Modalité:</strong> {formationData.modalite}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Euro className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Tarif:</strong> {formationData.prix} nets de taxes</span>
+                    <span>
+                      <strong>Tarif:</strong> {formationData.prix} nets de taxes
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-5 w-5 text-[#1f3b8e]" />
-                    <span><strong>Niveau:</strong> {formationData.niveau}</span>
+                    <span>
+                      <strong>Niveau:</strong> {formationData.niveau}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -264,7 +280,9 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
           <div className="space-y-6 text-gray-700">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Modalités pédagogiques</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Modalités pédagogiques
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.pedagogiques}</p>
                 <p className="text-gray-600">{formationData.modalites.techniques}</p>
               </CardContent>
@@ -272,7 +290,9 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Évaluation et sanction</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Évaluation et sanction
+                </h3>
                 <p className="text-gray-600 mb-4">{formationData.modalites.evaluation}</p>
                 <p className="text-gray-600 mb-4">{formationData.modalites.sanction}</p>
                 <p className="text-gray-600">{formationData.modalites.niveau}</p>
@@ -281,14 +301,18 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Accessibilité handicap</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Accessibilité handicap
+                </h3>
                 <p className="text-gray-600">{formationData.accessibilite}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">Contact et informations</h3>
+                <h3 className="text-lg font-semibold mb-4 text-[#1f3b8e]">
+                  Contact et informations
+                </h3>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-[#1f3b8e]" />
@@ -316,5 +340,5 @@ export function FormationWPDigitalModal({ isOpen, onClose }: FormationWPDigitalM
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

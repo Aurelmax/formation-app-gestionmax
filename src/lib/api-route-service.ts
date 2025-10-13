@@ -61,7 +61,7 @@ export class ApiRouteService {
         vuesTotal: 0,
         articlesPopulaires: [],
         categoriesPopulaires: [],
-        auteursActifs: []
+        auteursActifs: [],
       }
     }
   }

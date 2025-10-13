@@ -1,15 +1,9 @@
-'use client';
+'use client'
 
-import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Building2, 
-  FileText, 
-  Shield, 
-  Award,
-  AlertTriangle
-} from 'lucide-react';
+import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Building2, FileText, Shield, Award, AlertTriangle } from 'lucide-react'
 
 export default function InformationsLegalesPage() {
   return (
@@ -18,14 +12,16 @@ export default function InformationsLegalesPage() {
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Informations légales</h1>
-            <p className="text-lg text-gray-600">GestionMax Formation - Prestataire de formation professionnelle</p>
+            <p className="text-lg text-gray-600">
+              GestionMax Formation - Prestataire de formation professionnelle
+            </p>
           </div>
 
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-[#1f3b8e] flex items-center gap-2">
                 <Building2 className="h-6 w-6" />
-                Identification de l&apos;entreprise
+                Identification de l'entreprise
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -60,7 +56,7 @@ export default function InformationsLegalesPage() {
                   <div className="flex items-start gap-3">
                     <Award className="h-5 w-5 text-[#1f3b8e] mt-1" />
                     <div>
-                      <p className="font-semibold text-gray-900">N° déclaration d&apos;activité</p>
+                      <p className="font-semibold text-gray-900">N° déclaration d'activité</p>
                       <p className="text-gray-600 font-mono">93 06 107 8906</p>
                     </div>
                   </div>
@@ -83,7 +79,7 @@ export default function InformationsLegalesPage() {
                   <AlertTriangle className="h-5 w-5 text-amber-600 mt-1" />
                   <div>
                     <p className="text-sm text-amber-800">
-                      <strong>Important :</strong> Cet enregistrement ne vaut pas agrément de l&apos;État 
+                      <strong>Important :</strong> Cet enregistrement ne vaut pas agrément de l'État
                       (Article L.6352-12 du Code du travail)
                     </p>
                   </div>
@@ -104,15 +100,18 @@ export default function InformationsLegalesPage() {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3">Adresse</h3>
                   <p className="text-gray-600">
-                    300 chemin de la suquette<br />
-                    06600 Antibes<br />
+                    300 chemin de la suquette
+                    <br />
+                    06600 Antibes
+                    <br />
                     France
                   </p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3">Contact</h3>
                   <p className="text-gray-600">
-                    <strong>Téléphone :</strong> 06 46 02 24 68<br />
+                    <strong>Téléphone :</strong> 06 46 02 24 68
+                    <br />
                     <strong>Email :</strong> aurelien@gestionmax.fr
                   </p>
                 </div>
@@ -129,26 +128,32 @@ export default function InformationsLegalesPage() {
             </CardHeader>
             <CardContent className="space-y-4 text-sm text-gray-600">
               <p>
-                <strong>Directeur de publication :</strong> Aurélien LAVAYSSIERE<br />
-                <strong>Hébergement :</strong> Vercel Inc.<br />
+                <strong>Directeur de publication :</strong> Aurélien LAVAYSSIERE
+                <br />
+                <strong>Hébergement :</strong> Vercel Inc.
+                <br />
                 <strong>Conception :</strong> GestionMax Formation
               </p>
-              
+
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                 <h4 className="font-semibold text-gray-900 mb-2">Propriété intellectuelle</h4>
                 <p>
-                  L&apos;ensemble de ce site relève de la législation française et internationale sur le droit d&apos;auteur 
-                  et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les 
-                  documents téléchargeables et les représentations iconographiques et photographiques.
+                  L'ensemble de ce site relève de la législation française et internationale sur le
+                  droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction
+                  sont réservés, y compris pour les documents téléchargeables et les représentations
+                  iconographiques et photographiques.
                 </p>
               </div>
 
               <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-semibold text-gray-900 mb-2">Protection des données personnelles</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">
+                  Protection des données personnelles
+                </h4>
                 <p>
-                  Les informations collectées font l&apos;objet d&apos;un traitement informatique destiné à la gestion 
-                  des formations. Conformément à la loi &quot;informatique et libertés&quot;, vous bénéficiez d&apos;un droit 
-                  d&apos;accès et de rectification aux informations qui vous concernent.
+                  Les informations collectées font l'objet d'un traitement informatique destiné à la
+                  gestion des formations. Conformément à la loi &quot;informatique et
+                  libertés&quot;, vous bénéficiez d'un droit d'accès et de rectification aux
+                  informations qui vous concernent.
                 </p>
               </div>
             </CardContent>
@@ -156,5 +161,5 @@ export default function InformationsLegalesPage() {
         </div>
       </div>
     </PublicLayout>
-  );
+  )
 }

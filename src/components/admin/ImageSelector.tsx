@@ -1,68 +1,66 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from '@/components/ui/dialog';
-import { 
-  Image, 
-  Upload, 
-  X, 
-  ExternalLink,
-  Copy,
-  Check
-} from 'lucide-react';
-import { MediaManager } from './MediaManager';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Image, Upload, X, ExternalLink, Copy, Check } from 'lucide-react'
+import { MediaManager } from './MediaManager'
+import { toast } from 'sonner'
 
 interface MediaFile {
-  id: string;
-  name: string;
-  type: string;
-  size: number;
-  url: string;
-  alt?: string;
-  uploadedAt: string;
-  category?: string;
+  id: string
+  name: string
+  type: string
+  size: number
+  url: string
+  alt?: string
+  uploadedAt: string
+  category?: string
 }
 
 interface ImageSelectorProps {
-  value?: string;
-  onChange: (url: string) => void;
-  placeholder?: string;
-  className?: string;
+  value?: string
+  onChange: (url: string) => void
+  placeholder?: string
+  className?: string
 }
 
-export function ImageSelector({ value, onChange, placeholder = "Sélectionner une image", className }: ImageSelectorProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<MediaFile | null>(null);
+export function ImageSelector({
+  value,
+  onChange,
+  placeholder = 'Sélectionner une image',
+  className,
+}: ImageSelectorProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<MediaFile | null>(null)
 
   const handleImageSelect = (file: MediaFile) => {
-    setSelectedImage(file);
-    onChange(file.url);
-    setIsOpen(false);
-    toast.success('Image sélectionnée');
-  };
+    setSelectedImage(file)
+    onChange(file.url)
+    setIsOpen(false)
+    toast.success('Image sélectionnée')
+  }
 
   const handleRemoveImage = () => {
-    setSelectedImage(null);
-    onChange('');
-    toast.success('Image supprimée');
-  };
+    setSelectedImage(null)
+    onChange('')
+    toast.success('Image supprimée')
+  }
 
   const copyImageUrl = () => {
     if (value) {
-      navigator.clipboard.writeText(value);
-      toast.success('URL de l\'image copiée');
+      navigator.clipboard.writeText(value)
+      toast.success("URL de l'image copiée")
     }
-  };
+  }
 
   return (
     <div className={className}>
@@ -71,13 +69,9 @@ export function ImageSelector({ value, onChange, placeholder = "Sélectionner un
           {/* Aperçu de l'image */}
           <div className="relative group">
             <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden border">
-              <img 
-                src={value} 
-                alt="Aperçu" 
-                className="w-full h-full object-cover"
-              />
+              <img src={value} alt="Aperçu" className="w-full h-full object-cover" />
             </div>
-            
+
             {/* Actions au survol */}
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <Button
@@ -106,22 +100,18 @@ export function ImageSelector({ value, onChange, placeholder = "Sélectionner un
               </Button>
             </div>
           </div>
-          
+
           {/* URL de l'image */}
           <div className="space-y-2">
             <label className="text-sm font-medium">URL de l'image</label>
             <div className="flex gap-2">
-              <Input
-                value={value}
-                readOnly
-                className="text-sm"
-              />
+              <Input value={value} readOnly className="text-sm" />
               <Button variant="outline" size="sm" onClick={copyImageUrl}>
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
           </div>
-          
+
           {/* Bouton pour changer l'image */}
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
@@ -134,11 +124,7 @@ export function ImageSelector({ value, onChange, placeholder = "Sélectionner un
               <DialogHeader>
                 <DialogTitle>Sélectionner une image</DialogTitle>
               </DialogHeader>
-              <MediaManager 
-                onSelect={handleImageSelect}
-                acceptedTypes={['image/*']}
-                maxSize={10}
-              />
+              <MediaManager onSelect={handleImageSelect} acceptedTypes={['image/*']} maxSize={10} />
             </DialogContent>
           </Dialog>
         </div>
@@ -156,14 +142,10 @@ export function ImageSelector({ value, onChange, placeholder = "Sélectionner un
             <DialogHeader>
               <DialogTitle>Sélectionner une image</DialogTitle>
             </DialogHeader>
-            <MediaManager 
-              onSelect={handleImageSelect}
-              acceptedTypes={['image/*']}
-              maxSize={10}
-            />
+            <MediaManager onSelect={handleImageSelect} acceptedTypes={['image/*']} maxSize={10} />
           </DialogContent>
         </Dialog>
       )}
     </div>
-  );
+  )
 }

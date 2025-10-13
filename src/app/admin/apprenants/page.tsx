@@ -1,60 +1,73 @@
-'use client';
+'use client'
 
-import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Plus, Search, User, Phone, Calendar } from 'lucide-react';
-import { useMainService } from '@/hooks/useApiService';
-import type { Apprenant } from '@/types/common';
+import { useState, useEffect, useCallback } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Plus, Search, User, Phone, Calendar } from 'lucide-react'
+import { useMainService } from '@/hooks/useApiService'
+import type { Apprenant } from '@/types/common'
 
 export default function ApprenantsPage() {
-  const { service } = useMainService();
-  const [apprenants, setApprenants] = useState<Apprenant[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const { service } = useMainService()
+  const [apprenants, setApprenants] = useState<Apprenant[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
 
   const loadApprenants = useCallback(async () => {
     try {
-      setIsLoading(true);
-      const data = await service.getApprenants();
-      setApprenants(data);
+      setIsLoading(true)
+      const data = await service.getApprenants()
+      setApprenants(data)
     } catch (error) {
-      console.error('Erreur lors du chargement des apprenants:', error);
+      console.error('Erreur lors du chargement des apprenants:', error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [service]);
+  }, [service])
 
   useEffect(() => {
-    loadApprenants();
-  }, [loadApprenants]);
+    loadApprenants()
+  }, [loadApprenants])
 
-  const filteredApprenants = apprenants.filter(apprenant =>
-    apprenant.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    apprenant.prenom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    apprenant.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredApprenants = apprenants.filter(
+    apprenant =>
+      apprenant.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      apprenant.prenom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      apprenant.email.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   const getStatusBadgeColor = (statut: string) => {
     switch (statut) {
-      case 'inscrit': return 'bg-blue-100 text-blue-800';
-      case 'en_cours': return 'bg-green-100 text-green-800';
-      case 'termine': return 'bg-gray-100 text-gray-800';
-      case 'abandonne': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'inscrit':
+        return 'bg-blue-100 text-blue-800'
+      case 'en_cours':
+        return 'bg-green-100 text-green-800'
+      case 'termine':
+        return 'bg-gray-100 text-gray-800'
+      case 'abandonne':
+        return 'bg-red-100 text-red-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
-    );
+    )
   }
 
   return (
@@ -63,9 +76,7 @@ export default function ApprenantsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Apprenants</h1>
-          <p className="text-gray-600 mt-1">
-            Gérez les apprenants et leurs formations
-          </p>
+          <p className="text-gray-600 mt-1">Gérez les apprenants et leurs formations</p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
@@ -135,7 +146,7 @@ export default function ApprenantsPage() {
             <Input
               placeholder="Rechercher un apprenant..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className="max-w-sm"
             />
           </div>
@@ -147,18 +158,19 @@ export default function ApprenantsPage() {
                 <TableHead>Statut</TableHead>
                 <TableHead>Contact</TableHead>
                 <TableHead>Formations</TableHead>
-                <TableHead>Date d&apos;inscription</TableHead>
+                <TableHead>Date d'inscription</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredApprenants.map((apprenant) => (
+              {filteredApprenants.map(apprenant => (
                 <TableRow key={apprenant.id}>
                   <TableCell>
                     <div className="flex items-center space-x-3">
                       <Avatar>
                         <AvatarFallback>
-                          {apprenant.prenom[0]}{apprenant.nom[0]}
+                          {apprenant.prenom[0]}
+                          {apprenant.nom[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div>
@@ -185,9 +197,7 @@ export default function ApprenantsPage() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <div className="text-sm">
-                      {apprenant.formations?.length || 0} formation(s)
-                    </div>
+                    <div className="text-sm">{apprenant.formations?.length || 0} formation(s)</div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-1">
@@ -214,5 +224,5 @@ export default function ApprenantsPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

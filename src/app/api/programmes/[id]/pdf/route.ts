@@ -1,53 +1,49 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { MongoClient, ObjectId } from 'mongodb';
-import dotenv from 'dotenv';
-import path from 'path';
+import { NextRequest, NextResponse } from 'next/server'
+import { MongoClient, ObjectId } from 'mongodb'
+import dotenv from 'dotenv'
+import path from 'path'
 
-dotenv.config({ path: path.resolve(__dirname, '../../../../../../.env.local') });
+dotenv.config({ path: path.resolve(__dirname, '../../../../../../.env.local') })
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const mongoUri = process.env.MONGODB_URI;
+    const mongoUri = process.env.MONGODB_URI
     if (!mongoUri) {
-      throw new Error('MONGODB_URI not defined');
+      throw new Error('MONGODB_URI not defined')
     }
 
-    const client = new MongoClient(mongoUri);
-    await client.connect();
-    
-    const db = client.db();
-    const collection = db.collection('programmes');
-    
-    const id = new ObjectId(params.id);
-    const programme = await collection.findOne({ _id: id });
-    
-    await client.close();
-    
+    const client = new MongoClient(mongoUri)
+    await client.connect()
+
+    const db = client.db()
+    const collection = db.collection('programmes')
+
+    const id = new ObjectId(params.id)
+    const programme = await collection.findOne({ _id: id })
+
+    await client.close()
+
     if (!programme) {
-      return NextResponse.json(
-        { success: false, error: 'Programme non trouvé' },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Programme non trouvé' }, { status: 404 })
     }
 
     // Générer le contenu HTML du PDF
-    const htmlContent = generateProgrammeHTML(programme);
+    const htmlContent = generateProgrammeHTML(programme)
 
-    // Pour l'instant, retourner le HTML (dans une vraie implémentation, 
+    // Pour l'instant, retourner le HTML (dans une vraie implémentation,
     // vous utiliseriez une librairie comme puppeteer ou jsPDF)
     return new NextResponse(htmlContent, {
       headers: {
         'Content-Type': 'text/html',
-        'Content-Disposition': `attachment; filename="${programme.titre.replace(/[^a-zA-Z0-9]/g, '_')}.html"`
-      }
-    });
-
+        'Content-Disposition': `attachment; filename="${programme.titre.replace(/[^a-zA-Z0-9]/g, '_')}.html"`,
+      },
+    })
   } catch (error) {
-    console.error('Erreur lors de la génération du PDF:', error);
+    console.error('Erreur lors de la génération du PDF:', error)
     return NextResponse.json(
       { success: false, error: 'Erreur lors de la génération du PDF' },
       { status: 500 }
-    );
+    )
   }
 }
 
@@ -166,75 +162,113 @@ function generateProgrammeHTML(programme: any): string {
                 <strong>Prix:</strong> ${programme.prix}€
             </div>
         </div>
-        ${programme.horaires ? `
+        ${
+          programme.horaires
+            ? `
         <div class="info-item">
             <strong>Horaires:</strong> ${programme.horaires}
         </div>
-        ` : ''}
+        `
+            : ''
+        }
     </div>
 
-    ${programme.description ? `
+    ${
+      programme.description
+        ? `
     <div class="section">
         <h2>Description</h2>
         <p>${programme.description.replace(/\n/g, '<br>')}</p>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.objectifs ? `
+    ${
+      programme.objectifs
+        ? `
     <div class="section">
         <h2>Objectifs pédagogiques</h2>
         <p>${programme.objectifs.replace(/\n/g, '<br>')}</p>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.prerequis ? `
+    ${
+      programme.prerequis
+        ? `
     <div class="section">
         <h2>Prérequis</h2>
         <p>${programme.prerequis.replace(/\n/g, '<br>')}</p>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.publicConcerne ? `
+    ${
+      programme.publicConcerne
+        ? `
     <div class="section">
         <h2>Public concerné</h2>
         <p>${programme.publicConcerne.replace(/\n/g, '<br>')}</p>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.competences && programme.competences.length > 0 ? `
+    ${
+      programme.competences && programme.competences.length > 0
+        ? `
     <div class="section">
         <h2>Compétences développées</h2>
         <div class="competences">
             ${programme.competences.map((comp: string) => `<span class="competence">${comp}</span>`).join('')}
         </div>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.ressources && programme.ressources.length > 0 ? `
+    ${
+      programme.ressources && programme.ressources.length > 0
+        ? `
     <div class="section">
         <h2>Ressources et matériel</h2>
         <ul>
             ${programme.ressources.map((ressource: string) => `<li>${ressource}</li>`).join('')}
         </ul>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.modalitesEvaluation ? `
+    ${
+      programme.modalitesEvaluation
+        ? `
     <div class="section">
         <h2>Modalités d'évaluation</h2>
         <p>${programme.modalitesEvaluation.replace(/\n/g, '<br>')}</p>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.sanctionFormation || programme.niveauCertification ? `
+    ${
+      programme.sanctionFormation || programme.niveauCertification
+        ? `
     <div class="section">
         <h2>Certification</h2>
         ${programme.sanctionFormation ? `<p><strong>Sanction:</strong> ${programme.sanctionFormation}</p>` : ''}
         ${programme.niveauCertification ? `<p><strong>Niveau:</strong> ${programme.niveauCertification}</p>` : ''}
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.formateurNom ? `
+    ${
+      programme.formateurNom
+        ? `
     <div class="section">
         <h2>Contact formateur</h2>
         <div class="contact-info">
@@ -245,21 +279,31 @@ function generateProgrammeHTML(programme: any): string {
             ${programme.formateurBiographie ? `<p><strong>Biographie:</strong> ${programme.formateurBiographie}</p>` : ''}
         </div>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.accessibiliteHandicap ? `
+    ${
+      programme.accessibiliteHandicap
+        ? `
     <div class="section">
         <h2>Accessibilité handicap</h2>
         <p>${programme.accessibiliteHandicap.replace(/\n/g, '<br>')}</p>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
-    ${programme.cessationAbandon ? `
+    ${
+      programme.cessationAbandon
+        ? `
     <div class="section">
         <h2>Conditions d'abandon</h2>
         <p>${programme.cessationAbandon.replace(/\n/g, '<br>')}</p>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
     <div class="footer">
         <p>Document généré le ${new Date().toLocaleDateString('fr-FR')}</p>
@@ -267,5 +311,5 @@ function generateProgrammeHTML(programme: any): string {
     </div>
 </body>
 </html>
-  `;
+  `
 }

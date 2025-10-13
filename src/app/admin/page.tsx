@@ -1,28 +1,28 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, BookOpen, Calendar, TrendingUp } from 'lucide-react';
-import { useMainService } from '@/hooks/useApiService';
+import { useState, useEffect } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Users, BookOpen, Calendar, TrendingUp } from 'lucide-react'
+import { useMainService } from '@/hooks/useApiService'
 
 export default function AdminDashboard() {
-  const { service } = useMainService();
-  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { service } = useMainService()
+  const [stats, setStats] = useState<Record<string, unknown> | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const data = await service.getStats();
-        setStats(data);
+        const data = await service.getStats()
+        setStats(data)
       } catch (error) {
-        console.error('Erreur lors du chargement des statistiques:', error);
+        console.error('Erreur lors du chargement des statistiques:', error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
-    loadStats();
-  }, [service]);
+    }
+    loadStats()
+  }, [service])
 
   const cards = [
     {
@@ -49,16 +49,14 @@ export default function AdminDashboard() {
       icon: TrendingUp,
       color: 'text-purple-600',
     },
-  ];
+  ]
 
   if (isLoading) {
     return (
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Vue d&apos;ensemble de votre activité
-          </p>
+          <p className="text-muted-foreground">Vue d'ensemble de votre activité</p>
         </div>
         <div className="flex justify-center items-center py-20">
           <div className="text-center">
@@ -67,21 +65,19 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Vue d&apos;ensemble de votre activité
-        </p>
+        <p className="text-muted-foreground">Vue d'ensemble de votre activité</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {cards.map((card) => {
-          const Icon = card.icon;
+        {cards.map(card => {
+          const Icon = card.icon
           return (
             <Card key={card.title}>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -94,7 +90,7 @@ export default function AdminDashboard() {
                 <div className="text-2xl font-bold">{card.value}</div>
               </CardContent>
             </Card>
-          );
+          )
         })}
       </div>
 
@@ -104,9 +100,7 @@ export default function AdminDashboard() {
             <CardTitle>Activité récente</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Aucune activité récente
-            </p>
+            <p className="text-sm text-muted-foreground">Aucune activité récente</p>
           </CardContent>
         </Card>
 
@@ -115,12 +109,10 @@ export default function AdminDashboard() {
             <CardTitle>Prochains rendez-vous</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Aucun rendez-vous planifié
-            </p>
+            <p className="text-sm text-muted-foreground">Aucun rendez-vous planifié</p>
           </CardContent>
         </Card>
       </div>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import { BlogManagement } from '@/components/admin/BlogManagement';
+import { BlogManagement } from '@/components/admin/BlogManagement'
 
 export default function BlogPage() {
-  return <BlogManagement />;
+  return <BlogManagement />
 }

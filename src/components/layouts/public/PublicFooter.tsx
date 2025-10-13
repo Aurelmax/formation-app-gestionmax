@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import Link from 'next/link'
+import { Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
 
 export function PublicFooter() {
   return (
@@ -12,7 +12,8 @@ export function PublicFooter() {
           <div>
             <h3 className="text-white text-lg font-bold mb-4">GestionMax Formation</h3>
             <p className="text-sm mb-4">
-              Organisme de formation professionnelle certifié Qualiopi, expert en développement des compétences.
+              Organisme de formation professionnelle certifié Qualiopi, expert en développement des
+              compétences.
             </p>
             <div className="flex gap-4">
               <a href="#" className="hover:text-white transition">
@@ -31,12 +32,36 @@ export function PublicFooter() {
           <div>
             <h3 className="text-white text-lg font-bold mb-4">Liens rapides</h3>
             <ul className="space-y-2 text-sm">
-                <li><Link href="/catalogue" className="hover:text-white transition">Catalogue formations</Link></li>
-                <li><Link href="/apropos" className="hover:text-white transition">À propos</Link></li>
-                <li><Link href="/blog" className="hover:text-white transition">Blog</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
-                <li><Link href="/reglement-interieur" className="hover:text-white transition">Règlement intérieur</Link></li>
-                <li><Link href="/informations-legales" className="hover:text-white transition">Informations légales</Link></li>
+              <li>
+                <Link href="/catalogue" className="hover:text-white transition">
+                  Catalogue formations
+                </Link>
+              </li>
+              <li>
+                <Link href="/apropos" className="hover:text-white transition">
+                  À propos
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-white transition">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-white transition">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link href="/reglement-interieur" className="hover:text-white transition">
+                  Règlement intérieur
+                </Link>
+              </li>
+              <li>
+                <Link href="/informations-legales" className="hover:text-white transition">
+                  Informations légales
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -44,10 +69,26 @@ export function PublicFooter() {
           <div>
             <h3 className="text-white text-lg font-bold mb-4">Formations populaires</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/catalogue" className="hover:text-white transition">Développement Web</Link></li>
-              <li><Link href="/catalogue" className="hover:text-white transition">Data Science</Link></li>
-              <li><Link href="/catalogue" className="hover:text-white transition">UX/UI Design</Link></li>
-              <li><Link href="/catalogue" className="hover:text-white transition">Gestion de projet</Link></li>
+              <li>
+                <Link href="/catalogue" className="hover:text-white transition">
+                  Développement Web
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalogue" className="hover:text-white transition">
+                  Data Science
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalogue" className="hover:text-white transition">
+                  UX/UI Design
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalogue" className="hover:text-white transition">
+                  Gestion de projet
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -72,9 +113,12 @@ export function PublicFooter() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} GestionMax Formation. Tous droits réservés. | Certifié Qualiopi</p>
+          <p>
+            &copy; {new Date().getFullYear()} GestionMax Formation. Tous droits réservés. | Certifié
+            Qualiopi
+          </p>
         </div>
       </div>
     </footer>
-  );
+  )
 }

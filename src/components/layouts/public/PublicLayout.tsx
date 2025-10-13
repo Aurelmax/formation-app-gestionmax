@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import { ReactNode } from 'react';
-import { PublicHeader } from './PublicHeader';
-import { PublicFooter } from './PublicFooter';
+import { ReactNode } from 'react'
+import { PublicHeader } from './PublicHeader'
+import { PublicFooter } from './PublicFooter'
 
 interface PublicLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export function PublicLayout({ children }: PublicLayoutProps) {
@@ -15,5 +15,5 @@ export function PublicLayout({ children }: PublicLayoutProps) {
       <main className="flex-1">{children}</main>
       <PublicFooter />
     </div>
-  );
+  )
 }

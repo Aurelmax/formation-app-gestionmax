@@ -1,65 +1,65 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { userService } from '@/lib/user-service';
-import { toast } from 'sonner';
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { userService } from '@/lib/user-service'
+import { toast } from 'sonner'
 
 export default function DiagnosticPage() {
-  const [diagnostic, setDiagnostic] = useState<Record<string, unknown> | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [diagnostic, setDiagnostic] = useState<Record<string, unknown> | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const runDiagnostic = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      console.log('🔍 Démarrage du diagnostic...');
-      
+      console.log('🔍 Démarrage du diagnostic...')
+
       // Test 1: Récupérer les utilisateurs
-      const users = await userService.getUsers();
-      console.log('👥 Utilisateurs trouvés:', users);
-      
+      const users = await userService.getUsers()
+      console.log('👥 Utilisateurs trouvés:', users)
+
       // Test 2: Vérifier localStorage
-      const storedUsers = localStorage.getItem('gestionmax_users');
-      console.log('💾 localStorage:', storedUsers);
-      
+      const storedUsers = localStorage.getItem('gestionmax_users')
+      console.log('💾 localStorage:', storedUsers)
+
       // Test 3: Tentative de connexion
-      let loginTest = null;
+      let loginTest = null
       try {
         loginTest = await userService.login({
           email: 'aurelien@gestionmax.fr',
-          password: 'nw*T/y@_yVjkS?Q'
-        });
-        console.log('✅ Test de connexion réussi:', loginTest);
+          password: 'nw*T/y@_yVjkS?Q',
+        })
+        console.log('✅ Test de connexion réussi:', loginTest)
       } catch (error) {
-        console.log('❌ Test de connexion échoué:', error);
-        loginTest = { error: error instanceof Error ? error.message : 'Erreur inconnue' };
+        console.log('❌ Test de connexion échoué:', error)
+        loginTest = { error: error instanceof Error ? error.message : 'Erreur inconnue' }
       }
-      
+
       setDiagnostic({
         users,
         userCount: users.length,
         localStorage: storedUsers ? JSON.parse(storedUsers) : null,
         loginTest,
-        timestamp: new Date().toISOString()
-      });
-      
-      toast.success('Diagnostic terminé');
+        timestamp: new Date().toISOString(),
+      })
+
+      toast.success('Diagnostic terminé')
     } catch (error) {
-      console.error('❌ Erreur lors du diagnostic:', error);
-      setDiagnostic({ error: error instanceof Error ? error.message : 'Erreur inconnue' });
-      toast.error('Erreur lors du diagnostic');
+      console.error('❌ Erreur lors du diagnostic:', error)
+      setDiagnostic({ error: error instanceof Error ? error.message : 'Erreur inconnue' })
+      toast.error('Erreur lors du diagnostic')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const clearLocalStorage = () => {
-    localStorage.removeItem('gestionmax_users');
-    localStorage.removeItem('auth_token');
-    toast.success('localStorage vidé');
-    setDiagnostic(null);
-  };
+    localStorage.removeItem('gestionmax_users')
+    localStorage.removeItem('auth_token')
+    toast.success('localStorage vidé')
+    setDiagnostic(null)
+  }
 
   const forceSaveUsers = () => {
     // Forcer la sauvegarde des utilisateurs
@@ -72,31 +72,31 @@ export default function DiagnosticPage() {
         firstName: 'Aurélien',
         lastName: 'GestionMax',
         role: 'admin',
-        status: 'active'
-      }
-    ];
-    localStorage.setItem('gestionmax_users', JSON.stringify(users));
-    toast.success('Utilisateurs sauvegardés dans localStorage');
-    setDiagnostic(null);
-  };
+        status: 'active',
+      },
+    ]
+    localStorage.setItem('gestionmax_users', JSON.stringify(users))
+    toast.success('Utilisateurs sauvegardés dans localStorage')
+    setDiagnostic(null)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Diagnostic du Système</h1>
-          <p className="text-gray-600">Vérification de l&apos;état du système d&apos;authentification</p>
+          <p className="text-gray-600">Vérification de l'état du système d'authentification</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Button onClick={runDiagnostic} disabled={isLoading} className="h-20">
             {isLoading ? 'Diagnostic en cours...' : '🔍 Lancer le diagnostic'}
           </Button>
-          
+
           <Button onClick={clearLocalStorage} variant="outline" className="h-20">
             🗑️ Vider localStorage
           </Button>
-          
+
           <Button onClick={forceSaveUsers} variant="outline" className="h-20">
             💾 Forcer sauvegarde
           </Button>
@@ -117,11 +117,13 @@ export default function DiagnosticPage() {
                   <p className="text-sm text-gray-600">{diagnostic.userCount} utilisateur(s)</p>
                   {diagnostic.users && diagnostic.users.length > 0 && (
                     <div className="mt-2">
-                      {(diagnostic.users as Array<{email: string, role: string}>).map((user, index: number) => (
-                        <div key={index} className="text-sm bg-gray-100 p-2 rounded">
-                          {user.email} ({user.role})
-                        </div>
-                      ))}
+                      {(diagnostic.users as Array<{ email: string; role: string }>).map(
+                        (user, index: number) => (
+                          <div key={index} className="text-sm bg-gray-100 p-2 rounded">
+                            {user.email} ({user.role})
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
@@ -158,13 +160,20 @@ export default function DiagnosticPage() {
             <CardTitle>Instructions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <p>1. <strong>Lancer le diagnostic</strong> pour vérifier l&apos;état du système</p>
-            <p>2. <strong>Vider localStorage</strong> si vous voulez repartir à zéro</p>
-            <p>3. <strong>Forcer la sauvegarde</strong> pour recréer les utilisateurs dans localStorage</p>
+            <p>
+              1. <strong>Lancer le diagnostic</strong> pour vérifier l'état du système
+            </p>
+            <p>
+              2. <strong>Vider localStorage</strong> si vous voulez repartir à zéro
+            </p>
+            <p>
+              3. <strong>Forcer la sauvegarde</strong> pour recréer les utilisateurs dans
+              localStorage
+            </p>
             <p>4. Ouvrez la console (F12) pour voir les logs détaillés</p>
           </CardContent>
         </Card>
       </div>
     </div>
-  );
+  )
 }

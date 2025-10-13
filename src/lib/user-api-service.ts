@@ -3,10 +3,10 @@
  */
 
 import { payloadApi } from './payload-api-service'
-import { 
-  User, 
-  CreateUserRequest, 
-  UpdateUserRequest, 
+import {
+  User,
+  CreateUserRequest,
+  UpdateUserRequest,
   ChangePasswordRequest,
   LoginRequest,
   LoginResponse,
@@ -14,7 +14,7 @@ import {
   Permission,
   ROLE_PERMISSIONS,
   hasPermission,
-  isUserActive
+  isUserActive,
 } from '@/types/users'
 import { ID } from '@/types/common'
 
@@ -26,9 +26,9 @@ export class UserApiService {
     try {
       const response = await payloadApi.findAll('users', {
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToUser)
     } catch (error) {
       console.error('Erreur lors de la récupération des utilisateurs:', error)
@@ -57,13 +57,13 @@ export class UserApiService {
       const response = await payloadApi.findAll('users', {
         where: {
           email: {
-            equals: email
-          }
+            equals: email,
+          },
         },
         limit: 1,
-        depth: 1
+        depth: 1,
       })
-      
+
       if (response.docs.length > 0) {
         return this.transformPayloadToUser(response.docs[0])
       }
@@ -83,7 +83,7 @@ export class UserApiService {
       const user = await payloadApi.create('users', payloadData, { depth: 1 })
       return this.transformPayloadToUser(user)
     } catch (error) {
-      console.error('Erreur lors de la création de l\'utilisateur:', error)
+      console.error("Erreur lors de la création de l'utilisateur:", error)
       throw error
     }
   }
@@ -122,12 +122,12 @@ export class UserApiService {
       const response = await payloadApi.search('users', query, {
         fields: ['name', 'firstName', 'lastName', 'email'],
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToUser)
     } catch (error) {
-      console.error('Erreur lors de la recherche d\'utilisateurs:', error)
+      console.error("Erreur lors de la recherche d'utilisateurs:", error)
       throw error
     }
   }
@@ -140,13 +140,13 @@ export class UserApiService {
       const response = await payloadApi.findAll('users', {
         where: {
           role: {
-            equals: role
-          }
+            equals: role,
+          },
         },
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToUser)
     } catch (error) {
       console.error(`Erreur lors de la récupération des utilisateurs ${role}:`, error)
@@ -162,13 +162,13 @@ export class UserApiService {
       const response = await payloadApi.findAll('users', {
         where: {
           status: {
-            equals: 'active'
-          }
+            equals: 'active',
+          },
         },
         sort: '-createdAt',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToUser)
     } catch (error) {
       console.error('Erreur lors de la récupération des utilisateurs actifs:', error)
@@ -182,7 +182,7 @@ export class UserApiService {
   static async authenticateUser(loginData: LoginRequest): Promise<LoginResponse | null> {
     try {
       const user = await this.getUserByEmail(loginData.email)
-      
+
       if (!user || !user.password) {
         return null
       }
@@ -198,7 +198,7 @@ export class UserApiService {
 
       // Mettre à jour la dernière connexion
       await this.updateUser(user.id, {
-        lastLoginAt: new Date().toISOString()
+        lastLoginAt: new Date().toISOString(),
       })
 
       // Générer un token (en production, utiliser JWT)
@@ -208,10 +208,10 @@ export class UserApiService {
       return {
         user: this.sanitizeUser(user),
         token,
-        refreshToken
+        refreshToken,
       }
     } catch (error) {
-      console.error('Erreur lors de l\'authentification:', error)
+      console.error("Erreur lors de l'authentification:", error)
       return null
     }
   }
@@ -238,7 +238,7 @@ export class UserApiService {
 
       // Mettre à jour le mot de passe
       await this.updateUser(id, {
-        password: passwordData.newPassword
+        password: passwordData.newPassword,
       })
     } catch (error) {
       console.error(`Erreur lors du changement de mot de passe pour l'utilisateur ${id}:`, error)
@@ -258,7 +258,10 @@ export class UserApiService {
 
       return hasPermission(user, permission)
     } catch (error) {
-      console.error(`Erreur lors de la vérification des permissions pour l'utilisateur ${userId}:`, error)
+      console.error(
+        `Erreur lors de la vérification des permissions pour l'utilisateur ${userId}:`,
+        error
+      )
       return false
     }
   }
@@ -284,7 +287,7 @@ export class UserApiService {
       permissions: payloadData.permissions || ROLE_PERMISSIONS[payloadData.role] || [],
       metadata: payloadData.metadata,
       createdAt: payloadData.createdAt,
-      updatedAt: payloadData.updatedAt
+      updatedAt: payloadData.updatedAt,
     }
   }
 
@@ -306,7 +309,7 @@ export class UserApiService {
       dateOfBirth: userData.dateOfBirth,
       lastLoginAt: userData.lastLoginAt,
       permissions: userData.permissions,
-      metadata: userData.metadata
+      metadata: userData.metadata,
     }
   }
 

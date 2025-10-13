@@ -23,7 +23,8 @@ class MongoDBService {
 
   private async connect() {
     if (!this.client) {
-      const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/formation-app-gestionmax'
+      const mongoUri =
+        process.env.MONGODB_URI || 'mongodb://localhost:27017/formation-app-gestionmax'
       this.client = new MongoClient(mongoUri)
       await this.client.connect()
       this.db = this.client.db('formation-app-gestionmax')
@@ -71,17 +72,19 @@ class MongoDBService {
       return adminUser
     }
     // Fallback vers le premier utilisateur
-    return users[0] || {
-      id: '1',
-      email: 'admin@gestionmax.fr',
-      name: 'Admin',
-      firstName: 'Admin',
-      role: 'admin',
-      status: 'active',
-      permissions: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
+    return (
+      users[0] || {
+        id: '1',
+        email: 'admin@gestionmax.fr',
+        name: 'Admin',
+        firstName: 'Admin',
+        role: 'admin',
+        status: 'active',
+        permissions: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    )
   }
 
   // Rendez-vous
@@ -101,13 +104,13 @@ class MongoDBService {
   // Statistiques
   async getStats(): Promise<any> {
     const db = await this.connect()
-    
+
     const [programmes, apprenants, users, rdvs, articles] = await Promise.all([
       db.collection('programmes').countDocuments(),
       db.collection('apprenants').countDocuments(),
       db.collection('users').countDocuments(),
       db.collection('rendez-vous').countDocuments(),
-      db.collection('articles').countDocuments()
+      db.collection('articles').countDocuments(),
     ])
 
     return {
@@ -115,7 +118,7 @@ class MongoDBService {
       apprenants,
       users,
       rdvs,
-      articles
+      articles,
     }
   }
 
@@ -135,7 +138,7 @@ class MongoDBService {
       formateurs: doc.formateurs || [],
       competences: doc.competences?.map((c: any) => c.competence) || [],
       createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt
+      updatedAt: doc.updatedAt,
     }
   }
 
@@ -153,7 +156,7 @@ class MongoDBService {
       progression: doc.progression || 0,
       avatar: doc.avatar,
       createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt
+      updatedAt: doc.updatedAt,
     }
   }
 
@@ -174,7 +177,7 @@ class MongoDBService {
       permissions: doc.permissions || [],
       metadata: doc.metadata,
       createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt
+      updatedAt: doc.updatedAt,
     }
   }
 
@@ -188,7 +191,7 @@ class MongoDBService {
         prenom: doc.client.prenom,
         email: doc.client.email,
         telephone: doc.client.telephone,
-        entreprise: doc.client.entreprise
+        entreprise: doc.client.entreprise,
       },
       type: doc.type,
       statut: doc.statut,
@@ -202,7 +205,7 @@ class MongoDBService {
       rappelEnvoye: doc.rappelEnvoye || false,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
-      createdBy: doc.createdBy
+      createdBy: doc.createdBy,
     }
   }
 
@@ -227,7 +230,7 @@ class MongoDBService {
       tempsLecture: doc.tempsLecture,
       featured: doc.featured || false,
       createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt
+      updatedAt: doc.updatedAt,
     }
   }
 

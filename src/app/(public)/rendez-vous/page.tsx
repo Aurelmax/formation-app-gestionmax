@@ -1,9 +1,9 @@
-'use client';
+'use client'
 
-import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { PublicRendezVousForm } from '@/components/forms/PublicRendezVousForm';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, CheckCircle } from 'lucide-react';
+import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+import { PublicRendezVousForm } from '@/components/forms/PublicRendezVousForm'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Calendar, CheckCircle } from 'lucide-react'
 
 export default function RendezVousPage() {
   return (
@@ -13,9 +13,7 @@ export default function RendezVousPage() {
           <div className="max-w-4xl mx-auto">
             {/* En-tête */}
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                Demande de rendez-vous
-              </h1>
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">Demande de rendez-vous</h1>
               <p className="text-xl text-gray-600">
                 Planifiez un rendez-vous pour discuter de vos besoins en formation
               </p>
@@ -26,7 +24,7 @@ export default function RendezVousPage() {
               programmeId="1"
               programmeTitre="Formation WordPress Débutant"
               onSuccess={() => {
-                console.log('Rendez-vous créé avec succès !');
+                console.log('Rendez-vous créé avec succès !')
               }}
             />
 
@@ -78,5 +76,5 @@ export default function RendezVousPage() {
         </div>
       </div>
     </PublicLayout>
-  );
+  )
 }

@@ -3,7 +3,13 @@
  */
 
 import { payloadApi } from './payload-api-service'
-import type { RendezVous, CreateRendezVousRequest, UpdateRendezVousRequest, RendezVousFilters, RendezVousStats } from '@/types/rendez-vous'
+import type {
+  RendezVous,
+  CreateRendezVousRequest,
+  UpdateRendezVousRequest,
+  RendezVousFilters,
+  RendezVousStats,
+} from '@/types/rendez-vous'
 
 export class RendezVousApiService {
   /**
@@ -12,7 +18,7 @@ export class RendezVousApiService {
   static async getRendezVous(filters?: RendezVousFilters): Promise<RendezVous[]> {
     try {
       const where: any = {}
-      
+
       if (filters) {
         if (filters.statut) {
           where.statut = { equals: filters.statut }
@@ -28,15 +34,15 @@ export class RendezVousApiService {
         }
         if (filters.dateDebut && filters.dateFin) {
           where.date = {
-            greater_than_equal: filters.dateDebut,
-            less_than_equal: filters.dateFin
+            greaterThanEqual: filters.dateDebut,
+            lessThanEqual: filters.dateFin,
           }
         }
         if (filters.search) {
           where.or = [
             { 'client.nom': { contains: filters.search } },
             { 'client.prenom': { contains: filters.search } },
-            { 'client.email': { contains: filters.search } }
+            { 'client.email': { contains: filters.search } },
           ]
         }
       }
@@ -44,9 +50,9 @@ export class RendezVousApiService {
       const response = await payloadApi.findAll('rendez-vous', {
         where,
         sort: 'date',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToRendezVous)
     } catch (error) {
       console.error('Erreur lors de la récupération des rendez-vous:', error)
@@ -113,18 +119,18 @@ export class RendezVousApiService {
   static async getRendezVousAujourdhui(): Promise<RendezVous[]> {
     try {
       const aujourdhui = new Date().toISOString().split('T')[0]
-      
+
       const response = await payloadApi.findAll('rendez-vous', {
         where: {
-          date: { equals: aujourdhui }
+          date: { equals: aujourdhui },
         },
         sort: 'heure',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToRendezVous)
     } catch (error) {
-      console.error('Erreur lors de la récupération des rendez-vous d\'aujourd\'hui:', error)
+      console.error("Erreur lors de la récupération des rendez-vous d'aujourd'hui:", error)
       throw error
     }
   }
@@ -139,18 +145,18 @@ export class RendezVousApiService {
       debutSemaine.setDate(aujourdhui.getDate() - aujourdhui.getDay())
       const finSemaine = new Date(debutSemaine)
       finSemaine.setDate(debutSemaine.getDate() + 6)
-      
+
       const response = await payloadApi.findAll('rendez-vous', {
         where: {
           date: {
-            greater_than_equal: debutSemaine.toISOString().split('T')[0],
-            less_than_equal: finSemaine.toISOString().split('T')[0]
-          }
+            greaterThanEqual: debutSemaine.toISOString().split('T')[0],
+            lessThanEqual: finSemaine.toISOString().split('T')[0],
+          },
         },
         sort: 'date',
-        depth: 1
+        depth: 1,
       })
-      
+
       return response.docs.map(this.transformPayloadToRendezVous)
     } catch (error) {
       console.error('Erreur lors de la récupération des rendez-vous de la semaine:', error)
@@ -174,7 +180,7 @@ export class RendezVousApiService {
 
       const stats: RendezVousStats = {
         total: rdvs.length,
-        enAttente: rdvs.filter((r: any) => r.statut === 'en_attente').length,
+        enAttente: rdvs.filter((r: any) => r.statut === 'enAttente').length,
         confirmes: rdvs.filter((r: any) => r.statut === 'confirme').length,
         annules: rdvs.filter((r: any) => r.statut === 'annule').length,
         termines: rdvs.filter((r: any) => r.statut === 'termine').length,
@@ -187,7 +193,7 @@ export class RendezVousApiService {
         ceMois: rdvs.filter((r: any) => {
           const rdvDate = new Date(r.date)
           return rdvDate >= debutMois
-        }).length
+        }).length,
       }
 
       return stats
@@ -210,7 +216,7 @@ export class RendezVousApiService {
         prenom: payloadData.client.prenom,
         email: payloadData.client.email,
         telephone: payloadData.client.telephone,
-        entreprise: payloadData.client.entreprise
+        entreprise: payloadData.client.entreprise,
       },
       type: payloadData.type,
       statut: payloadData.statut,
@@ -224,7 +230,7 @@ export class RendezVousApiService {
       rappelEnvoye: payloadData.rappelEnvoye || false,
       createdAt: payloadData.createdAt,
       updatedAt: payloadData.updatedAt,
-      createdBy: payloadData.createdBy
+      createdBy: payloadData.createdBy,
     }
   }
 
@@ -240,7 +246,7 @@ export class RendezVousApiService {
         prenom: rdvData.client.prenom,
         email: rdvData.client.email,
         telephone: rdvData.client.telephone,
-        entreprise: rdvData.client.entreprise
+        entreprise: rdvData.client.entreprise,
       },
       type: rdvData.type,
       statut: rdvData.statut,
@@ -252,7 +258,7 @@ export class RendezVousApiService {
       lienVisio: rdvData.lienVisio,
       notes: rdvData.notes,
       rappelEnvoye: rdvData.rappelEnvoye,
-      createdBy: rdvData.createdBy
+      createdBy: rdvData.createdBy,
     }
   }
 }

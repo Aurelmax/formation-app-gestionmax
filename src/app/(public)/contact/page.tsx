@@ -1,23 +1,21 @@
-'use client';
+'use client'
 
-import { PublicLayout } from '@/components/layouts/public/PublicLayout';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock,
-  FileText,
-  Scale,
-  Shield
-} from 'lucide-react';
-import Image from 'next/image';
-import { InteractiveMap } from '@/components/ui/InteractiveMap';
+import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Mail, Phone, MapPin, Clock, FileText, Scale, Shield } from 'lucide-react'
+import Image from 'next/image'
+import { InteractiveMap } from '@/components/ui/InteractiveMap'
 
 export default function ContactPage() {
   return (
@@ -49,7 +47,7 @@ export default function ContactPage() {
                 {/* Left Column - Contact Details */}
                 <div className="p-8 bg-gray-50">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Nos coordonnées</h2>
-                  
+
                   <div className="space-y-6">
                     <div className="flex items-start gap-4">
                       <Mail className="h-6 w-6 text-blue-600 mt-1" />
@@ -71,14 +69,18 @@ export default function ContactPage() {
                       <MapPin className="h-6 w-6 text-blue-600 mt-1" />
                       <div>
                         <p className="font-semibold text-gray-900">Adresse</p>
-                        <p className="text-gray-600">300 chemin de la suquette,<br />06600 Antibes, France</p>
+                        <p className="text-gray-600">
+                          300 chemin de la suquette,
+                          <br />
+                          06600 Antibes, France
+                        </p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-4">
                       <Clock className="h-6 w-6 text-blue-600 mt-1" />
                       <div>
-                        <p className="font-semibold text-gray-900">Heures d&apos;ouverture</p>
+                        <p className="font-semibold text-gray-900">Heures d'ouverture</p>
                         <div className="text-gray-600 space-y-1">
                           <p>Lundi - Vendredi : 9h00 - 18h00</p>
                           <p>Samedi : 9h00 - 12h00</p>
@@ -92,42 +94,52 @@ export default function ContactPage() {
                 {/* Right Column - Contact Form */}
                 <div className="p-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">Envoyez-nous un message</h2>
-                  <p className="text-gray-600 mb-6">Remplissez le formulaire ci-dessous et nous vous répondrons rapidement</p>
-                  
+                  <p className="text-gray-600 mb-6">
+                    Remplissez le formulaire ci-dessous et nous vous répondrons rapidement
+                  </p>
+
                   <form className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="nom" className="text-gray-700">Nom complet *</Label>
-                      <Input 
-                        id="nom" 
-                        placeholder="Votre nom complet" 
-                        required 
+                      <Label htmlFor="nom" className="text-gray-700">
+                        Nom complet *
+                      </Label>
+                      <Input
+                        id="nom"
+                        placeholder="Votre nom complet"
+                        required
                         className="border-gray-300"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-700">Email *</Label>
-                      <Input 
-                        id="email" 
-                        type="email" 
-                        placeholder="votre@email.com" 
-                        required 
+                      <Label htmlFor="email" className="text-gray-700">
+                        Email *
+                      </Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="votre@email.com"
+                        required
                         className="border-gray-300"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="telephone" className="text-gray-700">Téléphone</Label>
-                      <Input 
-                        id="telephone" 
-                        type="tel" 
-                        placeholder="06 46 02 24 68" 
+                      <Label htmlFor="telephone" className="text-gray-700">
+                        Téléphone
+                      </Label>
+                      <Input
+                        id="telephone"
+                        type="tel"
+                        placeholder="06 46 02 24 68"
                         className="border-gray-300"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="type" className="text-gray-700">Type de demande *</Label>
+                      <Label htmlFor="type" className="text-gray-700">
+                        Type de demande *
+                      </Label>
                       <Select>
                         <SelectTrigger className="border-gray-300">
                           <SelectValue placeholder="Sélectionnez un type" />
@@ -142,17 +154,21 @@ export default function ContactPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="sujet" className="text-gray-700">Sujet *</Label>
-                      <Input 
-                        id="sujet" 
-                        placeholder="Sujet de votre message" 
-                        required 
+                      <Label htmlFor="sujet" className="text-gray-700">
+                        Sujet *
+                      </Label>
+                      <Input
+                        id="sujet"
+                        placeholder="Sujet de votre message"
+                        required
                         className="border-gray-300"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="message" className="text-gray-700">Message *</Label>
+                      <Label htmlFor="message" className="text-gray-700">
+                        Message *
+                      </Label>
                       <Textarea
                         id="message"
                         placeholder="Décrivez votre demande en détail..."
@@ -162,8 +178,8 @@ export default function ContactPage() {
                       />
                     </div>
 
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="w-full bg-brand-primary hover:bg-brand-secondary text-white py-3"
                     >
                       Envoyer le message
@@ -181,9 +197,11 @@ export default function ContactPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Nous situer à Antibes</h2>
-            <p className="text-lg text-gray-600">GestionMax Formation - Formations WordPress Professionnelles à Antibes</p>
+            <p className="text-lg text-gray-600">
+              GestionMax Formation - Formations WordPress Professionnelles à Antibes
+            </p>
           </div>
-          
+
           <Card className="overflow-hidden">
             <InteractiveMap className="h-96" />
           </Card>
@@ -194,8 +212,12 @@ export default function ContactPage() {
       <section className="py-20 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Mentions légales et conformité Qualiopi</h2>
-            <p className="text-lg text-gray-600">Informations obligatoires et conditions de nos formations</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Mentions légales et conformité Qualiopi
+            </h2>
+            <p className="text-lg text-gray-600">
+              Informations obligatoires et conditions de nos formations
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -209,9 +231,10 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold text-gray-900">Contrat de formation</h3>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Un contrat de formation professionnelle est établi pour chaque formation. Il précise les objectifs, 
-                  modalités, programme, délais, conditions financières et droit de rétractation. L&apos;accès se fait 
-                  dès réception de l&apos;accord de prise en charge. Un entretien préalable personnalise votre parcours.
+                  Un contrat de formation professionnelle est établi pour chaque formation. Il
+                  précise les objectifs, modalités, programme, délais, conditions financières et
+                  droit de rétractation. L'accès se fait dès réception de l'accord de prise en
+                  charge. Un entretien préalable personnalise votre parcours.
                 </p>
               </CardContent>
             </Card>
@@ -226,9 +249,10 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold text-gray-900">Procédure de réclamation</h3>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  En cas de mécontentement, utilisez le formulaire de contact en sélectionnant &quot;Réclamation&quot;. 
-                  Nous nous engageons à traiter votre demande sous 10 jours ouvrés maximum avec un suivi 
-                  personnalisé. Contact direct : <strong>reclamation@gestionmax-formation.fr</strong>
+                  En cas de mécontentement, utilisez le formulaire de contact en sélectionnant
+                  &quot;Réclamation&quot;. Nous nous engageons à traiter votre demande sous 10 jours
+                  ouvrés maximum avec un suivi personnalisé. Contact direct :{' '}
+                  <strong>reclamation@gestionmax-formation.fr</strong>
                 </p>
               </CardContent>
             </Card>
@@ -243,9 +267,10 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold text-gray-900">Protection des données</h3>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Vos données personnelles sont traitées conformément au RGPD. Elles servent à des fins 
-                  pédagogiques, administratives ou réglementaires. Vous disposez d&apos;un droit d&apos;accès, 
-                  rectification et suppression. Contact DPO : <strong>dpo@gestionmax-formation.fr</strong>
+                  Vos données personnelles sont traitées conformément au RGPD. Elles servent à des
+                  fins pédagogiques, administratives ou réglementaires. Vous disposez d'un droit
+                  d'accès, rectification et suppression. Contact DPO :{' '}
+                  <strong>dpo@gestionmax-formation.fr</strong>
                 </p>
               </CardContent>
             </Card>
@@ -253,5 +278,5 @@ export default function ContactPage() {
         </div>
       </section>
     </PublicLayout>
-  );
+  )
 }

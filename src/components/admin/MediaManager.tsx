@@ -1,104 +1,106 @@
-'use client';
+'use client'
 
-import { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Upload, 
-  Image, 
-  FileText, 
-  Trash2, 
-  Download, 
+import { useState, useEffect, useRef } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import {
+  Upload,
+  Image,
+  FileText,
+  Trash2,
+  Download,
   Search,
   Plus,
   X,
   Eye,
   Copy,
-  Check
-} from 'lucide-react';
-import { toast } from 'sonner';
+  Check,
+} from 'lucide-react'
+import { toast } from 'sonner'
 
 interface MediaFile {
-  id: string;
-  name: string;
-  type: string;
-  size: number;
-  url: string;
-  alt?: string;
-  uploadedAt: string;
-  category?: string;
+  id: string
+  name: string
+  type: string
+  size: number
+  url: string
+  alt?: string
+  uploadedAt: string
+  category?: string
 }
 
 interface MediaManagerProps {
-  onSelect?: (file: MediaFile) => void;
-  onSelectMultiple?: (files: MediaFile[]) => void;
-  multiple?: boolean;
-  acceptedTypes?: string[];
-  maxSize?: number; // en MB
+  onSelect?: (file: MediaFile) => void
+  onSelectMultiple?: (files: MediaFile[]) => void
+  multiple?: boolean
+  acceptedTypes?: string[]
+  maxSize?: number // en MB
 }
 
-export function MediaManager({ 
-  onSelect, 
-  onSelectMultiple, 
-  multiple = false, 
+export function MediaManager({
+  onSelect,
+  onSelectMultiple,
+  multiple = false,
   acceptedTypes = ['image/*'],
-  maxSize = 5 
+  maxSize = 5,
 }: MediaManagerProps) {
-  const [files, setFiles] = useState<MediaFile[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState<MediaFile[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
-  const [dragActive, setDragActive] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<MediaFile[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedFiles, setSelectedFiles] = useState<MediaFile[]>([])
+  const [isUploading, setIsUploading] = useState(false)
+  const [dragActive, setDragActive] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    loadFiles();
-  }, []);
+    loadFiles()
+  }, [])
 
   const loadFiles = () => {
     // Charger les fichiers depuis le localStorage (simulation)
-    const storedFiles = localStorage.getItem('blog_media_files');
+    const storedFiles = localStorage.getItem('blog_media_files')
     if (storedFiles) {
-      setFiles(JSON.parse(storedFiles));
+      setFiles(JSON.parse(storedFiles))
     }
-  };
+  }
 
   const saveFiles = (newFiles: MediaFile[]) => {
-    setFiles(newFiles);
-    localStorage.setItem('blog_media_files', JSON.stringify(newFiles));
-  };
+    setFiles(newFiles)
+    localStorage.setItem('blog_media_files', JSON.stringify(newFiles))
+  }
 
   const handleFileUpload = async (fileList: FileList) => {
-    setIsUploading(true);
-    
+    setIsUploading(true)
+
     try {
-      const newFiles: MediaFile[] = [];
-      
+      const newFiles: MediaFile[] = []
+
       for (let i = 0; i < fileList.length; i++) {
-        const file = fileList[i];
-        
+        const file = fileList[i]
+
         // Vérifier la taille
         if (file.size > maxSize * 1024 * 1024) {
-          toast.error(`Le fichier ${file.name} est trop volumineux (max ${maxSize}MB)`);
-          continue;
+          toast.error(`Le fichier ${file.name} est trop volumineux (max ${maxSize}MB)`)
+          continue
         }
-        
+
         // Vérifier le type
-        if (!acceptedTypes.some(type => {
-          if (type.endsWith('/*')) {
-            return file.type.startsWith(type.slice(0, -1));
-          }
-          return file.type === type;
-        })) {
-          toast.error(`Le type de fichier ${file.type} n'est pas accepté`);
-          continue;
+        if (
+          !acceptedTypes.some(type => {
+            if (type.endsWith('/*')) {
+              return file.type.startsWith(type.slice(0, -1))
+            }
+            return file.type === type
+          })
+        ) {
+          toast.error(`Le type de fichier ${file.type} n'est pas accepté`)
+          continue
         }
-        
+
         // Créer l'URL temporaire
-        const url = URL.createObjectURL(file);
-        
+        const url = URL.createObjectURL(file)
+
         const mediaFile: MediaFile = {
           id: `media_${Date.now()}_${i}`,
           name: file.name,
@@ -107,95 +109,96 @@ export function MediaManager({
           url,
           alt: file.name.split('.')[0],
           uploadedAt: new Date().toISOString(),
-          category: file.type.startsWith('image/') ? 'image' : 'document'
-        };
-        
-        newFiles.push(mediaFile);
+          category: file.type.startsWith('image/') ? 'image' : 'document',
+        }
+
+        newFiles.push(mediaFile)
       }
-      
+
       if (newFiles.length > 0) {
-        const updatedFiles = [...files, ...newFiles];
-        saveFiles(updatedFiles);
-        toast.success(`${newFiles.length} fichier(s) uploadé(s) avec succès`);
+        const updatedFiles = [...files, ...newFiles]
+        saveFiles(updatedFiles)
+        toast.success(`${newFiles.length} fichier(s) uploadé(s) avec succès`)
       }
     } catch (error) {
-      console.error('Erreur lors de l\'upload:', error);
-      toast.error('Erreur lors de l\'upload des fichiers');
+      console.error("Erreur lors de l'upload:", error)
+      toast.error("Erreur lors de l'upload des fichiers")
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
-  };
+  }
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(true);
-  };
+    e.preventDefault()
+    setDragActive(true)
+  }
 
   const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
-  };
+    e.preventDefault()
+    setDragActive(false)
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
-    
+    e.preventDefault()
+    setDragActive(false)
+
     if (e.dataTransfer.files) {
-      handleFileUpload(e.dataTransfer.files);
+      handleFileUpload(e.dataTransfer.files)
     }
-  };
+  }
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      handleFileUpload(e.target.files);
+      handleFileUpload(e.target.files)
     }
-  };
+  }
 
   const handleDeleteFile = (fileId: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?')) {
-      const updatedFiles = files.filter(file => file.id !== fileId);
-      saveFiles(updatedFiles);
-      setSelectedFiles(selectedFiles.filter(file => file.id !== fileId));
-      toast.success('Fichier supprimé');
+      const updatedFiles = files.filter(file => file.id !== fileId)
+      saveFiles(updatedFiles)
+      setSelectedFiles(selectedFiles.filter(file => file.id !== fileId))
+      toast.success('Fichier supprimé')
     }
-  };
+  }
 
   const handleSelectFile = (file: MediaFile) => {
     if (multiple) {
-      const isSelected = selectedFiles.some(f => f.id === file.id);
+      const isSelected = selectedFiles.some(f => f.id === file.id)
       if (isSelected) {
-        setSelectedFiles(selectedFiles.filter(f => f.id !== file.id));
+        setSelectedFiles(selectedFiles.filter(f => f.id !== file.id))
       } else {
-        setSelectedFiles([...selectedFiles, file]);
+        setSelectedFiles([...selectedFiles, file])
       }
     } else {
-      onSelect?.(file);
+      onSelect?.(file)
     }
-  };
+  }
 
   const handleConfirmSelection = () => {
     if (multiple && onSelectMultiple) {
-      onSelectMultiple(selectedFiles);
+      onSelectMultiple(selectedFiles)
     }
-  };
+  }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
 
-  const filteredFiles = files.filter(file =>
-    file.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    file.alt?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredFiles = files.filter(
+    file =>
+      file.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      file.alt?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   const copyUrlToClipboard = (url: string) => {
-    navigator.clipboard.writeText(url);
-    toast.success('URL copiée dans le presse-papier');
-  };
+    navigator.clipboard.writeText(url)
+    toast.success('URL copiée dans le presse-papier')
+  }
 
   return (
     <div className="space-y-6">
@@ -210,9 +213,7 @@ export function MediaManager({
         <CardContent>
           <div
             className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-              dragActive 
-                ? 'border-blue-500 bg-blue-50' 
-                : 'border-gray-300 hover:border-blue-500'
+              dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-500'
             }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -236,7 +237,7 @@ export function MediaManager({
               onChange={handleFileInputChange}
             />
           </div>
-          
+
           {isUploading && (
             <div className="mt-4 text-center">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
@@ -270,7 +271,7 @@ export function MediaManager({
               placeholder="Rechercher un fichier..."
               className="pl-9"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </div>
 
@@ -281,12 +282,12 @@ export function MediaManager({
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {filteredFiles.map((file) => {
-                const isSelected = selectedFiles.some(f => f.id === file.id);
-                
+              {filteredFiles.map(file => {
+                const isSelected = selectedFiles.some(f => f.id === file.id)
+
                 return (
-                  <Card 
-                    key={file.id} 
+                  <Card
+                    key={file.id}
                     className={`relative group cursor-pointer transition-all ${
                       isSelected ? 'ring-2 ring-blue-500 bg-blue-50' : 'hover:shadow-md'
                     }`}
@@ -296,29 +297,27 @@ export function MediaManager({
                       {/* Image ou icône */}
                       <div className="aspect-square mb-3 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
                         {file.type.startsWith('image/') ? (
-                          <img 
-                            src={file.url} 
-                            alt={file.alt} 
+                          <img
+                            src={file.url}
+                            alt={file.alt}
                             className="w-full h-full object-cover"
                           />
                         ) : (
                           <FileText className="h-12 w-12 text-gray-400" />
                         )}
                       </div>
-                      
+
                       {/* Informations du fichier */}
                       <div className="space-y-1">
                         <p className="text-sm font-medium truncate" title={file.name}>
                           {file.name}
                         </p>
-                        <p className="text-xs text-gray-500">
-                          {formatFileSize(file.size)}
-                        </p>
+                        <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
                         <p className="text-xs text-gray-500">
                           {new Date(file.uploadedAt).toLocaleDateString()}
                         </p>
                       </div>
-                      
+
                       {/* Badge de sélection */}
                       {isSelected && (
                         <div className="absolute top-2 right-2">
@@ -328,16 +327,16 @@ export function MediaManager({
                         </div>
                       )}
                     </CardContent>
-                    
+
                     {/* Actions au survol */}
                     <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 bg-white/90 hover:bg-white"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(file.url, '_blank');
+                        onClick={e => {
+                          e.stopPropagation()
+                          window.open(file.url, '_blank')
                         }}
                       >
                         <Eye className="h-4 w-4" />
@@ -346,9 +345,9 @@ export function MediaManager({
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 bg-white/90 hover:bg-white"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          copyUrlToClipboard(file.url);
+                        onClick={e => {
+                          e.stopPropagation()
+                          copyUrlToClipboard(file.url)
                         }}
                       >
                         <Copy className="h-4 w-4" />
@@ -357,21 +356,21 @@ export function MediaManager({
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 bg-white/90 hover:bg-white text-red-500 hover:text-red-700"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteFile(file.id);
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleDeleteFile(file.id)
                         }}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </Card>
-                );
+                )
               })}
             </div>
           )}
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

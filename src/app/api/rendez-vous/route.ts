@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { ApiRouteService } from '@/lib/api-route-service';
+import { NextRequest, NextResponse } from 'next/server'
+import { rendezVousServiceShared } from '@/lib/rendez-vous-service-shared'
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 API rendez-vous appelée');
-    const { searchParams } = new URL(request.url);
+    console.log('🔍 API rendez-vous appelée')
     
+    const { searchParams } = new URL(request.url)
     const filters = {
       statut: searchParams.get('statut') || undefined,
       type: searchParams.get('type') || undefined,
@@ -14,59 +14,53 @@ export async function GET(request: NextRequest) {
       dateDebut: searchParams.get('dateDebut') || undefined,
       dateFin: searchParams.get('dateFin') || undefined,
       search: searchParams.get('search') || undefined,
-    };
+    }
 
-    console.log('📋 Filtres:', filters);
-    const rendezVous = await ApiRouteService.getRendezVous();
-    console.log('✅ Rendez-vous:', rendezVous);
+    console.log('📋 Filtres:', filters)
 
-    // Calculer les stats basiques
-    const stats = {
-      total: rendezVous.length,
-      en_attente: rendezVous.filter(rdv => rdv.statut === 'en_attente').length,
-      confirme: rendezVous.filter(rdv => rdv.statut === 'confirme').length,
-      annule: rendezVous.filter(rdv => rdv.statut === 'annule').length,
-      termine: rendezVous.filter(rdv => rdv.statut === 'termine').length
-    };
+    const result = await rendezVousServiceShared.getRendezVous(filters)
+    
+    console.log('✅ Rendez-vous:', result.rendezVous)
 
     return NextResponse.json({
       success: true,
-      data: {
-        rendezVous,
-        stats
-      }
-    });
+      data: result,
+    })
   } catch (error) {
-    console.error('❌ Erreur API rendez-vous:', error);
+    console.error('❌ Erreur API rendez-vous:', error)
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la récupération des rendez-vous' },
+      {
+        success: false,
+        error: 'Erreur lors de la récupération des rendez-vous',
+      },
       { status: 500 }
-    );
+    )
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    console.log('🔍 API création rendez-vous appelée')
     
-    // Pour l'instant, retourner un message de succès
-    // TODO: Implémenter la création réelle de rendez-vous
-    const rendezVous = {
-      id: `rdv_${Date.now()}`,
-      ...body,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+    const body = await request.json()
+    console.log('📋 Données reçues:', body)
+
+    const nouveauRendezVous = await rendezVousServiceShared.createRendezVous(body)
+    
+    console.log('✅ Rendez-vous créé:', nouveauRendezVous)
 
     return NextResponse.json({
       success: true,
-      data: rendezVous
-    }, { status: 201 });
+      data: nouveauRendezVous,
+    })
   } catch (error) {
-    console.error('Erreur création rendez-vous:', error);
+    console.error('❌ Erreur création rendez-vous:', error)
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la création du rendez-vous' },
+      {
+        success: false,
+        error: 'Erreur lors de la création du rendez-vous',
+      },
       { status: 500 }
-    );
+    )
   }
 }
