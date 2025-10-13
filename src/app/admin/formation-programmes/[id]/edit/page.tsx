@@ -1,26 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { FormationPersonnaliseeForm } from '@/components/admin/FormationPersonnaliseeForm';
 import { toast } from 'sonner';
 import { DashboardLayout } from '@/components/layouts/DashboardLayout';
 
 export default function EditFormationPersonnaliseePage() {
-  const [formation, setFormation] = useState<any>(null);
+  const [formation, setFormation] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
   const params = useParams();
   const formationId = params.id as string;
 
-  useEffect(() => {
-    if (formationId) {
-      loadFormation();
-    }
-  }, [formationId]);
-
-  const loadFormation = async () => {
+  const loadFormation = useCallback(async () => {
     try {
       const response = await fetch(`/api/formation-programmes/${formationId}`);
       const result = await response.json();
@@ -38,9 +32,15 @@ export default function EditFormationPersonnaliseePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [formationId, router]);
 
-  const handleSave = async (formationData: any) => {
+  useEffect(() => {
+    if (formationId) {
+      loadFormation();
+    }
+  }, [formationId, loadFormation]);
+
+  const handleSave = async (formationData: Record<string, unknown>) => {
     setIsSaving(true);
     
     try {
@@ -61,9 +61,9 @@ export default function EditFormationPersonnaliseePage() {
       toast.success('Formation modifiée avec succès !');
       router.push('/admin/formation-programmes');
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erreur lors de la modification de la formation:', error);
-      toast.error(error.message || 'Erreur lors de la modification de la formation');
+      toast.error((error as Error).message || 'Erreur lors de la modification de la formation');
     } finally {
       setIsSaving(false);
     }
