@@ -6,12 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FormationCard } from '@/components/shared/FormationCard';
-import { useMainService } from '@/hooks/useApiService';
 import Image from 'next/image';
 import { Search, SortAsc, SortDesc } from 'lucide-react';
 
 export default function CataloguePage() {
-  const { service } = useMainService();
   const [programmes, setProgrammes] = useState<Array<{
     id: string;
     titre: string;
@@ -32,8 +30,23 @@ export default function CataloguePage() {
   useEffect(() => {
     const loadProgrammes = async () => {
       try {
-        const data = await service.getProgrammes();
-        setProgrammes(data);
+        const response = await fetch('/api/programmes');
+        const result = await response.json();
+        if (result.success) {
+          // Transformer les données MongoDB pour correspondre à l'interface attendue
+          const transformedData = result.data.map((programme: any) => ({
+            id: programme._id,
+            codeFormation: programme.codeFormation,
+            titre: programme.titre,
+            description: programme.description,
+            duree: programme.duree,
+            niveau: programme.niveau,
+            modalites: programme.modalites,
+            prix: programme.prix,
+            competences: programme.competences || []
+          }));
+          setProgrammes(transformedData);
+        }
       } catch (error) {
         console.error('Erreur lors du chargement des programmes:', error);
       } finally {
@@ -41,7 +54,7 @@ export default function CataloguePage() {
       }
     };
     loadProgrammes();
-  }, [service]);
+  }, []);
 
   // Filtrage et tri des programmes
   const filteredAndSortedProgrammes = useMemo(() => {

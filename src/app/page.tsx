@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { PublicLayout } from '@/components/layouts/public/PublicLayout';
 import { FormationCard } from '@/components/shared/FormationCard';
 import { ModernFAQ } from '@/components/shared/ModernFAQ';
-import { useMainService } from '@/hooks/useApiService';
 import { 
   ArrowRight, 
   BookOpen, 
@@ -23,7 +22,6 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
-  const { service } = useMainService();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [formations, setFormations] = useState<Array<{
@@ -41,8 +39,23 @@ export default function HomePage() {
   useEffect(() => {
     const loadFormations = async () => {
       try {
-        const data = await service.getProgrammes();
-        setFormations(data);
+        const response = await fetch('/api/programmes');
+        const result = await response.json();
+        if (result.success) {
+          // Transformer les données MongoDB pour correspondre à l'interface attendue
+          const transformedData = result.data.map((programme: any) => ({
+            id: programme._id,
+            codeFormation: programme.codeFormation,
+            titre: programme.titre,
+            description: programme.description,
+            duree: programme.duree,
+            niveau: programme.niveau,
+            modalites: programme.modalites,
+            prix: programme.prix,
+            competences: programme.competences || []
+          }));
+          setFormations(transformedData);
+        }
       } catch (error) {
         console.error('Erreur lors du chargement des formations:', error);
       } finally {
@@ -50,7 +63,7 @@ export default function HomePage() {
       }
     };
     loadFormations();
-  }, [service]);
+  }, []);
 
   // Stats pour le formateur (utilisées dans la section "Votre formateur certifié")
   const formateurStats = [
