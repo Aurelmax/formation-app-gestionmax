@@ -18,6 +18,10 @@ export default buildConfig({
       ],
     },
   },
+  routes: {
+    // Changer la route par défaut de /admin à /payload-cms
+    admin: '/payload-cms',
+  },
   editor: lexicalEditor({}),
   collections: [
     {

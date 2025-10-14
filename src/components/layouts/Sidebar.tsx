@@ -68,20 +68,15 @@ export function Sidebar() {
 
         {/* Lien vers l'interface CMS */}
         <div className="pt-4 border-t border-gray-200">
-          <Link
-            href="/admin/payload"
+          <a
+            href="/payload-cms"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
           >
             <ExternalLink className="h-5 w-5" />
-            Interface CMS Payload
-          </Link>
-          <Link
-            href="/admin/payload/real"
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            <ExternalLink className="h-5 w-5" />
-            Payload CMS Réel
-          </Link>
+            Interface Payload CMS
+          </a>
         </div>
       </nav>
 
