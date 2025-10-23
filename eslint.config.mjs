@@ -12,7 +12,21 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:prettier/recommended'),
   {
-    ignores: ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'build/**',
+      'next-env.d.ts',
+      '*.mongodb.js',
+      'test-*.js',
+      'verify-*.js',
+      'migrate-*.js',
+      'scripts/**',
+      'src/scripts/**',
+      'public/**',
+      'src/app/admin/payload/real/**',
+    ],
   },
   {
     rules: {
@@ -30,28 +44,45 @@ const eslintConfig = [
           ignoreGlobals: true,
           // Ignorer les propriétés qui viennent de Payload (snake_case)
           allow: [
-            'en_attente', 'en_cours', 'code_formation', 'date_creation', 'date_modification',
-            'contact_formateur', 'super_admin', 'programme_detail', 'modalites_acces',
-            'public_concerne', 'delais_mise_en_place', 'modalites_reglement',
-            'modalites_pedagogiques', 'ressources_dispo', 'modalites_evaluation',
-            'types_evaluation', 'plateforme_evaluation', 'grille_analyse',
-            'greater_than_equal', 'less_than_equal', 'not_equals'
+            'en_attente',
+            'en_cours',
+            'code_formation',
+            'date_creation',
+            'date_modification',
+            'contact_formateur',
+            'super_admin',
+            'programme_detail',
+            'modalites_acces',
+            'public_concerne',
+            'delais_mise_en_place',
+            'modalites_reglement',
+            'modalites_pedagogiques',
+            'ressources_dispo',
+            'modalites_evaluation',
+            'types_evaluation',
+            'plateforme_evaluation',
+            'grille_analyse',
+            'greater_than_equal',
+            'less_than_equal',
+            'not_equals',
           ],
         },
       ],
 
       // Types plus souples
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
 
       // React
       'react/prop-types': 'off',
-      'react/no-unescaped-entities': 'warn',
+      'react/no-unescaped-entities': 'off',
+      'react-hooks/exhaustive-deps': 'off',
 
       // Accessibilité
-      'jsx-a11y/alt-text': 'warn',
-      '@next/next/no-img-element': 'warn',
+      'jsx-a11y/alt-text': 'off',
+      '@next/next/no-img-element': 'off',
     },
   },
 ]

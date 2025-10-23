@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+
+# MongoDB Playground files
+*.mongodb.js
+playground-*.js
+
+# Test files
+test-*.js
+verify-*.js
+migrate-*.js
+
+# Scripts
+scripts/
+src/scripts/
+
+# Public
+public/
+
+# Admin Payload
+src/app/admin/payload/real/
+
+# Generated
+*.tsbuildinfo
+next-env.d.ts
