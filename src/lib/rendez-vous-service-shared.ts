@@ -145,7 +145,8 @@ class RendezVousServiceShared {
       annules: this.rendezVous.filter(rdv => rdv.statut === 'annule').length,
       termines: this.rendezVous.filter(rdv => rdv.statut === 'termine').length,
       reportes: this.rendezVous.filter(rdv => rdv.statut === 'reporte').length,
-      aujourdhui: this.rendezVous.filter(rdv => rdv.date === new Date().toISOString().split('T')[0]).length,
+      aujourdhui: this.rendezVous.filter(rdv => rdv.date === new Date().toISOString().split('T')[0])
+        .length,
       cetteSemaine: this.getRendezVousDeLaSemaine().length,
       ceMois: this.getRendezVousDuMois().length,
     }

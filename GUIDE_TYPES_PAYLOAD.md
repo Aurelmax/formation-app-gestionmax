@@ -6,12 +6,12 @@
 
 ### 📋 Convention de Nommage
 
-| Slug Collection | Interface Générée | Exemple |
-|----------------|-------------------|---------|
-| `users` | `Users` | `export interface Users` |
-| `contacts` | `Contacts` | `export interface Contacts` |
+| Slug Collection        | Interface Générée     | Exemple                                |
+| ---------------------- | --------------------- | -------------------------------------- |
+| `users`                | `Users`               | `export interface Users`               |
+| `contacts`             | `Contacts`            | `export interface Contacts`            |
 | `formation-programmes` | `FormationProgrammes` | `export interface FormationProgrammes` |
-| `rendez-vous` | `RendezVous` | `export interface RendezVous` |
+| `rendez-vous`          | `RendezVous`          | `export interface RendezVous`          |
 
 ## ✅ Bonnes Pratiques
 
@@ -31,8 +31,8 @@ import type { Contact } from '@/types/payload-generated' // N'existe pas !
 // ✅ Correct : Extraire les types d'union depuis l'interface
 import type { Contacts } from '@/types/payload-generated'
 
-type ContactType = Contacts['type']        // 'question' | 'reclamation' | 'formation' | 'devis'
-type ContactStatut = Contacts['statut']    // 'nouveau' | 'enCours' | 'traite' | 'ferme'
+type ContactType = Contacts['type'] // 'question' | 'reclamation' | 'formation' | 'devis'
+type ContactStatut = Contacts['statut'] // 'nouveau' | 'enCours' | 'traite' | 'ferme'
 type ContactPriorite = Contacts['priorite'] // 'basse' | 'normale' | 'haute' | 'urgente'
 ```
 
@@ -41,7 +41,7 @@ type ContactPriorite = Contacts['priorite'] // 'basse' | 'normale' | 'haute' | '
 ```typescript
 // ✅ Correct : Étendre l'interface Payload pour les besoins locaux
 interface ContactMessage extends Omit<Contacts, 'dateReception' | 'dateReponse'> {
-  dateReception: Date    // Convertir string → Date pour les mocks
+  dateReception: Date // Convertir string → Date pour les mocks
   dateReponse?: Date
 }
 ```
@@ -55,9 +55,9 @@ const mockMessage: ContactMessage = {
   nom: 'Jean Dupont',
   email: 'jean@email.com',
   // ... autres propriétés
-  createdAt: '2024-10-10T10:00:00Z',  // ✅ Requis par Timestamped
-  updatedAt: '2024-10-10T10:00:00Z',  // ✅ Requis par Timestamped
-  reponse: undefined,                 // ✅ Propriété optionnelle
+  createdAt: '2024-10-10T10:00:00Z', // ✅ Requis par Timestamped
+  updatedAt: '2024-10-10T10:00:00Z', // ✅ Requis par Timestamped
+  reponse: undefined, // ✅ Propriété optionnelle
 }
 ```
 
@@ -81,7 +81,7 @@ import type { Contacts } from '@/types/payload-generated'
 const contact = {
   id: '1',
   nom: 'Jean',
-  email: 'jean@email.com'
+  email: 'jean@email.com',
   // Manque createdAt, updatedAt
 }
 
@@ -91,7 +91,7 @@ const contact = {
   nom: 'Jean',
   email: 'jean@email.com',
   createdAt: '2024-10-10T10:00:00Z',
-  updatedAt: '2024-10-10T10:00:00Z'
+  updatedAt: '2024-10-10T10:00:00Z',
 }
 ```
 

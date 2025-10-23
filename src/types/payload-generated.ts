@@ -1,8 +1,8 @@
 /**
  * Types générés automatiquement depuis payload.config.ts
  * ⚠️ NE PAS MODIFIER MANUELLEMENT - Utiliser le script sync-payload-types.ts
- * 
- * Généré le: 2025-10-13T17:05:29.757Z
+ *
+ * Généré le: 2025-10-14T02:10:13.442Z
  */
 
 import { Timestamped } from './common'

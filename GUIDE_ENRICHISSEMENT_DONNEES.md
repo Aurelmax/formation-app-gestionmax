@@ -19,6 +19,7 @@ Ce guide vous explique comment enrichir et améliorer vos données dans Payload 
 **Accès :** http://localhost:3010/admin/enrichissement
 
 **Avantages :**
+
 - ✅ Interface React personnalisée
 - ✅ Sélection des collections à enrichir
 - ✅ Mode aperçu (test) avant application
@@ -26,6 +27,7 @@ Ce guide vous explique comment enrichir et améliorer vos données dans Payload 
 - ✅ Intégration avec votre design
 
 **Comment faire :**
+
 1. Accédez à http://localhost:3010/admin/enrichissement
 2. Sélectionnez les collections à enrichir
 3. Cliquez sur "Aperçu" pour voir les modifications
@@ -36,6 +38,7 @@ Ce guide vous explique comment enrichir et améliorer vos données dans Payload 
 **Accès :** http://localhost:3010/admin/payload/full
 
 **Avantages :**
+
 - ✅ Interface Payload complète
 - ✅ Gestion avancée des relations
 - ✅ Upload de fichiers intégré
@@ -46,6 +49,7 @@ Ce guide vous explique comment enrichir et améliorer vos données dans Payload 
 **Script disponible :** `npm run enrich:data`
 
 **Avantages :**
+
 - ✅ Traitement en masse
 - ✅ Logique métier personnalisée
 - ✅ Automatisation des tâches répétitives
@@ -71,12 +75,12 @@ npm run enrich:data -- --quiet
 
 ### **Collections supportées**
 
-| Collection | Enrichissements appliqués |
-|------------|---------------------------|
+| Collection     | Enrichissements appliqués                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------------------------- |
 | **programmes** | Compétences, descriptions, objectifs, prérequis, modalités pédagogiques, évaluation, certification, codes CPF |
-| **users** | Permissions selon le rôle, métadonnées, historique |
-| **apprenants** | Progression, score de profil, métadonnées |
-| **articles** | Mots-clés SEO, meta descriptions, temps de lecture, statistiques |
+| **users**      | Permissions selon le rôle, métadonnées, historique                                                            |
+| **apprenants** | Progression, score de profil, métadonnées                                                                     |
+| **articles**   | Mots-clés SEO, meta descriptions, temps de lecture, statistiques                                              |
 
 ### **Exemples d'utilisation**
 
@@ -96,6 +100,7 @@ npm run enrich:data -- --quiet
 ### **Programmes de formation**
 
 **Compétences ajoutées :**
+
 - WordPress : Gutenberg, Elementor, Yoast SEO, Wordfence
 - SEO : Google Search Console, Google Analytics, Mots-clés, Netlinking
 - Marketing : Facebook Ads, Google Ads, Email Marketing, Analytics
@@ -103,32 +108,39 @@ npm run enrich:data -- --quiet
 - ChatGPT : IA générative, Prompting, Automatisation, Productivité
 
 **Descriptions enrichies :**
+
 - Ajout de contextes spécifiques selon le type de formation
 - Amélioration de la lisibilité et de l'attractivité
 
 **Objectifs détaillés :**
+
 - Objectifs pédagogiques spécifiques par domaine
 - Structure claire avec puces et étapes
 
 **Prérequis adaptés :**
+
 - Selon le niveau (Débutant, Intermédiaire, Avancé)
 - Spécifiques au contenu de la formation
 
 **Modalités pédagogiques :**
+
 - Adaptées au mode de formation (Présentiel, Distanciel, Hybride)
 - Méthodes d'apprentissage détaillées
 
 **Évaluation et certification :**
+
 - Méthodes d'évaluation standardisées
 - Certifications professionnelles
 
 **Codes CPF :**
+
 - Génération automatique pour les formations éligibles
 - Codes uniques selon le contenu
 
 ### **Utilisateurs**
 
 **Permissions par rôle :**
+
 - **Super Admin** : Tous les droits
 - **Admin** : Gestion complète sauf système
 - **Formateur** : Gestion des formations et apprenants
@@ -136,6 +148,7 @@ npm run enrich:data -- --quiet
 - **Apprenant** : Consultation uniquement
 
 **Métadonnées :**
+
 - Date de dernière connexion
 - Score de complétude du profil
 - Source de création
@@ -144,14 +157,17 @@ npm run enrich:data -- --quiet
 ### **Apprenants**
 
 **Progression calculée :**
+
 - Selon le statut (Actif: 25%, En cours: 50%, Terminé: 100%)
 - Mise à jour automatique
 
 **Score de profil :**
+
 - Calculé selon les informations disponibles
 - Email, téléphone, adresse, programmes, etc.
 
 **Métadonnées :**
+
 - Dernière activité
 - Score de profil
 - Source de données
@@ -159,20 +175,24 @@ npm run enrich:data -- --quiet
 ### **Articles**
 
 **Mots-clés SEO :**
+
 - Extraction automatique du titre et contenu
 - Mots-clés génériques pertinents
 - Optimisation pour les moteurs de recherche
 
 **Meta descriptions :**
+
 - Génération automatique basée sur le résumé
 - Optimisation de la longueur (120 caractères)
 - Amélioration du référencement
 
 **Temps de lecture :**
+
 - Calcul basé sur 200 mots par minute
 - Estimation précise pour l'UX
 
 **Statistiques :**
+
 - Initialisation des compteurs de vues
 - Articles mis en avant selon le contenu
 
@@ -251,6 +271,7 @@ async enrichCustomField() {
 ### **Problèmes courants**
 
 #### 1. Erreur de connexion
+
 ```bash
 # Vérifier la connexion
 npm run migrate:check
@@ -261,6 +282,7 @@ echo $PAYLOAD_SECRET
 ```
 
 #### 2. Données corrompues
+
 ```bash
 # Restaurer depuis la sauvegarde
 cp .env.local.backup .env.local
@@ -270,6 +292,7 @@ npm run migrate:data
 ```
 
 #### 3. Enrichissement partiel
+
 ```bash
 # Vérifier les logs
 npm run enrich:data -- --verbose
@@ -336,9 +359,9 @@ const relatedProgrammes = await this.payload.find({
   collection: 'programmes',
   where: {
     'apprenants.id': {
-      equals: apprenant.id
-    }
-  }
+      equals: apprenant.id,
+    },
+  },
 })
 ```
 
@@ -356,21 +379,25 @@ for (let i = 0; i < items.length; i += batchSize) {
 ## 🚀 Prochaines étapes
 
 ### **1. Enrichissement initial**
+
 ```bash
 npm run enrich:data
 ```
 
 ### **2. Personnalisation**
+
 - Modifier le script selon vos besoins
 - Ajouter des enrichissements spécifiques
 - Créer des règles métier personnalisées
 
 ### **3. Automatisation**
+
 - Programmer des enrichissements réguliers
 - Intégrer dans votre workflow CI/CD
 - Mettre en place des alertes
 
 ### **4. Monitoring**
+
 - Surveiller la qualité des données
 - Analyser les performances
 - Optimiser les enrichissements
@@ -380,12 +407,14 @@ npm run enrich:data
 ## 📞 Support
 
 ### **En cas de problème**
+
 1. **Consulter** les logs détaillés
 2. **Tester** en mode `--dry-run`
 3. **Vérifier** la configuration
 4. **Contacter** le support technique
 
 ### **Ressources**
+
 - 📧 **Email** : support@gestionmax.fr
 - 📞 **Téléphone** : 06.46.02.24.68
 - 💬 **Discord** : [Serveur GestionMax](https://discord.gg/gestionmax)

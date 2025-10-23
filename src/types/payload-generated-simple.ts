@@ -1,7 +1,7 @@
 /**
  * Types générés automatiquement depuis payload.config.ts
  * ⚠️ NE PAS MODIFIER MANUELLEMENT - Utiliser le script generate-types-simple.js
- * 
+ *
  * Généré le: 2025-10-13T15:55:09.601Z
  */
 

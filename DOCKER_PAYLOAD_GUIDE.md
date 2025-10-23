@@ -69,7 +69,7 @@ Les variables sont définies dans `docker-compose.yml` :
 ✅ **Pas de conflit** : Application principale sur port 3000  
 ✅ **Environnement reproductible** : Docker garantit la cohérence  
 ✅ **Facilité de déploiement** : Un seul conteneur à gérer  
-✅ **Sauvegarde simple** : Volume `media` persistant  
+✅ **Sauvegarde simple** : Volume `media` persistant
 
 ## 🚨 Dépannage
 
@@ -106,7 +106,7 @@ docker-compose down
 ## 📚 Collections Payload disponibles
 
 - **Users** : Gestion des utilisateurs
-- **Formations** : Catalogue des formations  
+- **Formations** : Catalogue des formations
 - **Apprenants** : Gestion des stagiaires
 - **Media** : Upload d'images et documents
 

@@ -4,7 +4,7 @@ services:
   payload-cms:
     build: .
     ports:
-      - "3300:3000"
+      - '3300:3000'
     environment:
       - MONGODB_URI=mongodb+srv://aurelien_db_user:UabCxoHI9J4C75j0@clustergestionmaxformat.a9qrz87.mongodb.net/gestionmax-formation?retryWrites=true&w=majority&appName=Clustergestionmaxformation
       - PAYLOAD_SECRET=your-secret-key-change-this-in-production-gestionmax-2024

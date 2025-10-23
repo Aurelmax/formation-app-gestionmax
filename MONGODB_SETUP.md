@@ -124,11 +124,13 @@ npm run dev
 Les collections suivantes sont maintenant configurées dans Payload CMS :
 
 ### **✅ Collections existantes :**
+
 - **`users`** - Utilisateurs et authentification
 - **`programmes`** - Formations et programmes
 - **`media`** - Fichiers et images
 
 ### **✅ Collections ajoutées :**
+
 - **`apprenants`** - Étudiants et apprenants
 - **`rendez-vous`** - Rendez-vous et appointments
 - **`articles`** - Articles de blog
@@ -137,6 +139,7 @@ Les collections suivantes sont maintenant configurées dans Payload CMS :
 - **`contacts`** - Messages de contact
 
 ### **✅ Collections déjà présentes :**
+
 - **`formations`** - (alias pour programmes)
 
 ---

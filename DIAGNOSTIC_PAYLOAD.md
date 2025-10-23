@@ -5,12 +5,14 @@
 D'après l'analyse des logs, voici ce qui se passe :
 
 ### ✅ **Ce qui fonctionne :**
+
 - **Serveur Next.js** : Démarré sur le port 3000
 - **Interface simulée** : Accessible sur `/admin/payload`
 - **API de santé** : Fonctionne sur `/api/payload/health`
 - **Configuration** : Payload est correctement configuré
 
 ### ❌ **Ce qui ne fonctionne pas :**
+
 - **Payload CMS** : Ne peut pas démarrer à cause du conflit `undici`
 - **Interface réelle** : Non accessible car Payload ne démarre pas
 
@@ -28,6 +30,7 @@ at new CacheStorage (/node_modules/undici/lib/web/cache/cachestorage.js:17:14)
 ## 🔧 **Solutions possibles**
 
 ### 1. **Utiliser Node.js 18** (Recommandé)
+
 ```bash
 # Installer Node.js 18
 nvm install 18
@@ -38,6 +41,7 @@ npm run dev
 ```
 
 ### 2. **Mettre à jour les dépendances**
+
 ```bash
 # Mettre à jour Payload CMS
 npm update payload @payloadcms/db-mongodb @payloadcms/richtext-lexical @payloadcms/next
@@ -47,6 +51,7 @@ npm install payload@latest @payloadcms/db-mongodb@latest @payloadcms/richtext-le
 ```
 
 ### 3. **Utiliser Docker avec Node.js 18**
+
 ```bash
 # Utiliser le Dockerfile avec Node.js 18
 docker build -f Dockerfile.payload-only -t payload-cms .
@@ -54,6 +59,7 @@ docker run -p 3300:3000 payload-cms
 ```
 
 ### 4. **Attendre une mise à jour**
+
 - Surveiller les mises à jour de Payload CMS
 - Vérifier la compatibilité avec Node.js 20
 
@@ -62,12 +68,14 @@ docker run -p 3300:3000 payload-cms
 En attendant une solution définitive, vous pouvez utiliser :
 
 ### **Interface simulée** : `/admin/payload`
+
 - ✅ Fonctionne parfaitement
 - ✅ Interface moderne et responsive
 - ✅ Gestion des collections (Users, Formations, Apprenants, Media)
 - ✅ Intégrée dans votre dashboard
 
 ### **Interface de diagnostic** : `/admin/payload/real`
+
 - ✅ Vérification du statut de Payload
 - ✅ Tentative de démarrage
 - ✅ Instructions détaillées
@@ -83,6 +91,7 @@ En attendant une solution définitive, vous pouvez utiliser :
 ## 🚀 **Recommandation**
 
 **Utilisez l'interface simulée** (`/admin/payload`) qui fonctionne parfaitement et vous permet de :
+
 - Gérer vos collections Payload
 - Avoir une interface moderne
 - Éviter les problèmes de compatibilité

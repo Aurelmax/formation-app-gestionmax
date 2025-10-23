@@ -29,7 +29,7 @@ export function InteractiveMap({ className = '' }: InteractiveMapProps) {
       const L = await import('leaflet')
 
       // Corriger les icônes Leaflet par défaut
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       delete (L.Icon.Default.prototype as any)._getIconUrl
       L.Icon.Default.mergeOptions({
         iconRetinaUrl:

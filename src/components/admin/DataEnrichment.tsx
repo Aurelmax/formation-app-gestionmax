@@ -5,18 +5,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { 
-  Database, 
-  RefreshCw, 
-  CheckCircle, 
-  AlertCircle, 
-  Play, 
+import {
+  Database,
+  RefreshCw,
+  CheckCircle,
+  AlertCircle,
+  Play,
   Eye,
   Settings,
   Users,
   BookOpen,
   GraduationCap,
-  FileText
+  FileText,
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -50,7 +50,7 @@ export function DataEnrichment() {
       icon: BookOpen,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
-      borderColor: 'border-green-200'
+      borderColor: 'border-green-200',
     },
     {
       id: 'users',
@@ -59,7 +59,7 @@ export function DataEnrichment() {
       icon: Users,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200'
+      borderColor: 'border-blue-200',
     },
     {
       id: 'apprenants',
@@ -68,7 +68,7 @@ export function DataEnrichment() {
       icon: GraduationCap,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200'
+      borderColor: 'border-purple-200',
     },
     {
       id: 'articles',
@@ -77,15 +77,13 @@ export function DataEnrichment() {
       icon: FileText,
       color: 'text-orange-600',
       bgColor: 'bg-orange-50',
-      borderColor: 'border-orange-200'
-    }
+      borderColor: 'border-orange-200',
+    },
   ]
 
   const handleCollectionToggle = (collectionId: string) => {
-    setSelectedCollections(prev => 
-      prev.includes(collectionId) 
-        ? prev.filter(id => id !== collectionId)
-        : [...prev, collectionId]
+    setSelectedCollections(prev =>
+      prev.includes(collectionId) ? prev.filter(id => id !== collectionId) : [...prev, collectionId]
     )
   }
 
@@ -95,13 +93,12 @@ export function DataEnrichment() {
     setStats(null)
 
     try {
-      const collectionsToEnrich = selectedCollections.length > 0 
-        ? selectedCollections 
-        : collections.map(c => c.id)
+      const collectionsToEnrich =
+        selectedCollections.length > 0 ? selectedCollections : collections.map(c => c.id)
 
-      const promises = collectionsToEnrich.map(async (collectionId) => {
+      const promises = collectionsToEnrich.map(async collectionId => {
         const startTime = Date.now()
-        
+
         try {
           const response = await fetch('/api/enrich-data', {
             method: 'POST',
@@ -111,7 +108,7 @@ export function DataEnrichment() {
             body: JSON.stringify({
               collection: collectionId,
               dryRun: preview,
-              verbose: true
+              verbose: true,
             }),
           })
 
@@ -123,7 +120,7 @@ export function DataEnrichment() {
             status: result.success ? 'success' : 'error',
             message: result.message || 'Enrichissement terminé',
             count: result.count,
-            duration
+            duration,
           }
         } catch (error) {
           const duration = Date.now() - startTime
@@ -131,7 +128,7 @@ export function DataEnrichment() {
             collection: collectionId,
             status: 'error',
             message: `Erreur: ${error}`,
-            duration
+            duration,
           }
         }
       })
@@ -144,19 +141,20 @@ export function DataEnrichment() {
         total: enrichmentResults.length,
         successful: enrichmentResults.filter(r => r.status === 'success').length,
         errors: enrichmentResults.filter(r => r.status === 'error').length,
-        warnings: enrichmentResults.filter(r => r.status === 'warning').length
+        warnings: enrichmentResults.filter(r => r.status === 'warning').length,
       }
       setStats(newStats)
 
       // Afficher un toast de succès
       if (preview) {
-        toast.success('Aperçu de l\'enrichissement généré')
+        toast.success("Aperçu de l'enrichissement généré")
       } else {
-        toast.success(`Enrichissement terminé: ${newStats.successful}/${newStats.total} collections`)
+        toast.success(
+          `Enrichissement terminé: ${newStats.successful}/${newStats.total} collections`
+        )
       }
-
     } catch (error) {
-      toast.error('Erreur lors de l\'enrichissement des données')
+      toast.error("Erreur lors de l'enrichissement des données")
       console.error('Erreur:', error)
     } finally {
       setIsEnriching(false)
@@ -226,17 +224,14 @@ export function DataEnrichment() {
                 <div className="text-sm text-muted-foreground">Erreurs</div>
               </div>
             </div>
-            
+
             {stats.total > 0 && (
               <div className="mt-4">
                 <div className="flex justify-between text-sm mb-2">
                   <span>Progression</span>
                   <span>{Math.round((stats.successful / stats.total) * 100)}%</span>
                 </div>
-                <Progress 
-                  value={(stats.successful / stats.total) * 100} 
-                  className="h-2"
-                />
+                <Progress value={(stats.successful / stats.total) * 100} className="h-2" />
               </div>
             )}
           </CardContent>
@@ -253,16 +248,16 @@ export function DataEnrichment() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {collections.map((collection) => {
+            {collections.map(collection => {
               const Icon = collection.icon
               const isSelected = selectedCollections.includes(collection.id)
-              
+
               return (
                 <div
                   key={collection.id}
                   className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                    isSelected 
-                      ? `${collection.bgColor} ${collection.borderColor} border-2` 
+                    isSelected
+                      ? `${collection.bgColor} ${collection.borderColor} border-2`
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                   onClick={() => handleCollectionToggle(collection.id)}
@@ -271,19 +266,17 @@ export function DataEnrichment() {
                     <Icon className={`h-6 w-6 ${collection.color} mt-1`} />
                     <div className="flex-1">
                       <h3 className="font-semibold">{collection.name}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {collection.description}
-                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">{collection.description}</p>
                     </div>
-                    <Badge variant={isSelected ? "default" : "outline"}>
-                      {isSelected ? "Sélectionné" : "Non sélectionné"}
+                    <Badge variant={isSelected ? 'default' : 'outline'}>
+                      {isSelected ? 'Sélectionné' : 'Non sélectionné'}
                     </Badge>
                   </div>
                 </div>
               )
             })}
           </div>
-          
+
           <div className="mt-4 flex gap-2">
             <Button
               variant="outline"
@@ -291,10 +284,7 @@ export function DataEnrichment() {
             >
               Tout sélectionner
             </Button>
-            <Button
-              variant="outline"
-              onClick={() => setSelectedCollections([])}
-            >
+            <Button variant="outline" onClick={() => setSelectedCollections([])}>
               Tout désélectionner
             </Button>
           </div>
@@ -317,7 +307,7 @@ export function DataEnrichment() {
               <Eye className="h-4 w-4 mr-2" />
               {isEnriching ? 'Génération...' : 'Aperçu (Mode test)'}
             </Button>
-            
+
             <Button
               onClick={() => handleEnrichment(false)}
               disabled={isEnriching}
@@ -327,9 +317,9 @@ export function DataEnrichment() {
               {isEnriching ? 'Enrichissement...' : 'Enrichir les données'}
             </Button>
           </div>
-          
+
           <p className="text-sm text-muted-foreground mt-4">
-            💡 <strong>Conseil :</strong> Utilisez d'abord l'aperçu pour voir ce qui sera modifié, 
+            💡 <strong>Conseil :</strong> Utilisez d'abord l'aperçu pour voir ce qui sera modifié,
             puis lancez l'enrichissement réel.
           </p>
         </CardContent>
@@ -357,19 +347,9 @@ export function DataEnrichment() {
                       {getStatusIcon(result.status)}
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold">
-                            {collection?.name || result.collection}
-                          </h4>
-                          {result.count && (
-                            <Badge variant="outline">
-                              {result.count} éléments
-                            </Badge>
-                          )}
-                          {result.duration && (
-                            <Badge variant="outline">
-                              {result.duration}ms
-                            </Badge>
-                          )}
+                          <h4 className="font-semibold">{collection?.name || result.collection}</h4>
+                          {result.count && <Badge variant="outline">{result.count} éléments</Badge>}
+                          {result.duration && <Badge variant="outline">{result.duration}ms</Badge>}
                         </div>
                         <p className="text-sm">{result.message}</p>
                       </div>

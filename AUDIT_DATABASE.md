@@ -13,6 +13,7 @@
 ### **Tables/Collections MongoDB identifiées :**
 
 #### 1. **USERS** (Utilisateurs)
+
 - **Source :** `src/types/users.ts`, `src/lib/user-service.ts`
 - **Champs principaux :**
   - `id`, `email`, `password` (hashé), `name`, `firstName`, `lastName`
@@ -23,6 +24,7 @@
   - `createdAt`, `updatedAt`
 
 #### 2. **PROGRAMMES** (Formations)
+
 - **Source :** `src/types/common.ts`, `src/data/mock-data.ts`
 - **Champs principaux :**
   - `id`, `codeFormation`, `titre`, `description`
@@ -35,6 +37,7 @@
   - `createdAt`, `updatedAt`
 
 #### 3. **APPRENANTS** (Étudiants)
+
 - **Source :** `src/types/common.ts`, `src/data/mock-data.ts`
 - **Champs principaux :**
   - `id`, `nom`, `prenom`, `email`, `telephone`
@@ -43,6 +46,7 @@
   - `createdAt`, `updatedAt`
 
 #### 4. **RENDEZ_VOUS** (Appointments)
+
 - **Source :** `src/types/rendez-vous.ts`, `src/lib/rendez-vous-service.ts`
 - **Champs principaux :**
   - `id`, `programmeId`, `programmeTitre`
@@ -55,6 +59,7 @@
   - `createdBy`, `createdAt`, `updatedAt`
 
 #### 5. **ARTICLES** (Blog)
+
 - **Source :** `src/types/blog.ts`, `src/lib/blog-service.ts`
 - **Champs principaux :**
   - `id`, `titre`, `slug`, `contenu`, `resume`
@@ -65,17 +70,20 @@
   - `featured`, `createdAt`, `updatedAt`
 
 #### 6. **CATEGORIES** (Blog)
+
 - **Source :** `src/types/blog.ts`
 - **Champs principaux :**
   - `id`, `nom`, `slug`, `description`
   - `couleur`, `icone`, `createdAt`, `updatedAt`
 
 #### 7. **TAGS** (Blog)
+
 - **Source :** `src/types/blog.ts`
 - **Champs principaux :**
   - `id`, `nom`, `slug`, `couleur`, `createdAt`, `updatedAt`
 
 #### 8. **CONTACTS** (Messages de contact)
+
 - **Source :** `src/components/admin/ContactManagement.tsx`
 - **Champs principaux :**
   - `id`, `nom`, `email`, `telephone`
@@ -86,6 +94,7 @@
   - `createdAt`, `updatedAt`
 
 #### 9. **MEDIA** (Fichiers)
+
 - **Source :** Payload CMS (déjà configuré)
 - **Champs principaux :**
   - `id`, `filename`, `mimeType`, `filesize`
@@ -96,6 +105,7 @@
 ## 🔧 CONFIGURATION ACTUELLE
 
 ### **Variables d'environnement (.env.local) :**
+
 ```bash
 # ✅ Configuration Payload CMS
 PAYLOAD_SECRET=your-secret-key-change-this-in-production-please-use-a-strong-secret
@@ -115,6 +125,7 @@ NODE_ENV=development
 ```
 
 ### **Payload CMS Collections existantes :**
+
 - ✅ `users` - Configuré avec auth
 - ✅ `programmes` - Configuré avec tous les champs
 - ✅ `media` - Configuré pour les fichiers
@@ -124,12 +135,14 @@ NODE_ENV=development
 ## 📊 SERVICES MOCK À MIGRER
 
 ### **1. MockService** (`src/lib/mock-service.ts`)
+
 - ❌ `getProgrammes()` → Payload API
 - ❌ `getApprenants()` → Nouvelle collection
 - ❌ `getRendezVous()` → Nouvelle collection
 - ❌ `getStats()` → Calculs en temps réel
 
 ### **2. UserService** (`src/lib/user-service.ts`)
+
 - ❌ `getUsers()` → Payload API
 - ❌ `createUser()` → Payload API
 - ❌ `updateUser()` → Payload API
@@ -137,9 +150,11 @@ NODE_ENV=development
 - ❌ `changePassword()` → Payload API
 
 ### **3. RendezVousService** (`src/lib/rendez-vous-service.ts`)
+
 - ❌ Toutes les méthodes → Nouvelle collection
 
 ### **4. BlogService** (`src/lib/blog-service.ts`)
+
 - ❌ Toutes les méthodes → Nouvelles collections
 
 ---
@@ -147,22 +162,26 @@ NODE_ENV=development
 ## 🚀 PLAN DE MIGRATION
 
 ### **Phase 1 : Configuration Payload CMS**
+
 1. ✅ Ajouter les collections manquantes dans `payload.config.ts`
 2. ✅ Configurer les relations entre collections
 3. ✅ Ajouter les validations et contraintes
 
 ### **Phase 2 : Migration des données**
+
 1. 🔄 Créer des scripts de migration des données mock
 2. 🔄 Importer les données existantes dans MongoDB
 3. 🔄 Vérifier l'intégrité des données
 
 ### **Phase 3 : Remplacement des services**
+
 1. 🔄 Remplacer `MockService` par des appels Payload API
 2. 🔄 Remplacer `UserService` par des appels Payload API
 3. 🔄 Remplacer `RendezVousService` par des appels Payload API
 4. 🔄 Remplacer `BlogService` par des appels Payload API
 
 ### **Phase 4 : Tests et validation**
+
 1. 🔄 Tests de toutes les fonctionnalités
 2. 🔄 Validation des performances
 3. 🔄 Mise à jour de la documentation
@@ -172,18 +191,22 @@ NODE_ENV=development
 ## ⚠️ POINTS D'ATTENTION
 
 ### **1. Conflits de types**
+
 - Types dans `src/types/common.ts` vs `src/types/users.ts`
 - Harmonisation nécessaire des interfaces
 
 ### **2. Authentification**
+
 - Migration du système d'auth mock vers Payload
 - Gestion des sessions et tokens
 
 ### **3. Permissions**
+
 - Système de permissions complexe à migrer
 - Rôles et permissions par utilisateur
 
 ### **4. Relations**
+
 - Relations entre programmes et formateurs
 - Relations entre apprenants et programmes
 - Relations entre rendez-vous et programmes

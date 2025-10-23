@@ -167,7 +167,9 @@ export default function FormationProgrammesPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Tarif:</span>
-                  <span className="font-medium">{programme.prix ? `${programme.prix}€` : 'Non défini'}</span>
+                  <span className="font-medium">
+                    {programme.prix ? `${programme.prix}€` : 'Non défini'}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Niveau:</span>

@@ -22,18 +22,24 @@ class MigrationTester {
       info: 'ℹ️',
       success: '✅',
       warning: '⚠️',
-      error: '❌'
+      error: '❌',
     }
     console.log(`${icons[level]} ${message}`)
   }
 
-  private addResult(collection: string, status: TestResult['status'], message: string, count?: number, details?: any) {
+  private addResult(
+    collection: string,
+    status: TestResult['status'],
+    message: string,
+    count?: number,
+    details?: any
+  ) {
     this.results.push({ collection, status, message, count, details })
   }
 
   async initialize() {
     this.log('🧪 Initialisation des tests de migration...')
-    
+
     try {
       this.payload = await getPayload({ config: payloadConfig })
       this.log('✅ Connexion à Payload CMS établie')
@@ -63,11 +69,11 @@ class MigrationTester {
     try {
       const count = await this.payload.count({ collection: collectionName })
       this.addResult(collectionName, 'success', `Données trouvées`, count.totalDocs)
-      
+
       if (count.totalDocs === 0) {
         this.addResult(collectionName, 'warning', 'Aucune donnée dans la collection')
       }
-      
+
       return count.totalDocs
     } catch (error) {
       this.addResult(collectionName, 'error', `Erreur lors du comptage: ${error}`)
@@ -79,7 +85,7 @@ class MigrationTester {
     try {
       // Test de création
       let testData: any = {}
-      
+
       switch (collectionName) {
         case 'users':
           testData = {
@@ -168,7 +174,9 @@ class MigrationTester {
         collection: collectionName,
         data: testData,
       })
-      this.addResult(collectionName, 'success', 'Test de création réussi', undefined, { id: created.id })
+      this.addResult(collectionName, 'success', 'Test de création réussi', undefined, {
+        id: created.id,
+      })
 
       // Lire
       const read = await this.payload.findByID({
@@ -191,7 +199,6 @@ class MigrationTester {
         id: created.id,
       })
       this.addResult(collectionName, 'success', 'Test de suppression réussi')
-
     } catch (error) {
       this.addResult(collectionName, 'error', `Erreur lors du test CRUD: ${error}`)
     }
@@ -199,14 +206,14 @@ class MigrationTester {
 
   async testRelations() {
     this.log('\n🔗 Test des relations entre collections...')
-    
+
     try {
       // Test relation programmes -> formateurs (users)
       const programmes = await this.payload.find({
         collection: 'programmes',
         limit: 1,
       })
-      
+
       if (programmes.docs.length > 0) {
         this.addResult('relations', 'success', 'Relation programmes trouvée')
       } else {
@@ -218,13 +225,12 @@ class MigrationTester {
         collection: 'apprenants',
         limit: 1,
       })
-      
+
       if (apprenants.docs.length > 0) {
         this.addResult('relations', 'success', 'Relation apprenants trouvée')
       } else {
         this.addResult('relations', 'warning', 'Aucun apprenant trouvé pour tester les relations')
       }
-
     } catch (error) {
       this.addResult('relations', 'error', `Erreur lors du test des relations: ${error}`)
     }
@@ -232,7 +238,7 @@ class MigrationTester {
 
   async testAPIEndpoints() {
     this.log('\n🌐 Test des endpoints API...')
-    
+
     const endpoints = [
       '/api/users',
       '/api/programmes',
@@ -241,7 +247,7 @@ class MigrationTester {
       '/api/articles',
       '/api/categories',
       '/api/tags',
-      '/api/contacts'
+      '/api/contacts',
     ]
 
     for (const endpoint of endpoints) {
@@ -254,34 +260,42 @@ class MigrationTester {
           this.addResult('api', 'warning', `Endpoint ${endpoint} retourne ${response.status}`)
         }
       } catch (error) {
-        this.addResult('api', 'warning', `Endpoint ${endpoint} non accessible (serveur non démarré?)`)
+        this.addResult(
+          'api',
+          'warning',
+          `Endpoint ${endpoint} non accessible (serveur non démarré?)`
+        )
       }
     }
   }
 
   async testDataIntegrity() {
-    this.log('\n🔍 Test d\'intégrité des données...')
-    
+    this.log("\n🔍 Test d'intégrité des données...")
+
     try {
       // Vérifier que les utilisateurs ont des rôles valides
       const users = await this.payload.find({
         collection: 'users',
         limit: 10,
       })
-      
+
       const validRoles = ['superAdmin', 'admin', 'formateur', 'gestionnaire', 'apprenant']
       let invalidRoles = 0
-      
+
       for (const user of users.docs) {
         if (!validRoles.includes(user.role)) {
           invalidRoles++
         }
       }
-      
+
       if (invalidRoles === 0) {
         this.addResult('integrity', 'success', 'Tous les utilisateurs ont des rôles valides')
       } else {
-        this.addResult('integrity', 'warning', `${invalidRoles} utilisateurs avec des rôles invalides`)
+        this.addResult(
+          'integrity',
+          'warning',
+          `${invalidRoles} utilisateurs avec des rôles invalides`
+        )
       }
 
       // Vérifier que les programmes ont des codes de formation uniques
@@ -289,16 +303,15 @@ class MigrationTester {
         collection: 'programmes',
         limit: 100,
       })
-      
+
       const codes = programmes.docs.map(p => p.codeFormation)
       const uniqueCodes = new Set(codes)
-      
+
       if (codes.length === uniqueCodes.size) {
         this.addResult('integrity', 'success', 'Tous les codes de formation sont uniques')
       } else {
         this.addResult('integrity', 'warning', 'Codes de formation dupliqués détectés')
       }
-
     } catch (error) {
       this.addResult('integrity', 'error', `Erreur lors du test d'intégrité: ${error}`)
     }
@@ -307,23 +320,26 @@ class MigrationTester {
   printResults() {
     this.log('\n📊 RÉSULTATS DES TESTS')
     this.log('=' * 50)
-    
-    const groupedResults = this.results.reduce((acc, result) => {
-      if (!acc[result.collection]) {
-        acc[result.collection] = []
-      }
-      acc[result.collection].push(result)
-      return acc
-    }, {} as Record<string, TestResult[]>)
+
+    const groupedResults = this.results.reduce(
+      (acc, result) => {
+        if (!acc[result.collection]) {
+          acc[result.collection] = []
+        }
+        acc[result.collection].push(result)
+        return acc
+      },
+      {} as Record<string, TestResult[]>
+    )
 
     for (const [collection, results] of Object.entries(groupedResults)) {
       this.log(`\n📦 ${collection.toUpperCase()}:`)
-      
+
       for (const result of results) {
         const icon = result.status === 'success' ? '✅' : result.status === 'warning' ? '⚠️' : '❌'
         const count = result.count ? ` (${result.count})` : ''
         this.log(`  ${icon} ${result.message}${count}`)
-        
+
         if (result.details) {
           this.log(`    Détails: ${JSON.stringify(result.details)}`)
         }
@@ -354,8 +370,17 @@ class MigrationTester {
       return false
     }
 
-    const collections = ['users', 'programmes', 'apprenants', 'rendez-vous', 'articles', 'categories', 'tags', 'contacts']
-    
+    const collections = [
+      'users',
+      'programmes',
+      'apprenants',
+      'rendez-vous',
+      'articles',
+      'categories',
+      'tags',
+      'contacts',
+    ]
+
     // Test 1: Vérifier l'existence des collections
     this.log('\n📋 Test 1: Vérification des collections...')
     for (const collection of collections) {
@@ -390,7 +415,7 @@ class MigrationTester {
     await this.testAPIEndpoints()
 
     this.printResults()
-    
+
     const hasErrors = this.results.some(r => r.status === 'error')
     return !hasErrors
   }
@@ -399,7 +424,7 @@ class MigrationTester {
 // Fonction principale
 async function runTests() {
   const args = process.argv.slice(2)
-  
+
   if (args.includes('--help')) {
     console.log(`
 🧪 Script de test de migration Payload CMS
@@ -422,7 +447,7 @@ Ce script teste:
 
   const tester = new MigrationTester()
   const success = await tester.run()
-  
+
   process.exit(success ? 0 : 1)
 }
 

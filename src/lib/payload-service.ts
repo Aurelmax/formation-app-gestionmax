@@ -168,7 +168,7 @@ function mapPayloadRendezVousToRendezVous(payloadRdv: PayloadRendezVous): Rendez
 // Service principal Payload
 export class PayloadService {
   // === GESTION DES UTILISATEURS ===
-  
+
   async getUsers(): Promise<User[]> {
     try {
       const payload = await getPayloadClient()
@@ -177,7 +177,7 @@ export class PayloadService {
         limit: 100,
         sort: '-createdAt',
       })
-      
+
       return result.docs.map(mapPayloadUserToUser)
     } catch (error) {
       console.error('Erreur lors de la récupération des utilisateurs:', error)
@@ -192,7 +192,7 @@ export class PayloadService {
         collection: 'users',
         id,
       })
-      
+
       return mapPayloadUserToUser(user)
     } catch (error) {
       console.error(`Erreur lors de la récupération de l'utilisateur ${id}:`, error)
@@ -212,11 +212,11 @@ export class PayloadService {
         },
         limit: 1,
       })
-      
+
       if (result.docs.length === 0) {
         return null
       }
-      
+
       return mapPayloadUserToUser(result.docs[0])
     } catch (error) {
       console.error(`Erreur lors de la récupération de l'utilisateur par email ${email}:`, error)
@@ -237,11 +237,11 @@ export class PayloadService {
           status: 'active',
         },
       })
-      
+
       return mapPayloadUserToUser(created)
     } catch (error) {
-      console.error('Erreur lors de la création de l\'utilisateur:', error)
-      throw new Error('Impossible de créer l\'utilisateur')
+      console.error("Erreur lors de la création de l'utilisateur:", error)
+      throw new Error("Impossible de créer l'utilisateur")
     }
   }
 
@@ -258,11 +258,11 @@ export class PayloadService {
           role: userData.role?.toLowerCase(),
         },
       })
-      
+
       return mapPayloadUserToUser(updated)
     } catch (error) {
       console.error(`Erreur lors de la mise à jour de l'utilisateur ${id}:`, error)
-      throw new Error('Impossible de mettre à jour l\'utilisateur')
+      throw new Error("Impossible de mettre à jour l'utilisateur")
     }
   }
 
@@ -273,7 +273,7 @@ export class PayloadService {
         collection: 'users',
         id,
       })
-      
+
       return true
     } catch (error) {
       console.error(`Erreur lors de la suppression de l'utilisateur ${id}:`, error)
@@ -282,7 +282,7 @@ export class PayloadService {
   }
 
   // === GESTION DES PROGRAMMES ===
-  
+
   async getProgrammes(): Promise<Programme[]> {
     try {
       const payload = await getPayloadClient()
@@ -291,7 +291,7 @@ export class PayloadService {
         limit: 100,
         sort: '-createdAt',
       })
-      
+
       return result.docs.map(mapPayloadProgrammeToProgramme)
     } catch (error) {
       console.error('Erreur lors de la récupération des programmes:', error)
@@ -306,7 +306,7 @@ export class PayloadService {
         collection: 'programmes',
         id,
       })
-      
+
       return mapPayloadProgrammeToProgramme(programme)
     } catch (error) {
       console.error(`Erreur lors de la récupération du programme ${id}:`, error)
@@ -326,11 +326,11 @@ export class PayloadService {
         },
         limit: 1,
       })
-      
+
       if (result.docs.length === 0) {
         return null
       }
-      
+
       return mapPayloadProgrammeToProgramme(result.docs[0])
     } catch (error) {
       console.error(`Erreur lors de la récupération du programme par code ${codeFormation}:`, error)
@@ -355,7 +355,7 @@ export class PayloadService {
           statut: programmeData.statut?.toLowerCase() || 'actif',
         },
       })
-      
+
       return mapPayloadProgrammeToProgramme(created)
     } catch (error) {
       console.error('Erreur lors de la création du programme:', error)
@@ -381,7 +381,7 @@ export class PayloadService {
           statut: programmeData.statut?.toLowerCase(),
         },
       })
-      
+
       return mapPayloadProgrammeToProgramme(updated)
     } catch (error) {
       console.error(`Erreur lors de la mise à jour du programme ${id}:`, error)
@@ -396,7 +396,7 @@ export class PayloadService {
         collection: 'programmes',
         id,
       })
-      
+
       return true
     } catch (error) {
       console.error(`Erreur lors de la suppression du programme ${id}:`, error)
@@ -405,7 +405,7 @@ export class PayloadService {
   }
 
   // === GESTION DES APPRENANTS ===
-  
+
   async getApprenants(): Promise<Apprenant[]> {
     try {
       const payload = await getPayloadClient()
@@ -414,7 +414,7 @@ export class PayloadService {
         limit: 100,
         sort: '-createdAt',
       })
-      
+
       return result.docs.map(mapPayloadApprenantToApprenant)
     } catch (error) {
       console.error('Erreur lors de la récupération des apprenants:', error)
@@ -429,7 +429,7 @@ export class PayloadService {
         collection: 'apprenants',
         id,
       })
-      
+
       return mapPayloadApprenantToApprenant(apprenant)
     } catch (error) {
       console.error(`Erreur lors de la récupération de l'apprenant ${id}:`, error)
@@ -454,11 +454,11 @@ export class PayloadService {
           progression: apprenantData.progression || 0,
         },
       })
-      
+
       return mapPayloadApprenantToApprenant(created)
     } catch (error) {
-      console.error('Erreur lors de la création de l\'apprenant:', error)
-      throw new Error('Impossible de créer l\'apprenant')
+      console.error("Erreur lors de la création de l'apprenant:", error)
+      throw new Error("Impossible de créer l'apprenant")
     }
   }
 
@@ -480,11 +480,11 @@ export class PayloadService {
           progression: apprenantData.progression,
         },
       })
-      
+
       return mapPayloadApprenantToApprenant(updated)
     } catch (error) {
       console.error(`Erreur lors de la mise à jour de l'apprenant ${id}:`, error)
-      throw new Error('Impossible de mettre à jour l\'apprenant')
+      throw new Error("Impossible de mettre à jour l'apprenant")
     }
   }
 
@@ -495,7 +495,7 @@ export class PayloadService {
         collection: 'apprenants',
         id,
       })
-      
+
       return true
     } catch (error) {
       console.error(`Erreur lors de la suppression de l'apprenant ${id}:`, error)
@@ -504,7 +504,7 @@ export class PayloadService {
   }
 
   // === GESTION DES RENDEZ-VOUS ===
-  
+
   async getRendezVous(): Promise<RendezVous[]> {
     try {
       const payload = await getPayloadClient()
@@ -513,7 +513,7 @@ export class PayloadService {
         limit: 100,
         sort: '-createdAt',
       })
-      
+
       return result.docs.map(mapPayloadRendezVousToRendezVous)
     } catch (error) {
       console.error('Erreur lors de la récupération des rendez-vous:', error)
@@ -528,7 +528,7 @@ export class PayloadService {
         collection: 'rendez-vous',
         id,
       })
-      
+
       return mapPayloadRendezVousToRendezVous(rdv)
     } catch (error) {
       console.error(`Erreur lors de la récupération du rendez-vous ${id}:`, error)
@@ -557,7 +557,7 @@ export class PayloadService {
           createdBy: rdvData.createdBy,
         },
       })
-      
+
       return mapPayloadRendezVousToRendezVous(created)
     } catch (error) {
       console.error('Erreur lors de la création du rendez-vous:', error)
@@ -587,7 +587,7 @@ export class PayloadService {
           createdBy: rdvData.createdBy,
         },
       })
-      
+
       return mapPayloadRendezVousToRendezVous(updated)
     } catch (error) {
       console.error(`Erreur lors de la mise à jour du rendez-vous ${id}:`, error)
@@ -602,7 +602,7 @@ export class PayloadService {
         collection: 'rendez-vous',
         id,
       })
-      
+
       return true
     } catch (error) {
       console.error(`Erreur lors de la suppression du rendez-vous ${id}:`, error)
@@ -611,18 +611,18 @@ export class PayloadService {
   }
 
   // === STATISTIQUES ===
-  
+
   async getStats() {
     try {
       const payload = await getPayloadClient()
-      
+
       const [usersCount, programmesCount, apprenantsCount, rdvCount] = await Promise.all([
         payload.count({ collection: 'users' }),
         payload.count({ collection: 'programmes' }),
         payload.count({ collection: 'apprenants' }),
         payload.count({ collection: 'rendez-vous' }),
       ])
-      
+
       return {
         totalUsers: usersCount.totalDocs,
         totalProgrammes: programmesCount.totalDocs,

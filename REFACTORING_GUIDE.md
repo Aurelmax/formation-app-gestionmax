@@ -15,57 +15,56 @@ Ce guide présente les nouveaux composants, hooks et services créés pour amél
 ## 🛠️ Nouveaux Hooks Personnalisés
 
 ### `useFormState<T>`
+
 Gère l'état complexe des formulaires avec validation intégrée.
 
 ```typescript
-import { useFormState } from '@/hooks';
+import { useFormState } from '@/hooks'
 
-const { data, errors, updateField, validateForm } = useFormState(
-  initialData,
-  validationRules
-);
+const { data, errors, updateField, validateForm } = useFormState(initialData, validationRules)
 ```
 
 **Fonctionnalités :**
+
 - Gestion d'état complexe avec objets imbriqués
 - Validation en temps réel
 - Gestion des tableaux dynamiques
 - États de chargement et de modification
 
 ### `useAsyncOperation`
+
 Gère les opérations asynchrones avec gestion d'erreurs.
 
 ```typescript
-import { useAsyncOperation } from '@/hooks';
+import { useAsyncOperation } from '@/hooks'
 
-const { execute, isLoading, error, isSuccess } = useAsyncOperation();
+const { execute, isLoading, error, isSuccess } = useAsyncOperation()
 
-await execute(
-  async () => await apiCall(),
-  {
-    onSuccess: (result) => console.log(result),
-    successMessage: 'Opération réussie'
-  }
-);
+await execute(async () => await apiCall(), {
+  onSuccess: result => console.log(result),
+  successMessage: 'Opération réussie',
+})
 ```
 
 ### `useDialog<T>`
+
 Gère l'état des dialogs/modals.
 
 ```typescript
-import { useDialog } from '@/hooks';
+import { useDialog } from '@/hooks'
 
-const dialog = useDialog<User>();
+const dialog = useDialog<User>()
 
-dialog.open(user); // Ouvrir avec des données
-dialog.close();    // Fermer
+dialog.open(user) // Ouvrir avec des données
+dialog.close() // Fermer
 ```
 
 ### `useListManagement<T>`
+
 Gère les listes avec recherche, filtrage et tri.
 
 ```typescript
-import { useListManagement } from '@/hooks';
+import { useListManagement } from '@/hooks'
 
 const {
   items,
@@ -75,16 +74,17 @@ const {
   setSearchTerm,
   setFilter,
   updateItem,
-  removeItem
+  removeItem,
 } = useListManagement({
   initialItems: users,
-  searchFields: ['name', 'email']
-});
+  searchFields: ['name', 'email'],
+})
 ```
 
 ## 🧩 Nouveaux Composants de Formulaire
 
 ### `FormField`
+
 Wrapper pour les champs de formulaire avec label et gestion d'erreurs.
 
 ```typescript
@@ -96,6 +96,7 @@ import { FormField } from '@/components/forms';
 ```
 
 ### `FormSection`
+
 Section de formulaire avec titre et description.
 
 ```typescript
@@ -107,6 +108,7 @@ import { FormSection } from '@/components/forms';
 ```
 
 ### `FormActions`
+
 Actions de formulaire standardisées (Enregistrer, Annuler, Réinitialiser).
 
 ```typescript
@@ -121,6 +123,7 @@ import { FormActions } from '@/components/forms';
 ```
 
 ### `ArrayField<T>`
+
 Gestion des champs de type tableau avec ajout/suppression d'éléments.
 
 ```typescript
@@ -135,6 +138,7 @@ import { ArrayField } from '@/components/forms';
 ```
 
 ### `FormLayout`
+
 Layout responsive pour les formulaires.
 
 ```typescript
@@ -151,23 +155,23 @@ import { FormLayout } from '@/components/forms';
 ### Règles de validation prédéfinies
 
 ```typescript
-import { 
-  required, 
-  email, 
-  minLength, 
+import {
+  required,
+  email,
+  minLength,
   maxLength,
   phone,
   positive,
   formationCode,
-  duration
-} from '@/lib/validation';
+  duration,
+} from '@/lib/validation'
 
 const validationRules = {
   email: [required(), email()],
   name: [required(), minLength(2)],
   phone: [phone()],
-  price: [required(), positive()]
-};
+  price: [required(), positive()],
+}
 ```
 
 ### Validation personnalisée
@@ -175,75 +179,80 @@ const validationRules = {
 ```typescript
 const customRule = (value: string) => {
   if (value.length < 5) {
-    return 'Minimum 5 caractères requis';
+    return 'Minimum 5 caractères requis'
   }
-  return null;
-};
+  return null
+}
 ```
 
 ## 🏗️ Logique Métier
 
 ### `FormationBusinessLogic`
+
 Logique métier pour les formations personnalisées.
 
 ```typescript
-import { FormationBusinessLogic } from '@/lib/business-logic';
+import { FormationBusinessLogic } from '@/lib/business-logic'
 
 // Validation
-const errors = FormationBusinessLogic.validateFormation(formation);
+const errors = FormationBusinessLogic.validateFormation(formation)
 
 // Génération de code
-const code = FormationBusinessLogic.generateFormationCode('ClientName');
+const code = FormationBusinessLogic.generateFormationCode('ClientName')
 
 // Vérification de finalisation
-const { canFinalize, reasons } = FormationBusinessLogic.canFinalizeFormation(formation);
+const { canFinalize, reasons } = FormationBusinessLogic.canFinalizeFormation(formation)
 ```
 
 ### `UserBusinessLogic`
+
 Logique métier pour la gestion des utilisateurs.
 
 ```typescript
-import { UserBusinessLogic } from '@/lib/business-logic';
+import { UserBusinessLogic } from '@/lib/business-logic'
 
 // Vérification des permissions
-const { canDelete, reason } = UserBusinessLogic.canDeleteUser(user, currentUser);
+const { canDelete, reason } = UserBusinessLogic.canDeleteUser(user, currentUser)
 
 // Génération de mot de passe
-const password = UserBusinessLogic.generateTemporaryPassword(12);
+const password = UserBusinessLogic.generateTemporaryPassword(12)
 ```
 
 ### `ContactBusinessLogic`
+
 Logique métier pour la gestion des contacts.
 
 ```typescript
-import { ContactBusinessLogic } from '@/lib/business-logic';
+import { ContactBusinessLogic } from '@/lib/business-logic'
 
 // Filtrage des messages
-const filtered = ContactBusinessLogic.filterMessages(messages, filters);
+const filtered = ContactBusinessLogic.filterMessages(messages, filters)
 
 // Statistiques
-const stats = ContactBusinessLogic.calculateMessageStats(messages);
+const stats = ContactBusinessLogic.calculateMessageStats(messages)
 ```
 
 ## 📝 Exemple de Migration
 
 ### Avant (ContactManagement.tsx)
+
 ```typescript
 // Gestion d'état complexe dans le composant
-const [messages, setMessages] = useState<ContactMessage[]>(mockMessages);
-const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
-const [searchTerm, setSearchTerm] = useState('');
-const [filterStatut, setFilterStatut] = useState<string>('all');
+const [messages, setMessages] = useState<ContactMessage[]>(mockMessages)
+const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null)
+const [searchTerm, setSearchTerm] = useState('')
+const [filterStatut, setFilterStatut] = useState<string>('all')
 
 // Logique de filtrage dans le composant
 const filteredMessages = messages.filter(message => {
-  const matchesSearch = message.nom.toLowerCase().includes(searchTerm.toLowerCase());
-  const matchesStatut = filterStatut === 'all' || message.statut === filterStatut;
-  return matchesSearch && matchesStatut;
-});
+  const matchesSearch = message.nom.toLowerCase().includes(searchTerm.toLowerCase())
+  const matchesStatut = filterStatut === 'all' || message.statut === filterStatut
+  return matchesSearch && matchesStatut
+})
 ```
 
 ### Après (ContactManagementRefactored.tsx)
+
 ```typescript
 // Utilisation des hooks personnalisés
 const {
@@ -254,29 +263,31 @@ const {
   setSearchTerm,
   setFilter,
   updateItem,
-  removeItem
+  removeItem,
 } = useListManagement<ContactMessage>({
   initialItems: mockMessages,
-  searchFields: ['nom', 'email', 'sujet', 'message']
-});
+  searchFields: ['nom', 'email', 'sujet', 'message'],
+})
 
 // Utilisation de la logique métier
 const filteredMessages = ContactBusinessLogic.filterMessages(messages, {
   searchTerm,
   statut: filters.statut,
-  type: filters.type
-});
+  type: filters.type,
+})
 ```
 
 ## 🎯 Prochaines Étapes
 
 ### Phase 2 - Refactorisation des composants prioritaires
+
 1. **FormationPersonnaliseeForm.tsx** (766 lignes)
 2. **ProgrammeFormComplet.tsx** (624 lignes)
 3. **UserManagementSimple.tsx** (617 lignes)
 4. **UserManagement.tsx** (610 lignes)
 
 ### Phase 3 - Optimisations
+
 1. **React.memo** pour les composants lourds
 2. **Tests unitaires** pour les hooks et la logique métier
 3. **Documentation** des composants

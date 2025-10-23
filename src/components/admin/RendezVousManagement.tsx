@@ -66,7 +66,9 @@ export function RendezVousManagement() {
   const loadRendezVous = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`/api/rendez-vous-payload?${new URLSearchParams(filters as any)}`)
+      const response = await fetch(
+        `/api/rendez-vous-payload?${new URLSearchParams(filters as any)}`
+      )
       const data = await response.json()
 
       if (data.success) {

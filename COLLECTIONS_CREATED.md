@@ -57,15 +57,18 @@
 ## 🔧 CONFIGURATION TECHNIQUE
 
 ### **Fichier modifié :**
+
 - `src/payload.config.ts` - Ajout de la collection `contacts`
 
 ### **Scripts créés :**
+
 - `src/scripts/check-collections.ts` - Vérification des collections avec MongoDB
 - `src/scripts/check-payload-config.ts` - Vérification de la configuration
 - `src/scripts/verify-collections.ts` - Vérification simple
 - `src/scripts/migrate-mock-data.ts` - Migration des données mock
 
 ### **Documentation créée :**
+
 - `AUDIT_DATABASE.md` - Audit complet de la base de données
 - `MIGRATION_PLAN.md` - Plan de migration détaillé
 - `MONGODB_SETUP.md` - Guide d'installation MongoDB
@@ -87,18 +90,21 @@
 ## 🚀 PROCHAINES ÉTAPES
 
 ### **1. Installation MongoDB (Requis)**
+
 ```bash
 # Suivre le guide MONGODB_SETUP.md
 # Installer MongoDB via Docker ou nativement
 ```
 
 ### **2. Migration des données**
+
 ```bash
 # Une fois MongoDB installé
 npx tsx src/scripts/migrate-mock-data.ts
 ```
 
 ### **3. Vérification**
+
 ```bash
 # Tester les collections
 npx tsx src/scripts/check-collections.ts
@@ -108,12 +114,14 @@ npx tsx src/scripts/check-collections.ts
 ```
 
 ### **4. Remplacement des services mock**
+
 - Remplacer `MockService` par des appels Payload API
 - Remplacer `UserService` par des appels Payload API
 - Remplacer `RendezVousService` par des appels Payload API
 - Remplacer `BlogService` par des appels Payload API
 
 ### **5. Tests et validation**
+
 - Tester toutes les fonctionnalités
 - Valider les performances
 - Désactiver le mode mock
@@ -140,6 +148,7 @@ L'application est prête pour la migration des services mock vers la base de don
 ## 📞 SUPPORT
 
 En cas de problème :
+
 1. Consulter `MONGODB_SETUP.md` pour l'installation
 2. Consulter `MIGRATION_PLAN.md` pour le plan détaillé
 3. Exécuter les scripts de vérification

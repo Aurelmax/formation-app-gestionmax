@@ -19,26 +19,26 @@ class DataEnrichmentManager {
     this.options = {
       dryRun: false,
       verbose: true,
-      ...options
+      ...options,
     }
   }
 
   private log(message: string, level: 'info' | 'success' | 'warning' | 'error' = 'info') {
     if (!this.options.verbose && level === 'info') return
-    
+
     const icons = {
       info: 'ℹ️',
       success: '✅',
       warning: '⚠️',
-      error: '❌'
+      error: '❌',
     }
-    
+
     console.log(`${icons[level]} ${message}`)
   }
 
   async initialize() {
-    this.log('🚀 Initialisation de l\'enrichissement des données...')
-    
+    this.log("🚀 Initialisation de l'enrichissement des données...")
+
     try {
       this.payload = await getPayload({ config: payloadConfig })
       this.log('✅ Connexion à Payload CMS établie')
@@ -52,7 +52,7 @@ class DataEnrichmentManager {
   // === ENRICHISSEMENT DES PROGRAMMES ===
   async enrichProgrammes() {
     this.log('\n📚 Enrichissement des programmes...')
-    
+
     try {
       const programmes = await this.payload.find({
         collection: 'programmes',
@@ -63,28 +63,33 @@ class DataEnrichmentManager {
         const enrichments = {
           // Ajouter des compétences manquantes
           competences: this.getAdditionalCompetences(programme.titre),
-          
+
           // Enrichir la description
           description: this.enrichDescription(programme.description, programme.titre),
-          
+
           // Ajouter des objectifs détaillés
           objectifs: this.generateDetailedObjectives(programme.titre, programme.niveau),
-          
+
           // Ajouter des prérequis spécifiques
           prerequis: this.generatePrerequisites(programme.niveau, programme.titre),
-          
+
           // Ajouter des modalités pédagogiques
-          modalitesPedagogiques: this.generatePedagogicalMethods(programme.modalites, programme.titre),
-          
+          modalitesPedagogiques: this.generatePedagogicalMethods(
+            programme.modalites,
+            programme.titre
+          ),
+
           // Ajouter des méthodes d'évaluation
           evaluation: this.generateEvaluationMethods(programme.titre),
-          
+
           // Ajouter des certifications
           certification: this.generateCertification(programme.titre),
-          
+
           // Ajouter un code CPF si éligible
           eligibleCPF: this.isEligibleForCPF(programme.titre),
-          codeCPF: this.isEligibleForCPF(programme.titre) ? this.generateCPFCode(programme.titre) : undefined,
+          codeCPF: this.isEligibleForCPF(programme.titre)
+            ? this.generateCPFCode(programme.titre)
+            : undefined,
         }
 
         if (!this.options.dryRun) {
@@ -107,7 +112,7 @@ class DataEnrichmentManager {
   // === ENRICHISSEMENT DES UTILISATEURS ===
   async enrichUsers() {
     this.log('\n👤 Enrichissement des utilisateurs...')
-    
+
     try {
       const users = await this.payload.find({
         collection: 'users',
@@ -118,14 +123,14 @@ class DataEnrichmentManager {
         const enrichments = {
           // Ajouter des permissions selon le rôle
           permissions: this.generatePermissions(user.role),
-          
+
           // Ajouter des métadonnées
           metadata: {
             lastLoginAt: new Date().toISOString(),
             profileComplete: true,
             source: 'migration',
-            version: '1.0'
-          }
+            version: '1.0',
+          },
         }
 
         if (!this.options.dryRun) {
@@ -148,7 +153,7 @@ class DataEnrichmentManager {
   // === ENRICHISSEMENT DES APPRENANTS ===
   async enrichApprenants() {
     this.log('\n👥 Enrichissement des apprenants...')
-    
+
     try {
       const apprenants = await this.payload.find({
         collection: 'apprenants',
@@ -159,13 +164,13 @@ class DataEnrichmentManager {
         const enrichments = {
           // Ajouter des informations complémentaires
           progression: this.calculateProgression(apprenant.statut),
-          
+
           // Ajouter des métadonnées
           metadata: {
             source: 'migration',
             lastActivity: new Date().toISOString(),
-            profileScore: this.calculateProfileScore(apprenant)
-          }
+            profileScore: this.calculateProfileScore(apprenant),
+          },
         }
 
         if (!this.options.dryRun) {
@@ -188,7 +193,7 @@ class DataEnrichmentManager {
   // === ENRICHISSEMENT DES ARTICLES ===
   async enrichArticles() {
     this.log('\n📝 Enrichissement des articles...')
-    
+
     try {
       const articles = await this.payload.find({
         collection: 'articles',
@@ -199,16 +204,16 @@ class DataEnrichmentManager {
         const enrichments = {
           // Ajouter des mots-clés SEO
           metaKeywords: this.generateSEOKeywords(article.titre, article.contenu),
-          
+
           // Améliorer la meta description
           metaDescription: this.generateMetaDescription(article.resume, article.titre),
-          
+
           // Ajouter un temps de lecture estimé
           tempsLecture: this.calculateReadingTime(article.contenu),
-          
+
           // Ajouter des statistiques
           vue: 0,
-          featured: this.shouldBeFeatured(article.titre)
+          featured: this.shouldBeFeatured(article.titre),
         }
 
         if (!this.options.dryRun) {
@@ -229,18 +234,18 @@ class DataEnrichmentManager {
   }
 
   // === MÉTHODES UTILITAIRES ===
-  
+
   private getAdditionalCompetences(titre: string): Array<{ competence: string }> {
     const competencesMap: Record<string, string[]> = {
-      'WordPress': ['Gutenberg', 'Elementor', 'Yoast SEO', 'Wordfence'],
-      'SEO': ['Google Search Console', 'Google Analytics', 'Mots-clés', 'Netlinking'],
-      'Marketing': ['Facebook Ads', 'Google Ads', 'Email Marketing', 'Analytics'],
-      'Canva': ['Design graphique', 'Branding', 'Réseaux sociaux', 'Print'],
-      'ChatGPT': ['IA générative', 'Prompting', 'Automatisation', 'Productivité']
+      WordPress: ['Gutenberg', 'Elementor', 'Yoast SEO', 'Wordfence'],
+      SEO: ['Google Search Console', 'Google Analytics', 'Mots-clés', 'Netlinking'],
+      Marketing: ['Facebook Ads', 'Google Ads', 'Email Marketing', 'Analytics'],
+      Canva: ['Design graphique', 'Branding', 'Réseaux sociaux', 'Print'],
+      ChatGPT: ['IA générative', 'Prompting', 'Automatisation', 'Productivité'],
     }
 
     const competences: Array<{ competence: string }> = []
-    
+
     for (const [keyword, skills] of Object.entries(competencesMap)) {
       if (titre.toLowerCase().includes(keyword.toLowerCase())) {
         skills.forEach(skill => {
@@ -254,13 +259,16 @@ class DataEnrichmentManager {
 
   private enrichDescription(description: string, titre: string): string {
     if (description.length > 500) return description
-    
+
     const enrichments = {
-      'WordPress': '\n\nCette formation vous permettra de maîtriser WordPress de A à Z, de l\'installation à la personnalisation avancée.',
-      'SEO': '\n\nApprenez les techniques de référencement naturel pour améliorer la visibilité de votre site web.',
-      'Marketing': '\n\nDéveloppez vos compétences en marketing digital pour attirer et convertir vos clients.',
-      'Canva': '\n\nCréez des visuels professionnels pour votre communication digitale et print.',
-      'ChatGPT': '\n\nExploitez la puissance de l\'IA générative pour automatiser vos tâches et améliorer votre productivité.'
+      WordPress:
+        "\n\nCette formation vous permettra de maîtriser WordPress de A à Z, de l'installation à la personnalisation avancée.",
+      SEO: '\n\nApprenez les techniques de référencement naturel pour améliorer la visibilité de votre site web.',
+      Marketing:
+        '\n\nDéveloppez vos compétences en marketing digital pour attirer et convertir vos clients.',
+      Canva: '\n\nCréez des visuels professionnels pour votre communication digitale et print.',
+      ChatGPT:
+        "\n\nExploitez la puissance de l'IA générative pour automatiser vos tâches et améliorer votre productivité.",
     }
 
     for (const [keyword, enrichment] of Object.entries(enrichments)) {
@@ -274,24 +282,24 @@ class DataEnrichmentManager {
 
   private generateDetailedObjectives(titre: string, niveau: string): string {
     const objectives = {
-      'WordPress': `À l'issue de cette formation, vous saurez :
+      WordPress: `À l'issue de cette formation, vous saurez :
 • Installer et configurer WordPress
 • Personnaliser l'apparence de votre site
 • Gérer le contenu et les médias
 • Optimiser les performances et la sécurité
 • Utiliser les plugins essentiels`,
-      
-      'SEO': `Objectifs pédagogiques :
+
+      SEO: `Objectifs pédagogiques :
 • Comprendre les enjeux du référencement naturel
 • Optimiser le contenu pour les moteurs de recherche
 • Utiliser les outils d'analyse (Google Analytics, Search Console)
 • Mettre en place une stratégie SEO efficace`,
-      
-      'Marketing': `Cette formation vous permettra de :
+
+      Marketing: `Cette formation vous permettra de :
 • Développer une stratégie marketing digitale
 • Créer et gérer des campagnes publicitaires
 • Analyser les performances et optimiser les résultats
-• Automatiser vos processus marketing`
+• Automatiser vos processus marketing`,
     }
 
     for (const [keyword, objective] of Object.entries(objectives)) {
@@ -305,13 +313,13 @@ class DataEnrichmentManager {
 
   private generatePrerequisites(niveau: string, titre: string): string {
     if (niveau === 'DEBUTANT') {
-      return 'Aucun prérequis technique. Maîtrise de base de l\'environnement informatique recommandée.'
+      return "Aucun prérequis technique. Maîtrise de base de l'environnement informatique recommandée."
     }
-    
+
     if (niveau === 'INTERMEDIAIRE') {
       return 'Connaissances de base en informatique et navigation web. Expérience recommandée avec les outils numériques.'
     }
-    
+
     if (niveau === 'AVANCE') {
       return 'Expérience confirmée dans le domaine. Connaissances approfondies des outils numériques requises.'
     }
@@ -321,12 +329,18 @@ class DataEnrichmentManager {
 
   private generatePedagogicalMethods(modalites: string, titre: string): string {
     const methods = {
-      'PRESENTIEL': 'Formation en présentiel avec alternance d\'exposés théoriques et de travaux pratiques. Support de cours fourni.',
-      'DISTANCIEL': 'Formation à distance avec sessions en visioconférence, exercices pratiques et suivi personnalisé.',
-      'HYBRIDE': 'Formation hybride combinant sessions en présentiel et à distance pour une approche flexible et efficace.'
+      PRESENTIEL:
+        "Formation en présentiel avec alternance d'exposés théoriques et de travaux pratiques. Support de cours fourni.",
+      DISTANCIEL:
+        'Formation à distance avec sessions en visioconférence, exercices pratiques et suivi personnalisé.',
+      HYBRIDE:
+        'Formation hybride combinant sessions en présentiel et à distance pour une approche flexible et efficace.',
     }
 
-    return methods[modalites] || 'Modalités pédagogiques adaptées au contenu et aux objectifs de la formation.'
+    return (
+      methods[modalites] ||
+      'Modalités pédagogiques adaptées au contenu et aux objectifs de la formation.'
+    )
   }
 
   private generateEvaluationMethods(titre: string): string {
@@ -343,47 +357,75 @@ class DataEnrichmentManager {
 
   private isEligibleForCPF(titre: string): boolean {
     const cpfEligibleKeywords = ['WordPress', 'SEO', 'Marketing', 'Digital', 'Formation']
-    return cpfEligibleKeywords.some(keyword => 
-      titre.toLowerCase().includes(keyword.toLowerCase())
-    )
+    return cpfEligibleKeywords.some(keyword => titre.toLowerCase().includes(keyword.toLowerCase()))
   }
 
   private generateCPFCode(titre: string): string {
     const prefix = 'RS'
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0')
+    const random = Math.floor(Math.random() * 10000)
+      .toString()
+      .padStart(4, '0')
     return `${prefix}${random}`
   }
 
   private generatePermissions(role: string): Array<{ permission: string }> {
     const permissionsMap: Record<string, string[]> = {
-      'superAdmin': [
-        'users:read', 'users:create', 'users:update', 'users:delete',
-        'formations:read', 'formations:create', 'formations:update', 'formations:delete',
-        'apprenants:read', 'apprenants:create', 'apprenants:update', 'apprenants:delete',
-        'rendez_vous:read', 'rendez_vous:create', 'rendez_vous:update', 'rendez_vous:delete',
-        'admin:access', 'system:settings', 'reports:access'
-      ],
-      'admin': [
-        'users:read', 'users:create', 'users:update',
-        'formations:read', 'formations:create', 'formations:update',
-        'apprenants:read', 'apprenants:create', 'apprenants:update',
-        'rendez_vous:read', 'rendez_vous:create', 'rendez_vous:update',
-        'admin:access', 'reports:access'
-      ],
-      'formateur': [
-        'formations:read', 'formations:update',
-        'apprenants:read', 'apprenants:update',
-        'rendez_vous:read', 'rendez_vous:create', 'rendez_vous:update'
-      ],
-      'gestionnaire': [
-        'apprenants:read', 'apprenants:create', 'apprenants:update',
-        'rendez_vous:read', 'rendez_vous:create', 'rendez_vous:update',
-        'reports:access'
-      ],
-      'apprenant': [
+      superAdmin: [
+        'users:read',
+        'users:create',
+        'users:update',
+        'users:delete',
         'formations:read',
-        'apprenants:read'
-      ]
+        'formations:create',
+        'formations:update',
+        'formations:delete',
+        'apprenants:read',
+        'apprenants:create',
+        'apprenants:update',
+        'apprenants:delete',
+        'rendez_vous:read',
+        'rendez_vous:create',
+        'rendez_vous:update',
+        'rendez_vous:delete',
+        'admin:access',
+        'system:settings',
+        'reports:access',
+      ],
+      admin: [
+        'users:read',
+        'users:create',
+        'users:update',
+        'formations:read',
+        'formations:create',
+        'formations:update',
+        'apprenants:read',
+        'apprenants:create',
+        'apprenants:update',
+        'rendez_vous:read',
+        'rendez_vous:create',
+        'rendez_vous:update',
+        'admin:access',
+        'reports:access',
+      ],
+      formateur: [
+        'formations:read',
+        'formations:update',
+        'apprenants:read',
+        'apprenants:update',
+        'rendez_vous:read',
+        'rendez_vous:create',
+        'rendez_vous:update',
+      ],
+      gestionnaire: [
+        'apprenants:read',
+        'apprenants:create',
+        'apprenants:update',
+        'rendez_vous:read',
+        'rendez_vous:create',
+        'rendez_vous:update',
+        'reports:access',
+      ],
+      apprenant: ['formations:read', 'apprenants:read'],
     }
 
     const permissions = permissionsMap[role] || []
@@ -392,10 +434,10 @@ class DataEnrichmentManager {
 
   private calculateProgression(statut: string): number {
     const progressionMap: Record<string, number> = {
-      'ACTIF': 25,
-      'EN_COURS': 50,
-      'TERMINE': 100,
-      'INACTIF': 0
+      ACTIF: 25,
+      EN_COURS: 50,
+      TERMINE: 100,
+      INACTIF: 0,
     }
     return progressionMap[statut] || 0
   }
@@ -412,14 +454,23 @@ class DataEnrichmentManager {
 
   private generateSEOKeywords(titre: string, contenu: string): Array<{ keyword: string }> {
     const keywords = [
-      'formation', 'apprentissage', 'compétences', 'professionnel',
-      'développement', 'digital', 'technologie', 'expertise'
+      'formation',
+      'apprentissage',
+      'compétences',
+      'professionnel',
+      'développement',
+      'digital',
+      'technologie',
+      'expertise',
     ]
-    
+
     // Extraire des mots-clés du titre
-    const titleWords = titre.toLowerCase().split(' ').filter(word => word.length > 3)
+    const titleWords = titre
+      .toLowerCase()
+      .split(' ')
+      .filter(word => word.length > 3)
     keywords.push(...titleWords)
-    
+
     return keywords.slice(0, 10).map(keyword => ({ keyword }))
   }
 
@@ -438,9 +489,7 @@ class DataEnrichmentManager {
 
   private shouldBeFeatured(titre: string): boolean {
     const featuredKeywords = ['WordPress', 'SEO', 'Marketing', 'Guide', 'Complet']
-    return featuredKeywords.some(keyword => 
-      titre.toLowerCase().includes(keyword.toLowerCase())
-    )
+    return featuredKeywords.some(keyword => titre.toLowerCase().includes(keyword.toLowerCase()))
   }
 
   // === MÉTHODE PRINCIPALE ===
@@ -458,15 +507,15 @@ class DataEnrichmentManager {
       if (!this.options.collection || this.options.collection === 'programmes') {
         await this.enrichProgrammes()
       }
-      
+
       if (!this.options.collection || this.options.collection === 'users') {
         await this.enrichUsers()
       }
-      
+
       if (!this.options.collection || this.options.collection === 'apprenants') {
         await this.enrichApprenants()
       }
-      
+
       if (!this.options.collection || this.options.collection === 'articles') {
         await this.enrichArticles()
       }
@@ -486,7 +535,7 @@ async function runEnrichment() {
   const options: EnrichmentOptions = {
     dryRun: args.includes('--dry-run'),
     verbose: !args.includes('--quiet'),
-    collection: args.find(arg => arg.startsWith('--collection='))?.split('=')[1]
+    collection: args.find(arg => arg.startsWith('--collection='))?.split('=')[1],
   }
 
   if (args.includes('--help')) {
@@ -518,7 +567,7 @@ Exemples:
 
   const enricher = new DataEnrichmentManager(options)
   const success = await enricher.enrichData()
-  
+
   process.exit(success ? 0 : 1)
 }
 

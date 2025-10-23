@@ -10,7 +10,7 @@ D'après le [dépôt officiel Payload CMS](https://github.com/payloadcms/payload
 ✅ **Pas de Docker complexe** : Utilise votre installation Next.js existante  
 ✅ **Mode headless** : Payload fonctionne comme CMS backend  
 ✅ **TypeScript complet** : Types automatiques pour vos données  
-✅ **Déploiement simple** : Fonctionne sur Vercel, Cloudflare, etc.  
+✅ **Déploiement simple** : Fonctionne sur Vercel, Cloudflare, etc.
 
 ## 🚀 **Démarrage rapide**
 
@@ -31,21 +31,25 @@ D'après le [dépôt officiel Payload CMS](https://github.com/payloadcms/payload
 D'après votre configuration `payload.config.ts` :
 
 ### 👥 **Users** (Utilisateurs)
+
 - Gestion des utilisateurs avec authentification
 - Rôles : Admin, Formateur, Apprenant
 - Champs : nom, email, rôles
 
 ### 📚 **Formations** (Formations)
+
 - Catalogue des formations
 - Champs : titre, description, durée, niveau, modalités, prix
 - Compétences associées
 
 ### 🎓 **Apprenants** (Stagiaires)
+
 - Gestion des apprenants
 - Champs : nom, prénom, email, téléphone, adresse
 - Programmes suivis, progression
 
 ### 📁 **Media** (Médias)
+
 - Upload d'images et documents
 - Gestion des fichiers
 
@@ -75,6 +79,7 @@ export default buildConfig({
 ## 🌐 **Intégration avec votre application**
 
 ### API Payload disponible sur :
+
 - **Port 3300** : Interface admin Payload
 - **Port 3000** : Votre application Next.js
 
@@ -94,8 +99,8 @@ const formations = await payload.find({
 const apprenants = await payload.find({
   collection: 'apprenants',
   where: {
-    statut: { equals: 'Actif' }
-  }
+    statut: { equals: 'Actif' },
+  },
 })
 ```
 
@@ -116,12 +121,15 @@ const apprenants = await payload.find({
 ## 🚨 **Dépannage**
 
 ### Port 3300 occupé
+
 ```bash
 lsof -ti:3300 | xargs kill -9
 ```
 
 ### Variables d'environnement
+
 Vérifiez votre `.env.local` :
+
 ```env
 MONGODB_URI=mongodb+srv://...
 PAYLOAD_SECRET=your-secret-key
@@ -129,6 +137,7 @@ NEXT_PUBLIC_SERVER_URL=http://localhost:3300
 ```
 
 ### Logs Payload
+
 ```bash
 # Voir les logs en temps réel
 tail -f logs/payload.log

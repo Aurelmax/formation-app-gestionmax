@@ -3,11 +3,13 @@
 ## 📋 Prérequis
 
 ### Système
+
 - **Node.js** : ≥18.0.0 (recommandé : v20.x)
 - **npm** : ≥8.0.0
 - **MongoDB Atlas** : Compte et cluster créé
 
 ### Projet Next.js
+
 - **Next.js** : ≥13.0.0 (App Router)
 - **React** : ≥18.0.0
 - **TypeScript** : ≥4.9.0
@@ -29,6 +31,7 @@ npm install tsx dotenv --save-dev --legacy-peer-deps
 ### 2. Configuration MongoDB Atlas
 
 #### Créer un cluster MongoDB Atlas
+
 1. Aller sur [MongoDB Atlas](https://cloud.mongodb.com/)
 2. Créer un nouveau cluster
 3. Créer un utilisateur avec permissions de lecture/écriture
@@ -277,7 +280,7 @@ export const getPayloadClient = async () => {
 ### 3. Configuration Next.js (next.config.ts)
 
 ```typescript
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 import { withPayload } from '@payloadcms/next/withPayload'
 
 const nextConfig: NextConfig = {
@@ -299,9 +302,9 @@ const nextConfig: NextConfig = {
     }
     return config
   },
-};
+}
 
-export default withPayload(nextConfig);
+export default withPayload(nextConfig)
 ```
 
 > **Note** : Évitez Turbopack avec Payload CMS pour éviter les erreurs HMR
@@ -357,14 +360,14 @@ config({ path: '.env.local' })
 
 // Vérifier que PAYLOAD_SECRET est défini
 if (!process.env.PAYLOAD_SECRET) {
-  console.error('❌ PAYLOAD_SECRET n\'est pas défini dans .env.local')
+  console.error("❌ PAYLOAD_SECRET n'est pas défini dans .env.local")
   process.exit(1)
 }
 
 const seed = async () => {
   console.log('🔑 PAYLOAD_SECRET:', process.env.PAYLOAD_SECRET ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env.MONGODB_URI ? '✅ Défini' : '❌ Manquant')
-  
+
   const payload = await getPayload({ config: payloadConfig })
 
   try {
@@ -384,7 +387,7 @@ const seed = async () => {
     console.log('🔑 Mot de passe: admin123')
     console.log('🌐 Accès: http://localhost:3000/admin')
   } catch (error) {
-    console.error('❌ Erreur lors de la création de l\'utilisateur:', error)
+    console.error("❌ Erreur lors de la création de l'utilisateur:", error)
   }
 }
 
@@ -479,8 +482,8 @@ const newFormation = await fetch('/api/formations', {
     duree: 40,
     niveau: 'Débutant',
     modalites: 'Présentiel',
-    prix: 1500
-  })
+    prix: 1500,
+  }),
 })
 ```
 

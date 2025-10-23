@@ -110,8 +110,8 @@ export default function PayloadAdminPage() {
               <Button
                 className="w-full"
                 onClick={() => {
-                  // Ouvrir l'interface Payload dans un nouvel onglet
-                  window.open('/admin/payload/full', '_blank')
+                  // Ouvrir l'interface Payload native dans un nouvel onglet
+                  window.open('/payload-cms', '_blank')
                 }}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />

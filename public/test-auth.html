@@ -1,46 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>Test Auth</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Test d'authentification</h1>
     <button onclick="testLogin()">Tester la connexion</button>
     <button onclick="testProgrammes()">Tester les programmes</button>
     <div id="result"></div>
 
     <script>
-        async function testLogin() {
-            try {
-                const response = await fetch('/api/users', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                
-                const result = await response.json();
-                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
-            } catch (error) {
-                document.getElementById('result').innerHTML = 'Erreur: ' + error.message;
-            }
-        }
+      async function testLogin() {
+        try {
+          const response = await fetch('/api/users', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
 
-        async function testProgrammes() {
-            try {
-                const response = await fetch('/api/programmes', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                
-                const result = await response.json();
-                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(result, null, 2) + '</pre>';
-            } catch (error) {
-                document.getElementById('result').innerHTML = 'Erreur: ' + error.message;
-            }
+          const result = await response.json()
+          document.getElementById('result').innerHTML =
+            '<pre>' + JSON.stringify(result, null, 2) + '</pre>'
+        } catch (error) {
+          document.getElementById('result').innerHTML = 'Erreur: ' + error.message
         }
+      }
+
+      async function testProgrammes() {
+        try {
+          const response = await fetch('/api/programmes', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+
+          const result = await response.json()
+          document.getElementById('result').innerHTML =
+            '<pre>' + JSON.stringify(result, null, 2) + '</pre>'
+        } catch (error) {
+          document.getElementById('result').innerHTML = 'Erreur: ' + error.message
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

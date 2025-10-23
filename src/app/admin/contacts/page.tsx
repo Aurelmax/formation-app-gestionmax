@@ -1,7 +1,7 @@
 'use client'
 
-import { ContactManagement } from '@/components/admin/ContactManagement'
+import ContactManagementNew from '@/components/admin/ContactManagementNew'
 
 export default function ContactsPage() {
-  return <ContactManagement />
+  return <ContactManagementNew />
 }

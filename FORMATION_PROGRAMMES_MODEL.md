@@ -6,26 +6,27 @@ Cette collection implémente une structure complète et réglementaire pour les 
 
 ### 🏗️ Structure des Champs
 
-| Champ | Type | Description | Exemple |
-|-------|------|-------------|---------|
-| `title` | `text` | Nom du programme de formation | "Création de son site internet (WordPress) + Stratégie de développement digital" |
-| `objectifs` | `richText` | Objectifs pédagogiques détaillés | Objectifs par jour avec formatage |
-| `programme_detail` | `array` | Détail des modules et séances | Jour 1, Jour 2 avec modules détaillés |
-| `modalites_acces` | `group` | Informations d'accès et tarification | Prérequis, public, durée, horaires, tarif |
-| `contact_formateur` | `group` | Informations du formateur | Nom, email, téléphone, biographie |
-| `modalites_pedagogiques` | `richText` | Description de la pédagogie | Méthode expositive et démonstrative |
-| `ressources_dispo` | `array` | Ressources mises à disposition | Matériel, support de cours, plateformes |
-| `modalites_evaluation` | `group` | Modalités d'évaluation | Types d'évaluation, plateforme, grille |
-| `sanction_formation` | `text` | Type de certificat délivré | "Certificat de réalisation de formation" |
-| `niveau_certification` | `text` | Niveau ou certification obtenue | "Aucune" ou niveau spécifique |
-| `accessibilite_handicap` | `group` | Informations accessibilité | Référent, contact, adaptations |
-| `cessation_abandon` | `group` | Conditions d'abandon | Renonciation, facturation |
-| `statut` | `select` | Statut du programme | Publié, Brouillon, Archivé |
-| `code_formation` | `text` | Code unique de formation | "A001-WP-DD" |
+| Champ                    | Type       | Description                          | Exemple                                                                          |
+| ------------------------ | ---------- | ------------------------------------ | -------------------------------------------------------------------------------- |
+| `title`                  | `text`     | Nom du programme de formation        | "Création de son site internet (WordPress) + Stratégie de développement digital" |
+| `objectifs`              | `richText` | Objectifs pédagogiques détaillés     | Objectifs par jour avec formatage                                                |
+| `programme_detail`       | `array`    | Détail des modules et séances        | Jour 1, Jour 2 avec modules détaillés                                            |
+| `modalites_acces`        | `group`    | Informations d'accès et tarification | Prérequis, public, durée, horaires, tarif                                        |
+| `contact_formateur`      | `group`    | Informations du formateur            | Nom, email, téléphone, biographie                                                |
+| `modalites_pedagogiques` | `richText` | Description de la pédagogie          | Méthode expositive et démonstrative                                              |
+| `ressources_dispo`       | `array`    | Ressources mises à disposition       | Matériel, support de cours, plateformes                                          |
+| `modalites_evaluation`   | `group`    | Modalités d'évaluation               | Types d'évaluation, plateforme, grille                                           |
+| `sanction_formation`     | `text`     | Type de certificat délivré           | "Certificat de réalisation de formation"                                         |
+| `niveau_certification`   | `text`     | Niveau ou certification obtenue      | "Aucune" ou niveau spécifique                                                    |
+| `accessibilite_handicap` | `group`    | Informations accessibilité           | Référent, contact, adaptations                                                   |
+| `cessation_abandon`      | `group`    | Conditions d'abandon                 | Renonciation, facturation                                                        |
+| `statut`                 | `select`   | Statut du programme                  | Publié, Brouillon, Archivé                                                       |
+| `code_formation`         | `text`     | Code unique de formation             | "A001-WP-DD"                                                                     |
 
 ### 📊 Détail des Groupes
 
 #### `modalites_acces`
+
 - `prerequis` : Prérequis pour la formation
 - `public_concerne` : Public cible
 - `duree` : Durée totale
@@ -35,6 +36,7 @@ Cette collection implémente une structure complète et réglementaire pour les 
 - `modalites_reglement` : Modalités de règlement
 
 #### `contact_formateur`
+
 - `nom` : Nom du formateur
 - `email` : Email de contact
 - `telephone` : Téléphone
@@ -42,7 +44,9 @@ Cette collection implémente une structure complète et réglementaire pour les 
 - `biographie` : Biographie du formateur
 
 #### `programme_detail`
+
 Structure hiérarchique :
+
 - `jour` : "Jour 1", "Jour 2", etc.
 - `duree` : Durée du jour
 - `modules` : Array de modules
@@ -52,25 +56,30 @@ Structure hiérarchique :
   - `contenu` : Contenu détaillé (richText)
 
 #### `modalites_evaluation`
+
 - `types_evaluation` : Array des types d'évaluation
 - `plateforme_evaluation` : Plateforme utilisée
 - `grille_analyse` : Grille d'analyse des compétences
 
 #### `accessibilite_handicap`
+
 - `referent_handicap` : Nom du référent
 - `contact_referent` : Contact du référent
 - `adaptations_proposees` : Adaptations proposées
 
 #### `cessation_abandon`
+
 - `conditions_renonciation` : Conditions de renonciation
 - `facturation_abandon` : Modalités de facturation
 
 ### 🔗 API Endpoints
 
 #### GET `/api/formation-programmes`
+
 Récupère tous les programmes de formation réglementaires.
 
 **Réponse :**
+
 ```json
 {
   "success": true,
@@ -95,6 +104,7 @@ Récupère tous les programmes de formation réglementaires.
 ```
 
 #### GET `/api/formation-programmes/[id]`
+
 Récupère un programme de formation spécifique par son ID.
 
 ### 🎯 Avantages de cette Modélisation
@@ -119,6 +129,7 @@ Récupère un programme de formation spécifique par son ID.
 ### 🚀 Migration Réalisée
 
 Le programme WordPress existant a été migré vers cette nouvelle structure avec :
+
 - ✅ Structure réglementaire complète
 - ✅ Contenu détaillé jour par jour
 - ✅ Informations formateur complètes

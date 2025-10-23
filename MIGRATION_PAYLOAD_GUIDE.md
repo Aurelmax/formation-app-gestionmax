@@ -14,26 +14,28 @@ Ce guide vous accompagne dans la migration complète de votre application de for
 
 ## 📊 Collections migrées
 
-| Collection | Description | Statut |
-|------------|-------------|---------|
-| `users` | Utilisateurs et authentification | ✅ Configurée |
-| `programmes` | Programmes de formation | ✅ Configurée |
-| `apprenants` | Étudiants et apprenants | ✅ Configurée |
-| `rendez-vous` | Rendez-vous et consultations | ✅ Configurée |
-| `articles` | Articles de blog | ✅ Configurée |
-| `categories` | Catégories d'articles | ✅ Configurée |
-| `tags` | Tags d'articles | ✅ Configurée |
-| `contacts` | Messages de contact | ✅ Configurée |
-| `media` | Fichiers et images | ✅ Configurée |
+| Collection    | Description                      | Statut        |
+| ------------- | -------------------------------- | ------------- |
+| `users`       | Utilisateurs et authentification | ✅ Configurée |
+| `programmes`  | Programmes de formation          | ✅ Configurée |
+| `apprenants`  | Étudiants et apprenants          | ✅ Configurée |
+| `rendez-vous` | Rendez-vous et consultations     | ✅ Configurée |
+| `articles`    | Articles de blog                 | ✅ Configurée |
+| `categories`  | Catégories d'articles            | ✅ Configurée |
+| `tags`        | Tags d'articles                  | ✅ Configurée |
+| `contacts`    | Messages de contact              | ✅ Configurée |
+| `media`       | Fichiers et images               | ✅ Configurée |
 
 ## 🛠️ Prérequis
 
 ### Système
+
 - **Node.js** ≥ 18.0.0
 - **npm** ≥ 8.0.0
 - **MongoDB** (local ou Atlas)
 
 ### Variables d'environnement
+
 ```env
 # MongoDB
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database
@@ -58,6 +60,7 @@ npm run migrate
 ```
 
 Cette commande exécute automatiquement :
+
 1. ✅ Vérification des prérequis
 2. ✅ Migration des données mock
 3. ✅ Tests de la migration
@@ -86,13 +89,13 @@ npm run generate:types
 
 ## 🔧 Scripts disponibles
 
-| Script | Commande | Description |
-|--------|----------|-------------|
-| Migration complète | `npm run migrate` | Migration automatique complète |
-| Migration des données | `npm run migrate:data` | Migrer uniquement les données |
-| Test de migration | `npm run migrate:test` | Tester la migration |
-| Basculement | `npm run migrate:switch` | Basculer entre mock/Payload |
-| Vérification | `npm run migrate:check` | Vérifier les collections |
+| Script                | Commande                 | Description                    |
+| --------------------- | ------------------------ | ------------------------------ |
+| Migration complète    | `npm run migrate`        | Migration automatique complète |
+| Migration des données | `npm run migrate:data`   | Migrer uniquement les données  |
+| Test de migration     | `npm run migrate:test`   | Tester la migration            |
+| Basculement           | `npm run migrate:switch` | Basculer entre mock/Payload    |
+| Vérification          | `npm run migrate:check`  | Vérifier les collections       |
 
 ### Options avancées
 
@@ -115,6 +118,7 @@ npm run migrate:data -- --help
 ### 1. Vérification des prérequis
 
 Le script vérifie :
+
 - ✅ Installation de Node.js et npm
 - ✅ Variables d'environnement requises
 - ✅ Fichiers de configuration présents
@@ -123,6 +127,7 @@ Le script vérifie :
 ### 2. Migration des données
 
 Les données mock sont migrées vers Payload :
+
 - 👤 **Utilisateurs** : 3 utilisateurs de test
 - 📚 **Programmes** : 8 programmes de formation
 - 👥 **Apprenants** : 2 apprenants de test
@@ -135,6 +140,7 @@ Les données mock sont migrées vers Payload :
 ### 3. Tests de migration
 
 Le script teste :
+
 - ✅ Existence des collections
 - ✅ Présence de données
 - ✅ Opérations CRUD
@@ -145,6 +151,7 @@ Le script teste :
 ### 4. Basculement vers Payload
 
 Configuration automatique :
+
 - ✅ `NEXT_PUBLIC_USE_MOCK_DATA=false`
 - ✅ `NEXT_PUBLIC_USE_PAYLOAD=true`
 - ✅ URLs d'API configurées
@@ -157,6 +164,7 @@ Après la migration, accédez à l'interface Payload :
 **URL :** http://localhost:3010/admin
 
 ### Fonctionnalités disponibles :
+
 - 📊 **Dashboard** : Vue d'ensemble des données
 - 👤 **Utilisateurs** : Gestion des utilisateurs et rôles
 - 📚 **Programmes** : Gestion des formations
@@ -183,6 +191,7 @@ npm run dev
 ## 🧪 Tests et validation
 
 ### Tests automatiques
+
 ```bash
 # Tester la migration
 npm run migrate:test
@@ -192,12 +201,14 @@ npm run migrate:check
 ```
 
 ### Tests manuels
+
 1. **Page d'accueil** : http://localhost:3010
 2. **Interface admin** : http://localhost:3010/admin
 3. **Catalogue** : http://localhost:3010/catalogue
 4. **Blog** : http://localhost:3010/blog
 
 ### Vérifications importantes
+
 - ✅ Toutes les pages se chargent correctement
 - ✅ Les données s'affichent dans l'interface
 - ✅ Les formulaires fonctionnent
@@ -209,36 +220,48 @@ npm run migrate:check
 ### Problèmes courants
 
 #### 1. Erreur de connexion MongoDB
+
 ```
 ❌ Erreur: MongoNetworkError
 ```
+
 **Solution :**
+
 - Vérifier la connection string MongoDB
 - S'assurer que l'IP est autorisée
 - Vérifier que le cluster est actif
 
 #### 2. PAYLOAD_SECRET manquant
+
 ```
 ❌ Erreur: missing secret key
 ```
+
 **Solution :**
+
 - Ajouter `PAYLOAD_SECRET` dans `.env.local`
 - Redémarrer le serveur
 
 #### 3. Collections non trouvées
+
 ```
 ❌ Collection non trouvée
 ```
+
 **Solution :**
+
 - Vérifier la configuration Payload
 - Relancer la migration
 - Vérifier les logs
 
 #### 4. Erreurs de types TypeScript
+
 ```
 ❌ Type errors
 ```
+
 **Solution :**
+
 ```bash
 npm run generate:types
 npm run type-check
@@ -260,12 +283,14 @@ npm run migrate:check
 ## 📈 Performance
 
 ### Optimisations appliquées
+
 - ✅ **Cache** : Mise en cache des connexions Payload
 - ✅ **Pagination** : Limitation des requêtes
 - ✅ **Indexes** : Index MongoDB optimisés
 - ✅ **Relations** : Relations efficaces entre collections
 
 ### Monitoring
+
 - 📊 **Statistiques** : Compteurs de documents
 - 🔍 **Logs** : Logs détaillés des opérations
 - ⚡ **Performance** : Temps de réponse optimisés
@@ -273,12 +298,14 @@ npm run migrate:check
 ## 🔐 Sécurité
 
 ### Mesures de sécurité
+
 - ✅ **Authentification** : Système d'utilisateurs Payload
 - ✅ **Autorisation** : Rôles et permissions
 - ✅ **Validation** : Validation des données
 - ✅ **Sanitisation** : Nettoyage des entrées
 
 ### Bonnes pratiques
+
 - 🔑 **Secrets** : Variables d'environnement sécurisées
 - 🛡️ **HTTPS** : Utilisation en production
 - 🔒 **Permissions** : Limitation des accès
@@ -287,20 +314,23 @@ npm run migrate:check
 ## 📚 Ressources
 
 ### Documentation
+
 - [Payload CMS Docs](https://payloadcms.com/docs)
 - [MongoDB Atlas](https://docs.atlas.mongodb.com/)
 - [Next.js Docs](https://nextjs.org/docs)
 
 ### Support
+
 - 📧 **Email** : support@gestionmax.fr
 - 📞 **Téléphone** : 06.46.02.24.68
 - 💬 **Discord** : [Serveur GestionMax](https://discord.gg/gestionmax)
 
 ## 🎉 Félicitations !
 
-Votre application est maintenant migrée vers Payload CMS ! 
+Votre application est maintenant migrée vers Payload CMS !
 
 ### Prochaines étapes recommandées :
+
 1. 🎨 **Personnaliser** l'interface d'administration
 2. 📊 **Configurer** les tableaux de bord
 3. 🔧 **Optimiser** les performances

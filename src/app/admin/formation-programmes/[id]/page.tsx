@@ -372,22 +372,20 @@ export default function FormationPersonnaliseeDetailPage() {
                     <div>
                       <h4 className="font-semibold mb-2">Types d'évaluation</h4>
                       <ul className="space-y-1">
-                        {formation.modalitesEvaluation.typesEvaluation.map(
-                          (evaluation, index) => (
-                            <li key={index} className="flex items-start gap-2">
-                              <span className="text-blue-600 mt-1">•</span>
-                              <div>
-                                <span className="font-medium">{evaluation.type}</span>
-                                {evaluation.description && (
-                                  <span className="text-muted-foreground">
-                                    {' '}
-                                    - {evaluation.description}
-                                  </span>
-                                )}
-                              </div>
-                            </li>
-                          )
-                        )}
+                        {formation.modalitesEvaluation.typesEvaluation.map((evaluation, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <span className="text-blue-600 mt-1">•</span>
+                            <div>
+                              <span className="font-medium">{evaluation.type}</span>
+                              {evaluation.description && (
+                                <span className="text-muted-foreground">
+                                  {' '}
+                                  - {evaluation.description}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   )}

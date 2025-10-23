@@ -1,11 +1,9 @@
 import { getPayload } from 'payload'
 import config from './payload.config'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let cached = (global as unknown as { payload: { client: any; promise: any } }).payload
 
 if (!cached) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cached = (global as unknown as { payload: { client: any; promise: any } }).payload = {
     client: null,
     promise: null,

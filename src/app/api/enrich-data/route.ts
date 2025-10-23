@@ -15,56 +15,59 @@ export async function POST(request: NextRequest) {
           { competence: 'Gutenberg' },
           { competence: 'Elementor' },
           { competence: 'Yoast SEO' },
-          { competence: 'Wordfence' }
+          { competence: 'Wordfence' },
         ],
         objectifs: 'Objectifs pédagogiques détaillés ajoutés automatiquement',
         prerequis: 'Prérequis adaptés au niveau de la formation',
         modalitesPedagogiques: 'Modalités pédagogiques enrichies',
-        evaluation: 'Méthodes d\'évaluation standardisées',
+        evaluation: "Méthodes d'évaluation standardisées",
         certification: 'Attestation de formation professionnelle',
         eligibleCPF: true,
-        codeCPF: `RS${Math.floor(Math.random() * 10000)}`
+        codeCPF: `RS${Math.floor(Math.random() * 10000)}`,
       },
       users: {
         permissions: [
           { permission: 'users:read' },
           { permission: 'formations:read' },
-          { permission: 'admin:access' }
+          { permission: 'admin:access' },
         ],
         metadata: {
           lastLoginAt: new Date().toISOString(),
           profileComplete: true,
           source: 'enrichment',
-          version: '1.0'
-        }
+          version: '1.0',
+        },
       },
       apprenants: {
         progression: 50,
         metadata: {
           source: 'enrichment',
           lastActivity: new Date().toISOString(),
-          profileScore: 85
-        }
+          profileScore: 85,
+        },
       },
       articles: {
         metaKeywords: [
           { keyword: 'formation' },
           { keyword: 'apprentissage' },
           { keyword: 'compétences' },
-          { keyword: 'professionnel' }
+          { keyword: 'professionnel' },
         ],
         metaDescription: 'Meta description optimisée pour le SEO',
         tempsLecture: 8,
         vue: 0,
-        featured: true
-      }
+        featured: true,
+      },
     }
 
     if (!collection || !enrichments[collection as keyof typeof enrichments]) {
-      return NextResponse.json({
-        success: false,
-        message: 'Collection non supportée'
-      }, { status: 400 })
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Collection non supportée',
+        },
+        { status: 400 }
+      )
     }
 
     if (dryRun) {
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
         success: true,
         message: `Aperçu de l'enrichissement pour ${collection}`,
         count: 5, // Simulation
-        dryRun: true
+        dryRun: true,
       })
     }
 
@@ -89,7 +92,7 @@ export async function POST(request: NextRequest) {
         // Fusionner les données existantes avec les enrichissements
         const existingData = { ...item }
         const enrichmentData = enrichments[collection as keyof typeof enrichments]
-        
+
         // Fusionner intelligemment les données
         const mergedData = {
           ...existingData,
@@ -97,7 +100,7 @@ export async function POST(request: NextRequest) {
           // Préserver les champs critiques
           id: existingData.id,
           createdAt: existingData.createdAt,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }
 
         await payload.update({
@@ -115,15 +118,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: `${enrichedCount} éléments enrichis dans ${collection}`,
-      count: enrichedCount
+      count: enrichedCount,
     })
-
   } catch (error) {
-    console.error('Erreur lors de l\'enrichissement:', error)
-    return NextResponse.json({
-      success: false,
-      message: 'Erreur lors de l\'enrichissement des données',
-      error: error instanceof Error ? error.message : 'Erreur inconnue'
-    }, { status: 500 })
+    console.error("Erreur lors de l'enrichissement:", error)
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Erreur lors de l'enrichissement des données",
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
+      },
+      { status: 500 }
+    )
   }
 }

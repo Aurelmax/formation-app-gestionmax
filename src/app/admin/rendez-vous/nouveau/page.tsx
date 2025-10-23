@@ -114,13 +114,13 @@ export default function NouveauRendezVousPage() {
         createdBy: '1', // ID de l'utilisateur connecté
       }
 
-              const response = await fetch('/api/rendez-vous-payload', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(nouveauRendezVous),
-              })
+      const response = await fetch('/api/rendez-vous-payload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(nouveauRendezVous),
+      })
 
       const result = await response.json()
 
@@ -158,9 +158,7 @@ export default function NouveauRendezVousPage() {
           </Button>
           <div>
             <h1 className="text-3xl font-bold">Nouveau Rendez-vous</h1>
-            <p className="text-muted-foreground">
-              Créer un nouveau rendez-vous avec un client
-            </p>
+            <p className="text-muted-foreground">Créer un nouveau rendez-vous avec un client</p>
           </div>
         </div>
       </div>
@@ -240,11 +238,7 @@ export default function NouveauRendezVousPage() {
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="programmeId">Programme *</Label>
-                <Select
-                  value={formData.programmeId}
-                  onValueChange={handleProgrammeChange}
-                  required
-                >
+                <Select value={formData.programmeId} onValueChange={handleProgrammeChange} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionner un programme" />
                   </SelectTrigger>
@@ -404,12 +398,7 @@ export default function NouveauRendezVousPage() {
 
         {/* Actions */}
         <div className="flex justify-end space-x-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isLoading}
-          >
+          <Button type="button" variant="outline" onClick={handleCancel} disabled={isLoading}>
             <X className="h-4 w-4 mr-2" />
             Annuler
           </Button>

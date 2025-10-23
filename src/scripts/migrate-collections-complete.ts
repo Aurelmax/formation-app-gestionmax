@@ -35,7 +35,7 @@ class PayloadMigrationManager {
       skipExisting: true,
       dryRun: false,
       verbose: true,
-      ...options
+      ...options,
     }
     this.stats = {
       users: { imported: 0, updated: 0, errors: 0, skipped: 0 },
@@ -51,14 +51,14 @@ class PayloadMigrationManager {
 
   private log(message: string, level: 'info' | 'success' | 'warning' | 'error' = 'info') {
     if (!this.options.verbose && level === 'info') return
-    
+
     const icons = {
       info: 'ℹ️',
       success: '✅',
       warning: '⚠️',
-      error: '❌'
+      error: '❌',
     }
-    
+
     console.log(`${icons[level]} ${message}`)
   }
 
@@ -66,7 +66,7 @@ class PayloadMigrationManager {
     this.log('🚀 Initialisation de la migration Payload CMS...')
     this.log(`🔑 PAYLOAD_SECRET: ${process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant'}`)
     this.log(`🗄️ MONGODB_URI: ${process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant'}`)
-    
+
     if (this.options.dryRun) {
       this.log('🧪 Mode DRY RUN activé - Aucune donnée ne sera modifiée', 'warning')
     }
@@ -74,11 +74,11 @@ class PayloadMigrationManager {
     try {
       this.payload = await getPayload({ config: payloadConfig })
       this.log('✅ Connexion à Payload CMS établie')
-      
+
       // Vérifier les collections disponibles
       const collections = Object.keys(this.payload.collections)
       this.log(`📋 Collections disponibles: ${collections.join(', ')}`)
-      
+
       return true
     } catch (error) {
       this.log(`❌ Erreur lors de l'initialisation: ${error}`, 'error')
@@ -88,7 +88,7 @@ class PayloadMigrationManager {
 
   async migrateUsers() {
     this.log('\n👤 Migration des utilisateurs...')
-    
+
     for (const user of MOCK_USERS) {
       try {
         // Vérifier si l'utilisateur existe déjà
@@ -148,7 +148,7 @@ class PayloadMigrationManager {
 
   async migrateProgrammes() {
     this.log('\n📚 Migration des programmes...')
-    
+
     for (const programme of MOCK_PROGRAMMES) {
       try {
         // Vérifier si le programme existe déjà
@@ -174,7 +174,10 @@ class PayloadMigrationManager {
           eligibleCPF: true,
           codeCPF: `RS${Math.floor(Math.random() * 10000)}`,
           objectifs: `Formation ${programme.niveau.toLowerCase()} de ${programme.duree} heures sur ${programme.titre}`,
-          prerequis: programme.niveau === 'DEBUTANT' ? 'Aucun prérequis technique' : 'Connaissances de base en informatique',
+          prerequis:
+            programme.niveau === 'DEBUTANT'
+              ? 'Aucun prérequis technique'
+              : 'Connaissances de base en informatique',
           programme: `Programme détaillé de la formation ${programme.titre}`,
           modalitesPedagogiques: `Formation en ${programme.modalites.toLowerCase()} avec approche pratique`,
           evaluation: 'Évaluation continue et projet final',
@@ -218,7 +221,7 @@ class PayloadMigrationManager {
 
   async migrateApprenants() {
     this.log('\n👥 Migration des apprenants...')
-    
+
     // Vérifier si la collection apprenants existe
     if (!this.payload.collections['apprenants']) {
       this.log('⚠️ Collection apprenants non trouvée - ignorée', 'warning')
@@ -285,7 +288,7 @@ class PayloadMigrationManager {
 
   async migrateRendezVous() {
     this.log('\n📅 Migration des rendez-vous...')
-    
+
     // Vérifier si la collection rendez-vous existe
     if (!this.payload.collections['rendez-vous']) {
       this.log('⚠️ Collection rendez-vous non trouvée - ignorée', 'warning')
@@ -332,8 +335,8 @@ class PayloadMigrationManager {
   }
 
   async migrateSampleArticles() {
-    this.log('\n📝 Migration d\'articles d\'exemple...')
-    
+    this.log("\n📝 Migration d'articles d'exemple...")
+
     // Vérifier si la collection articles existe
     if (!this.payload.collections['articles']) {
       this.log('⚠️ Collection articles non trouvée - ignorée', 'warning')
@@ -366,7 +369,7 @@ class PayloadMigrationManager {
         vue: 0,
         tempsLecture: 12,
         featured: false,
-      }
+      },
     ]
 
     for (const article of sampleArticles) {
@@ -405,8 +408,8 @@ class PayloadMigrationManager {
   }
 
   async migrateSampleCategories() {
-    this.log('\n📂 Migration de catégories d\'exemple...')
-    
+    this.log("\n📂 Migration de catégories d'exemple...")
+
     // Vérifier si la collection categories existe
     if (!this.payload.collections['categories']) {
       this.log('⚠️ Collection categories non trouvée - ignorée', 'warning')
@@ -434,7 +437,7 @@ class PayloadMigrationManager {
         description: 'Stratégies et outils de marketing en ligne',
         couleur: '#4ECDC4',
         icone: '📈',
-      }
+      },
     ]
 
     for (const category of sampleCategories) {
@@ -473,8 +476,8 @@ class PayloadMigrationManager {
   }
 
   async migrateSampleTags() {
-    this.log('\n🏷️ Migration de tags d\'exemple...')
-    
+    this.log("\n🏷️ Migration de tags d'exemple...")
+
     // Vérifier si la collection tags existe
     if (!this.payload.collections['tags']) {
       this.log('⚠️ Collection tags non trouvée - ignorée', 'warning')
@@ -486,7 +489,7 @@ class PayloadMigrationManager {
       { nom: 'Tutoriel', slug: 'tutoriel', couleur: '#3B82F6' },
       { nom: 'Formation', slug: 'formation', couleur: '#8B5CF6' },
       { nom: 'Guide', slug: 'guide', couleur: '#F59E0B' },
-      { nom: 'Conseils', slug: 'conseils', couleur: '#EF4444' }
+      { nom: 'Conseils', slug: 'conseils', couleur: '#EF4444' },
     ]
 
     for (const tag of sampleTags) {
@@ -525,8 +528,8 @@ class PayloadMigrationManager {
   }
 
   async migrateSampleContacts() {
-    this.log('\n📞 Migration de contacts d\'exemple...')
-    
+    this.log("\n📞 Migration de contacts d'exemple...")
+
     // Vérifier si la collection contacts existe
     if (!this.payload.collections['contacts']) {
       this.log('⚠️ Collection contacts non trouvée - ignorée', 'warning')
@@ -539,8 +542,9 @@ class PayloadMigrationManager {
         email: 'jean.dupont@example.com',
         telephone: '06.12.34.56.78',
         type: 'formation',
-        sujet: 'Demande d\'information sur la formation WordPress',
-        message: 'Bonjour, je souhaiterais obtenir des informations sur vos formations WordPress. Pouvez-vous me contacter ?',
+        sujet: "Demande d'information sur la formation WordPress",
+        message:
+          'Bonjour, je souhaiterais obtenir des informations sur vos formations WordPress. Pouvez-vous me contacter ?',
         statut: 'nouveau',
         priorite: 'normale',
       },
@@ -550,10 +554,11 @@ class PayloadMigrationManager {
         telephone: '06.87.65.43.21',
         type: 'devis',
         sujet: 'Demande de devis pour formation SEO',
-        message: 'Nous sommes une entreprise de 10 personnes et souhaiterions organiser une formation SEO pour notre équipe marketing.',
+        message:
+          'Nous sommes une entreprise de 10 personnes et souhaiterions organiser une formation SEO pour notre équipe marketing.',
         statut: 'enCours',
         priorite: 'haute',
-      }
+      },
     ]
 
     for (const contact of sampleContacts) {
@@ -575,9 +580,18 @@ class PayloadMigrationManager {
 
   async validateMigration() {
     this.log('\n🔍 Validation de la migration...')
-    
-    const collections = ['users', 'programmes', 'apprenants', 'rendez-vous', 'articles', 'categories', 'tags', 'contacts']
-    
+
+    const collections = [
+      'users',
+      'programmes',
+      'apprenants',
+      'rendez-vous',
+      'articles',
+      'categories',
+      'tags',
+      'contacts',
+    ]
+
     for (const collectionName of collections) {
       try {
         if (this.payload.collections[collectionName]) {
@@ -595,7 +609,7 @@ class PayloadMigrationManager {
   printStats() {
     this.log('\n📊 RÉSUMÉ DE LA MIGRATION')
     this.log('=' * 50)
-    
+
     const collections = [
       { name: 'Utilisateurs', key: 'users' },
       { name: 'Programmes', key: 'programmes' },
@@ -604,7 +618,7 @@ class PayloadMigrationManager {
       { name: 'Articles', key: 'articles' },
       { name: 'Catégories', key: 'categories' },
       { name: 'Tags', key: 'tags' },
-      { name: 'Contacts', key: 'contacts' }
+      { name: 'Contacts', key: 'contacts' },
     ]
 
     for (const collection of collections) {
@@ -626,7 +640,7 @@ class PayloadMigrationManager {
     this.log(`  ❌ Total erreurs: ${totalErrors}`)
 
     if (this.options.dryRun) {
-      this.log('\n🧪 Mode DRY RUN - Aucune donnée n\'a été modifiée', 'warning')
+      this.log("\n🧪 Mode DRY RUN - Aucune donnée n'a été modifiée", 'warning')
     }
   }
 
@@ -645,10 +659,10 @@ class PayloadMigrationManager {
       await this.migrateSampleCategories()
       await this.migrateSampleTags()
       await this.migrateSampleContacts()
-      
+
       await this.validateMigration()
       this.printStats()
-      
+
       this.log('\n🎉 Migration terminée avec succès!', 'success')
       return true
     } catch (error) {
@@ -691,7 +705,7 @@ Exemples:
 
   const migration = new PayloadMigrationManager(options)
   const success = await migration.run()
-  
+
   process.exit(success ? 0 : 1)
 }
 

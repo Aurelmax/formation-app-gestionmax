@@ -31,6 +31,7 @@ Ce document définit les règles strictes de typage TypeScript pour garantir la 
 ## 🏗️ Structure des Types
 
 ### Organisation des fichiers
+
 ```
 src/types/
 ├── common.ts          # Types globaux partagés
@@ -48,27 +49,29 @@ src/types/
 ## 📝 Conventions de Nommage
 
 ### Interfaces et Types
+
 ```typescript
 // ✅ CORRECT - PascalCase
 interface User {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
-type UserRole = 'ADMIN' | 'FORMATEUR' | 'BENEFICIAIRE';
+type UserRole = 'ADMIN' | 'FORMATEUR' | 'BENEFICIAIRE'
 
 // ❌ INCORRECT
-interface user { }  // Minuscule
-type user_role = string;  // snake_case
+interface user {} // Minuscule
+type user_role = string // snake_case
 ```
 
 ### Props de Composants
+
 ```typescript
 // ✅ CORRECT - Suffixe "Props"
 interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
+  label: string
+  onClick: () => void
+  variant?: 'primary' | 'secondary'
 }
 
 export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
@@ -76,25 +79,27 @@ export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
 }
 
 // ❌ INCORRECT
-interface ButtonProperties { }  // Trop verbeux
-interface IButton { }            // Préfixe I déconseillé
+interface ButtonProperties {} // Trop verbeux
+interface IButton {} // Préfixe I déconseillé
 ```
 
 ### Types Utilitaires
+
 ```typescript
 // ✅ CORRECT - Préfixe descriptif
-type Nullable<T> = T | null;
-type Optional<T> = T | undefined;
+type Nullable<T> = T | null
+type Optional<T> = T | undefined
 type ApiResponse<T> = {
-  data: T;
-  error?: string;
-};
+  data: T
+  error?: string
+}
 
 // ❌ INCORRECT
-type N<T> = T | null;  // Trop court
+type N<T> = T | null // Trop court
 ```
 
 ### Constantes de Type
+
 ```typescript
 // ✅ CORRECT - UPPER_SNAKE_CASE pour les valeurs
 const USER_ROLES = {
@@ -114,86 +119,84 @@ const userRoles = { ... };  // camelCase
 ## 🔧 Patterns de Typage
 
 ### 1. Typage des Props React
+
 ```typescript
 // ✅ EXCELLENT - Props complètement typées
 interface UserCardProps {
-  user: User;
-  onEdit?: (user: User) => void;
-  onDelete?: (id: string) => Promise<void>;
-  className?: string;
-  children?: React.ReactNode;
+  user: User
+  onEdit?: (user: User) => void
+  onDelete?: (id: string) => Promise<void>
+  className?: string
+  children?: React.ReactNode
 }
 
-export function UserCard({
-  user,
-  onEdit,
-  onDelete,
-  className,
-  children,
-}: UserCardProps) {
+export function UserCard({ user, onEdit, onDelete, className, children }: UserCardProps) {
   // ...
 }
 
 // ❌ MAUVAIS - Props non typées
-export function UserCard(props: any) { }
+export function UserCard(props: any) {}
 ```
 
 ### 2. Typage des Fonctions
+
 ```typescript
 // ✅ EXCELLENT - Paramètres et retour typés
 async function getProgramme(id: string): Promise<Programme | null> {
   const programme = await prisma.programme.findUnique({
     where: { id },
-  });
-  return programme;
+  })
+  return programme
 }
 
 // ⚠️ ACCEPTABLE - Retour inféré mais explicite recommandé
 function calculateTotal(items: Item[]) {
-  return items.reduce((sum, item) => sum + item.price, 0);
+  return items.reduce((sum, item) => sum + item.price, 0)
 }
 
 // ❌ MAUVAIS - Types implicites
 async function getProgramme(id) {
-  return await prisma.programme.findUnique({ where: { id } });
+  return await prisma.programme.findUnique({ where: { id } })
 }
 ```
 
 ### 3. Typage des Événements
+
 ```typescript
 // ✅ CORRECT - Types d'événements React
 interface FormProps {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 // Alternative avec handlers typés
-type SubmitHandler = (data: FormData) => void | Promise<void>;
+type SubmitHandler = (data: FormData) => void | Promise<void>
 
 interface FormProps {
-  onSubmit: SubmitHandler;
+  onSubmit: SubmitHandler
 }
 ```
 
 ### 4. Typage des Hooks Personnalisés
+
 ```typescript
 // ✅ EXCELLENT - Hook avec retour typé
 interface UseProgrammeReturn {
-  programme: Programme | null;
-  isLoading: boolean;
-  error: Error | null;
-  refetch: () => Promise<void>;
+  programme: Programme | null
+  isLoading: boolean
+  error: Error | null
+  refetch: () => Promise<void>
 }
 
 function useProgramme(id: string): UseProgrammeReturn {
-  const [programme, setProgramme] = useState<Programme | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [programme, setProgramme] = useState<Programme | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
   // ...
 
-  return { programme, isLoading, error, refetch };
+  return { programme, isLoading, error, refetch }
 }
 ```
 
@@ -202,81 +205,83 @@ function useProgramme(id: string): UseProgrammeReturn {
 ## 🎨 Types Réutilisables
 
 ### Types de Base
+
 ```typescript
 // types/common.ts
 
 // IDs
-export type ID = string;
-export type UUID = string;
+export type ID = string
+export type UUID = string
 
 // Dates
-export type ISODate = string;
-export type Timestamp = number;
+export type ISODate = string
+export type Timestamp = number
 
 // Statuts génériques
-export type Status = 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+export type Status = 'ACTIVE' | 'INACTIVE' | 'ARCHIVED'
 
 // Pagination
 export interface PaginationParams {
-  page: number;
-  limit: number;
+  page: number
+  limit: number
 }
 
 export interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
-  page: number;
-  totalPages: number;
+  data: T[]
+  total: number
+  page: number
+  totalPages: number
 }
 
 // Réponses API
 export interface ApiSuccessResponse<T> {
-  success: true;
-  data: T;
+  success: true
+  data: T
 }
 
 export interface ApiErrorResponse {
-  success: false;
+  success: false
   error: {
-    message: string;
-    code: string;
-    details?: unknown;
-  };
+    message: string
+    code: string
+    details?: unknown
+  }
 }
 
-export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
+export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse
 ```
 
 ### Types Utilitaires Avancés
+
 ```typescript
 // types/utils.ts
 
 // Rendre tous les champs optionnels sauf certains
-export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>;
+export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>
 
 // Rendre certains champs requis
-export type RequiredFields<T, K extends keyof T> = T & Required<Pick<T, K>>;
+export type RequiredFields<T, K extends keyof T> = T & Required<Pick<T, K>>
 
 // Omettre plusieurs clés
-export type OmitMultiple<T, K extends keyof T> = Omit<T, K>;
+export type OmitMultiple<T, K extends keyof T> = Omit<T, K>
 
 // Extraire les clés d'un type donné
 export type KeysOfType<T, V> = {
-  [K in keyof T]: T[K] extends V ? K : never;
-}[keyof T];
+  [K in keyof T]: T[K] extends V ? K : never
+}[keyof T]
 
 // Type nullable
-export type Nullable<T> = T | null;
+export type Nullable<T> = T | null
 
 // Type avec timestamps
 export interface Timestamped {
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date
+  updatedAt: Date
 }
 
 // Type avec soft delete
 export interface SoftDeletable {
-  deletedAt: Date | null;
+  deletedAt: Date | null
 }
 ```
 
@@ -285,9 +290,10 @@ export interface SoftDeletable {
 ## 🔒 Validation avec Zod
 
 ### Pattern Recommandé
+
 ```typescript
 // schemas/programme.schema.ts
-import { z } from 'zod';
+import { z } from 'zod'
 
 // 1. Définir le schéma Zod
 export const programmeSchema = z.object({
@@ -296,15 +302,15 @@ export const programmeSchema = z.object({
   duree: z.number().positive(),
   niveau: z.enum(['DEBUTANT', 'INTERMEDIAIRE', 'AVANCE']),
   prix: z.number().nonnegative(),
-});
+})
 
 // 2. Inférer le type depuis Zod
-export type ProgrammeInput = z.infer<typeof programmeSchema>;
+export type ProgrammeInput = z.infer<typeof programmeSchema>
 
 // 3. Utiliser dans les composants
 interface ProgrammeFormProps {
-  onSubmit: (data: ProgrammeInput) => void;
-  defaultValues?: Partial<ProgrammeInput>;
+  onSubmit: (data: ProgrammeInput) => void
+  defaultValues?: Partial<ProgrammeInput>
 }
 ```
 
@@ -313,33 +319,34 @@ interface ProgrammeFormProps {
 ## 🗄️ Typage des Données Prisma
 
 ### Types de Base
+
 ```typescript
 // types/database.ts
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client'
 
 // Utiliser les types générés par Prisma
 export type Programme = Prisma.ProgrammeGetPayload<{
   include: {
-    formateurs: true;
-    competences: true;
-  };
-}>;
+    formateurs: true
+    competences: true
+  }
+}>
 
 export type ProgrammeWithStats = Prisma.ProgrammeGetPayload<{
   include: {
     _count: {
       select: {
-        apprenants: true;
-        sessions: true;
-      };
-    };
-  };
-}>;
+        apprenants: true
+        sessions: true
+      }
+    }
+  }
+}>
 
 // Types pour les opérations CRUD
-export type ProgrammeCreateInput = Prisma.ProgrammeCreateInput;
-export type ProgrammeUpdateInput = Prisma.ProgrammeUpdateInput;
-export type ProgrammeWhereInput = Prisma.ProgrammeWhereInput;
+export type ProgrammeCreateInput = Prisma.ProgrammeCreateInput
+export type ProgrammeUpdateInput = Prisma.ProgrammeUpdateInput
+export type ProgrammeWhereInput = Prisma.ProgrammeWhereInput
 ```
 
 ---
@@ -347,6 +354,7 @@ export type ProgrammeWhereInput = Prisma.ProgrammeWhereInput;
 ## 🧪 Typage des Tests
 
 ### Mocks Typés
+
 ```typescript
 // __tests__/programme.test.ts
 
@@ -361,7 +369,7 @@ const mockProgramme: Programme = {
   statut: 'PUBLIE',
   createdAt: new Date(),
   updatedAt: new Date(),
-};
+}
 
 // Mock de service
 const mockService: jest.Mocked<typeof ProgrammeService> = {
@@ -370,7 +378,7 @@ const mockService: jest.Mocked<typeof ProgrammeService> = {
   create: jest.fn().mockResolvedValue(mockProgramme),
   update: jest.fn().mockResolvedValue(mockProgramme),
   delete: jest.fn().mockResolvedValue(undefined),
-};
+}
 ```
 
 ---
@@ -378,6 +386,7 @@ const mockService: jest.Mocked<typeof ProgrammeService> = {
 ## 🚨 Gestion des Erreurs
 
 ### Classes d'Erreurs Personnalisées
+
 ```typescript
 // types/errors.ts
 
@@ -388,34 +397,34 @@ export class AppError extends Error {
     public statusCode: number = 500,
     public details?: unknown
   ) {
-    super(message);
-    this.name = 'AppError';
+    super(message)
+    this.name = 'AppError'
   }
 }
 
 export class ValidationError extends AppError {
   constructor(message: string, details?: unknown) {
-    super(message, 'VALIDATION_ERROR', 400, details);
-    this.name = 'ValidationError';
+    super(message, 'VALIDATION_ERROR', 400, details)
+    this.name = 'ValidationError'
   }
 }
 
 export class NotFoundError extends AppError {
   constructor(resource: string, id: string) {
-    super(`${resource} with id ${id} not found`, 'NOT_FOUND', 404);
-    this.name = 'NotFoundError';
+    super(`${resource} with id ${id} not found`, 'NOT_FOUND', 404)
+    this.name = 'NotFoundError'
   }
 }
 
 // Utilisation
 function getProgramme(id: string): Programme {
-  const programme = await prisma.programme.findUnique({ where: { id } });
-  
+  const programme = await prisma.programme.findUnique({ where: { id } })
+
   if (!programme) {
-    throw new NotFoundError('Programme', id);
+    throw new NotFoundError('Programme', id)
   }
-  
-  return programme;
+
+  return programme
 }
 ```
 
@@ -424,6 +433,7 @@ function getProgramme(id: string): Programme {
 ## ✅ Checklist Avant Commit
 
 ### Vérifications Obligatoires
+
 ```typescript
 // ✅ Tous les paramètres de fonction sont typés
 function getUserById(id: string): Promise<User | null> {
@@ -432,7 +442,7 @@ function getUserById(id: string): Promise<User | null> {
 
 // ✅ Tous les retours de fonction sont typés explicitement
 function calculateTotal(items: Item[]): number {
-  return items.reduce((sum, item) => sum + item.price, 0);
+  return items.reduce((sum, item) => sum + item.price, 0)
 }
 
 // ✅ Aucun any sans justification documentée
@@ -448,9 +458,9 @@ function processData(data: unknown) {
 
 // ✅ Les props React sont dans une interface dédiée
 interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
+  label: string
+  onClick: () => void
+  variant?: 'primary' | 'secondary'
 }
 
 export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
@@ -460,14 +470,14 @@ export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
 // ✅ Les types complexes sont extraits dans types/
 // types/programme.ts
 export interface Programme {
-  id: string;
-  titre: string;
-  description: string;
+  id: string
+  titre: string
+  description: string
   // ...
 }
 
 // ✅ Les schémas Zod sont utilisés pour la validation
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const programmeSchema = z.object({
   titre: z.string().min(3).max(200),
@@ -475,12 +485,13 @@ export const programmeSchema = z.object({
   duree: z.number().positive(),
   niveau: z.enum(['DEBUTANT', 'INTERMEDIAIRE', 'AVANCE']),
   prix: z.number().nonnegative(),
-});
+})
 
-export type ProgrammeInput = z.infer<typeof programmeSchema>;
+export type ProgrammeInput = z.infer<typeof programmeSchema>
 ```
 
 ### Commandes de Vérification
+
 ```bash
 # Vérification TypeScript
 npm run type-check
@@ -496,6 +507,7 @@ npm run build
 ```
 
 ### Checklist Rapide
+
 ```markdown
 ## ✅ Checklist Avant Commit
 

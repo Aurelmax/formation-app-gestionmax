@@ -1,6 +1,6 @@
 /**
  * Mappers pour convertir les données entre les formats Payload et frontend
- * 
+ *
  * Ces fonctions permettent de maintenir la cohérence entre :
  * - Les données stockées en base (format Payload avec snake_case)
  * - Les données utilisées dans le frontend (format camelCase)
@@ -106,11 +106,11 @@ function mapObject<T extends Record<string, any>>(
   direction: 'toPayload' | 'toFrontend'
 ): T {
   const result = { ...obj }
-  
+
   Object.entries(mapping).forEach(([sourceKey, targetKey]) => {
     const key = direction === 'toPayload' ? sourceKey : targetKey
     const target = direction === 'toPayload' ? targetKey : sourceKey
-    
+
     if (key in result) {
       result[target] = result[key]
       if (key !== target) {
@@ -118,7 +118,7 @@ function mapObject<T extends Record<string, any>>(
       }
     }
   })
-  
+
   return result
 }
 

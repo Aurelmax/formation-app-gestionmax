@@ -4,7 +4,7 @@ import { rendezVousServiceShared } from '@/lib/rendez-vous-service-shared'
 export async function GET(request: NextRequest) {
   try {
     console.log('🔍 API rendez-vous appelée')
-    
+
     const { searchParams } = new URL(request.url)
     const filters = {
       statut: searchParams.get('statut') || undefined,
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     console.log('📋 Filtres:', filters)
 
     const result = await rendezVousServiceShared.getRendezVous(filters)
-    
+
     console.log('✅ Rendez-vous:', result.rendezVous)
 
     return NextResponse.json({
@@ -41,12 +41,12 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     console.log('🔍 API création rendez-vous appelée')
-    
+
     const body = await request.json()
     console.log('📋 Données reçues:', body)
 
     const nouveauRendezVous = await rendezVousServiceShared.createRendezVous(body)
-    
+
     console.log('✅ Rendez-vous créé:', nouveauRendezVous)
 
     return NextResponse.json({

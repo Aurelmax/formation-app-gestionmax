@@ -2,7 +2,7 @@
 
 /**
  * Script de synchronisation des types Payload
- * 
+ *
  * Ce script :
  * 1. Lit la configuration Payload
  * 2. Génère les types TypeScript correspondants
@@ -115,10 +115,12 @@ class PayloadTypeGenerator {
    * Génère le type TypeScript pour un objet
    */
   private generateObjectType(fields: PayloadField[]): string {
-    const fieldTypes = fields.map(field => {
-      const type = this.generateFieldType(field)
-      return `  ${field.name}: ${type}`
-    }).join('\n')
+    const fieldTypes = fields
+      .map(field => {
+        const type = this.generateFieldType(field)
+        return `  ${field.name}: ${type}`
+      })
+      .join('\n')
 
     return `{\n${fieldTypes}\n}`
   }
@@ -128,16 +130,12 @@ class PayloadTypeGenerator {
    */
   private generateCollectionType(collection: PayloadCollection): string {
     const { slug, fields } = collection
-    
+
     // Convertir le slug en nom de type (PascalCase)
     const typeName = this.slugToPascalCase(slug)
-    
+
     // Ajouter les champs de base Payload
-    const baseFields = [
-      '  id: string',
-      '  createdAt: string',
-      '  updatedAt: string'
-    ]
+    const baseFields = ['  id: string', '  createdAt: string', '  updatedAt: string']
 
     // Générer les types pour les champs de la collection
     const collectionFields = fields.map(field => {
@@ -187,7 +185,7 @@ import { Timestamped } from './common'
    */
   async saveTypes(outputPath: string): Promise<void> {
     const types = this.generateTypes()
-    
+
     // Créer le répertoire s'il n'existe pas
     const dir = path.dirname(outputPath)
     if (!fs.existsSync(dir)) {
@@ -196,7 +194,7 @@ import { Timestamped } from './common'
 
     // Sauvegarder le fichier
     fs.writeFileSync(outputPath, types, 'utf8')
-    
+
     console.log(`✅ Types générés et sauvegardés dans: ${outputPath}`)
   }
 
@@ -205,7 +203,7 @@ import { Timestamped } from './common'
    */
   async checkConsistency(existingTypesPath: string): Promise<boolean> {
     if (!fs.existsSync(existingTypesPath)) {
-      console.log('⚠️ Fichier de types existant non trouvé, création d\'un nouveau fichier')
+      console.log("⚠️ Fichier de types existant non trouvé, création d'un nouveau fichier")
       return false
     }
 
@@ -214,7 +212,7 @@ import { Timestamped } from './common'
 
     // Comparaison simple (pourrait être améliorée)
     const isConsistent = existingContent.includes('Généré le:')
-    
+
     if (!isConsistent) {
       console.log('⚠️ Types existants ne semblent pas être générés automatiquement')
     }
@@ -232,7 +230,7 @@ async function main() {
   try {
     // Charger la configuration Payload
     const configPath = path.join(process.cwd(), 'src', 'payload.config.ts')
-    
+
     if (!fs.existsSync(configPath)) {
       throw new Error(`Configuration Payload non trouvée: ${configPath}`)
     }
@@ -247,50 +245,50 @@ async function main() {
             { name: 'name', type: 'text', required: true },
             { name: 'firstName', type: 'text' },
             { name: 'lastName', type: 'text' },
-            { 
-              name: 'role', 
-              type: 'select', 
+            {
+              name: 'role',
+              type: 'select',
               required: true,
               options: [
                 { label: 'Super Admin', value: 'superAdmin' },
                 { label: 'Admin', value: 'admin' },
                 { label: 'Formateur', value: 'formateur' },
                 { label: 'Gestionnaire', value: 'gestionnaire' },
-                { label: 'Apprenant', value: 'apprenant' }
-              ]
+                { label: 'Apprenant', value: 'apprenant' },
+              ],
             },
-            { 
-              name: 'status', 
-              type: 'select', 
+            {
+              name: 'status',
+              type: 'select',
               required: true,
               options: [
                 { label: 'Actif', value: 'active' },
                 { label: 'Inactif', value: 'inactive' },
-                { label: 'En attente', value: 'pending' }
-              ]
+                { label: 'En attente', value: 'pending' },
+              ],
             },
             { name: 'email', type: 'email', required: true },
-            { name: 'password', type: 'text', required: true }
-          ]
+            { name: 'password', type: 'text', required: true },
+          ],
         },
         {
           slug: 'formation-programmes',
           fields: [
             { name: 'title', type: 'text', required: true },
             { name: 'codeFormation', type: 'text', required: true },
-            { 
-              name: 'statut', 
-              type: 'select', 
+            {
+              name: 'statut',
+              type: 'select',
               required: true,
               options: [
                 { label: 'En cours', value: 'EN_COURS' },
                 { label: 'Finalisée', value: 'FINALISEE' },
                 { label: 'Livrée', value: 'LIVREE' },
-                { label: 'Archivée', value: 'ARCHIVE' }
-              ]
+                { label: 'Archivée', value: 'ARCHIVE' },
+              ],
             },
-            { name: 'objectifs', type: 'richText' }
-          ]
+            { name: 'objectifs', type: 'richText' },
+          ],
         },
         {
           slug: 'contacts',
@@ -298,57 +296,57 @@ async function main() {
             { name: 'nom', type: 'text', required: true },
             { name: 'email', type: 'email', required: true },
             { name: 'telephone', type: 'text' },
-            { 
-              name: 'type', 
-              type: 'select', 
+            {
+              name: 'type',
+              type: 'select',
               required: true,
               options: [
                 { label: 'Question générale', value: 'question' },
                 { label: 'Réclamation', value: 'reclamation' },
                 { label: 'Demande de formation', value: 'formation' },
-                { label: 'Demande de devis', value: 'devis' }
-              ]
+                { label: 'Demande de devis', value: 'devis' },
+              ],
             },
             { name: 'sujet', type: 'text', required: true },
             { name: 'message', type: 'textarea', required: true },
-            { 
-              name: 'statut', 
-              type: 'select', 
+            {
+              name: 'statut',
+              type: 'select',
               required: true,
               options: [
                 { label: 'Nouveau', value: 'nouveau' },
                 { label: 'En cours', value: 'enCours' },
                 { label: 'Traité', value: 'traite' },
-                { label: 'Fermé', value: 'ferme' }
-              ]
+                { label: 'Fermé', value: 'ferme' },
+              ],
             },
-            { 
-              name: 'priorite', 
-              type: 'select', 
+            {
+              name: 'priorite',
+              type: 'select',
               required: true,
               options: [
                 { label: 'Basse', value: 'basse' },
                 { label: 'Normale', value: 'normale' },
                 { label: 'Haute', value: 'haute' },
-                { label: 'Urgente', value: 'urgente' }
-              ]
+                { label: 'Urgente', value: 'urgente' },
+              ],
             },
             { name: 'dateReception', type: 'date', required: true },
             { name: 'dateReponse', type: 'date' },
-            { name: 'reponse', type: 'textarea' }
-          ]
-        }
+            { name: 'reponse', type: 'textarea' },
+          ],
+        },
         // ... autres collections
-      ]
+      ],
     }
 
     // Générer les types
     const generator = new PayloadTypeGenerator(payloadConfig)
     const outputPath = path.join(process.cwd(), 'src', 'types', 'payload-generated.ts')
-    
+
     // Vérifier la cohérence
     const isConsistent = await generator.checkConsistency(outputPath)
-    
+
     if (!isConsistent) {
       console.log('🔄 Mise à jour des types...')
     }
@@ -357,8 +355,7 @@ async function main() {
     await generator.saveTypes(outputPath)
 
     console.log('✅ Synchronisation terminée!')
-    console.log('💡 N\'oubliez pas de mettre à jour les imports dans vos composants')
-
+    console.log("💡 N'oubliez pas de mettre à jour les imports dans vos composants")
   } catch (error) {
     console.error('❌ Erreur lors de la synchronisation:', error)
     process.exit(1)

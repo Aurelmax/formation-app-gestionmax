@@ -4,12 +4,12 @@ import { getPayloadClient } from '@/payload'
 export async function GET(request: NextRequest) {
   try {
     console.log('🔍 API rendez-vous Payload appelée')
-    
+
     const payload = await getPayloadClient()
     const { searchParams } = new URL(request.url)
-    
+
     const filters: any = {}
-    
+
     // Construire les filtres Payload
     if (searchParams.get('statut')) {
       filters.statut = { equals: searchParams.get('statut') }
@@ -45,7 +45,8 @@ export async function GET(request: NextRequest) {
     const rendezVous = result.docs.map(doc => ({
       id: doc.id,
       programmeId: typeof doc.programme === 'string' ? doc.programme : doc.programme?.id,
-      programmeTitre: typeof doc.programme === 'object' ? doc.programme?.titre : 'Programme non trouvé',
+      programmeTitre:
+        typeof doc.programme === 'object' ? doc.programme?.titre : 'Programme non trouvé',
       client: doc.client,
       type: doc.type,
       statut: doc.statut,
@@ -70,7 +71,9 @@ export async function GET(request: NextRequest) {
       annules: result.docs.filter((rdv: any) => rdv.statut === 'annule').length,
       termines: result.docs.filter((rdv: any) => rdv.statut === 'termine').length,
       reportes: result.docs.filter((rdv: any) => rdv.statut === 'reporte').length,
-      aujourdhui: result.docs.filter((rdv: any) => rdv.date === new Date().toISOString().split('T')[0]).length,
+      aujourdhui: result.docs.filter(
+        (rdv: any) => rdv.date === new Date().toISOString().split('T')[0]
+      ).length,
       cetteSemaine: 0, // À calculer
       ceMois: 0, // À calculer
     }
@@ -99,10 +102,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     console.log('🔍 API création rendez-vous Payload appelée')
-    
+
     const payload = await getPayloadClient()
     const body = await request.json()
-    
+
     console.log('📋 Données reçues:', body)
 
     // Transformer les données vers le format Payload
@@ -133,8 +136,14 @@ export async function POST(request: NextRequest) {
     // Transformer la réponse vers le format attendu
     const response = {
       id: nouveauRendezVous.id,
-      programmeId: typeof nouveauRendezVous.programme === 'string' ? nouveauRendezVous.programme : nouveauRendezVous.programme?.id,
-      programmeTitre: typeof nouveauRendezVous.programme === 'object' ? nouveauRendezVous.programme?.titre : 'Programme non trouvé',
+      programmeId:
+        typeof nouveauRendezVous.programme === 'string'
+          ? nouveauRendezVous.programme
+          : nouveauRendezVous.programme?.id,
+      programmeTitre:
+        typeof nouveauRendezVous.programme === 'object'
+          ? nouveauRendezVous.programme?.titre
+          : 'Programme non trouvé',
       client: nouveauRendezVous.client,
       type: nouveauRendezVous.type,
       statut: nouveauRendezVous.statut,
@@ -151,10 +160,13 @@ export async function POST(request: NextRequest) {
       createdBy: nouveauRendezVous.createdBy,
     }
 
-    return NextResponse.json({
-      success: true,
-      data: response,
-    }, { status: 201 })
+    return NextResponse.json(
+      {
+        success: true,
+        data: response,
+      },
+      { status: 201 }
+    )
   } catch (error: any) {
     console.error('❌ Erreur création rendez-vous Payload:', error)
     return NextResponse.json(

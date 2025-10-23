@@ -5,6 +5,7 @@
 L'erreur 500 était causée par l'utilisation du driver MongoDB directement dans les composants React côté client. Le driver MongoDB nécessite des modules Node.js comme `net` qui ne sont pas disponibles dans le navigateur.
 
 ### Erreur spécifique :
+
 ```
 Module not found: Can't resolve 'net'
 ./node_modules/mongodb/lib/client-side-encryption/auto_encrypter.js (6:1)
@@ -13,21 +14,25 @@ Module not found: Can't resolve 'net'
 ## Solution implémentée
 
 ### 1. Séparation client/serveur
+
 - **Côté client** : Utilisation uniquement des services mock
 - **Côté serveur** : Utilisation des services MongoDB via les routes API
 
 ### 2. Modifications apportées
 
 #### `src/hooks/useApiService.ts`
+
 - Suppression des imports MongoDB côté client
 - Retour aux services mock uniquement côté client
 - Les vraies données MongoDB sont accessibles via les routes API
 
 #### `src/lib/client-api-service.ts` (nouveau)
+
 - Service côté client pour récupérer les données via les routes API
 - Méthodes pour programmes, apprenants, utilisateurs, rendez-vous, blog, statistiques
 
 #### Routes API créées :
+
 - `src/app/api/programmes/route.ts`
 - `src/app/api/programmes/[id]/route.ts`
 - `src/app/api/apprenants/route.ts`
@@ -37,12 +42,15 @@ Module not found: Can't resolve 'net'
 - `src/app/api/stats/route.ts`
 
 #### `src/lib/api-route-service.ts`
+
 - Ajout des méthodes manquantes : `getProgramme`, `getApprenant`, `getUserByEmail`
 
 #### `src/lib/mock-service.ts`
+
 - Ajout de la méthode `getUserByEmail`
 
 #### `src/lib/mongodb-service.ts`
+
 - Ajout de la méthode `getUserByEmail`
 
 ## Architecture finale

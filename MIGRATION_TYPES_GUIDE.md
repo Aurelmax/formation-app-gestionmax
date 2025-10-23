@@ -5,10 +5,12 @@ Ce guide explique comment migrer progressivement votre codebase pour utiliser le
 ## 📋 Vue d'ensemble
 
 ### Problème résolu
+
 - **Avant** : Types manuels dispersés, incohérences entre frontend/backend, violations de camelCase
 - **Après** : Types centralisés, synchronisation automatique, mapping cohérent
 
 ### Architecture
+
 ```
 payload.config.ts → payload-generated.ts → mappers → composants frontend
 ```
@@ -16,6 +18,7 @@ payload.config.ts → payload-generated.ts → mappers → composants frontend
 ## 🔧 Installation et Configuration
 
 ### 1. Scripts disponibles
+
 ```bash
 # Générer les types Payload (si le problème undici est résolu)
 npm run generate:types
@@ -28,6 +31,7 @@ npm run type-check
 ```
 
 ### 2. Fichiers créés
+
 - `src/types/payload-generated.ts` - Types générés depuis Payload
 - `src/lib/payload-mappers.ts` - Fonctions de mapping
 - `scripts/sync-payload-types.ts` - Script de synchronisation
@@ -37,6 +41,7 @@ npm run type-check
 ### Étape 1 : Importer les nouveaux types
 
 **Avant :**
+
 ```typescript
 // types/payload.ts (ancien)
 export interface User {
@@ -46,6 +51,7 @@ export interface User {
 ```
 
 **Après :**
+
 ```typescript
 // Utiliser les types générés
 import type { User, UserRole } from '@/types/payload-generated'
@@ -55,6 +61,7 @@ import { mapUserToFrontend, mapUserToPayload } from '@/lib/payload-mappers'
 ### Étape 2 : Mettre à jour les interfaces
 
 **Avant :**
+
 ```typescript
 interface ContactMessage {
   statut: 'nouveau' | 'en_cours' | 'traite' | 'ferme'
@@ -63,6 +70,7 @@ interface ContactMessage {
 ```
 
 **Après :**
+
 ```typescript
 import type { Contact, ContactStatut } from '@/types/payload-generated'
 
@@ -76,6 +84,7 @@ const contact: Contact = {
 ### Étape 3 : Utiliser les mappers
 
 **Avant :**
+
 ```typescript
 // Données reçues de l'API Payload (snake_case)
 const payloadData = {
@@ -93,6 +102,7 @@ const frontendData = {
 ```
 
 **Après :**
+
 ```typescript
 import { mapFormationToFrontend } from '@/lib/payload-mappers'
 
@@ -103,6 +113,7 @@ const frontendData = mapFormationToFrontend(payloadData)
 ### Étape 4 : Mettre à jour les composants
 
 **Avant :**
+
 ```typescript
 // ContactManagement.tsx
 const statutLabels = {
@@ -114,6 +125,7 @@ const statutLabels = {
 ```
 
 **Après :**
+
 ```typescript
 // ContactManagement.tsx
 import type { ContactStatut } from '@/types/payload-generated'
@@ -129,6 +141,7 @@ const statutLabels: Record<ContactStatut, string> = {
 ## 🔄 Workflow de Développement
 
 ### 1. Modification du schéma Payload
+
 ```bash
 # 1. Modifier payload.config.ts
 # 2. Synchroniser les types
@@ -142,6 +155,7 @@ npm run type-check
 ```
 
 ### 2. Ajout d'une nouvelle collection
+
 ```typescript
 // payload.config.ts
 {
@@ -164,6 +178,7 @@ npm run sync:types
 ## 🎯 Bonnes Pratiques
 
 ### 1. Utilisation des types
+
 ```typescript
 // ✅ Bon : Utiliser les types générés
 import type { User, UserRole } from '@/types/payload-generated'
@@ -175,17 +190,19 @@ interface User {
 ```
 
 ### 2. Mapping des données
+
 ```typescript
 // ✅ Bon : Utiliser les mappers
 const user = mapUserToFrontend(payloadUser)
 
 // ❌ Éviter : Conversion manuelle
 const user = {
-  role: payloadUser.role === 'super_admin' ? 'superAdmin' : payloadUser.role
+  role: payloadUser.role === 'super_admin' ? 'superAdmin' : payloadUser.role,
 }
 ```
 
 ### 3. Validation des données
+
 ```typescript
 import { validateFrontendObject, REQUIRED_USER_FIELDS } from '@/lib/payload-mappers'
 
@@ -198,6 +215,7 @@ if (!validateFrontendObject(userData, REQUIRED_USER_FIELDS)) {
 ## 🐛 Résolution des Problèmes
 
 ### Problème : Types non synchronisés
+
 ```bash
 # Solution : Forcer la synchronisation
 npm run sync:types
@@ -205,12 +223,14 @@ npm run type-check
 ```
 
 ### Problème : Erreurs de mapping
+
 ```typescript
 // Vérifier les mappings dans payload-mappers.ts
 // Ajouter de nouveaux mappings si nécessaire
 ```
 
 ### Problème : Violations ESLint
+
 ```typescript
 // Les patterns snake_case sont ignorés dans eslint.config.mjs
 // Si de nouvelles violations apparaissent, les ajouter au ignorePattern
@@ -219,12 +239,14 @@ npm run type-check
 ## 📊 État de la Migration
 
 ### ✅ Fichiers migrés
+
 - [x] `src/types/payload-generated.ts` - Types générés
 - [x] `src/lib/payload-mappers.ts` - Mappers
 - [x] `src/components/admin/ContactManagement.tsx` - Exemple de migration
 - [x] `eslint.config.mjs` - Configuration mise à jour
 
 ### 🔄 Fichiers en cours de migration
+
 - [ ] `src/types/rendez-vous.ts`
 - [ ] `src/types/payload.ts`
 - [ ] `src/components/admin/RendezVousManagement.tsx`
@@ -232,6 +254,7 @@ npm run type-check
 - [ ] `src/lib/rendez-vous-api-service.ts`
 
 ### 📋 Fichiers à migrer
+
 - [ ] Tous les composants admin
 - [ ] Tous les services API
 - [ ] Tous les types personnalisés
