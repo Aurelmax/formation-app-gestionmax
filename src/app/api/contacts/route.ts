@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import { getPayload, Where } from 'payload'
 import config from '@/payload.config'
 
 /**
@@ -20,22 +20,22 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search')
 
     // Construire la requête avec filtres
-    const where: Record<string, unknown> = {}
+    const where: Where = {}
 
     if (statut) {
-      where.statut = { equals: statut }
+      where['statut'] = { equals: statut }
     }
 
     if (type) {
-      where.type = { equals: type }
+      where['type'] = { equals: type }
     }
 
     if (priorite) {
-      where.priorite = { equals: priorite }
+      where['priorite'] = { equals: priorite }
     }
 
     if (search) {
-      where.or = [
+      where['or'] = [
         { nom: { contains: search } },
         { email: { contains: search } },
         { sujet: { contains: search } },
@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
         error: 'Erreur lors de la récupération des contacts',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 },
+      { status: 500 }
     )
   }
 }
@@ -84,14 +84,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
 
     // Validation basique
-    if (!body.nom || !body.email || !body.type || !body.sujet || !body.message) {
+    if (!body.nom || !body.email || !body['type'] || !body.sujet || !body.message) {
       return NextResponse.json(
         {
           success: false,
           error: 'Champs requis manquants',
           required: ['nom', 'email', 'type', 'sujet', 'message'],
         },
-        { status: 400 },
+        { status: 400 }
       )
     }
 
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
           success: false,
           error: "Format d'email invalide",
         },
-        { status: 400 },
+        { status: 400 }
       )
     }
 
@@ -114,11 +114,11 @@ export async function POST(request: NextRequest) {
         nom: body.nom,
         email: body.email,
         telephone: body.telephone || '',
-        type: body.type,
+        type: body['type'],
         sujet: body.sujet,
         message: body.message,
-        statut: body.statut || 'nouveau',
-        priorite: body.priorite || 'normale',
+        statut: body['statut'] || 'nouveau',
+        priorite: body['priorite'] || 'normale',
       },
     })
 
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
         data: contact,
         message: 'Contact créé avec succès',
       },
-      { status: 201 },
+      { status: 201 }
     )
   } catch (error) {
     return NextResponse.json(
@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
         error: 'Erreur lors de la création du contact',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 },
+      { status: 500 }
     )
   }
 }

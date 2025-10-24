@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ApiRouteService } from '@/lib/api-route-service'
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
     const { slug } = await params
 

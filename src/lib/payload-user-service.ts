@@ -14,12 +14,12 @@ import {
   ROLE_PERMISSIONS,
   hasPermission,
   isUserActive,
-} from '@/types/users'
+} from '@/types/common'
 import { ID } from '@/types/common'
 
 // ✅ Utiliser les routes natives Payload
-// Les routes API Payload sont sous /payload-cms/api car admin route = '/payload-cms'
-const API_BASE_URL = '/payload-cms/api'
+// Les routes API Payload sont sous /api car admin route = '/admin'
+const API_BASE_URL = '/api'
 
 class PayloadUserService {
   // Authentification via Payload (route native)
@@ -151,11 +151,21 @@ class PayloadUserService {
       // Vérifier si la réponse est HTML (non authentifié)
       const contentType = response.headers.get('content-type')
       if (contentType && contentType.includes('text/html')) {
-        throw new Error('Vous devez être connecté pour créer un utilisateur. Veuillez vous connecter à l\'admin.')
+        throw new Error(
+          "Vous devez être connecté pour créer un utilisateur. Veuillez vous connecter à l'admin."
+        )
       }
 
       const error = await response.json().catch(() => ({ message: 'Erreur de création' }))
-      throw new Error(error.message || 'Erreur lors de la création de l\'utilisateur')
+      console.error('Erreur API Payload:', error)
+
+      // Extraire les messages d'erreur de validation Payload
+      if (error.errors && Array.isArray(error.errors)) {
+        const errorMessages = error.errors.map((e: any) => e.message).join(', ')
+        throw new Error(`Erreur de validation: ${errorMessages}`)
+      }
+
+      throw new Error(error.message || "Erreur lors de la création de l'utilisateur")
     }
 
     const data = await response.json()
@@ -175,7 +185,7 @@ class PayloadUserService {
     })
 
     if (!response.ok) {
-      throw new Error('Erreur lors de la mise à jour de l\'utilisateur')
+      throw new Error("Erreur lors de la mise à jour de l'utilisateur")
     }
 
     const data = await response.json()
@@ -229,12 +239,9 @@ class PayloadUserService {
 
   // Obtenir les utilisateurs par rôle
   async getUsersByRole(role: UserRole): Promise<User[]> {
-    const response = await fetch(
-      `${API_BASE_URL}/users?where[role][equals]=${role}&limit=1000`,
-      {
-        headers: this.getAuthHeaders(),
-      }
-    )
+    const response = await fetch(`${API_BASE_URL}/users?where[role][equals]=${role}&limit=1000`, {
+      headers: this.getAuthHeaders(),
+    })
 
     if (!response.ok) {
       throw new Error('Erreur lors de la récupération des utilisateurs')
@@ -256,11 +263,12 @@ class PayloadUserService {
     const stats = {
       total: users.length,
       byRole: {
-        super_admin: 0,
-        admin: 0,
-        formateur: 0,
-        gestionnaire: 0,
-        apprenant: 0,
+        SUPER_ADMIN: 0,
+        ADMIN: 0,
+        FORMATEUR: 0,
+        GESTIONNAIRE: 0,
+        APPRENANT: 0,
+        BENEFICIAIRE: 0,
       } as Record<UserRole, number>,
       byStatus: {
         active: 0,
@@ -294,7 +302,7 @@ class PayloadUserService {
     }
 
     const defaultPermissions = ROLE_PERMISSIONS[user.role] || []
-    return this.updateUser(userId, { permissions: defaultPermissions })
+    return this.updateUser(userId, { id: userId, permissions: defaultPermissions })
   }
 
   // Utilitaires privés

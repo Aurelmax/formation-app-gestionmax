@@ -122,9 +122,8 @@ export function ProgrammeFormComplet({
     setFormData(prev => ({
       ...prev,
       competences: prev.competences.filter(c => {
-        const compText = typeof c === 'object' && (c as any)?.competence
-          ? (c as any).competence
-          : String(c)
+        const compText =
+          typeof c === 'object' && (c as any)?.competence ? (c as any).competence : String(c)
         return compText !== competence
       }),
     }))
@@ -501,9 +500,8 @@ export function ProgrammeFormComplet({
               {formData.competences.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {formData.competences.map((comp: any, index) => {
-                    const competenceText = typeof comp === 'object' && comp?.competence
-                      ? comp.competence
-                      : String(comp)
+                    const competenceText =
+                      typeof comp === 'object' && comp?.competence ? comp.competence : String(comp)
                     return (
                       <Badge
                         key={`${competenceText}-${index}`}

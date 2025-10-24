@@ -276,5 +276,5 @@ class PayloadApiService {
 // Instance singleton
 export const payloadApi = PayloadApiService.getInstance()
 
-// Export des types
-export type { PayloadApiOptions, PayloadApiResponse }
+// Note: Les types PayloadApiOptions et PayloadApiResponse sont déjà exportés
+// individuellement avec "export interface" au début du fichier

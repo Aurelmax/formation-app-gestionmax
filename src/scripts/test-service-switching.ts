@@ -56,28 +56,28 @@ const testServiceSwitching = async () => {
     console.log('\n✅ Vérification de la cohérence...')
     if (apiProgrammes.length > 0) {
       const programme = apiProgrammes[0]
-      console.log(`   📋 Premier programme API: ${programme.titre}`)
-      console.log(`   💰 Prix: ${programme.prix}€`)
-      console.log(`   📊 Statut: ${programme.statut}`)
+      console.log(`   📋 Premier programme API: ${programme?.titre ?? 'N/A'}`)
+      console.log(`   💰 Prix: ${programme?.prix ?? 0}€`)
+      console.log(`   📊 Statut: ${programme?.statut ?? 'N/A'}`)
     }
 
     if (apiApprenants.length > 0) {
       const apprenant = apiApprenants[0]
-      console.log(`   👤 Premier apprenant API: ${apprenant.nom} ${apprenant.prenom}`)
-      console.log(`   📧 Email: ${apprenant.email}`)
-      console.log(`   📊 Progression: ${apprenant.progression}%`)
+      console.log(`   👤 Premier apprenant API: ${apprenant?.nom ?? ''} ${apprenant?.prenom ?? ''}`)
+      console.log(`   📧 Email: ${apprenant?.email ?? 'N/A'}`)
+      console.log(`   📊 Progression: ${apprenant?.progression ?? 0}%`)
     }
 
     if (apiUsers.length > 0) {
       const user = apiUsers[0]
-      console.log(`   👤 Premier utilisateur API: ${user.name}`)
-      console.log(`   📧 Email: ${user.email}`)
-      console.log(`   🔑 Rôle: ${user.role}`)
+      console.log(`   👤 Premier utilisateur API: ${user?.name ?? 'N/A'}`)
+      console.log(`   📧 Email: ${user?.email ?? 'N/A'}`)
+      console.log(`   🔑 Rôle: ${user?.role ?? 'N/A'}`)
     }
 
     // Test 5: Test du basculement conditionnel
     console.log('\n🔄 Test du basculement conditionnel...')
-    const useMockData = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true'
+    const useMockData = process.env['NEXT_PUBLIC_USE_MOCK_DATA'] === 'true'
     console.log(`   🎭 Mode mock activé: ${useMockData}`)
 
     if (useMockData) {

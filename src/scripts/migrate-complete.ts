@@ -47,7 +47,7 @@ class CompleteMigrationManager {
         required: true,
         skipIf: () => {
           // Vérifier si des données existent déjà
-          return process.env.NEXT_PUBLIC_USE_PAYLOAD === 'true'
+          return process.env['NEXT_PUBLIC_USE_PAYLOAD'] === 'true'
         },
       },
       {
@@ -141,13 +141,13 @@ class CompleteMigrationManager {
     }
 
     // Vérifier les variables d'environnement
-    if (!process.env.MONGODB_URI) {
+    if (!process.env['MONGODB_URI']) {
       this.log('❌ MONGODB_URI non défini dans .env.local', 'error')
       return false
     }
     this.log('✅ MONGODB_URI défini')
 
-    if (!process.env.PAYLOAD_SECRET) {
+    if (!process.env['PAYLOAD_SECRET']) {
       this.log('❌ PAYLOAD_SECRET non défini dans .env.local', 'error')
       return false
     }

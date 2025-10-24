@@ -17,9 +17,9 @@ const testUnifiedService = async () => {
 
     if (programmes.length > 0) {
       const programme = programmes[0]
-      console.log(`   📋 Premier programme: ${programme.titre}`)
-      console.log(`   💰 Prix: ${programme.prix}€`)
-      console.log(`   📊 Statut: ${programme.statut}`)
+      console.log(`   📋 Premier programme: ${programme?.titre ?? 'N/A'}`)
+      console.log(`   💰 Prix: ${programme?.prix ?? 0}€`)
+      console.log(`   📊 Statut: ${programme?.statut ?? 'N/A'}`)
     }
 
     // Test 2: Apprenants
@@ -29,9 +29,9 @@ const testUnifiedService = async () => {
 
     if (apprenants.length > 0) {
       const apprenant = apprenants[0]
-      console.log(`   📋 Premier apprenant: ${apprenant.nom} ${apprenant.prenom}`)
-      console.log(`   📧 Email: ${apprenant.email}`)
-      console.log(`   📊 Progression: ${apprenant.progression}%`)
+      console.log(`   📋 Premier apprenant: ${apprenant?.nom ?? ''} ${apprenant?.prenom ?? ''}`)
+      console.log(`   📧 Email: ${apprenant?.email ?? 'N/A'}`)
+      console.log(`   📊 Progression: ${apprenant?.progression ?? 0}%`)
     }
 
     // Test 3: Utilisateurs
@@ -41,9 +41,9 @@ const testUnifiedService = async () => {
 
     if (users.length > 0) {
       const user = users[0]
-      console.log(`   📋 Premier utilisateur: ${user.name}`)
-      console.log(`   📧 Email: ${user.email}`)
-      console.log(`   🔑 Rôle: ${user.role}`)
+      console.log(`   📋 Premier utilisateur: ${user?.name ?? 'N/A'}`)
+      console.log(`   📧 Email: ${user?.email ?? 'N/A'}`)
+      console.log(`   🔑 Rôle: ${user?.role ?? 'N/A'}`)
     }
 
     // Test 4: Utilisateur actuel

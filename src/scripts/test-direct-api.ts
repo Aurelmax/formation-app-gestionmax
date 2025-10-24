@@ -31,9 +31,9 @@ const testDirectApi = async () => {
 
     if (programmes.length > 0) {
       const programme = programmes[0]
-      console.log(`   📋 Premier programme: ${programme.titre}`)
-      console.log(`   📊 Statut: ${programme.statut}`)
-      console.log(`   💰 Prix: ${programme.prix}€`)
+      console.log(`   📋 Premier programme: ${programme?.['titre'] ?? 'N/A'}`)
+      console.log(`   📊 Statut: ${programme?.['statut'] ?? 'N/A'}`)
+      console.log(`   💰 Prix: ${programme?.['prix'] ?? 0}€`)
     }
 
     // Test 2: Apprenants
@@ -44,9 +44,9 @@ const testDirectApi = async () => {
 
     if (apprenants.length > 0) {
       const apprenant = apprenants[0]
-      console.log(`   📋 Premier apprenant: ${apprenant.nom} ${apprenant.prenom}`)
-      console.log(`   📧 Email: ${apprenant.email}`)
-      console.log(`   📊 Progression: ${apprenant.progression}%`)
+      console.log(`   📋 Premier apprenant: ${apprenant?.['nom'] ?? ''} ${apprenant?.['prenom'] ?? ''}`)
+      console.log(`   📧 Email: ${apprenant?.['email'] ?? 'N/A'}`)
+      console.log(`   📊 Progression: ${apprenant?.['progression'] ?? 0}%`)
     }
 
     // Test 3: Utilisateurs
@@ -57,9 +57,9 @@ const testDirectApi = async () => {
 
     if (users.length > 0) {
       const user = users[0]
-      console.log(`   📋 Premier utilisateur: ${user.name}`)
-      console.log(`   📧 Email: ${user.email}`)
-      console.log(`   🔑 Rôle: ${user.role}`)
+      console.log(`   📋 Premier utilisateur: ${user?.['name'] ?? 'N/A'}`)
+      console.log(`   📧 Email: ${user?.['email'] ?? 'N/A'}`)
+      console.log(`   🔑 Rôle: ${user?.['role'] ?? 'N/A'}`)
     }
 
     // Test 4: Rendez-vous
@@ -70,9 +70,9 @@ const testDirectApi = async () => {
 
     if (rdvs.length > 0) {
       const rdv = rdvs[0]
-      console.log(`   📋 Premier RDV: ${rdv.client.nom} ${rdv.client.prenom}`)
-      console.log(`   📅 Date: ${rdv.date}`)
-      console.log(`   🕐 Heure: ${rdv.heure}`)
+      console.log(`   📋 Premier RDV: ${rdv?.['client']?.['nom'] ?? ''} ${rdv?.['client']?.['prenom'] ?? ''}`)
+      console.log(`   📅 Date: ${rdv?.['date'] ?? 'N/A'}`)
+      console.log(`   🕐 Heure: ${rdv?.['heure'] ?? 'N/A'}`)
     }
 
     // Test 5: Articles
@@ -83,9 +83,9 @@ const testDirectApi = async () => {
 
     if (articles.length > 0) {
       const article = articles[0]
-      console.log(`   📋 Premier article: ${article.titre}`)
-      console.log(`   📊 Statut: ${article.statut}`)
-      console.log(`   👀 Vues: ${article.vue || 0}`)
+      console.log(`   📋 Premier article: ${article?.['titre'] ?? 'N/A'}`)
+      console.log(`   📊 Statut: ${article?.['statut'] ?? 'N/A'}`)
+      console.log(`   👀 Vues: ${article?.['vue'] ?? 0}`)
     }
 
     // Test 6: Catégories
@@ -96,7 +96,7 @@ const testDirectApi = async () => {
 
     if (categories.length > 0) {
       const categorie = categories[0]
-      console.log(`   📋 Première catégorie: ${categorie.nom}`)
+      console.log(`   📋 Première catégorie: ${categorie?.['nom'] ?? 'N/A'}`)
     }
 
     // Test 7: Tags
@@ -107,7 +107,7 @@ const testDirectApi = async () => {
 
     if (tags.length > 0) {
       const tag = tags[0]
-      console.log(`   📋 Premier tag: ${tag.nom}`)
+      console.log(`   📋 Premier tag: ${tag?.['nom'] ?? 'N/A'}`)
     }
 
     // Test 8: Contacts
@@ -118,9 +118,9 @@ const testDirectApi = async () => {
 
     if (contacts.length > 0) {
       const contact = contacts[0]
-      console.log(`   📋 Premier contact: ${contact.nom}`)
-      console.log(`   📧 Email: ${contact.email}`)
-      console.log(`   📊 Type: ${contact.type}`)
+      console.log(`   📋 Premier contact: ${contact?.['nom'] ?? 'N/A'}`)
+      console.log(`   📧 Email: ${contact?.['email'] ?? 'N/A'}`)
+      console.log(`   📊 Type: ${contact?.['type'] ?? 'N/A'}`)
     }
 
     // Test 9: Statistiques globales

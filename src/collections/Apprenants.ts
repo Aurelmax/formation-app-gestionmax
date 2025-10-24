@@ -104,7 +104,7 @@ export const Apprenants: CollectionConfig = {
       required: false, // Optionnel pour permettre la modification sans gérer la structure
       hasMany: false,
       admin: {
-        description: 'Entreprise ou structure rattachée à l\'apprenant',
+        description: "Entreprise ou structure rattachée à l'apprenant",
       },
     },
 
@@ -117,7 +117,7 @@ export const Apprenants: CollectionConfig = {
           label: 'Programme de formation',
           type: 'text',
           admin: {
-            description: 'Programme auquel l\'apprenant est inscrit',
+            description: "Programme auquel l'apprenant est inscrit",
             width: '50%',
           },
         },

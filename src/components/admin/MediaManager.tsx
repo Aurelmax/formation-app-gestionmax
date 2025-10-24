@@ -4,20 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import {
-  Upload,
-  Image,
-  FileText,
-  Trash2,
-  Download,
-  Search,
-  Plus,
-  X,
-  Eye,
-  Copy,
-  Check,
-} from 'lucide-react'
+import { Upload, Image, FileText, Trash2, Search, Eye, Copy, Check } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface MediaFile {
@@ -78,6 +65,7 @@ export function MediaManager({
 
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i]
+        if (!file) continue
 
         // Vérifier la taille
         if (file.size > maxSize * 1024 * 1024) {

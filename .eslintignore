@@ -2,27 +2,29 @@
 node_modules/
 .next/
 out/
-build/
 
-# MongoDB Playground files
-*.mongodb.js
-playground-*.js
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Generated files
+src/types/payload-generated.ts
+src/types/payload-generated-simple.ts
+src/app/(payload)/admin/importMap.js
 
 # Test files
-test-*.js
-verify-*.js
-migrate-*.js
+coverage/
+.turbo/
 
-# Scripts
-scripts/
-src/scripts/
+# Logs
+*.log
 
-# Public
-public/
+# OS files
+.DS_Store
+Thumbs.db
 
-# Admin Payload
-src/app/admin/payload/real/
-
-# Generated
-*.tsbuildinfo
-next-env.d.ts
+# Environment
+.env
+.env.local
+.env.*.local

@@ -12,7 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 async function updateFormationsPersonnaliseesStatuts() {
   console.log('🔄 Mise à jour des statuts des formations personnalisées...')
 
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env['MONGODB_URI']
   if (!mongoUri) {
     console.error("❌ MONGODB_URI n'est pas défini dans .env.local")
     return
@@ -35,9 +35,9 @@ async function updateFormationsPersonnaliseesStatuts() {
 
     for (const formation of formations) {
       // Mapper les anciens statuts vers les nouveaux
-      let nouveauStatut = formation.statut
+      let nouveauStatut = formation['statut']
 
-      switch (formation.statut) {
+      switch (formation['statut']) {
         case 'PUBLIE':
           // Les formations "publiées" deviennent "finalisées" car elles sont prêtes pour le client
           nouveauStatut = 'FINALISEE'
@@ -57,9 +57,9 @@ async function updateFormationsPersonnaliseesStatuts() {
       }
 
       // Mettre à jour seulement si le statut a changé
-      if (nouveauStatut !== formation.statut) {
+      if (nouveauStatut !== formation['statut']) {
         await collection.updateOne(
-          { _id: formation._id },
+          { _id: formation['_id'] },
           {
             $set: {
               statut: nouveauStatut,
@@ -69,11 +69,11 @@ async function updateFormationsPersonnaliseesStatuts() {
         )
 
         console.log(
-          `✅ Formation mise à jour: ${formation.title} - ${formation.statut} → ${nouveauStatut}`
+          `✅ Formation mise à jour: ${formation['title']} - ${formation['statut']} → ${nouveauStatut}`
         )
         updatedCount++
       } else {
-        console.log(`ℹ️ Formation déjà à jour: ${formation.title} - ${formation.statut}`)
+        console.log(`ℹ️ Formation déjà à jour: ${formation['title']} - ${formation['statut']}`)
       }
     }
 
@@ -88,7 +88,7 @@ async function updateFormationsPersonnaliseesStatuts() {
       .toArray()
 
     statutsCount.forEach(stat => {
-      console.log(`   ${stat._id}: ${stat.count} formation(s)`)
+      console.log(`   ${stat['_id']}: ${stat['count']} formation(s)`)
     })
   } catch (error: any) {
     console.error('❌ Erreur lors de la mise à jour:', error)

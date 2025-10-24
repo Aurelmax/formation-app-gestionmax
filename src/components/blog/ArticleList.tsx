@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Calendar, User, Clock, Eye, Search, Filter, Star, Tag } from 'lucide-react'
+import { Calendar, User, Clock, Eye, Search, Filter, Star } from 'lucide-react'
 import { Article, Categorie, Tag } from '@/types/blog'
 
 interface ArticleListProps {
@@ -234,7 +234,7 @@ export function ArticleList({
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      {formatDate(article.datePublication)}
+                      {article.datePublication ? formatDate(article.datePublication) : 'Non publié'}
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />

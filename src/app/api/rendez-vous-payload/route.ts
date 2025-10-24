@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     console.log('✅ Rendez-vous Payload:', result.docs.length)
 
     // Transformer les données Payload vers le format attendu
-    const rendezVous = result.docs.map(doc => ({
+    const rendezVous = result.docs.map((doc: any) => ({
       id: doc.id,
       programmeId: typeof doc.programme === 'string' ? doc.programme : doc.programme?.id,
       programmeTitre:

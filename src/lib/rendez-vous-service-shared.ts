@@ -147,8 +147,20 @@ class RendezVousServiceShared {
       reportes: this.rendezVous.filter(rdv => rdv.statut === 'reporte').length,
       aujourdhui: this.rendezVous.filter(rdv => rdv.date === new Date().toISOString().split('T')[0])
         .length,
-      cetteSemaine: this.getRendezVousDeLaSemaine().length,
-      ceMois: this.getRendezVousDuMois().length,
+      cetteSemaine: this.rendezVous.filter(rdv => {
+        const today = new Date()
+        const weekStart = new Date(today.setDate(today.getDate() - today.getDay()))
+        const weekEnd = new Date(today.setDate(today.getDate() - today.getDay() + 6))
+        const rdvDate = new Date(rdv.date)
+        return rdvDate >= weekStart && rdvDate <= weekEnd
+      }).length,
+      ceMois: this.rendezVous.filter(rdv => {
+        const today = new Date()
+        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1)
+        const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+        const rdvDate = new Date(rdv.date)
+        return rdvDate >= monthStart && rdvDate <= monthEnd
+      }).length,
     }
 
     return {
@@ -237,7 +249,7 @@ class RendezVousServiceShared {
     // Synchroniser avec le stockage partagé
     this.rendezVous = sharedRendezVous
 
-    const aujourdhui = new Date().toISOString().split('T')[0]
+    const aujourdhui = new Date().toISOString().split('T')[0] ?? ''
     return this.rendezVous.filter(rdv => rdv.date === aujourdhui)
   }
 
@@ -254,8 +266,8 @@ class RendezVousServiceShared {
     const finSemaine = new Date(debutSemaine)
     finSemaine.setDate(debutSemaine.getDate() + 6)
 
-    const debutStr = debutSemaine.toISOString().split('T')[0]
-    const finStr = finSemaine.toISOString().split('T')[0]
+    const debutStr = debutSemaine.toISOString().split('T')[0] ?? ''
+    const finStr = finSemaine.toISOString().split('T')[0] ?? ''
 
     return this.rendezVous.filter(rdv => rdv.date >= debutStr && rdv.date <= finStr)
   }
@@ -270,33 +282,8 @@ class RendezVousServiceShared {
     const debutMois = new Date(aujourdhui.getFullYear(), aujourdhui.getMonth(), 1)
     const finMois = new Date(aujourdhui.getFullYear(), aujourdhui.getMonth() + 1, 0)
 
-    const debutStr = debutMois.toISOString().split('T')[0]
-    const finStr = finMois.toISOString().split('T')[0]
-
-    return this.rendezVous.filter(rdv => rdv.date >= debutStr && rdv.date <= finStr)
-  }
-
-  private getRendezVousDeLaSemaine(): RendezVous[] {
-    const aujourdhui = new Date()
-    const debutSemaine = new Date(aujourdhui)
-    debutSemaine.setDate(aujourdhui.getDate() - aujourdhui.getDay())
-
-    const finSemaine = new Date(debutSemaine)
-    finSemaine.setDate(debutSemaine.getDate() + 6)
-
-    const debutStr = debutSemaine.toISOString().split('T')[0]
-    const finStr = finSemaine.toISOString().split('T')[0]
-
-    return this.rendezVous.filter(rdv => rdv.date >= debutStr && rdv.date <= finStr)
-  }
-
-  private getRendezVousDuMois(): RendezVous[] {
-    const aujourdhui = new Date()
-    const debutMois = new Date(aujourdhui.getFullYear(), aujourdhui.getMonth(), 1)
-    const finMois = new Date(aujourdhui.getFullYear(), aujourdhui.getMonth() + 1, 0)
-
-    const debutStr = debutMois.toISOString().split('T')[0]
-    const finStr = finMois.toISOString().split('T')[0]
+    const debutStr = debutMois.toISOString().split('T')[0] ?? ''
+    const finStr = finMois.toISOString().split('T')[0] ?? ''
 
     return this.rendezVous.filter(rdv => rdv.date >= debutStr && rdv.date <= finStr)
   }

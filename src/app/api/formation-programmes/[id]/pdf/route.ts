@@ -5,9 +5,9 @@ import path from 'path'
 
 dotenv.config({ path: path.resolve(__dirname, '../../../../../../.env.local') })
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const mongoUri = process.env.MONGODB_URI
+    const mongoUri = process.env['MONGODB_URI']
     if (!mongoUri) {
       throw new Error('MONGODB_URI not defined')
     }
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return new NextResponse(htmlContent, {
       headers: {
         'Content-Type': 'text/html',
-        'Content-Disposition': `attachment; filename="${formation.title.replace(/[^a-zA-Z0-9]/g, '_')}.html"`,
+        'Content-Disposition': `attachment; filename="${formation['title'].replace(/[^a-zA-Z0-9]/g, '_')}.html"`,
       },
     })
   } catch (error) {
@@ -55,7 +55,7 @@ function generateFormationHTML(formation: any): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${formation.title}</title>
+    <title>${formation['title']}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -149,7 +149,7 @@ function generateFormationHTML(formation: any): string {
 </head>
 <body>
     <div class="header">
-        <h1>${formation.title}</h1>
+        <h1>${formation['title']}</h1>
         <div class="code">Code: ${formation.codeFormation}</div>
     </div>
 

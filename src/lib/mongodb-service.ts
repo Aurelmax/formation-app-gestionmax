@@ -67,7 +67,7 @@ class MongoDBService {
 
   async getCurrentUser(): Promise<User> {
     const users = await this.getUsers()
-    const adminUser = users.find(user => user.role === 'admin')
+    const adminUser = users.find(user => user.role === 'ADMIN')
     if (adminUser) {
       return adminUser
     }

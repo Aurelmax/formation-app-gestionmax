@@ -37,7 +37,7 @@ interface EnrichmentStats {
 
 export function DataEnrichment() {
   const [isEnriching, setIsEnriching] = useState(false)
-  const [isPreviewMode, setIsPreviewMode] = useState(false)
+  // const [isPreviewMode, setIsPreviewMode] = useState(false) // Removed: unused variable
   const [results, setResults] = useState<EnrichmentResult[]>([])
   const [stats, setStats] = useState<EnrichmentStats | null>(null)
   const [selectedCollections, setSelectedCollections] = useState<string[]>([])

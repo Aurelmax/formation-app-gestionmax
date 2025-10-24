@@ -5,9 +5,7 @@
  * Généré le: 2025-10-14T02:10:13.442Z
  */
 
-import { Timestamped } from './common'
-
-export interface Users extends Timestamped {
+export interface Users {
   id: string
   createdAt: string
   updatedAt: string
@@ -20,7 +18,7 @@ export interface Users extends Timestamped {
   password: string
 }
 
-export interface FormationProgrammes extends Timestamped {
+export interface FormationProgrammes {
   id: string
   createdAt: string
   updatedAt: string
@@ -30,7 +28,7 @@ export interface FormationProgrammes extends Timestamped {
   objectifs: Record<string, unknown> | undefined
 }
 
-export interface Contacts extends Timestamped {
+export interface Contacts {
   id: string
   createdAt: string
   updatedAt: string

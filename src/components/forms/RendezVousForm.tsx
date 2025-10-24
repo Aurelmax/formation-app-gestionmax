@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Calendar, Clock, User, Mail, Phone, MapPin, Video, PhoneCall } from 'lucide-react'
+import { Calendar, Clock, User, MapPin, Video, PhoneCall } from 'lucide-react'
 import { toast } from 'sonner'
 import { CreateRendezVousRequest } from '@/types/rendez-vous'
 
@@ -49,7 +49,7 @@ export function RendezVousForm({
 
   const handleInputChange = (field: string, value: any) => {
     if (field.startsWith('client.')) {
-      const clientField = field.split('.')[1]
+      const clientField = field.split('.')[1] as string
       setFormData(prev => ({
         ...prev,
         client: {

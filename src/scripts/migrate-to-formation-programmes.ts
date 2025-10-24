@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 async function migrateToFormationProgrammes() {
   console.log('🔄 Migration vers la structure réglementaire formation_programmes...')
 
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env['MONGODB_URI']
   if (!mongoUri) {
     console.error("❌ MONGODB_URI n'est pas défini dans .env.local")
     return
@@ -35,12 +35,12 @@ async function migrateToFormationProgrammes() {
       return
     }
 
-    console.log('📋 Programme WordPress trouvé:', wordpressProgramme.titre)
+    console.log('📋 Programme WordPress trouvé:', wordpressProgramme['titre'])
 
     // Créer le programme dans la nouvelle structure réglementaire
     const formationProgramme = {
-      title: wordpressProgramme.titre,
-      code_formation: wordpressProgramme.codeFormation,
+      title: wordpressProgramme['titre'],
+      code_formation: wordpressProgramme['codeFormation'],
       statut: 'PUBLIE',
 
       objectifs: {

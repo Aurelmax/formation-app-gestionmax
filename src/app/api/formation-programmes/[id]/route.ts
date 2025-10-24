@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const payload = await getPayload({ config })
     const resolvedParams = await params
@@ -32,9 +32,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const body = await request.json()
+    const body = await _request.json()
     const payload = await getPayload({ config })
     const resolvedParams = await params
 
@@ -49,16 +49,22 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     // Vérifier si le code formation est unique (sauf pour la formation actuelle)
-    if (body.codeFormation && body.codeFormation !== existingFormation.codeFormation) {
+    if (body['codeFormation'] && body['codeFormation'] !== existingFormation['codeFormation']) {
       const duplicateFormations = await payload.find({
         collection: 'formations_personnalisees',
         where: {
-          codeFormation: {
-            equals: body.codeFormation,
-          },
-          id: {
-            notEquals: resolvedParams.id,
-          },
+          and: [
+            {
+              codeFormation: {
+                equals: body['codeFormation'],
+              },
+            },
+            {
+              id: {
+                not_equals: resolvedParams.id,
+              },
+            },
+          ],
         },
       })
 
@@ -90,7 +96,10 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const payload = await getPayload({ config })
     const resolvedParams = await params

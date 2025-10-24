@@ -12,9 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Copy, Eye, EyeOff, User, Mail, Key } from 'lucide-react'
+import { Copy, Eye, EyeOff, Mail, Key } from 'lucide-react'
 import { payloadUserService as userService } from '@/lib/payload-user-service'
-import { User as UserType } from '@/types/users'
+import { User as UserType } from '@/types/common'
 import { toast } from 'sonner'
 
 export function UserCredentials() {
@@ -52,15 +52,17 @@ export function UserCredentials() {
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case 'superAdmin':
+      case 'SUPER_ADMIN':
         return 'bg-purple-100 text-purple-800'
-      case 'admin':
+      case 'ADMIN':
         return 'bg-blue-100 text-blue-800'
-      case 'formateur':
+      case 'FORMATEUR':
         return 'bg-green-100 text-green-800'
-      case 'gestionnaire':
+      case 'GESTIONNAIRE':
         return 'bg-orange-100 text-orange-800'
-      case 'apprenant':
+      case 'APPRENANT':
+        return 'bg-gray-100 text-gray-800'
+      case 'BENEFICIAIRE':
         return 'bg-gray-100 text-gray-800'
       default:
         return 'bg-gray-100 text-gray-800'

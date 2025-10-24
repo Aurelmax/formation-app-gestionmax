@@ -138,7 +138,7 @@ export function ArticleDetail({ slug }: ArticleDetailProps) {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>{formatDate(article.datePublication)}</span>
+                <span>{article.datePublication ? formatDate(article.datePublication) : 'Non publié'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />

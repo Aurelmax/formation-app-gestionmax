@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 async function addExampleProgramme() {
   console.log('🔄 Ajout du programme exemple "Développement digital et publicités en ligne"...')
 
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env['MONGODB_URI']
   if (!mongoUri) {
     console.error("❌ MONGODB_URI n'est pas défini dans .env.local")
     return

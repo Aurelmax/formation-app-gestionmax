@@ -6,7 +6,7 @@ import path from 'path'
 dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 
 async function fixWordPressDescription() {
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env['MONGODB_URI']
   if (!mongoUri) {
     throw new Error('MONGODB_URI not defined')
   }
@@ -91,9 +91,9 @@ Certificat de réalisation de formation délivré à l'issue de la formation.`
     .findOne({ codeFormation: 'A001-WP-DD' })
   if (updatedProgramme) {
     console.log('\n📋 Vérification :')
-    console.log(`Titre: ${updatedProgramme.titre}`)
-    console.log(`Description: ${updatedProgramme.description?.substring(0, 100)}...`)
-    console.log(`Longueur: ${updatedProgramme.description?.length || 0} caractères`)
+    console.log(`Titre: ${updatedProgramme['titre']}`)
+    console.log(`Description: ${updatedProgramme['description']?.substring(0, 100)}...`)
+    console.log(`Longueur: ${updatedProgramme['description']?.length || 0} caractères`)
   }
 
   await client.close()

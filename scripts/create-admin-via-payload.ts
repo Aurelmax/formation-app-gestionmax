@@ -13,7 +13,7 @@ async function createAdminUser() {
     })
 
     for (const user of existingUsers.docs) {
-      console.log(`  - Suppression: ${user.email}`)
+      console.log(`  - Suppression: ${user['email']}`)
       await payload.delete({
         collection: 'users',
         id: user.id,
@@ -51,9 +51,9 @@ async function createAdminUser() {
 
     console.log('\n🔍 Vérification:')
     console.log(`  - ID: ${verifyUser.id}`)
-    console.log(`  - Email: ${verifyUser.email}`)
-    console.log(`  - Role: ${verifyUser.role}`)
-    console.log(`  - Password hashé: ${verifyUser.password ? 'OUI ✓' : 'NON ✗'}`)
+    console.log(`  - Email: ${verifyUser['email']}`)
+    console.log(`  - Role: ${verifyUser['role']}`)
+    console.log(`  - Password hashé: ${verifyUser['password'] ? 'OUI ✓' : 'NON ✗'}`)
 
     process.exit(0)
   } catch (error) {

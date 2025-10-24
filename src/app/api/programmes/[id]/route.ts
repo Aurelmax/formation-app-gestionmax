@@ -5,9 +5,9 @@ import path from 'path'
 
 dotenv.config({ path: path.resolve(__dirname, '../../../../../.env.local') })
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const mongoUri = process.env.MONGODB_URI
+    const mongoUri = process.env['MONGODB_URI']
     if (!mongoUri) {
       throw new Error('MONGODB_URI not defined')
     }
@@ -41,11 +41,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const body = await request.json()
+    const body = await _request.json()
 
-    const mongoUri = process.env.MONGODB_URI
+    const mongoUri = process.env['MONGODB_URI']
     if (!mongoUri) {
       throw new Error('MONGODB_URI not defined')
     }
@@ -67,9 +67,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     // Vérifier si le code formation est unique (sauf pour le programme actuel)
-    if (body.codeFormation && body.codeFormation !== existingProgramme.codeFormation) {
+    if (body['codeFormation'] && body['codeFormation'] !== existingProgramme['codeFormation']) {
       const duplicateProgramme = await collection.findOne({
-        codeFormation: body.codeFormation,
+        codeFormation: body['codeFormation'],
         _id: { $ne: id },
       })
 
@@ -109,9 +109,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const mongoUri = process.env.MONGODB_URI
+    const mongoUri = process.env['MONGODB_URI']
     if (!mongoUri) {
       throw new Error('MONGODB_URI not defined')
     }

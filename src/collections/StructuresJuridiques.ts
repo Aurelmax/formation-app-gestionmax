@@ -18,7 +18,7 @@ export const StructuresJuridiques: CollectionConfig = {
       type: 'text',
       required: true,
       admin: {
-        description: 'Raison sociale de l\'entreprise',
+        description: "Raison sociale de l'entreprise",
       },
     },
     {
@@ -36,7 +36,7 @@ export const StructuresJuridiques: CollectionConfig = {
       label: 'Code APE',
       type: 'text',
       admin: {
-        description: 'Code d\'activité principale (ex: 6201Z)',
+        description: "Code d'activité principale (ex: 6201Z)",
       },
     },
     {

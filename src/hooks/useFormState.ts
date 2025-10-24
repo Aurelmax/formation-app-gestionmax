@@ -86,6 +86,7 @@ export function useFormState<T extends Record<string, Record<string, unknown>>>(
     let isValid = true
 
     Object.entries(validationRules).forEach(([field, validator]) => {
+      if (!validator) return
       const error = validator(data[field as keyof T])
       if (error) {
         newErrors[field as keyof T] = error

@@ -13,7 +13,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 async function migrateAllMockProgrammes() {
   console.log('🔄 Migration de tous les programmes mock vers la base de données...')
 
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env['MONGODB_URI']
   if (!mongoUri) {
     console.error("❌ MONGODB_URI n'est pas défini dans .env.local")
     return
@@ -26,7 +26,7 @@ async function migrateAllMockProgrammes() {
     console.log('✅ Connexion MongoDB établie')
 
     const db = client.db()
-    const programmesCollection = db.collection('programmes')
+// const programmesCollection = db.collection('programmes') // Removed: unused variable
     const formationProgrammesCollection = db.collection('formation_programmes')
 
     console.log(`📋 ${MOCK_PROGRAMMES.length} programmes mock à migrer`)

@@ -25,7 +25,7 @@ async function createSimpleUser() {
     // Créer un nouvel utilisateur simple
     console.log('\n🔧 Création d\'un nouvel utilisateur...')
 
-    const newUser = await payload.create({
+    const _newUser = await payload.create({
       collection: 'users',
       data: {
         email: 'test@test.com',

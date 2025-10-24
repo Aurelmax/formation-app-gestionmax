@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
-import { User, Permission, hasPermission, isUserActive } from '@/types/users'
+import { User, Permission, hasPermission, isUserActive } from '@/types/common'
 import { useUserService } from '@/hooks/useApiService'
 
 interface AuthState {

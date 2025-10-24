@@ -11,10 +11,7 @@ export async function GET(request: NextRequest) {
     const { user: currentUser } = await payload.auth({ headers: request.headers })
 
     if (!currentUser) {
-      return NextResponse.json(
-        { success: false, error: 'Non authentifié' },
-        { status: 401 }
-      )
+      return NextResponse.json({ success: false, error: 'Non authentifié' }, { status: 401 })
     }
 
     // Récupérer les paramètres de query
@@ -58,10 +55,7 @@ export async function POST(request: NextRequest) {
     const { user: currentUser } = await payload.auth({ headers: request.headers })
 
     if (!currentUser) {
-      return NextResponse.json(
-        { success: false, error: 'Non authentifié' },
-        { status: 401 }
-      )
+      return NextResponse.json({ success: false, error: 'Non authentifié' }, { status: 401 })
     }
 
     const body = await request.json()

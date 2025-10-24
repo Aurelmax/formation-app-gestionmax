@@ -7,7 +7,7 @@ import type { RendezVous } from '@/types/rendez-vous'
 import type { Article } from '@/types/blog'
 
 export class ClientApiService {
-  private static baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  private static baseUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'
 
   // Programmes
   static async getProgrammes(): Promise<Programme[]> {

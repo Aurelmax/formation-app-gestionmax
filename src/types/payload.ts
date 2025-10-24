@@ -3,22 +3,21 @@
  * Ces types correspondent exactement aux collections définies dans payload.config.ts
  */
 
-export interface User {
-  id: string
-  name: string
-  firstName?: string
-  lastName?: string
-  role: 'superAdmin' | 'admin' | 'formateur' | 'gestionnaire' | 'apprenant'
-  status: 'active' | 'inactive' | 'pending'
-  email: string
-  password: string
-  createdAt: string
-  updatedAt: string
-}
+/**
+ * @deprecated Utiliser import { User } from '@/types/common' à la place
+ * Cette interface est conservée pour compatibilité avec Payload CMS
+ * Préférer l'import depuis common.ts pour cohérence
+ */
+export type { User, UserRole, UserStatus } from './common'
 
 export interface FormationPersonnalisee {
   id: string
   title: string
+  titre?: string
+  description?: string
+  duree?: number
+  niveau?: string
+  prix?: number
   codeFormation: string
   objectifs?: Record<string, unknown>
   programmeDetail?: Array<{

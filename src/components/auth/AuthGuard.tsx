@@ -34,19 +34,19 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
       }
 
       if (!isAuthenticated || !user) {
-        router.push('/admin/login')
+        router.push('/dashboard/login')
         return
       }
 
       // Vérifier le rôle requis
       if (requiredRole && user.role !== requiredRole) {
-        router.push('/admin/login?error=insufficient_permissions')
+        router.push('/dashboard/login?error=insufficient_permissions')
         return
       }
 
       // Vérifier la permission requise
       if (requiredPermission && !user.permissions?.includes(requiredPermission as any)) {
-        router.push('/admin/login?error=insufficient_permissions')
+        router.push('/dashboard/login?error=insufficient_permissions')
         return
       }
     }
@@ -84,7 +84,7 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
               Vous devez être connecté pour accéder à cette page.
             </p>
             <div className="space-y-2">
-              <Button onClick={() => router.push('/admin/login')} className="w-full">
+              <Button onClick={() => router.push('/dashboard/login')} className="w-full">
                 Se connecter
               </Button>
               <Button
@@ -118,7 +118,7 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
               Rôle requis : {requiredRole}
             </p>
             <div className="flex gap-2 justify-center">
-              <Button variant="outline" onClick={() => router.push('/admin')}>
+              <Button variant="outline" onClick={() => router.push('/dashboard')}>
                 Retour au dashboard
               </Button>
               <Button variant="outline" onClick={logout}>
@@ -146,7 +146,7 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
               Permission requise : {requiredPermission}
             </p>
             <div className="flex gap-2 justify-center">
-              <Button variant="outline" onClick={() => router.push('/admin')}>
+              <Button variant="outline" onClick={() => router.push('/dashboard')}>
                 Retour au dashboard
               </Button>
               <Button variant="outline" onClick={logout}>

@@ -247,9 +247,11 @@ class BlogService {
       }
     }
 
-    return articles.sort(
-      (a, b) => new Date(b.datePublication).getTime() - new Date(a.datePublication).getTime()
-    )
+    return articles.sort((a, b) => {
+      const dateA = a.datePublication ? new Date(a.datePublication).getTime() : 0
+      const dateB = b.datePublication ? new Date(b.datePublication).getTime() : 0
+      return dateB - dateA
+    })
   }
 
   static async getArticleById(id: string): Promise<Article | null> {
@@ -265,14 +267,16 @@ class BlogService {
   static async createArticle(articleData: CreateArticleRequest): Promise<Article> {
     await delay()
 
+    const now = new Date().toISOString()
     const newArticle: Article = {
       id: `article_${Date.now()}`,
       slug: generateSlug(articleData.titre),
-      dateModification: new Date().toISOString().split('T')[0],
+      dateModification: now.split('T')[0],
+      datePublication: articleData.statut === 'publie' ? (articleData.datePublication || now.split('T')[0]) : undefined,
       tempsLecture: calculateReadingTime(articleData.contenu),
       vue: 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: now,
+      updatedAt: now,
       ...articleData,
     }
 
@@ -288,11 +292,21 @@ class BlogService {
       throw new Error('Article non trouvé')
     }
 
-    const updatedArticle = {
-      ...MOCK_ARTICLES[articleIndex],
+    const now = new Date().toISOString()
+    const currentArticle = MOCK_ARTICLES[articleIndex]!
+
+    // Construct updated article with explicit type
+    const updatedArticle: Article = {
+      ...currentArticle,
       ...articleData,
-      dateModification: new Date().toISOString().split('T')[0],
-      updatedAt: new Date().toISOString(),
+      id: currentArticle.id, // Preserve original id
+      dateModification: now.split('T')[0],
+      updatedAt: now,
+    }
+
+    // Si passage en statut 'publie' et pas de datePublication, on l'ajoute
+    if (articleData.statut === 'publie' && !updatedArticle.datePublication) {
+      updatedArticle.datePublication = articleData.datePublication || now.split('T')[0]
     }
 
     if (articleData.titre) {

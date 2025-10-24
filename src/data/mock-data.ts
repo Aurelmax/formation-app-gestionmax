@@ -391,7 +391,7 @@ export const MOCK_RENDEZ_VOUS: RendezVous[] = [
       entreprise: 'Électricité Martin',
     },
     type: 'information',
-    statut: 'en_attente',
+    statut: 'enAttente',
     date: '2025-02-20',
     heure: '14:30',
     duree: 45,

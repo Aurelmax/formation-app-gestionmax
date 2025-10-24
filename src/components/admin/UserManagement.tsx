@@ -10,9 +10,9 @@ import {
   CreateUserRequest,
   UpdateUserRequest,
   UserRole,
+  UserStatus,
   USER_ROLES,
-  USER_STATUS,
-} from '@/types/users'
+} from '@/types/common'
 import { payloadUserService as userService } from '@/lib/payload-user-service'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -55,7 +55,6 @@ import {
   Trash2,
   Shield,
   User as UserIcon,
-  Mail,
   Phone,
   Calendar,
   Key,
@@ -84,7 +83,7 @@ export function UserManagement() {
     name: '',
     firstName: '',
     lastName: '',
-    role: 'apprenant',
+    role: 'APPRENANT',
     phone: '',
     address: '',
   })
@@ -125,6 +124,7 @@ export function UserManagement() {
 
     try {
       const updateData: UpdateUserRequest = {
+        id: selectedUser.id,
         name: formData.name,
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -173,9 +173,8 @@ export function UserManagement() {
 
     try {
       await userService.changePassword(selectedUser.id, {
-        currentPassword: '', // Pas besoin en mode admin
+        oldPassword: '', // Pas besoin en mode admin
         newPassword: passwordData.newPassword,
-        confirmPassword: passwordData.confirmPassword,
       })
       toast.success('Mot de passe réinitialisé avec succès')
       setIsPasswordDialogOpen(false)
@@ -198,7 +197,7 @@ export function UserManagement() {
     const newStatus = currentStatus === 'active' ? 'inactive' : 'active'
 
     try {
-      await userService.updateUser(userId, { status: newStatus as any })
+      await userService.updateUser(userId, { id: userId, status: newStatus as UserStatus })
       toast.success(`Utilisateur ${newStatus === 'active' ? 'activé' : 'désactivé'} avec succès`)
       loadUsers()
     } catch (error) {
@@ -212,9 +211,9 @@ export function UserManagement() {
     setFormData({
       email: user.email,
       password: '',
-      name: user.name,
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
+      name: user.name || user.nom || '',
+      firstName: user.firstName || user.prenom || '',
+      lastName: user.lastName || user.nom?.split(' ')[1] || '',
       role: user.role,
       phone: user.phone || '',
       address: user.address || '',
@@ -230,7 +229,7 @@ export function UserManagement() {
       name: '',
       firstName: '',
       lastName: '',
-      role: 'apprenant',
+      role: 'APPRENANT',
       phone: '',
       address: '',
     })
@@ -255,15 +254,17 @@ export function UserManagement() {
   // Obtenir la couleur du badge selon le rôle
   const getRoleBadgeColor = (role: UserRole) => {
     switch (role) {
-      case 'superAdmin':
+      case 'SUPER_ADMIN':
         return 'bg-purple-100 text-purple-800'
-      case 'admin':
+      case 'ADMIN':
         return 'bg-blue-100 text-blue-800'
-      case 'formateur':
+      case 'FORMATEUR':
         return 'bg-green-100 text-green-800'
-      case 'gestionnaire':
+      case 'GESTIONNAIRE':
         return 'bg-orange-100 text-orange-800'
-      case 'apprenant':
+      case 'APPRENANT':
+        return 'bg-gray-100 text-gray-800'
+      case 'BENEFICIAIRE':
         return 'bg-gray-100 text-gray-800'
       default:
         return 'bg-gray-100 text-gray-800'
@@ -271,7 +272,7 @@ export function UserManagement() {
   }
 
   // Vérifier les permissions
-  const canCreate = checkPermission('users:create')
+  // const canCreate = checkPermission('users:create') // Removed: unused variable
   const canUpdate = checkPermission('users:update')
   const canDelete = checkPermission('users:delete')
 
@@ -345,7 +346,7 @@ export function UserManagement() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {users.filter(u => u.role === 'formateur').length}
+              {users.filter(u => u.role === 'FORMATEUR').length}
             </div>
           </CardContent>
         </Card>
@@ -356,7 +357,7 @@ export function UserManagement() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {users.filter(u => u.role === 'apprenant').length}
+              {users.filter(u => u.role === 'APPRENANT').length}
             </div>
           </CardContent>
         </Card>
@@ -402,7 +403,9 @@ export function UserManagement() {
                     <Badge className={getRoleBadgeColor(user.role)}>{user.role}</Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge className={getStatusBadgeColor(user.status)}>{user.status}</Badge>
+                    <Badge className={getStatusBadgeColor(user.status || 'active')}>
+                      {user.status || 'active'}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     <div className="space-y-1">
@@ -445,7 +448,7 @@ export function UserManagement() {
                         </DropdownMenuItem>
 
                         <DropdownMenuItem
-                          onClick={() => handleToggleUserStatus(user.id, user.status)}
+                          onClick={() => handleToggleUserStatus(user.id, user.status || 'active')}
                         >
                           {user.status === 'active' ? (
                             <>

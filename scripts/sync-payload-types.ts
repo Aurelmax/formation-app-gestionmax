@@ -208,7 +208,7 @@ import { Timestamped } from './common'
     }
 
     const existingContent = fs.readFileSync(existingTypesPath, 'utf8')
-    const newTypes = this.generateTypes()
+    const _newTypes = this.generateTypes()
 
     // Comparaison simple (pourrait être améliorée)
     const isConsistent = existingContent.includes('Généré le:')

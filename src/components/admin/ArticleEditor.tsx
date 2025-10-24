@@ -22,7 +22,7 @@ import {
 } from 'lucide-react'
 import { ImageSelector } from './ImageSelector'
 import { MultipleImageSelector } from './MultipleImageSelector'
-import { Article, CreateArticleRequest, Categorie, Tag as TagType } from '@/types/blog'
+import { CreateArticleRequest, Categorie, Tag as TagType } from '@/types/blog'
 import { BlogService } from '@/lib/blog-service'
 import { toast } from 'sonner'
 
@@ -164,7 +164,7 @@ export function ArticleEditor({ articleId, mode }: ArticleEditorProps) {
         toast.success(`Article ${status === 'publie' ? 'publié' : 'mis à jour'} avec succès`)
       }
 
-      router.push('/admin/blog')
+      router.push('/dashboard/blog')
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error)
       toast.error("Erreur lors de la sauvegarde de l'article")
@@ -193,7 +193,7 @@ export function ArticleEditor({ articleId, mode }: ArticleEditorProps) {
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
-            onClick={() => router.push('/admin/blog')}
+            onClick={() => router.push('/dashboard/blog')}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />

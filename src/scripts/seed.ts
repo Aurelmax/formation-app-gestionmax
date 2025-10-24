@@ -19,7 +19,7 @@ const seed = async () => {
 
   try {
     // Créer un utilisateur admin
-    const adminUser = await payload.create({
+    const _adminUser = await payload.create({
       collection: 'users',
       data: {
         email: 'admin@gestionmax.fr',

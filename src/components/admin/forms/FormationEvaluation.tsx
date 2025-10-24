@@ -30,19 +30,21 @@ export function FormationEvaluation({ formData, onNestedInputChange }: Formation
         type: newEvaluationType.trim(),
         description: '',
       }
-      const updatedTypes = [...formData.modalitesEvaluation.typesEvaluation, newType]
+      const updatedTypes = [...(formData.modalitesEvaluation?.typesEvaluation ?? []), newType]
       onNestedInputChange('modalitesEvaluation', 'typesEvaluation', updatedTypes)
       setNewEvaluationType('')
     }
   }
 
   const handleRemoveEvaluationType = (index: number) => {
-    const updatedTypes = formData.modalitesEvaluation.typesEvaluation.filter((_, i) => i !== index)
+    const updatedTypes = (formData.modalitesEvaluation?.typesEvaluation ?? []).filter(
+      (_, i) => i !== index
+    )
     onNestedInputChange('modalitesEvaluation', 'typesEvaluation', updatedTypes)
   }
 
   const handleUpdateEvaluationType = (index: number, field: string, value: string) => {
-    const updatedTypes = formData.modalitesEvaluation.typesEvaluation.map((type, i) =>
+    const updatedTypes = (formData.modalitesEvaluation?.typesEvaluation ?? []).map((type, i) =>
       i === index ? { ...type, [field]: value } : type
     )
     onNestedInputChange('modalitesEvaluation', 'typesEvaluation', updatedTypes)
@@ -69,10 +71,10 @@ export function FormationEvaluation({ formData, onNestedInputChange }: Formation
           </Button>
         </div>
 
-        {formData.modalitesEvaluation.typesEvaluation.length > 0 && (
+        {(formData.modalitesEvaluation?.typesEvaluation?.length ?? 0) > 0 && (
           <div className="space-y-3">
             <h4 className="font-semibold">Types d'évaluation</h4>
-            {formData.modalitesEvaluation.typesEvaluation.map((evaluation, index) => (
+            {(formData.modalitesEvaluation?.typesEvaluation ?? []).map((evaluation, index) => (
               <div key={index} className="flex gap-2 items-start">
                 <div className="flex-1 space-y-2">
                   <Input

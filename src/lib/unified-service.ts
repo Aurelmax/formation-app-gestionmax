@@ -90,7 +90,7 @@ export class UnifiedService {
     console.log(`Suppression de l'utilisateur ${userId}`)
   }
 
-  static async changePassword(userId: string, passwordData: any): Promise<void> {
+  static async changePassword(userId: string, _passwordData: any): Promise<void> {
     // TODO: Implémenter le changement de mot de passe
     console.log(`Changement de mot de passe pour l'utilisateur ${userId}`)
   }

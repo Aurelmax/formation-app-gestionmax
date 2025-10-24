@@ -6,24 +6,14 @@
  * - Les données utilisées dans le frontend (format camelCase)
  */
 
-import type {
-  User,
-  FormationPersonnalisee,
-  RendezVous,
-  Contact,
-  Article,
-  Apprenant,
-  Programme,
-  UserRole,
-  RendezVousStatut,
-  ContactStatut,
-  ContactType,
-  ContactPriorite,
-  FormationStatut,
-  ApprenantStatut,
-  ArticleStatut,
-  ProgrammeStatut,
-} from '@/types/payload-generated'
+// Import des types depuis nos définitions personnalisées
+import type { User } from '@/types/common'
+import type { RendezVous } from '@/types/rendez-vous'
+import type { Contacts } from '@/types/payload-generated'
+import type { FormationPersonnalisee } from '@/types/payload'
+
+// Alias pour la cohérence
+type Contact = Contacts
 
 // ============================================================================
 // MAPPINGS DE CONVERSION
@@ -277,18 +267,6 @@ export const REQUIRED_CONTACT_FIELDS = ['nom', 'email', 'type', 'sujet', 'messag
 export const REQUIRED_FORMATION_FIELDS = ['title', 'codeFormation', 'statut']
 
 // ============================================================================
-// EXPORTS
+// NOTE: Tous les exports sont déjà définis individuellement ci-dessus
+// avec "export const". Pas besoin de les ré-exporter ici.
 // ============================================================================
-
-export {
-  mapObject,
-  mapArray,
-  USER_ROLE_TO_PAYLOAD,
-  USER_ROLE_TO_FRONTEND,
-  RENDEZ_VOUS_STATUT_TO_PAYLOAD,
-  RENDEZ_VOUS_STATUT_TO_FRONTEND,
-  CONTACT_STATUT_TO_PAYLOAD,
-  CONTACT_STATUT_TO_FRONTEND,
-  FORMATION_TO_PAYLOAD_MAPPING,
-  FORMATION_TO_FRONTEND_MAPPING,
-}

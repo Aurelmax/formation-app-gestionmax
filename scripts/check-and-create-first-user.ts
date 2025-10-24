@@ -16,7 +16,7 @@ async function checkAndCreateFirstUser() {
       console.log('❌ Aucun utilisateur trouvé dans Payload CMS')
       console.log('\n🔧 Création du premier utilisateur admin...\n')
 
-      const newUser = await payload.create({
+      const _newUser = await payload.create({
         collection: 'users',
         data: {
           email: 'admin@gestionmax.fr',

@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Image, X, Plus, ExternalLink, Copy } from 'lucide-react'
+import { X, Plus, ExternalLink, Copy } from 'lucide-react'
 import { MediaManager } from './MediaManager'
 import { toast } from 'sonner'
 

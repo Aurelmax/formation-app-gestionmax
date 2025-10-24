@@ -15,8 +15,7 @@ import {
   ROLE_PERMISSIONS,
   hasPermission,
   isUserActive,
-} from '@/types/users'
-import { ID } from '@/types/common'
+} from '@/types/common'
 
 export class UserApiService {
   /**

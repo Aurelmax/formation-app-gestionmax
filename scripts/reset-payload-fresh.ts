@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 
 async function resetPayloadFresh() {
-  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/formation-app-gestionmax'
+  const uri = process.env['MONGODB_URI'] || 'mongodb://localhost:27017/formation-app-gestionmax'
   const client = new MongoClient(uri)
 
   try {

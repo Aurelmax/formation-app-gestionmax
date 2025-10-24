@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import payloadConfig from '../../../payload.config'
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
-    const { collection, dryRun = false, verbose = true } = await request.json()
+    const { collection, dryRun = false } = await _request.json()
 
     const payload = await getPayload({ config: payloadConfig })
 
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
           ...enrichmentData,
           // Préserver les champs critiques
           id: existingData.id,
-          createdAt: existingData.createdAt,
+          createdAt: existingData['createdAt'],
           updatedAt: new Date().toISOString(),
         }
 

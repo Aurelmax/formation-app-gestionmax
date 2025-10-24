@@ -1,6 +1,6 @@
 async function createAdmin() {
   try {
-    console.log('🔨 Création de l\'utilisateur admin via l\'API Payload...')
+    console.log("🔨 Création de l'utilisateur admin via l'API Payload...")
 
     const response = await fetch('http://localhost:3010/api/users', {
       method: 'POST',

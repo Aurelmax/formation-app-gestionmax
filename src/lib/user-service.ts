@@ -14,7 +14,7 @@ import {
   ROLE_PERMISSIONS,
   hasPermission,
   isUserActive,
-} from '@/types/users'
+} from '@/types/common'
 import { ID } from '@/types/common'
 
 // Utilisateurs réels du système

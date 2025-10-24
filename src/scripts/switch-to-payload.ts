@@ -88,14 +88,14 @@ class PayloadSwitchManager {
     this.log('🔍 Vérification des prérequis...')
 
     // Vérifier MongoDB URI
-    if (!process.env.MONGODB_URI) {
+    if (!process.env['MONGODB_URI']) {
       this.log('❌ MONGODB_URI non défini dans .env.local', 'error')
       return false
     }
     this.log('✅ MONGODB_URI défini')
 
     // Vérifier PAYLOAD_SECRET
-    if (!process.env.PAYLOAD_SECRET) {
+    if (!process.env['PAYLOAD_SECRET']) {
       this.log('❌ PAYLOAD_SECRET non défini dans .env.local', 'error')
       return false
     }
@@ -265,8 +265,8 @@ class PayloadSwitchManager {
     this.log('📊 Statut de la configuration')
     this.showCurrentConfig()
 
-    const isMockMode = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true'
-    const isPayloadMode = process.env.NEXT_PUBLIC_USE_PAYLOAD === 'true'
+    const isMockMode = process.env['NEXT_PUBLIC_USE_MOCK_DATA'] === 'true'
+    const isPayloadMode = process.env['NEXT_PUBLIC_USE_PAYLOAD'] === 'true'
 
     this.log('\n🎯 Mode actuel:')
     if (isMockMode) {

@@ -18,9 +18,9 @@ const testComponents = async () => {
 
     if (programmes.length > 0) {
       const programme = programmes[0]
-      console.log(`   📋 Premier programme: ${programme.titre}`)
-      console.log(`   💰 Prix: ${programme.prix}€`)
-      console.log(`   📊 Statut: ${programme.statut}`)
+      console.log(`   📋 Premier programme: ${programme?.titre ?? 'N/A'}`)
+      console.log(`   💰 Prix: ${programme?.prix ?? 0}€`)
+      console.log(`   📊 Statut: ${programme?.statut ?? 'N/A'}`)
     }
 
     // Test 2: Service des apprenants
@@ -30,9 +30,9 @@ const testComponents = async () => {
 
     if (apprenants.length > 0) {
       const apprenant = apprenants[0]
-      console.log(`   📋 Premier apprenant: ${apprenant.nom} ${apprenant.prenom}`)
-      console.log(`   📧 Email: ${apprenant.email}`)
-      console.log(`   📊 Progression: ${apprenant.progression}%`)
+      console.log(`   📋 Premier apprenant: ${apprenant?.nom ?? ''} ${apprenant?.prenom ?? ''}`)
+      console.log(`   📧 Email: ${apprenant?.email ?? 'N/A'}`)
+      console.log(`   📊 Progression: ${apprenant?.progression ?? 0}%`)
     }
 
     // Test 3: Service des utilisateurs
@@ -42,9 +42,9 @@ const testComponents = async () => {
 
     if (users.length > 0) {
       const user = users[0]
-      console.log(`   📋 Premier utilisateur: ${user.name}`)
-      console.log(`   📧 Email: ${user.email}`)
-      console.log(`   🔑 Rôle: ${user.role}`)
+      console.log(`   📋 Premier utilisateur: ${user?.name ?? 'N/A'}`)
+      console.log(`   📧 Email: ${user?.email ?? 'N/A'}`)
+      console.log(`   🔑 Rôle: ${user?.role ?? 'N/A'}`)
     }
 
     // Test 4: Service des rendez-vous
@@ -75,7 +75,7 @@ const testComponents = async () => {
 
     // Test 7: Vérification du mode
     console.log('\n🔄 Vérification du mode...')
-    const isMockMode = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true'
+    const isMockMode = process.env['NEXT_PUBLIC_USE_MOCK_DATA'] === 'true'
     console.log(`   🎭 Mode mock activé: ${isMockMode}`)
 
     if (isMockMode) {

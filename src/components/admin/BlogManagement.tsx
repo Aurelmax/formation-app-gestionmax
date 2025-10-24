@@ -24,7 +24,6 @@ import {
   FileText,
   Plus,
   Search,
-  Filter,
   MoreVertical,
   Edit,
   Trash2,
@@ -33,7 +32,6 @@ import {
   Star,
   Calendar,
   User,
-  Tag,
   TrendingUp,
   Clock,
   BarChart3,
@@ -221,7 +219,7 @@ export function BlogManagement() {
             </div>
             <Button
               className="flex items-center gap-2"
-              onClick={() => (window.location.href = '/admin/blog/nouveau')}
+              onClick={() => (window.location.href = '/dashboard/blog/nouveau')}
             >
               <Plus className="h-4 w-4" />
               Nouvel Article
@@ -347,7 +345,7 @@ export function BlogManagement() {
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4 text-gray-400" />
-                      {new Date(article.datePublication).toLocaleDateString()}
+                      {article.datePublication ? new Date(article.datePublication).toLocaleDateString() : 'Non publié'}
                     </div>
                   </TableCell>
 

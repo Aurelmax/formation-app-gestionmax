@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { ApiRouteService } from '@/lib/api-route-service'
 
-export async function GET(request: Request, { params }: { params: Promise<{ email: string }> }) {
+export async function GET(_request: Request, { params }: { params: Promise<{ email: string }> }) {
   try {
     const { email } = await params
     const user = await ApiRouteService.getUserByEmail(decodeURIComponent(email))

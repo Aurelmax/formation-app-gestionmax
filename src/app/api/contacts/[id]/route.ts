@@ -6,7 +6,7 @@ import config from '@/payload.config'
  * GET /api/contacts/[id]
  * Récupère un contact spécifique par son ID
  */
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const payload = await getPayload({ config })
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
           success: false,
           error: 'Contact non trouvé',
         },
-        { status: 404 },
+        { status: 404 }
       )
     }
 
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         error: 'Erreur lors de la récupération du contact',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 },
+      { status: 500 }
     )
   }
 }
@@ -46,11 +46,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
  * PUT /api/contacts/[id]
  * Met à jour un contact existant
  */
-export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const payload = await getPayload({ config })
-    const body = await request.json()
+    const body = await _request.json()
 
     // Vérifier si le contact existe
     const existingContact = await payload.findByID({
@@ -64,7 +64,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
           success: false,
           error: 'Contact non trouvé',
         },
-        { status: 404 },
+        { status: 404 }
       )
     }
 
@@ -77,7 +77,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             success: false,
             error: "Format d'email invalide",
           },
-          { status: 400 },
+          { status: 400 }
         )
       }
     }
@@ -89,7 +89,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       data: {
         ...body,
         // Ajouter la date de réponse si le statut passe à "traite" et qu'une réponse est fournie
-        ...(body.statut === 'traite' && body.reponse && !existingContact.dateReponse
+        ...(body.statut === 'traite' && body.reponse && !existingContact['dateReponse']
           ? { dateReponse: new Date().toISOString() }
           : {}),
       },
@@ -109,7 +109,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         error: 'Erreur lors de la mise à jour du contact',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 },
+      { status: 500 }
     )
   }
 }
@@ -119,8 +119,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
  * Supprime un contact
  */
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params
@@ -138,7 +138,7 @@ export async function DELETE(
           success: false,
           error: 'Contact non trouvé',
         },
-        { status: 404 },
+        { status: 404 }
       )
     }
 
@@ -159,7 +159,7 @@ export async function DELETE(
         error: 'Erreur lors de la suppression du contact',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 },
+      { status: 500 }
     )
   }
 }

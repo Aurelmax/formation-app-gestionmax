@@ -1,4 +1,4 @@
-import { User, CreateUserRequest, UpdateUserRequest, UserRole } from '@/types/users'
+import { User, CreateUserRequest, UserRole } from '@/types/common'
 import { validate, userValidationRules } from '@/lib/validation'
 
 /**
@@ -53,12 +53,12 @@ export class UserBusinessLogic {
     }
 
     // Vérifier les permissions
-    if (currentUser.role === 'apprenant') {
+    if (currentUser.role === 'APPRENANT') {
       return { canDelete: false, reason: 'Permissions insuffisantes' }
     }
 
     // Un apprenant ne peut pas supprimer un admin ou formateur
-    if (currentUser.role === 'gestionnaire' && ['admin', 'formateur'].includes(user.role)) {
+    if (currentUser.role === 'GESTIONNAIRE' && ['ADMIN', 'FORMATEUR'].includes(user.role)) {
       return {
         canDelete: false,
         reason: 'Permissions insuffisantes pour supprimer cet utilisateur',
@@ -81,12 +81,12 @@ export class UserBusinessLogic {
     }
 
     // Vérifier les permissions
-    if (currentUser.role === 'apprenant') {
+    if (currentUser.role === 'APPRENANT') {
       return { canModify: false, reason: 'Permissions insuffisantes' }
     }
 
     // Un gestionnaire ne peut pas modifier un admin ou formateur
-    if (currentUser.role === 'gestionnaire' && ['admin', 'formateur'].includes(targetUser.role)) {
+    if (currentUser.role === 'GESTIONNAIRE' && ['ADMIN', 'FORMATEUR'].includes(targetUser.role)) {
       return { canModify: false, reason: 'Permissions insuffisantes pour modifier cet utilisateur' }
     }
 
@@ -150,16 +150,16 @@ export class UserBusinessLogic {
    * Filtre les utilisateurs selon les permissions
    */
   static filterUsersByPermissions(users: User[], currentUser: User): User[] {
-    if (currentUser.role === 'superAdmin' || currentUser.role === 'admin') {
+    if (currentUser.role === 'SUPER_ADMIN' || currentUser.role === 'ADMIN') {
       return users
     }
 
-    if (currentUser.role === 'formateur') {
+    if (currentUser.role === 'FORMATEUR') {
       return users.filter(user => ['apprenant', 'gestionnaire'].includes(user.role))
     }
 
-    if (currentUser.role === 'gestionnaire') {
-      return users.filter(user => user.role === 'apprenant')
+    if (currentUser.role === 'GESTIONNAIRE') {
+      return users.filter(user => user.role === 'APPRENANT')
     }
 
     return []

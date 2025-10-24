@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/payload-cms/api/:path*',
+        source: '/api/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
           { key: 'Access-Control-Allow-Origin', value: 'http://localhost:3010' },
@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/payload-cms/:path*',
+        source: '/admin/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
           { key: 'Access-Control-Allow-Origin', value: 'http://localhost:3010' },

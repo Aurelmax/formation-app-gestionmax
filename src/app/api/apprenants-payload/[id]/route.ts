@@ -3,10 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 
 // GET /api/apprenants-payload/:id - Récupérer un apprenant par ID
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const payload = await getPayload({ config })
@@ -18,10 +15,7 @@ export async function GET(
     })
 
     if (!apprenant) {
-      return NextResponse.json(
-        { success: false, error: 'Apprenant introuvable' },
-        { status: 404 }
-      )
+      return NextResponse.json({ success: false, error: 'Apprenant introuvable' }, { status: 404 })
     }
 
     // Transformer les données pour le format attendu
@@ -53,17 +47,14 @@ export async function GET(
   } catch (error) {
     console.error('Erreur GET apprenant:', error)
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la récupération de l\'apprenant' },
+      { success: false, error: "Erreur lors de la récupération de l'apprenant" },
       { status: 500 }
     )
   }
 }
 
 // PUT /api/apprenants-payload/:id - Mettre à jour un apprenant
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const body = await request.json()
@@ -77,10 +68,7 @@ export async function PUT(
     })
 
     if (!existingApprenant) {
-      return NextResponse.json(
-        { success: false, error: 'Apprenant introuvable' },
-        { status: 404 }
-      )
+      return NextResponse.json({ success: false, error: 'Apprenant introuvable' }, { status: 404 })
     }
 
     // 1️⃣ Si une structure juridique est fournie, la mettre à jour d'abord
@@ -92,9 +80,11 @@ export async function PUT(
 
       if (body.structureJuridique.codeApe) structureData.codeApe = body.structureJuridique.codeApe
       if (body.structureJuridique.adresse) structureData.adresse = body.structureJuridique.adresse
-      if (body.structureJuridique.codePostal) structureData.codePostal = body.structureJuridique.codePostal
+      if (body.structureJuridique.codePostal)
+        structureData.codePostal = body.structureJuridique.codePostal
       if (body.structureJuridique.ville) structureData.ville = body.structureJuridique.ville
-      if (body.structureJuridique.telephone) structureData.telephone = body.structureJuridique.telephone
+      if (body.structureJuridique.telephone)
+        structureData.telephone = body.structureJuridique.telephone
       if (body.structureJuridique.email) structureData.email = body.structureJuridique.email
 
       await payload.update({
@@ -116,7 +106,8 @@ export async function PUT(
     // Ajouter les champs optionnels seulement s'ils sont fournis
     if (body.dateNaissance) updateData.dateNaissance = body.dateNaissance
     if (body.numeroSecuriteSociale) updateData.numeroSecuriteSociale = body.numeroSecuriteSociale
-    if (body.numeroCotisantIndividuel) updateData.numeroCotisantIndividuel = body.numeroCotisantIndividuel
+    if (body.numeroCotisantIndividuel)
+      updateData.numeroCotisantIndividuel = body.numeroCotisantIndividuel
     if (body.notes) updateData.notes = body.notes
 
     const updatedApprenant = await payload.update({
@@ -136,9 +127,9 @@ export async function PUT(
     return NextResponse.json(
       {
         success: false,
-        error: 'Erreur lors de la mise à jour de l\'apprenant',
+        error: "Erreur lors de la mise à jour de l'apprenant",
         details: error.message,
-        validationErrors: error.data || error.cause
+        validationErrors: error.data || error.cause,
       },
       { status: 500 }
     )
@@ -166,7 +157,7 @@ export async function DELETE(
   } catch (error) {
     console.error('Erreur DELETE apprenant:', error)
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la suppression de l\'apprenant' },
+      { success: false, error: "Erreur lors de la suppression de l'apprenant" },
       { status: 500 }
     )
   }

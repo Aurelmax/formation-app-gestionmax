@@ -31,15 +31,12 @@ import {
 import {
   Calendar,
   Clock,
-  User,
   Phone,
-  Mail,
   MapPin,
   Video,
   MoreVertical,
   Plus,
   Search,
-  Filter,
   Eye,
   Edit,
   Trash2,
@@ -189,7 +186,7 @@ export function RendezVousManagement() {
           <h1 className="text-3xl font-bold">Gestion des Rendez-vous</h1>
           <p className="text-muted-foreground">Gérez tous les rendez-vous de formation</p>
         </div>
-        <Button onClick={() => router.push('/admin/rendez-vous/nouveau')}>
+        <Button onClick={() => router.push('/dashboard/rendez-vous/nouveau')}>
           <Plus className="h-4 w-4 mr-2" />
           Nouveau RDV
         </Button>
@@ -377,13 +374,13 @@ export function RendezVousManagement() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem
-                            onClick={() => router.push(`/admin/rendez-vous/${rdv.id}`)}
+                            onClick={() => router.push(`/dashboard/rendez-vous/${rdv.id}`)}
                           >
                             <Eye className="h-4 w-4 mr-2" />
                             Voir
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            onClick={() => router.push(`/admin/rendez-vous/${rdv.id}/edit`)}
+                            onClick={() => router.push(`/dashboard/rendez-vous/${rdv.id}/edit`)}
                           >
                             <Edit className="h-4 w-4 mr-2" />
                             Modifier
@@ -392,7 +389,9 @@ export function RendezVousManagement() {
                           {rdv.type === 'positionnement' && rdv.statut === 'termine' && (
                             <DropdownMenuItem
                               onClick={() =>
-                                router.push(`/admin/formation-programmes/nouveau?rdvId=${rdv.id}`)
+                                router.push(
+                                  `/dashboard/formation-programmes/nouveau?rdvId=${rdv.id}`
+                                )
                               }
                             >
                               <GraduationCap className="h-4 w-4 mr-2" />

@@ -20,7 +20,7 @@ async function createFirstUser() {
     // Vérifier si un utilisateur existe déjà
     const existingUser = await usersCollection.findOne({})
     if (existingUser) {
-      console.log('⚠️  Un utilisateur existe déjà:', existingUser.email)
+      console.log('⚠️  Un utilisateur existe déjà:', existingUser['email'])
       console.log('👉 Voulez-vous vraiment créer un nouvel utilisateur ?')
       console.log('   Si oui, supprimez d\'abord tous les utilisateurs avec: npm run create:admin')
       return

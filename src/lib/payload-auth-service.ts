@@ -1,6 +1,6 @@
 /**
  * Service d'authentification utilisant Payload CMS natif
- * L'authentification se fait via /payload-cms/login
+ * L'authentification se fait via /admin/login
  * Les données sont récupérées via Local API côté serveur
  */
 
@@ -8,10 +8,9 @@ import {
   User,
   CreateUserRequest,
   UpdateUserRequest,
-  LoginResponse,
   UserRole,
   ROLE_PERMISSIONS,
-} from '@/types/users'
+} from '@/types/common'
 import { ID } from '@/types/common'
 
 const SERVER_API_BASE = '/api/server-users'
@@ -46,13 +45,13 @@ class PayloadAuthService {
   // Rediriger vers le login Payload
   redirectToLogin(returnUrl?: string): void {
     const redirect = returnUrl || window.location.pathname
-    window.location.href = `/payload-cms/login?redirect=${encodeURIComponent(redirect)}`
+    window.location.href = `/admin/login?redirect=${encodeURIComponent(redirect)}`
   }
 
   // Déconnexion (via Payload)
   async logout(): Promise<void> {
     try {
-      await fetch('/payload-cms/api/users/logout', {
+      await fetch('/api/users/logout', {
         method: 'POST',
         credentials: 'include',
       })
@@ -63,7 +62,7 @@ class PayloadAuthService {
       localStorage.removeItem('user_email')
 
       // Rediriger vers login
-      window.location.href = '/admin/login'
+      window.location.href = '/dashboard/login'
     } catch (error) {
       console.error('Erreur logout:', error)
     }
@@ -133,7 +132,7 @@ class PayloadAuthService {
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({ message: 'Erreur de création' }))
-        throw new Error(error.message || 'Erreur lors de la création de l\'utilisateur')
+        throw new Error(error.message || "Erreur lors de la création de l'utilisateur")
       }
 
       const data = await response.json()
@@ -157,7 +156,7 @@ class PayloadAuthService {
       })
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour de l\'utilisateur')
+        throw new Error("Erreur lors de la mise à jour de l'utilisateur")
       }
 
       const data = await response.json()
@@ -195,11 +194,12 @@ class PayloadAuthService {
     const stats = {
       total: users.length,
       byRole: {
-        super_admin: 0,
-        admin: 0,
-        formateur: 0,
-        gestionnaire: 0,
-        apprenant: 0,
+        SUPER_ADMIN: 0,
+        ADMIN: 0,
+        FORMATEUR: 0,
+        GESTIONNAIRE: 0,
+        APPRENANT: 0,
+        BENEFICIAIRE: 0,
       } as Record<UserRole, number>,
       byStatus: {
         active: 0,
@@ -248,7 +248,7 @@ class PayloadAuthService {
     }
   }
 
-  // Note: login() n'existe pas car l'auth se fait via /payload-cms/login
+  // Note: login() n'existe pas car l'auth se fait via /admin/login
   // Utiliser redirectToLogin() à la place
 }
 

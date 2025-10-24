@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
   DialogContent,
@@ -11,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Image, Upload, X, ExternalLink, Copy, Check } from 'lucide-react'
+import { Image, X, ExternalLink, Copy } from 'lucide-react'
 import { MediaManager } from './MediaManager'
 import { toast } from 'sonner'
 
@@ -40,7 +39,7 @@ export function ImageSelector({
   className,
 }: ImageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedImage, setSelectedImage] = useState<MediaFile | null>(null)
+  const [_selectedImage, setSelectedImage] = useState<MediaFile | null>(null)
 
   const handleImageSelect = (file: MediaFile) => {
     setSelectedImage(file)

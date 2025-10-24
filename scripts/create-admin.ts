@@ -46,7 +46,7 @@ async function createAdmin() {
     }
 
     // Créer le nouvel utilisateur admin
-    const newUser = await payload.create({
+    const _newUser = await payload.create({
       collection: 'users',
       data: {
         email,

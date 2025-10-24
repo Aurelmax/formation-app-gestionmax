@@ -26,6 +26,7 @@ export interface RendezVous {
 
 export interface CreateRendezVousRequest {
   programmeId: string
+  programmeTitre?: string
   client: {
     nom: string
     prenom: string

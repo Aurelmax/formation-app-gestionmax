@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name,
-        role: user.role,
-        status: user.status,
+        name: user['name'],
+        role: user['role'],
+        status: user['status'],
       },
     })
   } catch (error: any) {

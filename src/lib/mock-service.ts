@@ -61,12 +61,12 @@ export class MockService {
     const newUser: User = {
       id: `user_${Date.now()}`,
       email: userData.email,
-      name: userData.name,
-      firstName: userData.firstName,
-      role: userData.role || 'apprenant',
-      status: 'active',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      nom: userData.nom || userData.name || '',
+      prenom: userData.prenom || userData.firstName || '',
+      role: userData.role || 'BENEFICIAIRE',
+      avatar: userData.avatar,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
     MOCK_USERS.push(newUser)
     return newUser
@@ -82,7 +82,7 @@ export class MockService {
     MOCK_USERS[userIndex] = {
       ...MOCK_USERS[userIndex]!,
       ...userData,
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(),
     }
 
     return MOCK_USERS[userIndex]!
@@ -102,7 +102,7 @@ export class MockService {
     return MOCK_USERS.find(u => u.email === email) || null
   }
 
-  static async changePassword(userId: string, passwordData: any): Promise<void> {
+  static async changePassword(userId: string, _passwordData: any): Promise<void> {
     await delay()
     const user = MOCK_USERS.find(u => u.id === userId)
     if (!user) {

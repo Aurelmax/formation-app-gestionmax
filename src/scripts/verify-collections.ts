@@ -29,10 +29,10 @@ const verifyCollections = () => {
 
   console.log("\n🔧 Variables d'environnement:")
   console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'non défini'}`)
-  console.log(`   NEXT_PUBLIC_APP_NAME: ${process.env.NEXT_PUBLIC_APP_NAME || 'non défini'}`)
-  console.log(`   NEXT_PUBLIC_APP_URL: ${process.env.NEXT_PUBLIC_APP_URL || 'non défini'}`)
+  console.log(`   NEXT_PUBLIC_APP_NAME: ${process.env['NEXT_PUBLIC_APP_NAME'] || 'non défini'}`)
+  console.log(`   NEXT_PUBLIC_APP_URL: ${process.env['NEXT_PUBLIC_APP_URL'] || 'non défini'}`)
   console.log(
-    `   NEXT_PUBLIC_USE_MOCK_DATA: ${process.env.NEXT_PUBLIC_USE_MOCK_DATA || 'non défini'}`
+    `   NEXT_PUBLIC_USE_MOCK_DATA: ${process.env['NEXT_PUBLIC_USE_MOCK_DATA'] || 'non défini'}`
   )
 
   console.log('\n💡 Prochaines étapes:')

@@ -6,7 +6,7 @@ import path from 'path'
 dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 
 async function cleanDuplicateFormations() {
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env['MONGODB_URI']
   if (!mongoUri) {
     throw new Error('MONGODB_URI not defined')
   }
@@ -26,8 +26,8 @@ async function cleanDuplicateFormations() {
   console.log(`🎯 Formations personnalisées trouvées: ${formations.length}`)
 
   // Identifier les formations personnalisées qui sont des doublons des programmes catalogue
-  const programmesCodes = new Set(programmes.map(p => p.codeFormation))
-  const formationsToDelete = formations.filter(f => programmesCodes.has(f.code_formation))
+  const programmesCodes = new Set(programmes.map(p => p['codeFormation']))
+  const formationsToDelete = formations.filter(f => programmesCodes.has(f['code_formation']))
 
   console.log(
     `\n🔍 Formations personnalisées identifiées comme doublons: ${formationsToDelete.length}`
@@ -36,7 +36,7 @@ async function cleanDuplicateFormations() {
   if (formationsToDelete.length > 0) {
     console.log('\n📝 Formations qui seront supprimées:')
     formationsToDelete.forEach(f => {
-      console.log(`   - ${f.title} (${f.code_formation})`)
+      console.log(`   - ${f['title']} (${f['code_formation']})`)
     })
 
     // Supprimer les doublons
@@ -59,7 +59,7 @@ async function cleanDuplicateFormations() {
   if (finalFormations.length > 0) {
     console.log('\n🎯 Formations personnalisées restantes:')
     finalFormations.forEach(f => {
-      console.log(`   - ${f.title} (${f.code_formation})`)
+      console.log(`   - ${f['title']} (${f['code_formation']})`)
     })
   }
 

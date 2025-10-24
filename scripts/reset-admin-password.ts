@@ -22,7 +22,7 @@ async function resetAdminPassword() {
       console.log('❌ Utilisateur admin@gestionmax.fr non trouvé')
       console.log('🔧 Création d\'un nouveau compte admin...\n')
 
-      const newAdmin = await payload.create({
+      const _newAdmin = await payload.create({
         collection: 'users',
         data: {
           email: 'admin@gestionmax.fr',
@@ -41,10 +41,10 @@ async function resetAdminPassword() {
       console.log('   Mot de passe: Admin123!')
       console.log('\n🔗 Connectez-vous sur: http://localhost:3010/payload-cms')
     } else {
-      console.log('✅ Utilisateur trouvé:', adminUsers.docs[0].email)
+      console.log('✅ Utilisateur trouvé:', adminUsers.docs[0]['email'])
       console.log('🔄 Réinitialisation du mot de passe...\n')
 
-      const adminId = adminUsers.docs[0].id
+      const adminId = adminUsers.docs[0]?.id
 
       await payload.update({
         collection: 'users',

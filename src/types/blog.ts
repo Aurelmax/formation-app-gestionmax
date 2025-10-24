@@ -5,8 +5,8 @@ export interface Article {
   contenu: string
   resume: string
   auteur: string
-  datePublication: string
-  dateModification: string
+  datePublication?: string // Optional car peut être définie lors de la publication
+  dateModification?: string // Optional car calculée automatiquement
   statut: 'brouillon' | 'publie' | 'archive'
   categories: string[]
   tags: string[]
@@ -54,10 +54,11 @@ export interface CreateArticleRequest {
   metaDescription: string
   metaKeywords: string[]
   featured: boolean
+  datePublication?: string
 }
 
 export interface UpdateArticleRequest extends Partial<CreateArticleRequest> {
-  id: string
+  id?: string // Optional car déjà passé en paramètre dans updateArticle(id, data)
 }
 
 export interface ArticleFilters {

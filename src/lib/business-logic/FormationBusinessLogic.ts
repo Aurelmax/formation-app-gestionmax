@@ -26,14 +26,14 @@ export class FormationBusinessLogic {
    * Calcule la durée totale d'une formation
    */
   static calculateTotalDuration(
-    programmeDetail: FormationPersonnalisee['programme_detail']
+    programmeDetail: FormationPersonnalisee['programmeDetail']
   ): string {
     if (!programmeDetail || programmeDetail.length === 0) {
       return '0h'
     }
 
     const totalHours = programmeDetail.reduce((total, jour) => {
-      const duree = jour.duree
+      const duree = jour.duree || ''
       const hours = parseInt(duree.match(/\d+/)?.[0] || '0')
       return total + hours
     }, 0)
@@ -54,7 +54,7 @@ export class FormationBusinessLogic {
       reasons.push('Le titre est requis')
     }
 
-    if (!formation.code_formation?.trim()) {
+    if (!formation.codeFormation?.trim()) {
       reasons.push('Le code formation est requis')
     }
 
@@ -62,19 +62,19 @@ export class FormationBusinessLogic {
       reasons.push('Les objectifs sont requis')
     }
 
-    if (!formation.programme_detail || formation.programme_detail.length === 0) {
+    if (!formation.programmeDetail || formation.programmeDetail.length === 0) {
       reasons.push('Le programme détaillé est requis')
     }
 
-    if (!formation.contact_formateur?.nom?.trim()) {
+    if (!formation.contactFormateur?.nom?.trim()) {
       reasons.push('Les informations du formateur sont requises')
     }
 
-    if (!formation.modalites_acces?.duree?.trim()) {
+    if (!formation.modalitesAcces?.duree?.trim()) {
       reasons.push('La durée est requise')
     }
 
-    if (!formation.modalites_acces?.tarif || formation.modalites_acces.tarif <= 0) {
+    if (!formation.modalitesAcces?.tarif || formation.modalitesAcces.tarif <= 0) {
       reasons.push('Le tarif doit être défini')
     }
 
@@ -92,17 +92,17 @@ export class FormationBusinessLogic {
       ...formation,
       // Nettoyer les données
       title: formation.title?.trim(),
-      code_formation: formation.code_formation?.trim(),
+      codeFormation: formation.codeFormation?.trim(),
       // S'assurer que les dates sont correctement formatées
-      date_creation: formation.date_creation || new Date(),
-      date_modification: new Date(),
+      createdAt: formation.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       // Valider les données imbriquées
-      contact_formateur: {
-        nom: formation.contact_formateur?.nom?.trim() || '',
-        email: formation.contact_formateur?.email?.trim() || '',
-        telephone: formation.contact_formateur?.telephone?.trim() || '',
-        role: formation.contact_formateur?.role?.trim() || '',
-        biographie: formation.contact_formateur?.biographie?.trim() || '',
+      contactFormateur: {
+        nom: formation.contactFormateur?.nom?.trim() || '',
+        email: formation.contactFormateur?.email?.trim() || '',
+        telephone: formation.contactFormateur?.telephone?.trim() || '',
+        role: formation.contactFormateur?.role?.trim() || '',
+        biographie: formation.contactFormateur?.biographie?.trim() || '',
       },
     }
   }
@@ -111,9 +111,12 @@ export class FormationBusinessLogic {
    * Calcule les statistiques d'une formation
    */
   static calculateFormationStats(formation: FormationPersonnalisee) {
-    const programmeDetail = formation.programme_detail || []
+    const programmeDetail = formation.programmeDetail || []
     const totalDays = programmeDetail.length
-    const totalModules = programmeDetail.reduce((total, jour) => total + jour.modules.length, 0)
+    const totalModules = programmeDetail.reduce(
+      (total, jour) => total + (jour.modules?.length || 0),
+      0
+    )
     const totalDuration = this.calculateTotalDuration(programmeDetail)
 
     return {
@@ -129,8 +132,8 @@ export class FormationBusinessLogic {
    */
   static generateFormationSummary(formation: FormationPersonnalisee): string {
     const stats = this.calculateFormationStats(formation)
-    const formateur = formation.contact_formateur?.nom || 'Non défini'
-    const tarif = formation.modalites_acces?.tarif || 0
+    const formateur = formation.contactFormateur?.nom || 'Non défini'
+    const tarif = formation.modalitesAcces?.tarif || 0
 
     return `Formation "${formation.title}" - ${stats.totalDuration} sur ${stats.totalDays} jour(s) - ${stats.totalModules} modules - Formateur: ${formateur} - Tarif: ${tarif}€`
   }
@@ -139,8 +142,8 @@ export class FormationBusinessLogic {
    * Vérifie les conflits de dates avec d'autres formations
    */
   static checkDateConflicts(
-    formation: FormationPersonnalisee,
-    existingFormations: FormationPersonnalisee[]
+    _formation: FormationPersonnalisee,
+    _existingFormations: FormationPersonnalisee[]
   ): { hasConflict: boolean; conflictingFormations: FormationPersonnalisee[] } {
     // Logique de vérification des conflits de dates
     // À implémenter selon les besoins spécifiques

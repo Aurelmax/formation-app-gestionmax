@@ -50,7 +50,7 @@ export class ApiService {
   static async getCurrentUser(): Promise<User> {
     // Pour l'instant, retourner le premier utilisateur admin
     const users = await UserApiService.getUsers()
-    const adminUser = users.find(user => user.role === 'admin')
+    const adminUser = users.find(user => user.role === 'ADMIN')
     if (adminUser) {
       return adminUser
     }

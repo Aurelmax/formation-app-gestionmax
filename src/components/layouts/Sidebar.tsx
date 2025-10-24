@@ -22,17 +22,21 @@ import {
 } from 'lucide-react'
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { name: 'Programmes', href: '/admin/programmes', icon: BookOpen },
-  { name: 'Formations Personnalisées', href: '/admin/formation-programmes', icon: GraduationCap },
-  { name: 'Apprenants', href: '/admin/apprenants', icon: Users },
-  { name: 'Rendez-vous', href: '/admin/rendez-vous', icon: Calendar },
-  { name: 'Blog', href: '/admin/blog', icon: PenTool },
-  { name: 'Contacts', href: '/admin/contacts', icon: Mail },
-  { name: 'Médias', href: '/admin/medias', icon: Image },
-  { name: 'Utilisateurs', href: '/admin/utilisateurs', icon: UserCog },
-  { name: 'Documents', href: '/admin/documents', icon: FileText },
-  { name: 'Paramètres', href: '/admin/parametres', icon: Settings },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Programmes', href: '/dashboard/programmes', icon: BookOpen },
+  {
+    name: 'Formations Personnalisées',
+    href: '/dashboard/formation-programmes',
+    icon: GraduationCap,
+  },
+  { name: 'Apprenants', href: '/dashboard/apprenants', icon: Users },
+  { name: 'Rendez-vous', href: '/dashboard/rendez-vous', icon: Calendar },
+  { name: 'Blog', href: '/dashboard/blog', icon: PenTool },
+  { name: 'Contacts', href: '/dashboard/contacts', icon: Mail },
+  { name: 'Médias', href: '/dashboard/medias', icon: Image },
+  { name: 'Utilisateurs', href: '/dashboard/utilisateurs', icon: UserCog },
+  { name: 'Documents', href: '/dashboard/documents', icon: FileText },
+  { name: 'Paramètres', href: '/dashboard/parametres', icon: Settings },
 ]
 
 export function Sidebar() {
@@ -69,7 +73,7 @@ export function Sidebar() {
         {/* Lien vers l'interface CMS */}
         <div className="pt-4 border-t border-gray-200">
           <a
-            href="/payload-cms"
+            href="/admin"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
@@ -99,7 +103,7 @@ export function Sidebar() {
           onClick={() => {
             console.log('🚪 Clic sur déconnexion')
             // Rediriger vers la page de déconnexion dédiée
-            window.location.href = '/admin/logout'
+            window.location.href = '/dashboard/logout'
           }}
           className="w-full justify-start"
         >

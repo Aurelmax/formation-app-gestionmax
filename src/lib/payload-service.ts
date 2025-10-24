@@ -1,6 +1,13 @@
 import { getPayload } from 'payload'
 import payloadConfig from '../payload.config'
-import { User, Programme, Apprenant, RendezVous } from '@/types/common'
+import {
+  User,
+  Programme,
+  Apprenant,
+  RendezVous,
+  RendezVousType,
+  RendezVousStatut,
+} from '@/types/common'
 
 // Cache pour éviter les appels répétés
 let payloadClient: any = null
@@ -101,7 +108,7 @@ function mapPayloadUserToUser(payloadUser: PayloadUser): User {
     nom: payloadUser.name,
     prenom: payloadUser.firstName || '',
     email: payloadUser.email,
-    role: payloadUser.role.toUpperCase(),
+    role: payloadUser.role.toUpperCase() as UserRole,
     avatar: payloadUser.avatar,
     createdAt: new Date(payloadUser.createdAt),
     updatedAt: new Date(payloadUser.updatedAt),
@@ -115,10 +122,12 @@ function mapPayloadProgrammeToProgramme(payloadProgramme: PayloadProgramme): Pro
     titre: payloadProgramme.titre,
     description: payloadProgramme.description,
     duree: payloadProgramme.duree,
-    niveau: payloadProgramme.niveau,
-    modalites: payloadProgramme.modalites,
+    niveau: payloadProgramme.niveau as Niveau,
+    modalites: payloadProgramme.modalites as Modalite,
     prix: payloadProgramme.prix,
-    statut: payloadProgramme.statut.toUpperCase(),
+    statut: (payloadProgramme.statut.toUpperCase() === 'ACTIF'
+      ? 'PUBLIE'
+      : payloadProgramme.statut.toUpperCase()) as ProgrammeStatut,
     formateurs: [], // TODO: Implémenter la relation avec les formateurs
     competences: payloadProgramme.competences.map(c => c.competence),
     createdAt: new Date(payloadProgramme.createdAt),
@@ -149,8 +158,8 @@ function mapPayloadRendezVousToRendezVous(payloadRdv: PayloadRendezVous): Rendez
     programmeId: payloadRdv.programme || '',
     programmeTitre: '', // TODO: Récupérer le titre du programme via la relation
     client: payloadRdv.client,
-    type: payloadRdv.type,
-    statut: payloadRdv.statut,
+    type: payloadRdv.type as RendezVousType,
+    statut: payloadRdv.statut as RendezVousStatut,
     date: payloadRdv.date,
     heure: payloadRdv.heure,
     duree: payloadRdv.duree,

@@ -179,7 +179,7 @@ class ContactAPIService {
    */
   async changeStatut(
     id: string,
-    statut: 'nouveau' | 'enCours' | 'traite' | 'ferme',
+    statut: 'nouveau' | 'enCours' | 'traite' | 'ferme'
   ): Promise<ContactResponse> {
     return this.updateContact(id, { statut })
   }
@@ -189,7 +189,7 @@ class ContactAPIService {
    */
   async changePriorite(
     id: string,
-    priorite: 'basse' | 'normale' | 'haute' | 'urgente',
+    priorite: 'basse' | 'normale' | 'haute' | 'urgente'
   ): Promise<ContactResponse> {
     return this.updateContact(id, { priorite })
   }

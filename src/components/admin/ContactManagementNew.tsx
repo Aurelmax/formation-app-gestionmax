@@ -92,19 +92,19 @@ export default function ContactManagementNew() {
 
     if (searchTerm) {
       result = result.filter(
-        (c) =>
+        c =>
           c.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
           c.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          c.sujet.toLowerCase().includes(searchTerm.toLowerCase()),
+          c.sujet.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
 
     if (filtreStatut !== 'tous') {
-      result = result.filter((c) => c.statut === filtreStatut)
+      result = result.filter(c => c.statut === filtreStatut)
     }
 
     if (filtrePriorite !== 'toutes') {
-      result = result.filter((c) => c.priorite === filtrePriorite)
+      result = result.filter(c => c.priorite === filtrePriorite)
     }
 
     setFilteredContacts(result)
@@ -217,7 +217,7 @@ export default function ContactManagementNew() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {contacts.filter((c) => c.statut === 'nouveau').length}
+              {contacts.filter(c => c.statut === 'nouveau').length}
             </div>
           </CardContent>
         </Card>
@@ -229,7 +229,7 @@ export default function ContactManagementNew() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {contacts.filter((c) => c.statut === 'enCours').length}
+              {contacts.filter(c => c.statut === 'enCours').length}
             </div>
           </CardContent>
         </Card>
@@ -241,7 +241,7 @@ export default function ContactManagementNew() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {contacts.filter((c) => c.statut === 'traite').length}
+              {contacts.filter(c => c.statut === 'traite').length}
             </div>
           </CardContent>
         </Card>
@@ -264,7 +264,7 @@ export default function ContactManagementNew() {
                 <Input
                   placeholder="Nom, email, sujet..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="pl-8"
                 />
               </div>
@@ -272,7 +272,7 @@ export default function ContactManagementNew() {
 
             <div className="space-y-2">
               <label className="text-sm font-medium">Statut</label>
-              <Select value={filtreStatut} onValueChange={(v) => setFiltreStatut(v as any)}>
+              <Select value={filtreStatut} onValueChange={v => setFiltreStatut(v as any)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -288,7 +288,7 @@ export default function ContactManagementNew() {
 
             <div className="space-y-2">
               <label className="text-sm font-medium">Priorité</label>
-              <Select value={filtrePriorite} onValueChange={(v) => setFiltrePriorite(v as any)}>
+              <Select value={filtrePriorite} onValueChange={v => setFiltrePriorite(v as any)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -309,9 +309,7 @@ export default function ContactManagementNew() {
       <div className="grid gap-6 md:grid-cols-2">
         {/* Colonne gauche : Liste */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold">
-            Messages ({filteredContacts.length})
-          </h2>
+          <h2 className="text-xl font-bold">Messages ({filteredContacts.length})</h2>
 
           {filteredContacts.length === 0 ? (
             <Card>
@@ -320,7 +318,7 @@ export default function ContactManagementNew() {
               </CardContent>
             </Card>
           ) : (
-            filteredContacts.map((contact) => (
+            filteredContacts.map(contact => (
               <Card
                 key={contact.id}
                 className={`cursor-pointer transition-colors hover:bg-accent ${
@@ -429,7 +427,7 @@ export default function ContactManagementNew() {
                     <label className="text-sm font-medium">Statut</label>
                     <Select
                       value={selectedContact.statut}
-                      onValueChange={(v) => handleStatutChange(selectedContact.id, v as any)}
+                      onValueChange={v => handleStatutChange(selectedContact.id, v as any)}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -447,7 +445,7 @@ export default function ContactManagementNew() {
                     <label className="text-sm font-medium">Priorité</label>
                     <Select
                       value={selectedContact.priorite}
-                      onValueChange={(v) => handlePrioriteChange(selectedContact.id, v as any)}
+                      onValueChange={v => handlePrioriteChange(selectedContact.id, v as any)}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -485,7 +483,7 @@ export default function ContactManagementNew() {
                     <Textarea
                       placeholder="Votre réponse..."
                       value={reponseText}
-                      onChange={(e) => setReponseText(e.target.value)}
+                      onChange={e => setReponseText(e.target.value)}
                       rows={6}
                     />
                     <Button

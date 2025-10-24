@@ -16,7 +16,7 @@ export function middleware(_request: NextRequest) {
 const protectedRoutes = ['/admin', '/dashboard']
 
 // Routes Payload CMS (ne pas intercepter)
-const payloadRoutes = ['/payload-cms', '/api']
+const payloadRoutes = ['/admin', '/api']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl

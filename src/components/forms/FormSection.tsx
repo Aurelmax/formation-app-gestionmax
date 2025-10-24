@@ -16,8 +16,8 @@ export function FormSection({
   description,
   children,
   className,
-  collapsible = false,
-  defaultCollapsed = false,
+  collapsible: _collapsible = false,
+  defaultCollapsed: _defaultCollapsed = false,
 }: FormSectionProps) {
   return (
     <Card className={cn('w-full', className)}>

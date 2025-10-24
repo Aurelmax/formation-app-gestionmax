@@ -236,7 +236,7 @@ class RendezVousService {
   async getRendezVousDuJour(): Promise<RendezVous[]> {
     await delay()
 
-    const aujourdhui = new Date().toISOString().split('T')[0]
+    const aujourdhui = new Date().toISOString().split('T')[0] ?? ''
     return this.rendezVous.filter(rdv => rdv.date === aujourdhui)
   }
 
@@ -250,14 +250,14 @@ class RendezVousService {
     const finSemaine = new Date(debutSemaine)
     finSemaine.setDate(debutSemaine.getDate() + 6)
 
-    const debutStr = debutSemaine.toISOString().split('T')[0]
-    const finStr = finSemaine.toISOString().split('T')[0]
+    const debutStr = debutSemaine.toISOString().split('T')[0] ?? ''
+    const finStr = finSemaine.toISOString().split('T')[0] ?? ''
 
     return this.rendezVous.filter(rdv => rdv.date >= debutStr && rdv.date <= finStr)
   }
 
   private calculateStats(rendezVous: RendezVous[]): RendezVousStats {
-    const aujourdhui = new Date().toISOString().split('T')[0]
+    const aujourdhui = new Date().toISOString().split('T')[0] ?? ''
     const debutSemaine = new Date()
     debutSemaine.setDate(debutSemaine.getDate() - debutSemaine.getDay())
     const finSemaine = new Date(debutSemaine)
@@ -269,7 +269,7 @@ class RendezVousService {
 
     return {
       total: rendezVous.length,
-      enAttente: rendezVous.filter(rdv => rdv.statut === 'en_attente').length,
+      enAttente: rendezVous.filter(rdv => rdv.statut === 'enAttente').length,
       confirmes: rendezVous.filter(rdv => rdv.statut === 'confirme').length,
       annules: rendezVous.filter(rdv => rdv.statut === 'annule').length,
       termines: rendezVous.filter(rdv => rdv.statut === 'termine').length,

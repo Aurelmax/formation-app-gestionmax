@@ -23,10 +23,10 @@ const testApiServices = async () => {
 
       if (programmes.length > 0) {
         const programme = programmes[0]
-        console.log(`   📋 Premier programme: ${programme.titre}`)
+        console.log(`   📋 Premier programme: ${programme?.titre ?? 'N/A'}`)
 
         // Test de récupération par ID
-        const programmeById = await ProgrammeService.getProgramme(programme.id)
+        const programmeById = await ProgrammeService.getProgramme(programme?.id ?? '')
         if (programmeById) {
           console.log(`   ✅ Programme récupéré par ID: ${programmeById.titre}`)
         }
@@ -43,7 +43,7 @@ const testApiServices = async () => {
 
       if (apprenants.length > 0) {
         const apprenant = apprenants[0]
-        console.log(`   📋 Premier apprenant: ${apprenant.nom} ${apprenant.prenom}`)
+        console.log(`   📋 Premier apprenant: ${apprenant?.nom ?? ''} ${apprenant?.prenom ?? ''}`)
       }
     } catch (error) {
       console.log(`   ❌ Erreur ApprenantService: ${error}`)
@@ -57,7 +57,7 @@ const testApiServices = async () => {
 
       if (users.length > 0) {
         const user = users[0]
-        console.log(`   📋 Premier utilisateur: ${user.name} (${user.role})`)
+        console.log(`   📋 Premier utilisateur: ${user?.name ?? 'N/A'} (${user?.role ?? 'N/A'})`)
       }
     } catch (error) {
       console.log(`   ❌ Erreur UserApiService: ${error}`)
@@ -71,7 +71,7 @@ const testApiServices = async () => {
 
       if (rdvs.length > 0) {
         const rdv = rdvs[0]
-        console.log(`   📋 Premier RDV: ${rdv.client.nom} ${rdv.client.prenom}`)
+        console.log(`   📋 Premier RDV: ${rdv?.client?.nom ?? ''} ${rdv?.client?.prenom ?? ''}`)
       }
     } catch (error) {
       console.log(`   ❌ Erreur RendezVousApiService: ${error}`)
@@ -104,7 +104,7 @@ const testApiServices = async () => {
       console.log(`     - Utilisateurs: ${stats.utilisateurs}`)
 
       const currentUser = await ApiService.getCurrentUser()
-      console.log(`   👤 Utilisateur actuel: ${currentUser.name} (${currentUser.role})`)
+      console.log(`   👤 Utilisateur actuel: ${currentUser?.name ?? 'N/A'} (${currentUser?.role ?? 'N/A'})`)
     } catch (error) {
       console.log(`   ❌ Erreur ApiService: ${error}`)
     }

@@ -7,7 +7,7 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env.local') })
 
 export async function GET() {
   try {
-    const mongoUri = process.env.MONGODB_URI
+    const mongoUri = process.env['MONGODB_URI']
     if (!mongoUri) {
       return NextResponse.json(
         { success: false, error: 'MongoDB URI not configured' },
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
-    const mongoUri = process.env.MONGODB_URI
+    const mongoUri = process.env['MONGODB_URI']
     if (!mongoUri) {
       return NextResponse.json(
         { success: false, error: 'MongoDB URI not configured' },

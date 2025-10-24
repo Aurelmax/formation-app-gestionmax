@@ -30,9 +30,9 @@ export default buildConfig({
     },
   },
   routes: {
-    // Changer la route par défaut de /admin à /payload-cms
-    admin: '/payload-cms',
-    api: '/payload-cms/api',
+    // Admin UI accessible via /admin (correspond à src/app/(payload)/admin)
+    admin: '/admin',
+    api: '/api',
   },
   serverURL: process.env['NEXT_PUBLIC_SERVER_URL'] || 'http://localhost:3010',
   // 🔧 Configuration CSRF et CORS pour la gestion des cookies de session
@@ -54,7 +54,7 @@ export default buildConfig({
       slug: 'users',
       auth: {
         forgotPassword: {
-          generateEmailHTML: (args) => {
+          generateEmailHTML: args => {
             const token = args?.token || ''
             const user = args?.user
             const resetURL = `${process.env['NEXT_PUBLIC_SERVER_URL'] || 'http://localhost:3010'}/admin/reset-password?token=${token}`
@@ -98,6 +98,50 @@ export default buildConfig({
           generateEmailSubject: () => 'Réinitialisation de votre mot de passe GestionMax',
         },
         verify: false,
+      },
+      access: {
+        // Tout le monde peut lire son propre profil
+        read: ({ req: { user } }) => {
+          // Admins et superAdmins peuvent lire tous les utilisateurs
+          if (user && (user['role'] === 'admin' || user['role'] === 'superAdmin')) {
+            return true
+          }
+          // Les autres utilisateurs peuvent seulement lire leur propre profil
+          if (user) {
+            return {
+              id: {
+                equals: user.id,
+              },
+            }
+          }
+          return false
+        },
+        // Seuls les admins et superAdmins peuvent créer des utilisateurs
+        create: ({ req: { user } }) => {
+          if (!user) return false
+          return user['role'] === 'admin' || user['role'] === 'superAdmin'
+        },
+        // Les utilisateurs peuvent modifier leur propre profil, les admins peuvent tout modifier
+        update: ({ req: { user } }) => {
+          if (user && (user['role'] === 'admin' || user['role'] === 'superAdmin')) {
+            return true
+          }
+          if (user) {
+            return {
+              id: {
+                equals: user.id,
+              },
+            }
+          }
+          return false
+        },
+        // Seuls les superAdmins peuvent supprimer des utilisateurs
+        delete: ({ req: { user } }) => {
+          if (!user) return false
+          return user['role'] === 'superAdmin'
+        },
+        // Tout le monde peut accéder à l'admin pour se connecter
+        admin: () => true,
       },
       fields: [
         {

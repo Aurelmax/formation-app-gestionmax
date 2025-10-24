@@ -54,6 +54,7 @@ export function useListManagement<T extends Record<string, Record<string, unknow
         const aValue = a[sortField]
         const bValue = b[sortField]
 
+        if (aValue === undefined || bValue === undefined) return 0
         if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
         if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
         return 0
@@ -70,18 +71,20 @@ export function useListManagement<T extends Record<string, Record<string, unknow
 
   const updateItem = useCallback((id: string | number, updates: Partial<T>) => {
     setItems(prev =>
-      prev.map(item => (item.id === id || item._id === id ? { ...item, ...updates } : item))
+      prev.map(item => (item['id'] === id || item['_id'] === id ? { ...item, ...updates } : item))
     )
   }, [])
 
   const removeItem = useCallback((id: string | number) => {
-    setItems(prev => prev.filter(item => item.id !== id && item._id !== id))
-    setSelectedItems(prev => prev.filter(item => item.id !== id && item._id !== id))
+    setItems(prev => prev.filter(item => item['id'] !== id && item['_id'] !== id))
+    setSelectedItems(prev => prev.filter(item => item['id'] !== id && item['_id'] !== id))
   }, [])
 
   const removeItems = useCallback((ids: (string | number)[]) => {
-    setItems(prev => prev.filter(item => !ids.includes(item.id) && !ids.includes(item._id)))
-    setSelectedItems(prev => prev.filter(item => !ids.includes(item.id) && !ids.includes(item._id)))
+    setItems(prev => prev.filter(item => !ids.includes(item['id']) && !ids.includes(item['_id'])))
+    setSelectedItems(prev =>
+      prev.filter(item => !ids.includes(item['id']) && !ids.includes(item['_id']))
+    )
   }, [])
 
   // Gestion de la sélection
@@ -91,14 +94,14 @@ export function useListManagement<T extends Record<string, Record<string, unknow
 
   const deselectItem = useCallback((item: T) => {
     setSelectedItems(prev =>
-      prev.filter(selected => selected.id !== item.id && selected._id !== item._id)
+      prev.filter(selected => selected['id'] !== item['id'] && selected['_id'] !== item['_id'])
     )
   }, [])
 
   const toggleSelection = useCallback(
     (item: T) => {
       const isSelected = selectedItems.some(
-        selected => selected.id === item.id || selected._id === item._id
+        selected => selected['id'] === item['id'] || selected['_id'] === item['_id']
       )
 
       if (isSelected) {

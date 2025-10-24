@@ -12,7 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 async function updateWordPressProgramme() {
   console.log('🔄 Mise à jour du programme WordPress...')
 
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env['MONGODB_URI']
   if (!mongoUri) {
     console.error("❌ MONGODB_URI n'est pas défini dans .env.local")
     return
@@ -28,7 +28,7 @@ async function updateWordPressProgramme() {
     const programmesCollection = db.collection('programmes')
 
     // Trouver le programme WordPress
-    const wordpressProgramme = MOCK_PROGRAMMES.find(p => p.codeFormation === 'A001-WP-DD')
+    const wordpressProgramme = MOCK_PROGRAMMES.find(p => p['codeFormation'] === 'A001-WP-DD')
 
     if (!wordpressProgramme) {
       console.error('❌ Programme WordPress non trouvé dans les données mock')
@@ -40,9 +40,9 @@ async function updateWordPressProgramme() {
       { codeFormation: 'A001-WP-DD' },
       {
         $set: {
-          titre: wordpressProgramme.titre,
+          titre: wordpressProgramme['titre'],
           description: wordpressProgramme.description,
-          competences: wordpressProgramme.competences,
+          competences: wordpressProgramme['competences'],
           updatedAt: new Date(),
         },
       }
@@ -65,11 +65,11 @@ async function updateWordPressProgramme() {
     const updatedProgramme = await programmesCollection.findOne({ codeFormation: 'A001-WP-DD' })
     if (updatedProgramme) {
       console.log('\n📋 Programme mis à jour :')
-      console.log(`   Code: ${updatedProgramme.codeFormation}`)
-      console.log(`   Titre: ${updatedProgramme.titre}`)
-      console.log(`   Prix: ${updatedProgramme.prix}€`)
-      console.log(`   Durée: ${updatedProgramme.duree}h`)
-      console.log(`   Compétences: ${updatedProgramme.competences?.length || 0} compétences`)
+      console.log(`   Code: ${updatedProgramme['codeFormation']}`)
+      console.log(`   Titre: ${updatedProgramme['titre']}`)
+      console.log(`   Prix: ${updatedProgramme['prix']}€`)
+      console.log(`   Durée: ${updatedProgramme['duree']}h`)
+      console.log(`   Compétences: ${updatedProgramme['competences']?.length || 0} compétences`)
     }
   } catch (error: any) {
     console.error('❌ Erreur lors de la mise à jour:', error)

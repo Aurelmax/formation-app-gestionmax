@@ -257,7 +257,7 @@ class DataEnrichmentManager {
     return competences
   }
 
-  private enrichDescription(description: string, titre: string): string {
+  private enrichDescription(description: string, _titre: string): string {
     if (description.length > 500) return description
 
     const enrichments = {
@@ -311,7 +311,7 @@ class DataEnrichmentManager {
     return `Formation ${niveau.toLowerCase()} de ${titre} - Objectifs détaillés à définir selon vos besoins spécifiques.`
   }
 
-  private generatePrerequisites(niveau: string, titre: string): string {
+  private generatePrerequisites(niveau: string, _titre: string): string {
     if (niveau === 'DEBUTANT') {
       return "Aucun prérequis technique. Maîtrise de base de l'environnement informatique recommandée."
     }
@@ -327,7 +327,7 @@ class DataEnrichmentManager {
     return 'Prérequis à définir selon le niveau et le contenu de la formation.'
   }
 
-  private generatePedagogicalMethods(modalites: string, titre: string): string {
+  private generatePedagogicalMethods(modalites: string, _titre: string): string {
     const methods = {
       PRESENTIEL:
         "Formation en présentiel avec alternance d'exposés théoriques et de travaux pratiques. Support de cours fourni.",
@@ -452,7 +452,7 @@ class DataEnrichmentManager {
     return score
   }
 
-  private generateSEOKeywords(titre: string, contenu: string): Array<{ keyword: string }> {
+  private generateSEOKeywords(titre: string, _contenu: string): Array<{ keyword: string }> {
     const keywords = [
       'formation',
       'apprentissage',
@@ -474,7 +474,7 @@ class DataEnrichmentManager {
     return keywords.slice(0, 10).map(keyword => ({ keyword }))
   }
 
-  private generateMetaDescription(resume: string, titre: string): string {
+  private generateMetaDescription(resume: string, _titre: string): string {
     if (resume && resume.length > 120) {
       return resume.substring(0, 120) + '...'
     }
