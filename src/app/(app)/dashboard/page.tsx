@@ -27,25 +27,25 @@ export default function AdminDashboard() {
   const cards = [
     {
       title: 'Apprenants',
-      value: stats?.['apprenants'] || 0,
+      value: (stats?.['apprenants'] as number) || 0,
       icon: Users,
       color: 'text-blue-600',
     },
     {
       title: 'Programmes',
-      value: stats?.['programmes'] || 0,
+      value: (stats?.['programmes'] as number) || 0,
       icon: BookOpen,
       color: 'text-green-600',
     },
     {
       title: 'Rendez-vous',
-      value: stats?.['rendezVous'] || 0,
+      value: (stats?.['rendezVous'] as number) || 0,
       icon: Calendar,
       color: 'text-orange-600',
     },
     {
       title: 'Articles',
-      value: stats?.['articles'] || 0,
+      value: (stats?.['articles'] as number) || 0,
       icon: TrendingUp,
       color: 'text-purple-600',
     },

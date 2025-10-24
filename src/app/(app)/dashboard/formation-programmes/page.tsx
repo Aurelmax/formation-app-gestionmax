@@ -197,7 +197,7 @@ export default function FormationProgrammesPage() {
                     variant="outline"
                     size="sm"
                     className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => handleDelete(programme.id, programme.titre)}
+                    onClick={() => handleDelete(programme.id, programme.titre || programme.title)}
                   >
                     <Trash2 className="h-4 w-4 mr-1" />
                     Supprimer
@@ -206,7 +206,7 @@ export default function FormationProgrammesPage() {
                     variant="outline"
                     size="sm"
                     className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                    onClick={() => handleDownloadPDF(programme.id, programme.titre)}
+                    onClick={() => handleDownloadPDF(programme.id, programme.titre || programme.title)}
                   >
                     <Download className="h-4 w-4 mr-1" />
                     PDF

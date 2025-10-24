@@ -11,9 +11,20 @@ interface ProgrammePageProps {
   }>
 }
 
+interface ProgrammeData {
+  id: string
+  titre: string
+  description: string
+  duree: number
+  niveau: string
+  modalites: string
+  prix: number
+  competences: string[]
+}
+
 export default function ProgrammePage({ params }: ProgrammePageProps) {
   const { id } = use(params)
-  const [programme, setProgramme] = useState<Record<string, unknown> | null>(null)
+  const [programme, setProgramme] = useState<ProgrammeData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {

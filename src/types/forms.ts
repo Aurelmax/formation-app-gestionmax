@@ -288,3 +288,95 @@ export interface FeedbackFormData {
 export interface FeedbackFormState extends FormState {
   data: FeedbackFormData
 }
+
+// ===== FormData Interfaces pour Dashboard Pages =====
+
+/**
+ * FormData pour création Formation Personnalisée (B2B)
+ */
+export interface FormationProgrammeFormData {
+  apprenant: {
+    id: string
+    nom: string
+    prenom: string
+    email: string
+  }
+  programme: {
+    id: string
+    titre: string
+    duree: number
+    modalites: string
+  }
+  dateDebut: string
+  dateFin: string
+  modules?: Array<{
+    titre: string
+    duree: number
+  }>
+  entreprise?: string
+  objectifs?: string
+  notes?: string
+}
+
+/**
+ * FormData pour Diagnostic
+ */
+export interface DiagnosticData {
+  id: string
+  dateCreation: string
+  typeFormation: string
+  objectifs: string[]
+  niveauActuel: string
+  domainesInteret?: string[]
+  disponibilite?: string
+  budget?: number
+  delai?: string
+}
+
+// ===== Type Guards pour validation runtime =====
+
+export function isValidApprenantData(data: unknown): data is { id: string; nom: string; prenom: string; email: string } {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'nom' in data &&
+    'prenom' in data &&
+    'email' in data &&
+    typeof (data as Record<string, unknown>).nom === 'string' &&
+    typeof (data as Record<string, unknown>).prenom === 'string' &&
+    typeof (data as Record<string, unknown>).email === 'string'
+  )
+}
+
+export function isValidProgrammeData(data: unknown): data is { id: string; titre: string; duree: number; modalites: string } {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'titre' in data &&
+    'duree' in data &&
+    typeof (data as Record<string, unknown>).titre === 'string' &&
+    (typeof (data as Record<string, unknown>).duree === 'number' || typeof (data as Record<string, unknown>).duree === 'string')
+  )
+}
+
+export function isDiagnosticData(data: unknown): data is DiagnosticData {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'dateCreation' in data &&
+    'typeFormation' in data &&
+    'objectifs' in data &&
+    Array.isArray((data as Record<string, unknown>).objectifs)
+  )
+}
+
+/**
+ * Type guard générique pour vérifier présence de champs requis
+ */
+export function hasRequiredFields<T extends Record<string, unknown>>(
+  data: unknown,
+  fields: string[]
+): data is T {
+  if (typeof data !== 'object' || data === null) return false
+  return fields.every(field => field in data)
+}

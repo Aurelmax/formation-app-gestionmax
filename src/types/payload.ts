@@ -9,6 +9,7 @@
  * Préférer l'import depuis common.ts pour cohérence
  */
 export type { User, UserRole, UserStatus } from './common'
+export type { RendezVous } from './rendez-vous'
 
 export interface FormationPersonnalisee {
   id: string
@@ -94,23 +95,6 @@ export interface Apprenant {
   updatedAt: string
 }
 
-export interface RendezVous {
-  id: string
-  client: {
-    nom: string
-    prenom: string
-    email: string
-    telephone?: string
-  }
-  programmeTitre: string
-  date: string
-  heure: string
-  statut: 'planifie' | 'confirme' | 'annule' | 'termine'
-  notes?: string
-  createdAt: string
-  updatedAt: string
-}
-
 export interface Article {
   id: string
   title: string
@@ -172,5 +156,5 @@ export interface FormationPersonnaliseeFormProps {
   onSave: (formation: FormationPersonnaliseeFormData) => void
   onCancel: () => void
   isLoading?: boolean
-  rdvData?: Record<string, unknown>
+  rdvData?: RendezVous | null
 }

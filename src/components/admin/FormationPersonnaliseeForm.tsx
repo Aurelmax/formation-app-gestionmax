@@ -31,12 +31,12 @@ export function FormationPersonnaliseeForm({
     title:
       (formation as FormationPersonnalisee)?.title ||
       (rdvData
-        ? `${(rdvData['programmeTitre'] as string) || ''} - ${(rdvData['client'] as Record<string, unknown>)?.['prenom']} ${(rdvData['client'] as Record<string, unknown>)?.['nom']}`
+        ? `${rdvData.programmeTitre || ''} - ${rdvData.client.prenom} ${rdvData.client.nom}`
         : ''),
     codeFormation:
       (formation as FormationPersonnalisee)?.codeFormation ||
       (rdvData
-        ? `A${Date.now().toString().slice(-6)}-${((rdvData['client'] as Record<string, unknown>)?.['nom'] as string)?.toUpperCase()}`
+        ? `A${Date.now().toString().slice(-6)}-${rdvData.client.nom.toUpperCase()}`
         : ''),
     statut: (formation as FormationPersonnalisee)?.statut || 'EN_COURS',
     objectifs: (formation as FormationPersonnalisee)?.objectifs || {

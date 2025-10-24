@@ -4,10 +4,12 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FormationPersonnaliseeForm } from '@/components/admin/FormationPersonnaliseeForm'
 import { toast } from 'sonner'
+import { RendezVous } from '@/types/rendez-vous'
+import { safeDate } from '@/lib/utils/date'
 
 export default function NouvelleFormationPersonnaliseePage() {
   const [isLoading, setIsLoading] = useState(false)
-  const [rdvData, setRdvData] = useState<Record<string, unknown> | null>(null)
+  const [rdvData, setRdvData] = useState<RendezVous | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const rdvId = searchParams.get('rdvId')
@@ -73,7 +75,7 @@ export default function NouvelleFormationPersonnaliseePage() {
         </h1>
         <p className="text-muted-foreground">
           {rdvData
-            ? `Création d'une formation personnalisée pour ${rdvData['client']?.prenom} ${rdvData['client']?.nom} basée sur le RDV de positionnement du ${new Date(rdvData['date']).toLocaleDateString('fr-FR')}`
+            ? `Création d'une formation personnalisée pour ${rdvData.client.prenom} ${rdvData.client.nom} basée sur le RDV de positionnement du ${safeDate(rdvData.date).toLocaleDateString('fr-FR')}`
             : 'Créez une nouvelle formation personnalisée avec structure réglementaire complète'}
         </p>
         {rdvData && (
@@ -81,21 +83,21 @@ export default function NouvelleFormationPersonnaliseePage() {
             <h3 className="font-semibold text-blue-900">Informations du RDV de positionnement :</h3>
             <div className="mt-2 text-sm text-blue-800">
               <p>
-                <strong>Client :</strong> {rdvData['client']?.prenom} {rdvData['client']?.nom}
+                <strong>Client :</strong> {rdvData.client.prenom} {rdvData.client.nom}
               </p>
               <p>
-                <strong>Email :</strong> {rdvData['client']?.email}
+                <strong>Email :</strong> {rdvData.client.email}
               </p>
               <p>
-                <strong>Programme d'intérêt :</strong> {rdvData['programmeTitre']}
+                <strong>Programme d'intérêt :</strong> {rdvData.programmeTitre}
               </p>
               <p>
                 <strong>Date du RDV :</strong>{' '}
-                {new Date(rdvData['date']).toLocaleDateString('fr-FR')} à {rdvData['heure']}
+                {safeDate(rdvData.date).toLocaleDateString('fr-FR')} à {rdvData.heure}
               </p>
-              {rdvData['notes'] && (
+              {rdvData.notes && (
                 <p>
-                  <strong>Notes :</strong> {rdvData['notes']}
+                  <strong>Notes :</strong> {rdvData.notes}
                 </p>
               )}
             </div>
@@ -107,7 +109,7 @@ export default function NouvelleFormationPersonnaliseePage() {
         onSave={handleSave}
         onCancel={handleCancel}
         isLoading={isLoading}
-        rdvData={rdvData}
+        rdvData={rdvData ?? undefined}
       />
     </div>
   )

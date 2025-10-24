@@ -171,16 +171,22 @@ export default function FormationPersonnaliseeDetailPage() {
       toast.success('Document téléchargé avec succès !')
     } catch (error: unknown) {
       console.error('Erreur lors du téléchargement:', error)
-      toast.error(error.message || 'Erreur lors du téléchargement du document')
+      const errorMessage = error instanceof Error ? error.message : 'Erreur lors du téléchargement du document'
+      toast.error(errorMessage)
     }
   }
 
   const formatRichText = (richText: Record<string, unknown>): string => {
-    if (!richText || !richText['root'] || !richText['root'].children) {
+    if (!richText || !richText['root']) {
       return ''
     }
 
-    return (richText['root'].children as unknown[])
+    const root = richText['root'] as { children?: unknown[] }
+    if (!root.children) {
+      return ''
+    }
+
+    return root.children
       .map((child: unknown) => {
         const childObj = child as { type: string; children?: unknown[] }
         if (childObj.type === 'p') {

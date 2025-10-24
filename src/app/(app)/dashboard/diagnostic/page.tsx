@@ -5,9 +5,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { userService } from '@/lib/user-service'
 import { toast } from 'sonner'
+import { safeDate } from '@/lib/utils/date'
+
+interface SystemDiagnostic {
+  users?: Array<{ email: string; role: string; name?: string }>
+  userCount?: number
+  localStorage?: unknown
+  loginTest?: { error?: string } | unknown
+  timestamp?: string
+  error?: string
+}
 
 export default function DiagnosticPage() {
-  const [diagnostic, setDiagnostic] = useState<Record<string, unknown> | null>(null)
+  const [diagnostic, setDiagnostic] = useState<SystemDiagnostic | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const runDiagnostic = async () => {
@@ -107,17 +117,17 @@ export default function DiagnosticPage() {
             <CardHeader>
               <CardTitle>Résultats du Diagnostic</CardTitle>
               <CardDescription>
-                Timestamp: {new Date(diagnostic['timestamp']).toLocaleString()}
+                Timestamp: {safeDate(diagnostic.timestamp).toLocaleString()}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold">Utilisateurs trouvés:</h3>
-                  <p className="text-sm text-gray-600">{diagnostic['userCount']} utilisateur(s)</p>
-                  {diagnostic['users'] && diagnostic['users'].length > 0 && (
+                  <p className="text-sm text-gray-600">{diagnostic.userCount ?? 0} utilisateur(s)</p>
+                  {diagnostic.users && diagnostic.users.length > 0 && (
                     <div className="mt-2">
-                      {(diagnostic['users'] as Array<{ email: string; role: string }>).map(
+                      {diagnostic.users.map(
                         (user, index: number) => (
                           <div key={index} className="text-sm bg-gray-100 p-2 rounded">
                             {user.email} ({user.role})
@@ -131,15 +141,15 @@ export default function DiagnosticPage() {
                 <div>
                   <h3 className="font-semibold">localStorage:</h3>
                   <p className="text-sm text-gray-600">
-                    {diagnostic['localStorage'] ? 'Données présentes' : 'Aucune donnée'}
+                    {diagnostic.localStorage ? 'Données présentes' : 'Aucune donnée'}
                   </p>
                 </div>
 
                 <div>
                   <h3 className="font-semibold">Test de connexion:</h3>
-                  {(diagnostic['loginTest'] as { error?: string })?.error ? (
+                  {(diagnostic.loginTest as { error?: string })?.error ? (
                     <p className="text-sm text-red-600">
-                      ❌ {(diagnostic['loginTest'] as { error: string }).error}
+                      ❌ {(diagnostic.loginTest as { error: string }).error}
                     </p>
                   ) : (
                     <p className="text-sm text-green-600">✅ Connexion réussie</p>
