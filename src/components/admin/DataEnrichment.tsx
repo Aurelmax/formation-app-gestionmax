@@ -117,17 +117,18 @@ export function DataEnrichment() {
 
           return {
             collection: collectionId,
-            status: result.success ? 'success' : 'error',
+            status: result.success ? ('success' as const) : ('error' as const),
             message: result.message || 'Enrichissement terminé',
-            count: result.count,
+            count: result.count as number | undefined,
             duration,
           }
         } catch (error) {
           const duration = Date.now() - startTime
           return {
             collection: collectionId,
-            status: 'error',
+            status: 'error' as const,
             message: `Erreur: ${error}`,
+            count: undefined,
             duration,
           }
         }
@@ -141,7 +142,7 @@ export function DataEnrichment() {
         total: enrichmentResults.length,
         successful: enrichmentResults.filter(r => r.status === 'success').length,
         errors: enrichmentResults.filter(r => r.status === 'error').length,
-        warnings: enrichmentResults.filter(r => r.status === 'warning').length,
+        warnings: 0, // No warnings currently returned by enrichment process
       }
       setStats(newStats)
 

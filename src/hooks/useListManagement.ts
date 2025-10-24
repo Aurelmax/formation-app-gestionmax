@@ -1,21 +1,35 @@
 import { useState, useCallback, useMemo } from 'react'
 
+interface WithId {
+  id?: string | number
+  _id?: string | number
+}
+
 interface ListManagementOptions<T> {
   initialItems?: T[]
   searchFields?: (keyof T)[]
   filterFields?: (keyof T)[]
 }
 
+// Type guards
+function isString(value: unknown): value is string {
+  return typeof value === 'string'
+}
+
+function isNumber(value: unknown): value is number {
+  return typeof value === 'number'
+}
+
 /**
  * Hook personnalisé pour la gestion de listes avec recherche et filtrage
  * Gère la recherche, le filtrage, la pagination et les sélections
  */
-export function useListManagement<T extends Record<string, Record<string, unknown>>>(
+export function useListManagement<T extends WithId & Record<string, unknown>>(
   options: ListManagementOptions<T> = {}
 ) {
   const [items, setItems] = useState<T[]>(options.initialItems || [])
   const [searchTerm, setSearchTerm] = useState('')
-  const [filters, setFilters] = useState<Record<string, Record<string, unknown>>>({})
+  const [filters, setFilters] = useState<Record<string, unknown>>({})
   const [selectedItems, setSelectedItems] = useState<T[]>([])
   const [sortField, setSortField] = useState<keyof T | null>(null)
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
@@ -40,8 +54,9 @@ export function useListManagement<T extends Record<string, Record<string, unknow
       if (value !== null && value !== undefined && value !== '') {
         result = result.filter(item => {
           const itemValue = item[field]
-          if (typeof value === 'string') {
-            return itemValue?.toString().toLowerCase().includes(value.toLowerCase())
+          if (isString(value)) {
+            const itemStr = itemValue?.toString() ?? ''
+            return itemStr.toLowerCase().includes(value.toLowerCase())
           }
           return itemValue === value
         })
@@ -55,8 +70,24 @@ export function useListManagement<T extends Record<string, Record<string, unknow
         const bValue = b[sortField]
 
         if (aValue === undefined || bValue === undefined) return 0
-        if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
-        if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
+
+        // Compare strings
+        if (isString(aValue) && isString(bValue)) {
+          return sortDirection === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue)
+        }
+
+        // Compare numbers
+        if (isNumber(aValue) && isNumber(bValue)) {
+          return sortDirection === 'asc' ? aValue - bValue : bValue - aValue
+        }
+
+        // Fallback to generic comparison (with null checks)
+        if (aValue !== null && bValue !== null) {
+          if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
+          if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
+        }
         return 0
       })
     }
@@ -71,19 +102,27 @@ export function useListManagement<T extends Record<string, Record<string, unknow
 
   const updateItem = useCallback((id: string | number, updates: Partial<T>) => {
     setItems(prev =>
-      prev.map(item => (item['id'] === id || item['_id'] === id ? { ...item, ...updates } : item))
+      prev.map(item => (item.id === id || item._id === id ? { ...item, ...updates } : item))
     )
   }, [])
 
   const removeItem = useCallback((id: string | number) => {
-    setItems(prev => prev.filter(item => item['id'] !== id && item['_id'] !== id))
-    setSelectedItems(prev => prev.filter(item => item['id'] !== id && item['_id'] !== id))
+    setItems(prev => prev.filter(item => item.id !== id && item._id !== id))
+    setSelectedItems(prev => prev.filter(item => item.id !== id && item._id !== id))
   }, [])
 
   const removeItems = useCallback((ids: (string | number)[]) => {
-    setItems(prev => prev.filter(item => !ids.includes(item['id']) && !ids.includes(item['_id'])))
+    setItems(prev =>
+      prev.filter(item => {
+        const itemId = item.id ?? item._id
+        return itemId === undefined || !ids.includes(itemId)
+      })
+    )
     setSelectedItems(prev =>
-      prev.filter(item => !ids.includes(item['id']) && !ids.includes(item['_id']))
+      prev.filter(item => {
+        const itemId = item.id ?? item._id
+        return itemId === undefined || !ids.includes(itemId)
+      })
     )
   }, [])
 
@@ -94,14 +133,14 @@ export function useListManagement<T extends Record<string, Record<string, unknow
 
   const deselectItem = useCallback((item: T) => {
     setSelectedItems(prev =>
-      prev.filter(selected => selected['id'] !== item['id'] && selected['_id'] !== item['_id'])
+      prev.filter(selected => selected.id !== item.id && selected._id !== item._id)
     )
   }, [])
 
   const toggleSelection = useCallback(
     (item: T) => {
       const isSelected = selectedItems.some(
-        selected => selected['id'] === item['id'] || selected['_id'] === item['_id']
+        selected => selected.id === item.id || selected._id === item._id
       )
 
       if (isSelected) {
@@ -135,7 +174,7 @@ export function useListManagement<T extends Record<string, Record<string, unknow
   )
 
   // Gestion des filtres
-  const setFilter = useCallback((field: string, value: Record<string, unknown>) => {
+  const setFilter = useCallback((field: string, value: unknown) => {
     setFilters(prev => ({
       ...prev,
       [field]: value,

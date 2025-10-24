@@ -50,9 +50,10 @@ export function useFormState<T extends Record<string, Record<string, unknown>>>(
   const updateArrayField = useCallback(
     (field: keyof T, index: number, value: Record<string, unknown>) => {
       setData(prev => {
-        const newArray = [...(prev[field] as unknown[])]
+        const currentValue = prev[field]
+        const newArray = Array.isArray(currentValue) ? [...currentValue] : []
         newArray[index] = value
-        return { ...prev, [field]: newArray }
+        return { ...prev, [field]: newArray as unknown as T[keyof T] }
       })
       setIsDirty(true)
     },
@@ -61,19 +62,24 @@ export function useFormState<T extends Record<string, Record<string, unknown>>>(
 
   // Ajouter un élément à un tableau
   const addToArray = useCallback((field: keyof T, item: Record<string, unknown>) => {
-    setData(prev => ({
-      ...prev,
-      [field]: [...(prev[field] as unknown[]), item],
-    }))
+    setData(prev => {
+      const currentValue = prev[field]
+      const currentArray = Array.isArray(currentValue) ? currentValue : []
+      return {
+        ...prev,
+        [field]: [...currentArray, item] as unknown as T[keyof T],
+      }
+    })
     setIsDirty(true)
   }, [])
 
   // Supprimer un élément d'un tableau
   const removeFromArray = useCallback((field: keyof T, index: number) => {
     setData(prev => {
-      const newArray = [...(prev[field] as unknown[])]
+      const currentValue = prev[field]
+      const newArray = Array.isArray(currentValue) ? [...currentValue] : []
       newArray.splice(index, 1)
-      return { ...prev, [field]: newArray }
+      return { ...prev, [field]: newArray as unknown as T[keyof T] }
     })
     setIsDirty(true)
   }, [])
@@ -87,10 +93,13 @@ export function useFormState<T extends Record<string, Record<string, unknown>>>(
 
     Object.entries(validationRules).forEach(([field, validator]) => {
       if (!validator) return
-      const error = validator(data[field as keyof T])
-      if (error) {
-        newErrors[field as keyof T] = error
-        isValid = false
+      const fieldValue = data[field as keyof T]
+      if (fieldValue !== undefined) {
+        const error = validator(fieldValue)
+        if (error) {
+          newErrors[field as keyof T] = error
+          isValid = false
+        }
       }
     })
 
