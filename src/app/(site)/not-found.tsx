@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PublicLayout } from '@/components/layouts/public/PublicLayout'
 import { Home, ArrowLeft, Search } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function NotFound() {
   return (
     <PublicLayout>

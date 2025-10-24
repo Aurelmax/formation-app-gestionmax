@@ -14,7 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ArrowLeft, Save, X, User, Calendar } from 'lucide-react'
+import { ArrowLeft, Save, X, User, Calendar, Building2, FileText } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface NouveauRendezVousFormData {
   client: {
@@ -35,6 +36,34 @@ interface NouveauRendezVousFormData {
   adresse?: string
   lienVisio?: string
   notes?: string
+}
+
+interface ApprenantB2BData {
+  // Données apprenant
+  nom: string
+  prenom: string
+  email: string
+  telephone?: string
+  dateNaissance?: string
+  numeroSecuriteSociale?: string
+  numeroCotisantIndividuel?: string
+
+  // Données structure juridique
+  structureNom: string
+  siret: string
+  codeApe?: string
+  structureAdresse?: string
+  structureCodePostal?: string
+  structureVille?: string
+  structureTelephone?: string
+  structureEmail?: string
+
+  // Contact principal
+  contactNom?: string
+  contactPrenom?: string
+  contactFonction?: string
+  contactEmail?: string
+  contactTelephone?: string
 }
 
 const programmesMock = [
@@ -76,9 +105,32 @@ export default function NouveauRendezVousPage() {
     notes: '',
   })
 
+  const [b2bData, setB2bData] = useState<ApprenantB2BData>({
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    dateNaissance: '',
+    numeroSecuriteSociale: '',
+    numeroCotisantIndividuel: '',
+    structureNom: '',
+    siret: '',
+    codeApe: '',
+    structureAdresse: '',
+    structureCodePostal: '',
+    structureVille: '',
+    structureTelephone: '',
+    structureEmail: '',
+    contactNom: '',
+    contactPrenom: '',
+    contactFonction: '',
+    contactEmail: '',
+    contactTelephone: '',
+  })
+
   const handleInputChange = (field: string, value: string | number) => {
     if (field.startsWith('client.')) {
-      const clientField = field.split('.')[1]
+      const clientField = field.split('.')[1] as keyof NouveauRendezVousFormData['client']
       setFormData(prev => ({
         ...prev,
         client: {
@@ -92,6 +144,13 @@ export default function NouveauRendezVousPage() {
         [field]: value,
       }))
     }
+  }
+
+  const handleB2BInputChange = (field: keyof ApprenantB2BData, value: string) => {
+    setB2bData(prev => ({
+      ...prev,
+      [field]: value,
+    }))
   }
 
   const handleProgrammeChange = (programmeId: string) => {
@@ -108,13 +167,14 @@ export default function NouveauRendezVousPage() {
     setIsLoading(true)
 
     try {
+      // 1️⃣ Créer le rendez-vous
       const nouveauRendezVous = {
         ...formData,
         rappelEnvoye: false,
         createdBy: '1', // ID de l'utilisateur connecté
       }
 
-      const response = await fetch('/api/rendez-vous-payload', {
+      const rdvResponse = await fetch('/api/rendez-vous', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,17 +182,39 @@ export default function NouveauRendezVousPage() {
         body: JSON.stringify(nouveauRendezVous),
       })
 
-      const result = await response.json()
+      const rdvResult = await rdvResponse.json()
 
-      if (result.success) {
-        // Rediriger vers la liste des rendez-vous
-        router.push('/admin/rendez-vous')
-      } else {
-        throw new Error(result.error || 'Erreur lors de la création')
+      if (!rdvResult.success) {
+        throw new Error(rdvResult.error || 'Erreur lors de la création du rendez-vous')
       }
+
+      // 2️⃣ Si c'est un rendez-vous de positionnement, créer la fiche apprenant B2B
+      if (formData.type === 'positionnement' && b2bData.siret && b2bData.structureNom) {
+        const apprenantResponse = await fetch('/payload-cms/creer-apprenant', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(b2bData),
+        })
+
+        const apprenantResult = await apprenantResponse.json()
+
+        if (!apprenantResult.success) {
+          console.warn('Avertissement: Le rendez-vous a été créé mais la fiche apprenant a échoué:', apprenantResult.error)
+          toast.error(`Rendez-vous créé mais erreur apprenant: ${apprenantResult.error}`)
+        } else {
+          toast.success('Rendez-vous et fiche apprenant créés avec succès!')
+        }
+      } else {
+        toast.success('Rendez-vous créé avec succès!')
+      }
+
+      // Rediriger vers la liste des rendez-vous
+      router.push('/admin/rendez-vous')
     } catch (error) {
-      console.error('Erreur lors de la création du rendez-vous:', error)
-      alert('Erreur lors de la création du rendez-vous')
+      console.error('Erreur lors de la création:', error)
+      toast.error('Erreur lors de la création du rendez-vous')
     } finally {
       setIsLoading(false)
     }
@@ -395,6 +477,252 @@ export default function NouveauRendezVousPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Données B2B - Affiché uniquement pour les rendez-vous de positionnement */}
+        {formData.type === 'positionnement' && (
+          <>
+            <Card className="border-blue-200 bg-blue-50/30">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 text-blue-900">
+                  <User className="h-5 w-5" />
+                  <span>Données Apprenant (B2B)</span>
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Ces informations permettront de créer automatiquement la fiche apprenant
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.nom">Nom *</Label>
+                    <Input
+                      id="b2b.nom"
+                      value={b2bData.nom}
+                      onChange={e => handleB2BInputChange('nom', e.target.value)}
+                      required={formData.type === 'positionnement'}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.prenom">Prénom *</Label>
+                    <Input
+                      id="b2b.prenom"
+                      value={b2bData.prenom}
+                      onChange={e => handleB2BInputChange('prenom', e.target.value)}
+                      required={formData.type === 'positionnement'}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.email">Email *</Label>
+                    <Input
+                      id="b2b.email"
+                      type="email"
+                      value={b2bData.email}
+                      onChange={e => handleB2BInputChange('email', e.target.value)}
+                      required={formData.type === 'positionnement'}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.telephone">Téléphone</Label>
+                    <Input
+                      id="b2b.telephone"
+                      value={b2bData.telephone}
+                      onChange={e => handleB2BInputChange('telephone', e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.dateNaissance">Date de naissance</Label>
+                    <Input
+                      id="b2b.dateNaissance"
+                      type="date"
+                      value={b2bData.dateNaissance}
+                      onChange={e => handleB2BInputChange('dateNaissance', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.numeroSecuriteSociale">
+                      N° Sécurité Sociale
+                    </Label>
+                    <Input
+                      id="b2b.numeroSecuriteSociale"
+                      value={b2bData.numeroSecuriteSociale}
+                      onChange={e => handleB2BInputChange('numeroSecuriteSociale', e.target.value)}
+                      placeholder="15 chiffres"
+                      maxLength={15}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.numeroCotisantIndividuel">
+                      N° Cotisant Individuel
+                    </Label>
+                    <Input
+                      id="b2b.numeroCotisantIndividuel"
+                      value={b2bData.numeroCotisantIndividuel}
+                      onChange={e => handleB2BInputChange('numeroCotisantIndividuel', e.target.value)}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-green-200 bg-green-50/30">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 text-green-900">
+                  <Building2 className="h-5 w-5" />
+                  <span>Structure Juridique (B2B)</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.structureNom">Nom de la structure (Raison sociale) *</Label>
+                    <Input
+                      id="b2b.structureNom"
+                      value={b2bData.structureNom}
+                      onChange={e => handleB2BInputChange('structureNom', e.target.value)}
+                      required={formData.type === 'positionnement'}
+                      placeholder="Ex: SARL Martin Formations"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.siret">SIRET *</Label>
+                    <Input
+                      id="b2b.siret"
+                      value={b2bData.siret}
+                      onChange={e => handleB2BInputChange('siret', e.target.value)}
+                      required={formData.type === 'positionnement'}
+                      placeholder="14 chiffres"
+                      maxLength={14}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="b2b.codeApe">Code APE</Label>
+                  <Input
+                    id="b2b.codeApe"
+                    value={b2bData.codeApe}
+                    onChange={e => handleB2BInputChange('codeApe', e.target.value)}
+                    placeholder="Ex: 8559A"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="b2b.structureAdresse">Adresse de la structure</Label>
+                  <Input
+                    id="b2b.structureAdresse"
+                    value={b2bData.structureAdresse}
+                    onChange={e => handleB2BInputChange('structureAdresse', e.target.value)}
+                    placeholder="Numéro et nom de rue"
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.structureCodePostal">Code Postal</Label>
+                    <Input
+                      id="b2b.structureCodePostal"
+                      value={b2bData.structureCodePostal}
+                      onChange={e => handleB2BInputChange('structureCodePostal', e.target.value)}
+                      maxLength={5}
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Label htmlFor="b2b.structureVille">Ville</Label>
+                    <Input
+                      id="b2b.structureVille"
+                      value={b2bData.structureVille}
+                      onChange={e => handleB2BInputChange('structureVille', e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.structureTelephone">Téléphone de la structure</Label>
+                    <Input
+                      id="b2b.structureTelephone"
+                      value={b2bData.structureTelephone}
+                      onChange={e => handleB2BInputChange('structureTelephone', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.structureEmail">Email de la structure</Label>
+                    <Input
+                      id="b2b.structureEmail"
+                      type="email"
+                      value={b2bData.structureEmail}
+                      onChange={e => handleB2BInputChange('structureEmail', e.target.value)}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-purple-200 bg-purple-50/30">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 text-purple-900">
+                  <FileText className="h-5 w-5" />
+                  <span>Contact Principal de la Structure</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.contactNom">Nom</Label>
+                    <Input
+                      id="b2b.contactNom"
+                      value={b2bData.contactNom}
+                      onChange={e => handleB2BInputChange('contactNom', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.contactPrenom">Prénom</Label>
+                    <Input
+                      id="b2b.contactPrenom"
+                      value={b2bData.contactPrenom}
+                      onChange={e => handleB2BInputChange('contactPrenom', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.contactFonction">Fonction</Label>
+                    <Input
+                      id="b2b.contactFonction"
+                      value={b2bData.contactFonction}
+                      onChange={e => handleB2BInputChange('contactFonction', e.target.value)}
+                      placeholder="Ex: Directeur RH"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="b2b.contactEmail">Email du contact</Label>
+                    <Input
+                      id="b2b.contactEmail"
+                      type="email"
+                      value={b2bData.contactEmail}
+                      onChange={e => handleB2BInputChange('contactEmail', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="b2b.contactTelephone">Téléphone du contact</Label>
+                    <Input
+                      id="b2b.contactTelephone"
+                      value={b2bData.contactTelephone}
+                      onChange={e => handleB2BInputChange('contactTelephone', e.target.value)}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
 
         {/* Actions */}
         <div className="flex justify-end space-x-4">

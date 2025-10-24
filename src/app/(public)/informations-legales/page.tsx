@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Building2, FileText, Shield, Award, AlertTriangle } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function InformationsLegalesPage() {
   return (
     <PublicLayout>

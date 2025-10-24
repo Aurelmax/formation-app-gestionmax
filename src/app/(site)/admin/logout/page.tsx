@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { LogOut, CheckCircle } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function LogoutPage() {
   const router = useRouter()
 
@@ -24,12 +26,13 @@ export default function LogoutPage() {
 
       // Rediriger vers la page de login après un court délai
       setTimeout(() => {
-        window.location.href = '/admin/login'
+        router.push('/admin/login')
+        router.refresh()
       }, 2000)
     }
 
     performLogout()
-  }, [])
+  }, [router])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -46,7 +49,7 @@ export default function LogoutPage() {
           <div className="flex justify-center">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
           </div>
-          <Button onClick={() => (window.location.href = '/admin/login')} className="w-full">
+          <Button onClick={() => router.push('/admin/login')} className="w-full">
             <LogOut className="h-4 w-4 mr-2" />
             Aller à la page de connexion
           </Button>

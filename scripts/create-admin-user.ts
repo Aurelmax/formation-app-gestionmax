@@ -16,8 +16,8 @@ async function createAdminUser() {
 
     // Supprimer les utilisateurs sans mot de passe
     for (const user of existingUsers.docs) {
-      if (!user.password) {
-        console.log(`Suppression de l'utilisateur sans mot de passe: ${user.email}`)
+      if (!user['password']) {
+        console.log(`Suppression de l'utilisateur sans mot de passe: ${user['email']}`)
         await payload.delete({
           collection: 'users',
           id: user.id,
@@ -27,7 +27,7 @@ async function createAdminUser() {
 
     // Créer un nouvel utilisateur admin
     console.log('\nCréation du nouvel utilisateur admin...')
-    const adminUser = await payload.create({
+    await payload.create({
       collection: 'users',
       data: {
         email: 'admin@gestionmax.fr',

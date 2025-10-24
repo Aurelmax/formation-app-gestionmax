@@ -20,7 +20,6 @@ import {
   Save,
   X,
   Plus,
-  Trash2,
   BookOpen,
   Clock,
   Euro,
@@ -122,7 +121,12 @@ export function ProgrammeFormComplet({
   const handleRemoveCompetence = (competence: string) => {
     setFormData(prev => ({
       ...prev,
-      competences: prev.competences.filter(c => c !== competence),
+      competences: prev.competences.filter(c => {
+        const compText = typeof c === 'object' && (c as any)?.competence
+          ? (c as any).competence
+          : String(c)
+        return compText !== competence
+      }),
     }))
   }
 
@@ -496,22 +500,27 @@ export function ProgrammeFormComplet({
 
               {formData.competences.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {formData.competences.map((competence, index) => (
-                    <Badge
-                      key={`${competence}-${index}`}
-                      variant="secondary"
-                      className="flex items-center gap-1"
-                    >
-                      {competence}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveCompetence(competence)}
-                        className="ml-1 hover:text-red-500"
+                  {formData.competences.map((comp: any, index) => {
+                    const competenceText = typeof comp === 'object' && comp?.competence
+                      ? comp.competence
+                      : String(comp)
+                    return (
+                      <Badge
+                        key={`${competenceText}-${index}`}
+                        variant="secondary"
+                        className="flex items-center gap-1"
                       >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))}
+                        {competenceText}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveCompetence(competenceText)}
+                          className="ml-1 hover:text-red-500"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </Badge>
+                    )
+                  })}
                 </div>
               )}
             </div>

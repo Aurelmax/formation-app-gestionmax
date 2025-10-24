@@ -92,9 +92,11 @@ export interface Apprenant extends Timestamped {
   email: string
   telephone: string
   dateNaissance: ISODate
+  dateInscription?: ISODate // Date d'inscription
   adresse: string
   statut: ApprenantStatut
   programmes: ID[] // Programme IDs
+  formations?: ID[] // Formation IDs (alias pour programmes)
   progression: number // 0-100
   avatar?: string
 }

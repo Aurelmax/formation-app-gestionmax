@@ -11,7 +11,6 @@ import {
   UpdateUserRequest,
   UserRole,
   USER_ROLES,
-  USER_STATUS,
 } from '@/types/users'
 import { payloadUserService as userService } from '@/lib/payload-user-service'
 import { Button } from '@/components/ui/button'
@@ -55,7 +54,6 @@ import {
   Trash2,
   Shield,
   User as UserIcon,
-  Mail,
   Phone,
   Calendar,
   Key,
@@ -108,13 +106,38 @@ export function UserManagementSimple() {
 
   // Créer un utilisateur
   const handleCreateUser = async () => {
+    console.log('🔵 handleCreateUser appelé', formData)
+
+    // Validation côté client
+    if (!formData.email || !formData.email.includes('@')) {
+      console.log('❌ Email invalide:', formData.email)
+      toast.error('Email invalide')
+      return
+    }
+
+    if (!formData.password || formData.password.length < 6) {
+      console.log('❌ Mot de passe trop court:', formData.password?.length)
+      toast.error('Le mot de passe doit contenir au moins 6 caractères')
+      return
+    }
+
+    if (!formData.name || formData.name.trim().length === 0) {
+      console.log('❌ Nom vide')
+      toast.error('Le nom est requis')
+      return
+    }
+
     try {
-      await userService.createUser(formData)
+      console.log('✅ Validation OK, création en cours...')
+      const newUser = await userService.createUser(formData)
+      console.log('✅ Utilisateur créé:', newUser)
       toast.success('Utilisateur créé avec succès')
       setIsCreateDialogOpen(false)
       resetForm()
-      loadUsers()
+      await loadUsers()
+      console.log('✅ Liste des utilisateurs rechargée')
     } catch (error) {
+      console.error('❌ Erreur création:', error)
       toast.error(error instanceof Error ? error.message : 'Erreur lors de la création')
     }
   }
@@ -308,6 +331,10 @@ export function UserManagementSimple() {
               formData={formData}
               setFormData={setFormData}
               onSubmit={handleCreateUser}
+              onCancel={() => {
+                setIsCreateDialogOpen(false)
+                resetForm()
+              }}
               isEdit={false}
             />
           </DialogContent>
@@ -492,6 +519,11 @@ export function UserManagementSimple() {
             formData={formData}
             setFormData={setFormData}
             onSubmit={handleUpdateUser}
+            onCancel={() => {
+              setIsEditDialogOpen(false)
+              setSelectedUser(null)
+              resetForm()
+            }}
             isEdit={true}
           />
         </DialogContent>
@@ -548,10 +580,11 @@ interface UserFormProps {
   formData: CreateUserRequest
   setFormData: (data: CreateUserRequest) => void
   onSubmit: () => void
+  onCancel?: () => void
   isEdit: boolean
 }
 
-function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
+function UserForm({ formData, setFormData, onSubmit, onCancel, isEdit }: UserFormProps) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
@@ -655,7 +688,7 @@ function UserForm({ formData, setFormData, onSubmit, isEdit }: UserFormProps) {
       </div>
 
       <div className="flex justify-end space-x-2 pt-4">
-        <Button variant="outline" type="button">
+        <Button variant="outline" type="button" onClick={onCancel}>
           Annuler
         </Button>
         <Button onClick={onSubmit}>{isEdit ? 'Mettre à jour' : 'Créer'}</Button>

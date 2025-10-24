@@ -101,7 +101,7 @@ export const Apprenants: CollectionConfig = {
       label: 'Structure Juridique',
       type: 'relationship',
       relationTo: 'structures-juridiques',
-      required: true,
+      required: false, // Optionnel pour permettre la modification sans gérer la structure
       hasMany: false,
       admin: {
         description: 'Entreprise ou structure rattachée à l\'apprenant',

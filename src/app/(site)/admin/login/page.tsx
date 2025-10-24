@@ -11,6 +11,8 @@ import { Eye, EyeOff, Lock, Mail, Shield, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { userService } from '@/lib/user-service'
 
+export const dynamic = 'force-dynamic'
+
 export default function AdminLoginPage() {
   const router = useRouter()
   const [formData, setFormData] = useState({
@@ -169,6 +171,18 @@ export default function AdminLoginPage() {
                 )}
               </Button>
 
+              {/* Lien mot de passe oublié */}
+              <div className="text-center">
+                <Button
+                  type="button"
+                  variant="link"
+                  onClick={() => router.push('/admin/forgot-password')}
+                  className="text-sm text-primary hover:underline"
+                >
+                  Mot de passe oublié ?
+                </Button>
+              </div>
+
               {/* Bouton de connexion rapide */}
               <Button
                 type="button"
@@ -188,7 +202,7 @@ export default function AdminLoginPage() {
                 variant="secondary"
                 className="w-full mt-2"
                 onClick={() => {
-                  toast.info('Redirection vers l\'authentification Payload CMS...')
+                  toast.info("Redirection vers l'authentification Payload CMS...")
                   // Rediriger vers le login Payload natif
                   window.location.href = '/payload-cms/login?redirect=/admin'
                 }}
@@ -215,7 +229,9 @@ export default function AdminLoginPage() {
 
             {/* Informations utilisateur */}
             <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h3 className="text-sm font-semibold text-blue-900 mb-2">Authentification Payload CMS :</h3>
+              <h3 className="text-sm font-semibold text-blue-900 mb-2">
+                Authentification Payload CMS :
+              </h3>
               <div className="text-xs text-blue-800 space-y-2">
                 <div>
                   <strong>Admin:</strong> admin@gestionmax.fr / AdminGestionMax2025!
@@ -223,13 +239,15 @@ export default function AdminLoginPage() {
                 <div className="mt-2 p-2 bg-blue-100 rounded">
                   <p className="font-semibold mb-1">🔒 Authentification unifiée</p>
                   <p>
-                    L'authentification passe par Payload CMS. Une fois connecté, vous aurez accès à la fois au dashboard React et à l'admin Payload.
+                    L'authentification passe par Payload CMS. Une fois connecté, vous aurez accès à
+                    la fois au dashboard React et à l'admin Payload.
                   </p>
                 </div>
               </div>
               <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
                 <p className="text-xs text-green-800">
-                  💡 <strong>Astuce:</strong> Cliquez sur "Se connecter via Payload CMS" pour une auth sécurisée !
+                  💡 <strong>Astuce:</strong> Cliquez sur "Se connecter via Payload CMS" pour une
+                  auth sécurisée !
                 </p>
               </div>
             </div>

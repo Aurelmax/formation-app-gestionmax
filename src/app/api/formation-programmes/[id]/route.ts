@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const payload = await getPayload({ config })
+    const resolvedParams = await params
 
     const formation = await payload.findByID({
       collection: 'formations_personnalisees',
-      id: params.id,
+      id: resolvedParams.id,
     })
 
     if (!formation) {
@@ -31,15 +32,16 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const body = await request.json()
     const payload = await getPayload({ config })
+    const resolvedParams = await params
 
     // Vérifier si la formation existe
     const existingFormation = await payload.findByID({
       collection: 'formations_personnalisees',
-      id: params.id,
+      id: resolvedParams.id,
     })
 
     if (!existingFormation) {
@@ -55,7 +57,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             equals: body.codeFormation,
           },
           id: {
-            notEquals: params.id,
+            notEquals: resolvedParams.id,
           },
         },
       })
@@ -71,7 +73,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     // Mettre à jour la formation via Payload
     const updatedFormation = await payload.update({
       collection: 'formations_personnalisees',
-      id: params.id,
+      id: resolvedParams.id,
       data: body,
     })
 
@@ -88,14 +90,15 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const payload = await getPayload({ config })
+    const resolvedParams = await params
 
     // Vérifier si la formation existe
     const existingFormation = await payload.findByID({
       collection: 'formations_personnalisees',
-      id: params.id,
+      id: resolvedParams.id,
     })
 
     if (!existingFormation) {
@@ -105,7 +108,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     // Supprimer la formation via Payload
     await payload.delete({
       collection: 'formations_personnalisees',
-      id: params.id,
+      id: resolvedParams.id,
     })
 
     return NextResponse.json({

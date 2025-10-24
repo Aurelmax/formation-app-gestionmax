@@ -13,20 +13,14 @@ export async function GET(request: NextRequest) {
     const token = cookieStore.get('payload-token')?.value
 
     if (!token) {
-      return NextResponse.json(
-        { success: false, error: 'Non authentifié' },
-        { status: 401 }
-      )
+      return NextResponse.json({ success: false, error: 'Non authentifié' }, { status: 401 })
     }
 
     // Vérifier le token et récupérer l'utilisateur
     const { user } = await payload.auth({ headers: request.headers })
 
     if (!user) {
-      return NextResponse.json(
-        { success: false, error: 'Session invalide' },
-        { status: 401 }
-      )
+      return NextResponse.json({ success: false, error: 'Session invalide' }, { status: 401 })
     }
 
     return NextResponse.json({

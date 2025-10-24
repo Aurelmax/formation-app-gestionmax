@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+
+export const dynamic = 'force-dynamic'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CVModal } from '@/components/ui/cv-modal'

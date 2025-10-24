@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -12,16 +12,13 @@ export default function PayloadRealPage() {
   >('checking')
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    checkPayloadStatus()
-  }, [])
-
-  const checkPayloadStatus = async () => {
+  const checkPayloadStatus = useCallback(async () => {
     try {
       // Vérifier si Payload est accessible
       const response = await fetch('/api/payload/health')
       if (response.ok) {
         setPayloadStatus('running')
+        setError(null)
       } else {
         setPayloadStatus('not-running')
         setError("Payload CMS n'est pas accessible")
@@ -30,7 +27,23 @@ export default function PayloadRealPage() {
       setPayloadStatus('error')
       setError('Erreur de connexion à Payload CMS')
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    let isMounted = true
+
+    const checkStatus = async () => {
+      if (isMounted) {
+        await checkPayloadStatus()
+      }
+    }
+
+    checkStatus()
+
+    return () => {
+      isMounted = false
+    }
+  }, [checkPayloadStatus])
 
   const startPayload = async () => {
     try {

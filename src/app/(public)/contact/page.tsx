@@ -1,6 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import { PublicLayout } from '@/components/layouts/public/PublicLayout'
+
+export const dynamic = 'force-dynamic'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,11 +16,90 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Mail, Phone, MapPin, Clock, FileText, Scale, Shield } from 'lucide-react'
+import { Mail, Phone, MapPin, Clock, FileText, Scale, Shield, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
 import { InteractiveMap } from '@/components/ui/InteractiveMap'
+import { toast } from 'sonner'
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    nom: '',
+    email: '',
+    telephone: '',
+    type: '',
+    sujet: '',
+    message: '',
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }))
+  }
+
+  const handleSelectChange = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      type: value,
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      // Validation
+      if (
+        !formData.nom ||
+        !formData.email ||
+        !formData.type ||
+        !formData.sujet ||
+        !formData.message
+      ) {
+        toast.error('Veuillez remplir tous les champs obligatoires')
+        setIsSubmitting(false)
+        return
+      }
+
+      // Envoi à l'API
+      const response = await fetch('/api/contacts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur lors de l'envoi du message")
+      }
+
+      // Succès
+      setIsSuccess(true)
+      toast.success('Message envoyé avec succès !')
+
+      // Réinitialiser le formulaire
+      setFormData({
+        nom: '',
+        email: '',
+        telephone: '',
+        type: '',
+        sujet: '',
+        message: '',
+      })
+    } catch (error) {
+      console.error('Erreur:', error)
+      toast.error(error instanceof Error ? error.message : "Erreur lors de l'envoi du message")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
   return (
     <PublicLayout>
       {/* Hero Section */}
@@ -98,7 +180,17 @@ export default function ContactPage() {
                     Remplissez le formulaire ci-dessous et nous vous répondrons rapidement
                   </p>
 
-                  <form className="space-y-4">
+                  {isSuccess && (
+                    <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <p className="text-green-800 font-medium">
+                        Message envoyé avec succès ! Nous vous répondrons dans les plus brefs
+                        délais.
+                      </p>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="nom" className="text-gray-700">
                         Nom complet *
@@ -108,6 +200,9 @@ export default function ContactPage() {
                         placeholder="Votre nom complet"
                         required
                         className="border-gray-300"
+                        value={formData.nom}
+                        onChange={handleChange}
+                        disabled={isSubmitting}
                       />
                     </div>
 
@@ -121,6 +216,9 @@ export default function ContactPage() {
                         placeholder="votre@email.com"
                         required
                         className="border-gray-300"
+                        value={formData.email}
+                        onChange={handleChange}
+                        disabled={isSubmitting}
                       />
                     </div>
 
@@ -133,6 +231,9 @@ export default function ContactPage() {
                         type="tel"
                         placeholder="06 46 02 24 68"
                         className="border-gray-300"
+                        value={formData.telephone}
+                        onChange={handleChange}
+                        disabled={isSubmitting}
                       />
                     </div>
 
@@ -140,7 +241,11 @@ export default function ContactPage() {
                       <Label htmlFor="type" className="text-gray-700">
                         Type de demande *
                       </Label>
-                      <Select>
+                      <Select
+                        value={formData.type}
+                        onValueChange={handleSelectChange}
+                        disabled={isSubmitting}
+                      >
                         <SelectTrigger className="border-gray-300">
                           <SelectValue placeholder="Sélectionnez un type" />
                         </SelectTrigger>
@@ -162,6 +267,9 @@ export default function ContactPage() {
                         placeholder="Sujet de votre message"
                         required
                         className="border-gray-300"
+                        value={formData.sujet}
+                        onChange={handleChange}
+                        disabled={isSubmitting}
                       />
                     </div>
 
@@ -175,14 +283,25 @@ export default function ContactPage() {
                         rows={4}
                         required
                         className="border-gray-300"
+                        value={formData.message}
+                        onChange={handleChange}
+                        disabled={isSubmitting}
                       />
                     </div>
 
                     <Button
                       type="submit"
                       className="w-full bg-brand-primary hover:bg-brand-secondary text-white py-3"
+                      disabled={isSubmitting}
                     >
-                      Envoyer le message
+                      {isSubmitting ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2 inline-block"></div>
+                          Envoi en cours...
+                        </>
+                      ) : (
+                        'Envoyer le message'
+                      )}
                     </Button>
                   </form>
                 </div>

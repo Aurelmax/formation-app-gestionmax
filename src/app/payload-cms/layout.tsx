@@ -1,5 +1,4 @@
 /* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
-import type { Metadata } from 'next'
 import type { ServerFunctionClient } from 'payload'
 
 import config from '@/payload.config'
@@ -13,12 +12,6 @@ type Args = {
   children: React.ReactNode
 }
 
-export const metadata: Metadata = {
-  title: 'Payload CMS - GestionMax',
-  description: 'Administration Payload CMS',
-  icons: '/favicon.ico',
-}
-
 const serverFunction: ServerFunctionClient = async function (args) {
   'use server'
   return handleServerFunctions({
@@ -28,6 +21,8 @@ const serverFunction: ServerFunctionClient = async function (args) {
   })
 }
 
+// Payload RootLayout gère son propre <html> et <body>
+// Il remplace complètement le root layout de Next.js pour cette route
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
     {children}

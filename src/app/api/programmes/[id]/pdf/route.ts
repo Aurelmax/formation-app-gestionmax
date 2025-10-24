@@ -5,7 +5,7 @@ import path from 'path'
 
 dotenv.config({ path: path.resolve(__dirname, '../../../../../../.env.local') })
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const mongoUri = process.env.MONGODB_URI
     if (!mongoUri) {
@@ -18,7 +18,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const db = client.db()
     const collection = db.collection('programmes')
 
-    const id = new ObjectId(params.id)
+    const resolvedParams = await params
+    const id = new ObjectId(resolvedParams.id)
     const programme = await collection.findOne({ _id: id })
 
     await client.close()

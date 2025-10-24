@@ -41,7 +41,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const body = await request.json()
 
@@ -98,7 +98,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     return NextResponse.json({
       success: true,
-      data: { id: params.id, ...updateData },
+      data: { id: resolvedParams.id, ...updateData },
     })
   } catch (error) {
     console.error('Erreur lors de la modification du programme:', error)
@@ -109,7 +109,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const mongoUri = process.env.MONGODB_URI
     if (!mongoUri) {

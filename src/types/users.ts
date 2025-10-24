@@ -2,11 +2,12 @@
  * Types pour la gestion des utilisateurs et permissions
  */
 
-import { ID, Timestamped } from './utils'
+import { ID } from './common'
+import { Timestamped } from './utils'
 
-// Rôles utilisateur étendus
+// Rôles utilisateur étendus (doivent correspondre à payload.config.ts)
 export const USER_ROLES = {
-  SUPER_ADMIN: 'super_admin',
+  SUPER_ADMIN: 'superAdmin',
   ADMIN: 'admin',
   FORMATEUR: 'formateur',
   APPRENANT: 'apprenant',

@@ -148,6 +148,12 @@ class PayloadUserService {
     })
 
     if (!response.ok) {
+      // Vérifier si la réponse est HTML (non authentifié)
+      const contentType = response.headers.get('content-type')
+      if (contentType && contentType.includes('text/html')) {
+        throw new Error('Vous devez être connecté pour créer un utilisateur. Veuillez vous connecter à l\'admin.')
+      }
+
       const error = await response.json().catch(() => ({ message: 'Erreur de création' }))
       throw new Error(error.message || 'Erreur lors de la création de l\'utilisateur')
     }

@@ -1,0 +1,9 @@
+{
+  "email": "nouveau.user@gestionmax.fr",
+  "password": "Password123!",
+  "name": "Nouveau Utilisateur",
+  "firstName": "Nouveau",
+  "lastName": "Utilisateur",
+  "role": "apprenant",
+  "status": "active"
+}

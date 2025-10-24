@@ -3,11 +3,13 @@ import { buildConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { resendAdapter } from '@payloadcms/email-resend'
+import sharp from 'sharp'
 import { StructuresJuridiques } from './collections/StructuresJuridiques'
 import { Apprenants } from './collections/Apprenants'
 import { creerApprenant } from './endpoints/creerApprenant'
 
 export default buildConfig({
+  sharp,
   secret: process.env['PAYLOAD_SECRET'] || 'your-secret-key-change-this-in-production',
   email: resendAdapter({
     defaultFromAddress: process.env['RESEND_DEFAULT_EMAIL'] || 'noreply@gestionmax.fr',
@@ -30,7 +32,22 @@ export default buildConfig({
   routes: {
     // Changer la route par défaut de /admin à /payload-cms
     admin: '/payload-cms',
+    api: '/payload-cms/api',
   },
+  serverURL: process.env['NEXT_PUBLIC_SERVER_URL'] || 'http://localhost:3010',
+  // 🔧 Configuration CSRF et CORS pour la gestion des cookies de session
+  csrf: [
+    'http://localhost:3010',
+    'http://localhost:3000',
+    process.env['NEXT_PUBLIC_SERVER_URL'] || '',
+  ].filter(Boolean),
+  cors: [
+    'http://localhost:3010',
+    'http://localhost:3000',
+    process.env['NEXT_PUBLIC_SERVER_URL'] || '',
+  ].filter(Boolean),
+  // 🔧 Préfixe pour éviter les collisions de cookies entre Next.js et Payload
+  cookiePrefix: 'payload',
   editor: lexicalEditor({}),
   collections: [
     {
