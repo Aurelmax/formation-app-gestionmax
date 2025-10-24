@@ -24,7 +24,7 @@ class MongoDBService {
   private async connect() {
     if (!this.client) {
       const mongoUri =
-        process.env.MONGODB_URI || 'mongodb://localhost:27017/formation-app-gestionmax'
+        process.env['MONGODB_URI'] || 'mongodb://localhost:27017/formation-app-gestionmax'
       this.client = new MongoClient(mongoUri)
       await this.client.connect()
       this.db = this.client.db('formation-app-gestionmax')
@@ -231,6 +231,146 @@ class MongoDBService {
       featured: doc.featured || false,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
+    }
+  }
+
+  // Blog - Méthodes supplémentaires
+  async getArticleBySlug(slug: string): Promise<Article | null> {
+    const db = await this.connect()
+    const article = await db.collection('articles').findOne({ slug })
+    return article ? this.transformArticle(article) : null
+  }
+
+  async getCategories(): Promise<any[]> {
+    const db = await this.connect()
+    // Récupérer toutes les catégories uniques des articles
+    const categories = await db
+      .collection('articles')
+      .aggregate([
+        { $unwind: '$categories' },
+        {
+          $group: {
+            _id: '$categories',
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+      ])
+      .toArray()
+
+    return categories.map((cat: any) => ({
+      id: cat._id,
+      nom: cat._id,
+      slug: cat._id.toLowerCase().replace(/\s+/g, '-'),
+      count: cat.count,
+    }))
+  }
+
+  async getTags(): Promise<any[]> {
+    const db = await this.connect()
+    // Récupérer tous les tags uniques des articles
+    const tags = await db
+      .collection('articles')
+      .aggregate([
+        { $unwind: '$tags' },
+        {
+          $group: {
+            _id: '$tags',
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+      ])
+      .toArray()
+
+    return tags.map((tag: any) => ({
+      id: tag._id,
+      nom: tag._id,
+      slug: tag._id.toLowerCase().replace(/\s+/g, '-'),
+      count: tag.count,
+    }))
+  }
+
+  async getArticleStats(): Promise<any> {
+    const db = await this.connect()
+
+    // Compter les articles par statut
+    const [publies, brouillons, archives, totalVues] = await Promise.all([
+      db.collection('articles').countDocuments({ statut: 'publie' }),
+      db.collection('articles').countDocuments({ statut: 'brouillon' }),
+      db.collection('articles').countDocuments({ statut: 'archive' }),
+      db
+        .collection('articles')
+        .aggregate([{ $group: { _id: null, total: { $sum: '$vue' } } }])
+        .toArray(),
+    ])
+
+    // Articles populaires
+    const articlesPopulaires = await db
+      .collection('articles')
+      .find({ statut: 'publie' })
+      .sort({ vue: -1 })
+      .limit(5)
+      .toArray()
+
+    // Catégories populaires
+    const categoriesPopulaires = await db
+      .collection('articles')
+      .aggregate([
+        { $match: { statut: 'publie' } },
+        { $unwind: '$categories' },
+        {
+          $group: {
+            _id: '$categories',
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            categorie: '$_id',
+            count: 1,
+            _id: 0,
+          },
+        },
+      ])
+      .toArray()
+
+    // Auteurs actifs
+    const auteursActifs = await db
+      .collection('articles')
+      .aggregate([
+        { $match: { statut: 'publie' } },
+        {
+          $group: {
+            _id: '$auteur',
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { count: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            auteur: '$_id',
+            count: 1,
+            _id: 0,
+          },
+        },
+      ])
+      .toArray()
+
+    const total = publies + brouillons + archives
+
+    return {
+      total,
+      publies,
+      brouillons,
+      archives,
+      vuesTotal: totalVues[0]?.total || 0,
+      articlesPopulaires: articlesPopulaires.map(this.transformArticle.bind(this)),
+      categoriesPopulaires,
+      auteursActifs,
     }
   }
 

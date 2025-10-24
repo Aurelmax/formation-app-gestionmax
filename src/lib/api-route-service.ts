@@ -7,7 +7,7 @@ import { BlogService } from './blog-service'
 import { MockService } from './mock-service'
 
 // Vérifier si le mode mock est activé
-const isMockMode = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true'
+const isMockMode = process.env['NEXT_PUBLIC_USE_MOCK_DATA'] === 'true'
 
 export class ApiRouteService {
   // Blog
@@ -26,8 +26,7 @@ export class ApiRouteService {
     if (isMockMode) {
       return BlogService.getArticleBySlug(slug)
     } else {
-      // Pour l'instant, retourner null car nous n'avons pas d'articles dans MongoDB
-      return null
+      return mongodbService.getArticleBySlug(slug)
     }
   }
 
@@ -35,8 +34,7 @@ export class ApiRouteService {
     if (isMockMode) {
       return BlogService.getCategories()
     } else {
-      // Pour l'instant, retourner un tableau vide
-      return []
+      return mongodbService.getCategories()
     }
   }
 
@@ -44,8 +42,7 @@ export class ApiRouteService {
     if (isMockMode) {
       return BlogService.getTags()
     } else {
-      // Pour l'instant, retourner un tableau vide
-      return []
+      return mongodbService.getTags()
     }
   }
 
@@ -53,16 +50,7 @@ export class ApiRouteService {
     if (isMockMode) {
       return BlogService.getArticleStats()
     } else {
-      return {
-        total: 0,
-        publies: 0,
-        brouillons: 0,
-        archives: 0,
-        vuesTotal: 0,
-        articlesPopulaires: [],
-        categoriesPopulaires: [],
-        auteursActifs: [],
-      }
+      return mongodbService.getArticleStats()
     }
   }
 
