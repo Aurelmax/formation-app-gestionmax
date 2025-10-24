@@ -5,6 +5,7 @@
 import { useMemo } from 'react'
 import { MockService } from '@/lib/mock-service'
 import { UserService } from '@/lib/user-service'
+import { payloadUserService } from '@/lib/payload-user-service'
 import { RendezVousService } from '@/lib/rendez-vous-service'
 import { BlogService } from '@/lib/blog-service'
 
@@ -12,12 +13,13 @@ export interface UseApiServiceReturn {
   // Services disponibles
   MockService: typeof MockService
   UserService: typeof UserService
+  payloadUserService: typeof payloadUserService
   RendezVousService: typeof RendezVousService
   BlogService: typeof BlogService
 
-  // Service actuel (toujours mock côté client)
+  // Service actuel (Payload pour les users, mock pour les autres)
   currentService: typeof MockService
-  currentUserService: typeof UserService
+  currentUserService: typeof payloadUserService
   currentRendezVousService: typeof RendezVousService
   currentBlogService: typeof BlogService
 
@@ -27,8 +29,7 @@ export interface UseApiServiceReturn {
 }
 
 export function useApiService(): UseApiServiceReturn {
-  // Côté client, toujours utiliser les services mock
-  // Les vraies données MongoDB sont accessibles via les routes API
+  // Côté client, utiliser Payload pour les users, mock pour le reste
   const isMockMode = true
   const isApiMode = false
 
@@ -38,12 +39,13 @@ export function useApiService(): UseApiServiceReturn {
       // Services disponibles
       MockService,
       UserService,
+      payloadUserService,
       RendezVousService,
       BlogService,
 
-      // Services actuellement utilisés (toujours mock côté client)
+      // Services actuellement utilisés (Payload pour users, mock pour le reste)
       currentService: MockService,
-      currentUserService: UserService,
+      currentUserService: payloadUserService,
       currentRendezVousService: RendezVousService,
       currentBlogService: BlogService,
 

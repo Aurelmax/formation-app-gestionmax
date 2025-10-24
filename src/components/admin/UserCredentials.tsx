@@ -13,7 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Copy, Eye, EyeOff, User, Mail, Key } from 'lucide-react'
-import { userService } from '@/lib/user-service'
+import { payloadUserService as userService } from '@/lib/payload-user-service'
 import { User as UserType } from '@/types/users'
 import { toast } from 'sonner'
 

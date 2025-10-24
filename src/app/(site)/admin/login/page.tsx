@@ -181,20 +181,55 @@ export default function AdminLoginPage() {
               >
                 👤 Remplir mes identifiants
               </Button>
+
+              {/* Bouton pour se connecter via Payload CMS */}
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full mt-2"
+                onClick={() => {
+                  toast.info('Redirection vers l\'authentification Payload CMS...')
+                  // Rediriger vers le login Payload natif
+                  window.location.href = '/payload-cms/login?redirect=/admin'
+                }}
+              >
+                🔐 Se connecter via Payload CMS
+              </Button>
+
+              {/* Bouton de développement - Bypass login (temporaire) */}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-2 text-xs"
+                onClick={() => {
+                  // Simuler un utilisateur admin connecté
+                  localStorage.setItem('auth_token', 'dev_admin_token')
+                  localStorage.setItem('user_email', 'admin@gestionmax.fr')
+                  toast.success('Mode développement activé - Accès direct au dashboard')
+                  router.push('/admin')
+                }}
+              >
+                🔧 Mode Dev (Bypass)
+              </Button>
             </form>
 
             {/* Informations utilisateur */}
             <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h3 className="text-sm font-semibold text-blue-900 mb-2">Compte administrateur :</h3>
-              <div className="text-xs text-blue-800 space-y-1">
+              <h3 className="text-sm font-semibold text-blue-900 mb-2">Authentification Payload CMS :</h3>
+              <div className="text-xs text-blue-800 space-y-2">
                 <div>
-                  <strong>Aurélien:</strong> aurelien@gestionmax.fr
+                  <strong>Admin:</strong> admin@gestionmax.fr / AdminGestionMax2025!
+                </div>
+                <div className="mt-2 p-2 bg-blue-100 rounded">
+                  <p className="font-semibold mb-1">🔒 Authentification unifiée</p>
+                  <p>
+                    L'authentification passe par Payload CMS. Une fois connecté, vous aurez accès à la fois au dashboard React et à l'admin Payload.
+                  </p>
                 </div>
               </div>
               <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
                 <p className="text-xs text-green-800">
-                  💡 <strong>Astuce:</strong> Vous pouvez créer de nouveaux utilisateurs via
-                  l'interface admin une fois connecté !
+                  💡 <strong>Astuce:</strong> Cliquez sur "Se connecter via Payload CMS" pour une auth sécurisée !
                 </p>
               </div>
             </div>

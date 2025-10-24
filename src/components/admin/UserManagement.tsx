@@ -13,7 +13,7 @@ import {
   USER_ROLES,
   USER_STATUS,
 } from '@/types/users'
-import { userService } from '@/lib/user-service'
+import { payloadUserService as userService } from '@/lib/payload-user-service'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
