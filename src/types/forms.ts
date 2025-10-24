@@ -342,9 +342,9 @@ export function isValidApprenantData(data: unknown): data is { id: string; nom: 
     'nom' in data &&
     'prenom' in data &&
     'email' in data &&
-    typeof (data as Record<string, unknown>).nom === 'string' &&
-    typeof (data as Record<string, unknown>).prenom === 'string' &&
-    typeof (data as Record<string, unknown>).email === 'string'
+    typeof (data as Record<string, unknown>)['nom'] === 'string' &&
+    typeof (data as Record<string, unknown>)['prenom'] === 'string' &&
+    typeof (data as Record<string, unknown>)['email'] === 'string'
   )
 }
 
@@ -354,8 +354,8 @@ export function isValidProgrammeData(data: unknown): data is { id: string; titre
     data !== null &&
     'titre' in data &&
     'duree' in data &&
-    typeof (data as Record<string, unknown>).titre === 'string' &&
-    (typeof (data as Record<string, unknown>).duree === 'number' || typeof (data as Record<string, unknown>).duree === 'string')
+    typeof (data as Record<string, unknown>)['titre'] === 'string' &&
+    (typeof (data as Record<string, unknown>)['duree'] === 'number' || typeof (data as Record<string, unknown>)['duree'] === 'string')
   )
 }
 
@@ -366,7 +366,7 @@ export function isDiagnosticData(data: unknown): data is DiagnosticData {
     'dateCreation' in data &&
     'typeFormation' in data &&
     'objectifs' in data &&
-    Array.isArray((data as Record<string, unknown>).objectifs)
+    Array.isArray((data as Record<string, unknown>)['objectifs'])
   )
 }
 

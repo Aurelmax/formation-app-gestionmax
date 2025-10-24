@@ -10,14 +10,14 @@ export class UserBusinessLogic {
    * Valide un utilisateur
    */
   static validateUser(user: Partial<User>): Record<string, string> {
-    return validate(user, userValidationRules)
+    return validate(user as any, userValidationRules as any) as Record<string, string>
   }
 
   /**
    * Valide une requête de création d'utilisateur
    */
   static validateCreateUserRequest(request: CreateUserRequest): Record<string, string> {
-    return validate(request, userValidationRules)
+    return validate(request as any, userValidationRules as any) as Record<string, string>
   }
 
   /**
@@ -98,11 +98,11 @@ export class UserBusinessLogic {
    */
   static canChangeUserRole(
     targetUser: User,
-    newRole: UserRole,
+    _newRole: UserRole,
     currentUser: User
   ): { canChange: boolean; reason?: string } {
     // Seuls les admins peuvent changer les rôles
-    if (currentUser.role !== 'admin') {
+    if (currentUser.role !== 'ADMIN') {
       return { canChange: false, reason: 'Seuls les administrateurs peuvent changer les rôles' }
     }
 
@@ -136,12 +136,13 @@ export class UserBusinessLogic {
    * Obtient le niveau hiérarchique d'un rôle
    */
   private static getRoleLevel(role: UserRole): number {
-    const roleLevels = {
-      apprenant: 1,
-      gestionnaire: 2,
-      formateur: 3,
-      admin: 4,
-      superAdmin: 5,
+    const roleLevels: Record<UserRole, number> = {
+      APPRENANT: 1,
+      BENEFICIAIRE: 1,
+      GESTIONNAIRE: 2,
+      FORMATEUR: 3,
+      ADMIN: 4,
+      SUPER_ADMIN: 5,
     }
     return roleLevels[role] || 0
   }
