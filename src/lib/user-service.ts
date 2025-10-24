@@ -26,11 +26,11 @@ const realUsers: User[] = [
     name: 'Aurélien',
     firstName: 'Aurélien',
     lastName: 'GestionMax',
-    role: 'admin',
+    role: 'ADMIN',
     status: 'active',
-    permissions: ROLE_PERMISSIONS.admin,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    permissions: ROLE_PERMISSIONS['ADMIN'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ]
 
@@ -87,34 +87,6 @@ class UserService {
     }
   }
 
-  // Authentification
-  async login(credentials: LoginRequest): Promise<LoginResponse> {
-    const user = this.users.find(u => u.email === credentials.email)
-
-    if (!user || !isUserActive(user)) {
-      throw new Error('Identifiants invalides ou compte inactif')
-    }
-
-    // En production, vérifier le mot de passe hashé
-    // if (!await bcrypt.compare(credentials.password, user.password)) {
-    //   throw new Error('Mot de passe incorrect');
-    // }
-
-    // Mettre à jour la dernière connexion
-    user.lastLoginAt = new Date().toISOString()
-    this.updateUser(user.id, { lastLoginAt: user.lastLoginAt })
-
-    // Générer un token (en production, utiliser JWT)
-    const token = `token_${user.id}_${Date.now()}`
-    const refreshToken = `refresh_${user.id}_${Date.now()}`
-
-    return {
-      user: this.sanitizeUser(user),
-      token,
-      refreshToken,
-    }
-  }
-
   // Récupérer tous les utilisateurs
   async getUsers(): Promise<User[]> {
     return this.users.map(user => this.sanitizeUser(user))
@@ -153,8 +125,8 @@ class UserService {
       address: userData.address,
       dateOfBirth: userData.dateOfBirth,
       permissions: userData.permissions || ROLE_PERMISSIONS[userData.role] || [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
 
     this.users.push(newUser)
@@ -169,13 +141,13 @@ class UserService {
       throw new Error('Utilisateur non trouvé')
     }
 
-    const updatedUser: User = {
+    this.users[userIndex] = {
       ...this.users[userIndex],
       ...userData,
-      updatedAt: new Date().toISOString(),
-    }
+      updatedAt: new Date(),
+    } as User
 
-    this.users[userIndex] = updatedUser
+    const updatedUser = this.users[userIndex]
     return this.sanitizeUser(updatedUser)
   }
 
@@ -209,7 +181,7 @@ class UserService {
     // En production, hasher le nouveau mot de passe
     // user.password = await bcrypt.hash(passwordData.newPassword, 10);
 
-    user.updatedAt = new Date().toISOString()
+    user.updatedAt = new Date()
     return true
   }
 
@@ -230,7 +202,7 @@ class UserService {
       return []
     }
 
-    return user.permissions
+    return user.permissions || []
   }
 
   // Obtenir les utilisateurs par rôle
@@ -281,7 +253,7 @@ class UserService {
 
     // Mettre à jour la dernière connexion
     user.lastLoginAt = new Date().toISOString()
-    user.updatedAt = new Date().toISOString()
+    user.updatedAt = new Date()
 
     // Générer un token (en mode mock)
     const token = `mock_token_${user.id}_${Date.now()}`
@@ -312,11 +284,11 @@ class UserService {
     const stats = {
       total: this.users.length,
       byRole: {
-        superAdmin: 0,
-        admin: 0,
-        formateur: 0,
-        gestionnaire: 0,
-        apprenant: 0,
+        SUPER_ADMIN: 0,
+        ADMIN: 0,
+        FORMATEUR: 0,
+        GESTIONNAIRE: 0,
+        APPRENANT: 0,
       } as Record<UserRole, number>,
       byStatus: {
         active: 0,
@@ -329,7 +301,9 @@ class UserService {
 
     this.users.forEach(user => {
       stats.byRole[user.role]++
-      stats.byStatus[user.status]++
+      if (user.status) {
+        stats.byStatus[user.status]++
+      }
       if (user.status === 'active') {
         stats.activeUsers++
       }
@@ -352,7 +326,7 @@ class UserService {
     }
 
     const defaultPermissions = ROLE_PERMISSIONS[user.role] || []
-    return this.updateUser(userId, { permissions: defaultPermissions })
+    return this.updateUser(userId, { permissions: defaultPermissions } as UpdateUserRequest)
   }
 }
 
