@@ -374,6 +374,18 @@ class MongoDBService {
     }
   }
 
+  async createRendezVous(data: any): Promise<RendezVous> {
+    const db = await this.connect()
+    const result = await db.collection('rendez-vous').insertOne(data)
+
+    const createdDoc = await db.collection('rendez-vous').findOne({ _id: result.insertedId })
+    if (!createdDoc) {
+      throw new Error('Erreur lors de la création du rendez-vous')
+    }
+
+    return this.transformRendezVous(createdDoc)
+  }
+
   async getUserByEmail(email: string): Promise<User | null> {
     const db = await this.connect()
     const user = await db.collection('users').findOne({ email })

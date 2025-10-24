@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { rendezVousServiceShared } from '@/lib/rendez-vous-service-shared'
+import { mongodbService } from '@/lib/mongodb-service'
 
 export async function GET(request: NextRequest) {
   try {
@@ -18,13 +18,64 @@ export async function GET(request: NextRequest) {
 
     console.log('📋 Filtres:', filters)
 
-    const result = await rendezVousServiceShared.getRendezVous(filters)
+    // Récupérer tous les rendez-vous depuis MongoDB
+    const rendezVous = await mongodbService.getRendezVous()
 
-    console.log('✅ Rendez-vous:', result.rendezVous)
+    // Appliquer les filtres côté serveur
+    let filtered = rendezVous
+
+    if (filters.statut && filters.statut !== 'all') {
+      filtered = filtered.filter(rdv => rdv.statut === filters.statut)
+    }
+    if (filters.type && filters.type !== 'all') {
+      filtered = filtered.filter(rdv => rdv.type === filters.type)
+    }
+    if (filters.lieu && filters.lieu !== 'all') {
+      filtered = filtered.filter(rdv => rdv.lieu === filters.lieu)
+    }
+    if (filters.programmeId) {
+      filtered = filtered.filter(rdv => rdv.programmeId === filters.programmeId)
+    }
+    if (filters.dateDebut) {
+      filtered = filtered.filter(rdv => rdv.date >= filters.dateDebut!)
+    }
+    if (filters.dateFin) {
+      filtered = filtered.filter(rdv => rdv.date <= filters.dateFin!)
+    }
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase()
+      filtered = filtered.filter(
+        rdv =>
+          rdv.client.nom.toLowerCase().includes(searchTerm) ||
+          rdv.client.prenom.toLowerCase().includes(searchTerm) ||
+          rdv.client.email.toLowerCase().includes(searchTerm) ||
+          rdv.programmeTitre.toLowerCase().includes(searchTerm)
+      )
+    }
+
+    // Calculer les statistiques
+    const stats = {
+      total: rendezVous.length,
+      enAttente: rendezVous.filter(rdv => rdv.statut === 'enAttente').length,
+      confirmes: rendezVous.filter(rdv => rdv.statut === 'confirme').length,
+      annules: rendezVous.filter(rdv => rdv.statut === 'annule').length,
+      termines: rendezVous.filter(rdv => rdv.statut === 'termine').length,
+      reportes: rendezVous.filter(rdv => rdv.statut === 'reporte').length,
+      aujourdhui: rendezVous.filter(rdv => rdv.date === new Date().toISOString().split('T')[0])
+        .length,
+      cetteSemaine: 0,
+      ceMois: 0,
+    }
+
+    console.log('✅ Rendez-vous:', filtered.length)
 
     return NextResponse.json({
       success: true,
-      data: result,
+      data: {
+        rendezVous: filtered,
+        total: filtered.length,
+        stats,
+      },
     })
   } catch (error) {
     console.error('❌ Erreur API rendez-vous:', error)
@@ -45,7 +96,33 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     console.log('📋 Données reçues:', body)
 
-    const nouveauRendezVous = await rendezVousServiceShared.createRendezVous(body)
+    // Normaliser la date si elle contient un timestamp
+    if (body.date && body.date.includes('T')) {
+      body.date = body.date.split('T')[0]
+      console.log('📅 Date normalisée:', body.date)
+    }
+
+    // Créer le document pour MongoDB
+    const rendezVousData = {
+      programme: body.programmeId || '',
+      programmeTitre: body.programmeTitre || 'Programme de formation',
+      client: body.client,
+      type: body.type,
+      statut: body.statut || 'enAttente',
+      date: body.date,
+      heure: body.heure,
+      duree: body.duree || 30,
+      lieu: body.lieu,
+      adresse: body.adresse,
+      lienVisio: body.lienVisio,
+      notes: body.notes,
+      rappelEnvoye: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      createdBy: '1', // TODO: Utiliser l'ID de l'utilisateur connecté
+    }
+
+    const nouveauRendezVous = await mongodbService.createRendezVous(rendezVousData)
 
     console.log('✅ Rendez-vous créé:', nouveauRendezVous)
 

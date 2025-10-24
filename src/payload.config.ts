@@ -2,9 +2,18 @@ import * as path from 'path'
 import { buildConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { resendAdapter } from '@payloadcms/email-resend'
+import { StructuresJuridiques } from './collections/StructuresJuridiques'
+import { Apprenants } from './collections/Apprenants'
+import { creerApprenant } from './endpoints/creerApprenant'
 
 export default buildConfig({
   secret: process.env['PAYLOAD_SECRET'] || 'your-secret-key-change-this-in-production',
+  email: resendAdapter({
+    defaultFromAddress: process.env['RESEND_DEFAULT_EMAIL'] || 'noreply@gestionmax.fr',
+    defaultFromName: 'GestionMax Formation',
+    apiKey: process.env['RESEND_API_KEY'] || '',
+  }),
   admin: {
     user: 'users',
     meta: {
@@ -26,7 +35,53 @@ export default buildConfig({
   collections: [
     {
       slug: 'users',
-      auth: true,
+      auth: {
+        forgotPassword: {
+          generateEmailHTML: (args) => {
+            const token = args?.token || ''
+            const user = args?.user
+            const resetURL = `${process.env['NEXT_PUBLIC_SERVER_URL'] || 'http://localhost:3010'}/admin/reset-password?token=${token}`
+            return `
+              <!DOCTYPE html>
+              <html>
+                <head>
+                  <meta charset="utf-8">
+                  <title>Réinitialisation de mot de passe</title>
+                </head>
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                  <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: #2563eb;">Réinitialisation de mot de passe</h2>
+                    <p>Bonjour ${user?.name || user?.email || 'utilisateur'},</p>
+                    <p>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte GestionMax.</p>
+                    <p>Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :</p>
+                    <div style="text-align: center; margin: 30px 0;">
+                      <a href="${resetURL}" style="background-color: #2563eb; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                        Réinitialiser mon mot de passe
+                      </a>
+                    </div>
+                    <p style="color: #666; font-size: 14px;">
+                      Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :<br>
+                      <a href="${resetURL}" style="color: #2563eb;">${resetURL}</a>
+                    </p>
+                    <p style="color: #666; font-size: 14px;">
+                      Ce lien expirera dans 1 heure pour des raisons de sécurité.
+                    </p>
+                    <p style="color: #666; font-size: 14px;">
+                      Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer cet email en toute sécurité.
+                    </p>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                    <p style="color: #999; font-size: 12px; text-align: center;">
+                      © 2024 GestionMax Formation - Tous droits réservés
+                    </p>
+                  </div>
+                </body>
+              </html>
+            `
+          },
+          generateEmailSubject: () => 'Réinitialisation de votre mot de passe GestionMax',
+        },
+        verify: false,
+      },
       fields: [
         {
           name: 'name',
@@ -476,54 +531,8 @@ export default buildConfig({
         },
       ],
     },
-    {
-      slug: 'apprenants',
-      fields: [
-        {
-          name: 'nom',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'prenom',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'email',
-          type: 'email',
-          required: true,
-          unique: true,
-        },
-        {
-          name: 'telephone',
-          type: 'text',
-        },
-        {
-          name: 'statut',
-          type: 'select',
-          options: [
-            { label: 'Inscrit', value: 'inscrit' },
-            { label: 'En cours', value: 'enCours' },
-            { label: 'Terminé', value: 'termine' },
-            { label: 'Abandonné', value: 'abandonne' },
-          ],
-          defaultValue: 'inscrit',
-          required: true,
-        },
-        {
-          name: 'formations',
-          type: 'relationship',
-          relationTo: 'formations',
-          hasMany: true,
-        },
-        {
-          name: 'dateInscription',
-          type: 'date',
-          required: true,
-        },
-      ],
-    },
+    StructuresJuridiques,
+    Apprenants,
     {
       slug: 'articles',
       fields: [
@@ -1024,6 +1033,13 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
+  endpoints: [
+    {
+      path: '/creer-apprenant',
+      method: 'post',
+      handler: creerApprenant,
+    },
+  ],
   plugins: [],
   db: mongooseAdapter({
     url: process.env['MONGODB_URI'] || '',
