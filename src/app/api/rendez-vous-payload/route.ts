@@ -119,31 +119,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Note: On utilise direct MongoDB au lieu de Payload à cause d'un conflit de structure
-    // entre les données programmes existantes (array simple) et la structure Payload attendue (array d'objets)
-    // See: competences field - Payload attend [{competence: string}] mais MongoDB a [string]
+    // ✅ MIGRATION EFFECTUÉE - Les données programmes sont maintenant au bon format
+    // Structure corrigée: competences: [{competence: string}]
+    // Payload CMS peut maintenant être utilisé sans erreur!
 
-    console.log('🔍 Création via MongoDB direct (contournement du problème de structure des programmes)')
+    console.log('✅ Création via Payload CMS (migration structure effectuée)')
 
-    // Importer MongoDB client
-    const { MongoClient, ObjectId } = await import('mongodb')
-    const mongoUri = process.env['MONGODB_URI']
-    if (!mongoUri) {
-      throw new Error('MONGODB_URI not defined')
-    }
-
-    const client = new MongoClient(mongoUri)
-    await client.connect()
-    const db = client.db()
-    const collection = db.collection('rendez-vous')
-
-    // Préparer les données MongoDB
-    const rendezVousData = {
-      programme: new ObjectId(body.programmeId),
+    // Transformer les données vers le format Payload
+    const payloadData = {
+      programme: body.programmeId,
       client: body.client,
       type: body.type,
       statut: body.statut || 'enAttente',
-      date: new Date(body.date),
+      date: new Date(body.date), // Payload attend un Date object
       heure: body.heure,
       duree: body.duree || 30,
       lieu: body.lieu,
@@ -152,19 +140,16 @@ export async function POST(request: NextRequest) {
       notes: body.notes,
       rappelEnvoye: false,
       createdBy: body.createdBy || '1',
-      createdAt: new Date(),
-      updatedAt: new Date(),
     }
 
-    const result = await collection.insertOne(rendezVousData)
-    await client.close()
+    console.log('💾 Données Payload:', JSON.stringify({ ...payloadData, date: body.date }, null, 2))
 
-    // Récupérer le document créé
-    const nouveauRendezVous = {
-      id: result.insertedId.toString(),
-      ...rendezVousData,
-      programme: body.programmeId,
-    }
+    // Créer via Payload CMS
+    const nouveauRendezVous = await payload.create({
+      collection: 'rendez-vous',
+      data: payloadData,
+      depth: 1, // Inclure les relations (programme)
+    })
 
     console.log('✅ Rendez-vous Payload créé:', nouveauRendezVous.id)
 
