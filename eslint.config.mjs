@@ -26,6 +26,9 @@ const eslintConfig = [
       'src/scripts/**',
       'public/**',
       'src/app/admin/payload/real/**',
+      'src/app/(payload)/admin/importMap.js',
+      'src/types/payload-generated.ts',
+      'src/types/payload-generated-simple.ts',
     ],
   },
   {

@@ -18,15 +18,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useConfetti } from '@/hooks/useConfetti'
-import {
-  Sparkles,
-  PartyPopper,
-  Flame,
-  CloudRain,
-  Star,
-  Heart,
-  Trash2,
-} from 'lucide-react'
+import { Sparkles, PartyPopper, Flame, CloudRain, Star, Heart, Trash2 } from 'lucide-react'
 
 export function ConfettiDemo() {
   const {
@@ -181,11 +173,7 @@ export function ConfettiDemo() {
         {/* Section: Contrôles */}
         <div className="space-y-3 pt-4 border-t">
           <h3 className="text-lg font-semibold">Contrôles</h3>
-          <Button
-            onClick={clearConfetti}
-            variant="destructive"
-            className="flex items-center gap-2"
-          >
+          <Button onClick={clearConfetti} variant="destructive" className="flex items-center gap-2">
             <Trash2 className="h-4 w-4" />
             Nettoyer les Confettis
           </Button>
@@ -214,16 +202,16 @@ const handleSubmit = async () => {
           <h4 className="font-semibold text-sm">📋 Recommandations d'usage:</h4>
           <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
             <li>
-              <strong>Formulaire public</strong>: <code>triggerCelebration()</code> - Effet
-              complet pour féliciter l'utilisateur
+              <strong>Formulaire public</strong>: <code>triggerCelebration()</code> - Effet complet
+              pour féliciter l'utilisateur
             </li>
             <li>
-              <strong>Formulaire admin</strong>: <code>triggerBrandedConfetti()</code> - Plus
-              subtil avec vos couleurs
+              <strong>Formulaire admin</strong>: <code>triggerBrandedConfetti()</code> - Plus subtil
+              avec vos couleurs
             </li>
             <li>
-              <strong>Succès important</strong>: <code>triggerFireworks()</code> - Pour les
-              moments exceptionnels
+              <strong>Succès important</strong>: <code>triggerFireworks()</code> - Pour les moments
+              exceptionnels
             </li>
             <li>
               <strong>Action rapide</strong>: <code>triggerConfetti()</code> - Effet standard

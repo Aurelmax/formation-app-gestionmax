@@ -20,6 +20,7 @@ import { Mail, Phone, MapPin, Clock, FileText, Scale, Shield, CheckCircle } from
 import Image from 'next/image'
 import { InteractiveMap } from '@/components/ui/InteractiveMap'
 import { toast } from 'sonner'
+import { useConfetti } from '@/hooks/useConfetti'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -32,6 +33,7 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const { triggerCelebration } = useConfetti()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -82,6 +84,8 @@ export default function ContactPage() {
 
       // Succès
       setIsSuccess(true)
+      // 🎉 Déclencher les confettis!
+      triggerCelebration()
       toast.success('Message envoyé avec succès !')
 
       // Réinitialiser le formulaire

@@ -92,8 +92,8 @@ export default function NouvelleFormationPersonnaliseePage() {
                 <strong>Programme d'intérêt :</strong> {rdvData.programmeTitre}
               </p>
               <p>
-                <strong>Date du RDV :</strong>{' '}
-                {safeDate(rdvData.date).toLocaleDateString('fr-FR')} à {rdvData.heure}
+                <strong>Date du RDV :</strong> {safeDate(rdvData.date).toLocaleDateString('fr-FR')}{' '}
+                à {rdvData.heure}
               </p>
               {rdvData.notes && (
                 <p>

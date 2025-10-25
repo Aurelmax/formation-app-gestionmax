@@ -345,7 +345,9 @@ export function BlogManagement() {
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4 text-gray-400" />
-                      {article.datePublication ? new Date(article.datePublication).toLocaleDateString() : 'Non publié'}
+                      {article.datePublication
+                        ? new Date(article.datePublication).toLocaleDateString()
+                        : 'Non publié'}
                     </div>
                   </TableCell>
 

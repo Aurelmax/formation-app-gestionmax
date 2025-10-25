@@ -272,7 +272,10 @@ class BlogService {
       id: `article_${Date.now()}`,
       slug: generateSlug(articleData.titre),
       dateModification: now.split('T')[0],
-      datePublication: articleData.statut === 'publie' ? (articleData.datePublication || now.split('T')[0]) : undefined,
+      datePublication:
+        articleData.statut === 'publie'
+          ? articleData.datePublication || now.split('T')[0]
+          : undefined,
       tempsLecture: calculateReadingTime(articleData.contenu),
       vue: 0,
       createdAt: now,

@@ -36,7 +36,32 @@
 
 ## 🎯 Où les Confettis Sont Déjà Intégrés
 
-### ✅ Formulaire Rendez-vous Public
+### ✅ 1. Formulaire de Contact Public
+
+**Fichier**: [src/app/(app)/(public)/contact/page.tsx](src/app/(app)/(public)/contact/page.tsx)
+
+```tsx
+// Ligne 23
+import { useConfetti } from '@/hooks/useConfetti'
+
+// Ligne 36
+const { triggerCelebration } = useConfetti()
+
+// Lignes 87-88
+// Succès
+setIsSuccess(true)
+// 🎉 Déclencher les confettis!
+triggerCelebration()
+toast.success('Message envoyé avec succès !')
+```
+
+**Effet**: Célébration complète avec 3 vagues (gauche + droite + centre)
+
+**Page**: `/contact`
+
+---
+
+### ✅ 2. Formulaire Rendez-vous Public
 
 **Fichier**: `src/components/forms/PublicRendezVousForm.tsx`
 
@@ -58,7 +83,7 @@ if (data.success) {
 
 ---
 
-### ✅ Formulaire Rendez-vous Admin
+### ✅ 3. Formulaire Rendez-vous Admin
 
 **Fichier**: `src/components/forms/RendezVousForm.tsx`
 
@@ -77,6 +102,30 @@ if (data.success) {
 ```
 
 **Effet**: Confettis avec vos couleurs d'entreprise (#00b894, #0984e3, #6c5ce7)
+
+---
+
+### ✅ Formulaire de Contact Public
+
+**Fichier**: `src/app/(app)/(public)/contact/page.tsx`
+
+```tsx
+// Ligne 23
+import { useConfetti } from '@/hooks/useConfetti'
+
+// Ligne 36
+const { triggerCelebration } = useConfetti()
+
+// Ligne 87-88
+// Succès
+setIsSuccess(true)
+triggerCelebration() // 🎉 Confettis!
+toast.success('Message envoyé avec succès !')
+```
+
+**Effet**: Célébration complète avec 3 vagues (gauche + droite + centre)
+
+**Page**: `/contact`
 
 ---
 
@@ -408,7 +457,10 @@ Si vous avez des questions ou besoin d'aide:
 
 ✅ **Package installé**: canvas-confetti + types TypeScript
 ✅ **Hook créé**: 8 effets de confettis disponibles
-✅ **Intégrations**: 2 formulaires déjà configurés
+✅ **Intégrations**: 3 formulaires déjà configurés
+  - ✅ Formulaire de Contact Public (`/contact`)
+  - ✅ Formulaire Rendez-vous Public
+  - ✅ Formulaire Rendez-vous Admin
 ✅ **Démo**: Page /demo/confetti fonctionnelle
 ✅ **Documentation**: Guide complet CONFETTI-GUIDE.md
 ✅ **Production Ready**: Prêt à utiliser immédiatement

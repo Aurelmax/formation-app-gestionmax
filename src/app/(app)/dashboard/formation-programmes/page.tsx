@@ -206,7 +206,9 @@ export default function FormationProgrammesPage() {
                     variant="outline"
                     size="sm"
                     className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                    onClick={() => handleDownloadPDF(programme.id, programme.titre || programme.title)}
+                    onClick={() =>
+                      handleDownloadPDF(programme.id, programme.titre || programme.title)
+                    }
                   >
                     <Download className="h-4 w-4 mr-1" />
                     PDF

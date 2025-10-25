@@ -124,16 +124,16 @@ export default function DiagnosticPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold">Utilisateurs trouvés:</h3>
-                  <p className="text-sm text-gray-600">{diagnostic.userCount ?? 0} utilisateur(s)</p>
+                  <p className="text-sm text-gray-600">
+                    {diagnostic.userCount ?? 0} utilisateur(s)
+                  </p>
                   {diagnostic.users && diagnostic.users.length > 0 && (
                     <div className="mt-2">
-                      {diagnostic.users.map(
-                        (user, index: number) => (
-                          <div key={index} className="text-sm bg-gray-100 p-2 rounded">
-                            {user.email} ({user.role})
-                          </div>
-                        )
-                      )}
+                      {diagnostic.users.map((user, index: number) => (
+                        <div key={index} className="text-sm bg-gray-100 p-2 rounded">
+                          {user.email} ({user.role})
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>

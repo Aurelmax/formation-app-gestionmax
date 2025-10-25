@@ -335,7 +335,9 @@ export interface DiagnosticData {
 
 // ===== Type Guards pour validation runtime =====
 
-export function isValidApprenantData(data: unknown): data is { id: string; nom: string; prenom: string; email: string } {
+export function isValidApprenantData(
+  data: unknown
+): data is { id: string; nom: string; prenom: string; email: string } {
   return (
     typeof data === 'object' &&
     data !== null &&
@@ -348,14 +350,17 @@ export function isValidApprenantData(data: unknown): data is { id: string; nom: 
   )
 }
 
-export function isValidProgrammeData(data: unknown): data is { id: string; titre: string; duree: number; modalites: string } {
+export function isValidProgrammeData(
+  data: unknown
+): data is { id: string; titre: string; duree: number; modalites: string } {
   return (
     typeof data === 'object' &&
     data !== null &&
     'titre' in data &&
     'duree' in data &&
     typeof (data as Record<string, unknown>)['titre'] === 'string' &&
-    (typeof (data as Record<string, unknown>)['duree'] === 'number' || typeof (data as Record<string, unknown>)['duree'] === 'string')
+    (typeof (data as Record<string, unknown>)['duree'] === 'number' ||
+      typeof (data as Record<string, unknown>)['duree'] === 'string')
   )
 }
 

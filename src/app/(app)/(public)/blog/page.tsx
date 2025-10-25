@@ -29,11 +29,10 @@ export default function BlogPage() {
       if (data.success) {
         setArticles(data.data.articles)
         // Extraire les catégories uniques
-        const allCategories = data.data.articles.flatMap((article: Article) => article.categories) as string[]
-        const uniqueCategories: string[] = [
-          'Tous',
-          ...new Set<string>(allCategories),
-        ]
+        const allCategories = data.data.articles.flatMap(
+          (article: Article) => article.categories
+        ) as string[]
+        const uniqueCategories: string[] = ['Tous', ...new Set<string>(allCategories)]
         setCategories(uniqueCategories)
       }
     } catch (error) {
@@ -190,7 +189,9 @@ export default function BlogPage() {
                       </span>
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {article.datePublication ? formatDate(article.datePublication) : 'Non publié'}
+                        {article.datePublication
+                          ? formatDate(article.datePublication)
+                          : 'Non publié'}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />

@@ -171,7 +171,8 @@ export default function FormationPersonnaliseeDetailPage() {
       toast.success('Document téléchargé avec succès !')
     } catch (error: unknown) {
       console.error('Erreur lors du téléchargement:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Erreur lors du téléchargement du document'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erreur lors du téléchargement du document'
       toast.error(errorMessage)
     }
   }
