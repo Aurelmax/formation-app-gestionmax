@@ -1,6 +1,6 @@
 // Test de création d'un rendez-vous via l'API Payload
 const testData = {
-  programmeId: '1',
+  programmeId: '68ec787878922d65b9a2b3a5', // ID valide récupéré de MongoDB
   client: {
     nom: 'Dupont',
     prenom: 'Jean',
@@ -10,7 +10,7 @@ const testData = {
   },
   type: 'information',
   statut: 'enAttente',
-  date: '2025-10-15',
+  date: '2025-10-15T14:00:00.000Z', // ISO format complet
   heure: '14:00',
   duree: 30,
   lieu: 'visio',

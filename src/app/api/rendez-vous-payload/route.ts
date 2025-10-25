@@ -106,15 +106,44 @@ export async function POST(request: NextRequest) {
     const payload = await getPayloadClient()
     const body = await request.json()
 
-    console.log('📋 Données reçues:', body)
+    console.log('📋 Données reçues:', JSON.stringify(body, null, 2))
 
-    // Transformer les données vers le format Payload
-    const payloadData = {
-      programme: body.programmeId,
+    // Valider que le programme existe
+    if (!body.programmeId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Le programme est requis',
+        },
+        { status: 400 }
+      )
+    }
+
+    // Note: On utilise direct MongoDB au lieu de Payload à cause d'un conflit de structure
+    // entre les données programmes existantes (array simple) et la structure Payload attendue (array d'objets)
+    // See: competences field - Payload attend [{competence: string}] mais MongoDB a [string]
+
+    console.log('🔍 Création via MongoDB direct (contournement du problème de structure des programmes)')
+
+    // Importer MongoDB client
+    const { MongoClient, ObjectId } = await import('mongodb')
+    const mongoUri = process.env['MONGODB_URI']
+    if (!mongoUri) {
+      throw new Error('MONGODB_URI not defined')
+    }
+
+    const client = new MongoClient(mongoUri)
+    await client.connect()
+    const db = client.db()
+    const collection = db.collection('rendez-vous')
+
+    // Préparer les données MongoDB
+    const rendezVousData = {
+      programme: new ObjectId(body.programmeId),
       client: body.client,
       type: body.type,
       statut: body.statut || 'enAttente',
-      date: body.date,
+      date: new Date(body.date),
       heure: body.heure,
       duree: body.duree || 30,
       lieu: body.lieu,
@@ -123,13 +152,19 @@ export async function POST(request: NextRequest) {
       notes: body.notes,
       rappelEnvoye: false,
       createdBy: body.createdBy || '1',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
 
-    const nouveauRendezVous = await payload.create({
-      collection: 'rendez-vous',
-      data: payloadData,
-      depth: 1,
-    })
+    const result = await collection.insertOne(rendezVousData)
+    await client.close()
+
+    // Récupérer le document créé
+    const nouveauRendezVous = {
+      id: result.insertedId.toString(),
+      ...rendezVousData,
+      programme: body.programmeId,
+    }
 
     console.log('✅ Rendez-vous Payload créé:', nouveauRendezVous.id)
 
@@ -169,11 +204,18 @@ export async function POST(request: NextRequest) {
     )
   } catch (error: any) {
     console.error('❌ Erreur création rendez-vous Payload:', error)
+    console.error('❌ Stack trace:', error.stack)
+    console.error('❌ Error name:', error.name)
+    console.error('❌ Error message:', error.message)
+    if (error.data) {
+      console.error('❌ Error data:', JSON.stringify(error.data, null, 2))
+    }
     return NextResponse.json(
       {
         success: false,
         error: 'Erreur lors de la création du rendez-vous',
         details: error.message,
+        stack: error.stack,
       },
       { status: 500 }
     )
