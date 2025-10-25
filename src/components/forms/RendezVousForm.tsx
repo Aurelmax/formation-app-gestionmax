@@ -15,6 +15,7 @@ import {
 import { Calendar, Clock, User, MapPin, Video, PhoneCall } from 'lucide-react'
 import { toast } from 'sonner'
 import { CreateRendezVousRequest } from '@/types/rendez-vous'
+import { useConfetti } from '@/hooks/useConfetti'
 
 interface RendezVousFormProps {
   programmeId?: string
@@ -30,6 +31,7 @@ export function RendezVousForm({
   onCancel,
 }: RendezVousFormProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const { triggerBrandedConfetti } = useConfetti()
   const [formData, setFormData] = useState<CreateRendezVousRequest>({
     programmeId: programmeId || '',
     client: {
@@ -81,6 +83,8 @@ export function RendezVousForm({
       const data = await response.json()
 
       if (data.success) {
+        // 🎉 Confettis!
+        triggerBrandedConfetti()
         toast.success('Rendez-vous créé avec succès !')
         onSuccess?.()
       } else {

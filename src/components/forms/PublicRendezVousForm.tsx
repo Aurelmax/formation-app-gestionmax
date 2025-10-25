@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Calendar, User, Briefcase, MessageSquare, Accessibility } from 'lucide-react'
 import { toast } from 'sonner'
 import { CreateRendezVousRequest } from '@/types/rendez-vous'
+import { useConfetti } from '@/hooks/useConfetti'
 
 interface PublicRendezVousFormProps {
   programmeId?: string
@@ -25,6 +26,7 @@ export function PublicRendezVousForm({
   onCancel,
 }: PublicRendezVousFormProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const { triggerCelebration } = useConfetti()
   const [formData, setFormData] = useState({
     // Informations personnelles
     nom: '',
@@ -95,6 +97,8 @@ ${formData.notes ? `\nNotes supplémentaires: ${formData.notes}` : ''}`,
       const data = await response.json()
 
       if (data.success) {
+        // 🎉 Déclencher les confettis!
+        triggerCelebration()
         toast.success('Votre demande de rendez-vous a été envoyée avec succès !')
         onSuccess?.()
       } else {
