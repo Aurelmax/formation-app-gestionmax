@@ -1,14 +1,14 @@
-'use client'
-
-import Script from 'next/script'
 import { Organization, LocalBusiness, Course, FAQPage, WithContext } from 'schema-dts'
 
 interface SchemaMarkupProps {
-  schema: WithContext<Organization | LocalBusiness | Course | FAQPage> | WithContext<Organization | LocalBusiness | Course | FAQPage>[]
+  schema:
+    | WithContext<Organization | LocalBusiness | Course | FAQPage>
+    | WithContext<Organization | LocalBusiness | Course | FAQPage>[]
 }
 
 /**
  * Composant pour injecter les Schema Markup JSON-LD dans le DOM
+ * Utilise un script tag simple au lieu de next/script pour éviter les conflits
  * Compatible avec Next.js App Router
  */
 export function SchemaMarkup({ schema }: SchemaMarkupProps) {
@@ -17,9 +17,8 @@ export function SchemaMarkup({ schema }: SchemaMarkupProps) {
   return (
     <>
       {schemas.map((s, index) => (
-        <Script
+        <script
           key={index}
-          id={`schema-${index}`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(s),
