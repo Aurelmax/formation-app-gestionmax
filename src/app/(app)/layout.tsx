@@ -87,21 +87,20 @@ export default function AppLayout({
 
   return (
     <html lang="fr" suppressHydrationWarning>
-      <head>
-        <Script
-          defer
-          data-domain={plausibleDomain}
-          src="https://plausible.io/js/pa-foXNNP06JJpbUKtH5aIuV.js"
-          strategy="afterInteractive"
-        />
-        <Script id="plausible-init" strategy="afterInteractive">
-          {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
-        </Script>
-      </head>
+      <head />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        <Script
+          defer
+          data-domain={plausibleDomain}
+          src="https://plausible.io/js/pa-foXNNP06JJpbUKtH5aIuV.js"
+          strategy="beforeInteractive"
+        />
+        <Script id="plausible-init" strategy="beforeInteractive">
+          {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
+        </Script>
         {children}
       </body>
     </html>
