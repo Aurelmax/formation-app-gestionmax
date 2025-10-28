@@ -1,12 +1,18 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// 🔧 MIDDLEWARE TEMPORAIREMENT DÉSACTIVÉ POUR TESTS
-// Raison: L'authentification Payload native ne fonctionne pas dans l'instance Next.js embarquée
-// Les routes REST API Payload (/api/users/*) ne sont pas exposées automatiquement
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
 
-export function middleware(_request: NextRequest) {
-  // ✅ Laisser passer toutes les requêtes sans vérification
+  // Rediriger /admin vers /dashboard (interface React custom)
+  // L'interface Payload native est désactivée (admin.disable = true)
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  // Laisser passer toutes les autres requêtes
   return NextResponse.next()
 }
 

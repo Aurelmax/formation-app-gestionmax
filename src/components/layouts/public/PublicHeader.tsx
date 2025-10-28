@@ -74,7 +74,7 @@ export function PublicHeader() {
             className="text-[#1f3b8e] hover:bg-[#1f3b8e]/10 hover:text-[#1f3b8e]"
             asChild
           >
-            <Link href="/admin">Connexion</Link>
+            <Link href="/dashboard">Connexion</Link>
           </Button>
           <Button className="bg-[#1f3b8e] hover:bg-[#7eb33f] text-white" asChild>
             <Link href="/contact">RDV de Positionnement</Link>
@@ -107,7 +107,7 @@ export function PublicHeader() {
                 className="w-full border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#7eb33f] hover:text-white"
                 asChild
               >
-                <Link href="/admin">Connexion</Link>
+                <Link href="/dashboard">Connexion</Link>
               </Button>
               <Button className="w-full bg-[#1f3b8e] hover:bg-[#7eb33f] text-white" asChild>
                 <Link href="/contact">RDV de Positionnement</Link>

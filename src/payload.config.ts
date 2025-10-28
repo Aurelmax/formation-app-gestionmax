@@ -17,6 +17,9 @@ export default buildConfig({
     apiKey: process.env['RESEND_API_KEY'] || '',
   }),
   admin: {
+    // Désactiver l'interface admin native Payload
+    // Tout se fait maintenant via /dashboard (interface React custom)
+    disable: true,
     user: 'users',
     meta: {
       titleSuffix: '- GestionMax CMS',
