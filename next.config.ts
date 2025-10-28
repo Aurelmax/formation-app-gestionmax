@@ -14,8 +14,8 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Mode standalone pour conteneurisation
-  output: 'standalone',
+  // Mode standalone pour conteneurisation (désactivé pour Vercel)
+  // output: 'standalone', // Uncomment for Docker/self-hosted deployments
   // Désactiver React strict mode pour éviter les doubles rendus
   reactStrictMode: false,
   // Headers pour permettre la persistance des cookies de session Payload
