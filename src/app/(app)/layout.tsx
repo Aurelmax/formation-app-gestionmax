@@ -25,7 +25,13 @@ export default function AppLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <PlausibleProvider domain={process.env['NEXT_PUBLIC_PLAUSIBLE_DOMAIN'] || 'gestion.fr'}>
+      <PlausibleProvider
+        domain={process.env['NEXT_PUBLIC_PLAUSIBLE_DOMAIN'] || 'gestion.fr'}
+        customDomain="https://plausible.io"
+        scriptProps={{
+          src: 'https://plausible.io/js/pa-foXNNP06JJpbUKtH5aIuV.js'
+        }}
+      >
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           suppressHydrationWarning
