@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import Script from 'next/script'
+import { Toaster } from '@/components/ui/Toaster'
 import '../globals.css'
 
 const geistSans = Geist({
@@ -101,6 +102,7 @@ export default function AppLayout({
         <Script id="plausible-init" strategy="beforeInteractive">
           {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
         </Script>
+        <Toaster />
         {children}
       </body>
     </html>
