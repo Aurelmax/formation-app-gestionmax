@@ -39,11 +39,17 @@ export default buildConfig({
   csrf: [
     'http://localhost:3010',
     'http://localhost:3000',
+    'https://gestionmax.fr',
+    'https://www.gestionmax.fr',
+    'https://formation-app-gestionmax.vercel.app',
     process.env['NEXT_PUBLIC_SERVER_URL'] || '',
   ].filter(Boolean),
   cors: [
     'http://localhost:3010',
     'http://localhost:3000',
+    'https://gestionmax.fr',
+    'https://www.gestionmax.fr',
+    'https://formation-app-gestionmax.vercel.app',
     process.env['NEXT_PUBLIC_SERVER_URL'] || '',
   ].filter(Boolean),
   // 🔧 Préfixe pour éviter les collisions de cookies entre Next.js et Payload
