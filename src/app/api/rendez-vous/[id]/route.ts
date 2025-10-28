@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { MongoClient, ObjectId } from 'mongodb'
-import dotenv from 'dotenv'
-import path from 'path'
-
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') })
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
