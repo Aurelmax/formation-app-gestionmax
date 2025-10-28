@@ -61,7 +61,7 @@ export default function BlogPage() {
       <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         <Image
           src="/formation-wordpress-antibes.webp"
-          alt="Formation WordPress Antibes"
+          alt="Blog WordPress - Tutoriels, conseils et actualités formations WordPress par formateur certifié"
           fill
           className="object-cover"
           priority

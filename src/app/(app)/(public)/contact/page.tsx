@@ -110,7 +110,7 @@ export default function ContactPage() {
       <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         <Image
           src="/formation-wordpress-antibes.webp"
-          alt="Formation WordPress Antibes"
+          alt="Contactez GestionMax - Devis formation WordPress Antibes - Formateur certifié Qualiopi"
           fill
           className="object-cover"
           priority

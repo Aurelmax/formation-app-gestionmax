@@ -107,7 +107,7 @@ export default function HomePage() {
       <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         <Image
           src="/formation-wordpress-antibes.webp"
-          alt="Formation WordPress Antibes"
+          alt="Formation WordPress professionnelle à Antibes - Salle de formation moderne avec formateur certifié Qualiopi"
           fill
           className="object-cover"
           priority
@@ -166,7 +166,7 @@ export default function HomePage() {
               <div className="w-full h-96 rounded-lg shadow-lg overflow-hidden relative">
                 <Image
                   src="/formateur-background.webp"
-                  alt="Formateur WordPress - Arrière-plan"
+                  alt="Aurélien LAVAYSSIERE - Formateur WordPress certifié Qualiopi indépendant à Antibes avec 8 ans d'expérience"
                   fill
                   className="object-cover"
                 />

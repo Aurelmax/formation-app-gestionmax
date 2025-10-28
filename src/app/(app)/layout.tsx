@@ -14,8 +14,68 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'GestionMax Formation',
-  description: 'Plateforme de gestion de formations professionnelles',
+  title: {
+    default: 'GestionMax Formation WordPress | Formateur Certifié Qualiopi Antibes',
+    template: '%s | GestionMax Formation',
+  },
+  description:
+    'Formations WordPress professionnelles à Antibes par formateur certifié Qualiopi. Éligibles CPF, OPCO et FAF. Plus de 500 apprenants formés, 95% de taux de réussite. Devis gratuit.',
+  keywords: [
+    'formation WordPress',
+    'formation WordPress Antibes',
+    'formateur WordPress certifié',
+    'formation Qualiopi',
+    'formation CPF WordPress',
+    'formation OPCO WordPress',
+    'cours WordPress professionnel',
+    'apprendre WordPress Antibes',
+  ],
+  authors: [{ name: 'Aurélien LAVAYSSIERE - GestionMax' }],
+  creator: 'GestionMax Formation',
+  publisher: 'GestionMax Formation',
+  metadataBase: new URL(process.env['NEXT_PUBLIC_BASE_URL'] || 'https://gestionmax.fr'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    url: '/',
+    title: 'GestionMax Formation WordPress | Formateur Certifié Qualiopi Antibes',
+    description:
+      'Formations WordPress professionnelles à Antibes par formateur certifié Qualiopi. Éligibles CPF, OPCO et FAF. Plus de 500 apprenants formés.',
+    siteName: 'GestionMax Formation',
+    images: [
+      {
+        url: '/formation-wordpress-antibes.webp',
+        width: 1200,
+        height: 630,
+        alt: 'GestionMax Formation WordPress Antibes',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'GestionMax Formation WordPress | Formateur Certifié Qualiopi Antibes',
+    description:
+      'Formations WordPress professionnelles à Antibes. Certifié Qualiopi, éligibles CPF/OPCO. 500+ apprenants formés.',
+    images: ['/formation-wordpress-antibes.webp'],
+    creator: '@gestionmax',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'votre-code-google-search-console',
+  },
 }
 
 export default function AppLayout({

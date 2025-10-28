@@ -102,7 +102,7 @@ export default function AproposPage() {
       <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20 overflow-hidden">
         <Image
           src="/formation-wordpress-antibes.webp"
-          alt="Formation WordPress Antibes"
+          alt="À propos GestionMax - Formateur WordPress certifié Qualiopi indépendant à Antibes depuis 8 ans"
           fill
           className="object-cover"
           priority
