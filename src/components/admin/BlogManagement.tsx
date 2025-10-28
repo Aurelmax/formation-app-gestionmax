@@ -360,7 +360,7 @@ export function BlogManagement() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
-                          onClick={() => (window.location.href = `/admin/blog/${article.id}`)}
+                          onClick={() => (window.location.href = `/dashboard/blog/${article.id}`)}
                         >
                           <Edit className="h-4 w-4 mr-2" />
                           Modifier
