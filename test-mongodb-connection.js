@@ -1,46 +1,77 @@
-const mongoose = require('mongoose')
-const { config } = require('dotenv')
+const { MongoClient } = require('mongodb');
+require('dotenv').config({ path: '.env.local' });
 
-// Charger les variables d'environnement
-config({ path: '.env.local' })
+async function testConnection() {
+  console.log('🔍 Test de connexion MongoDB...\n');
 
-console.log('🔍 Test de connexion MongoDB...')
-console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
-console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
-console.log('📋 URI complète:', process.env['MONGODB_URI'])
+  const uri = process.env.MONGODB_URI;
 
-const testConnection = async () => {
+  if (!uri) {
+    console.error('❌ MONGODB_URI n\'est pas défini dans .env.local');
+    process.exit(1);
+  }
+
+  console.log('📝 URI utilisé (masqué):');
+  const maskedUri = uri.replace(/:([^@]+)@/, ':****@');
+  console.log(maskedUri);
+  console.log('');
+
+  const client = new MongoClient(uri);
+
   try {
-    console.log('\n🔗 Connexion à MongoDB...')
-    await mongoose.connect(process.env['MONGODB_URI'])
-    console.log('✅ Connexion MongoDB réussie!')
+    console.log('🔌 Tentative de connexion...');
+    await client.connect();
+    console.log('✅ Connexion réussie!\n');
 
-    // Lister les bases de données
-    const admin = mongoose.connection.db.admin()
-    const dbs = await admin.listDatabases()
-    console.log('\n📊 Bases de données disponibles:')
-    dbs.databases.forEach(db => {
-      console.log(`   - ${db.name} (${(db.sizeOnDisk / 1024 / 1024).toFixed(2)} MB)`)
-    })
+    const db = client.db();
+    console.log(`📦 Base de données: ${db.databaseName}`);
 
-    // Vérifier la base de données de l'application
-    const db = mongoose.connection.db
-    const collections = await db.listCollections().toArray()
-    console.log('\n📦 Collections dans formation-app-gestionmax:')
-    if (collections.length === 0) {
-      console.log('   (Aucune collection trouvée)')
+    const collections = await db.listCollections().toArray();
+    console.log(`📂 Collections trouvées (${collections.length}):`);
+
+    if (collections.length > 0) {
+      collections.forEach(col => {
+        console.log(`   - ${col.name}`);
+      });
     } else {
-      collections.forEach(collection => {
-        console.log(`   - ${collection.name}`)
-      })
+      console.log('   (Aucune collection - base vide)');
     }
 
-    await mongoose.connection.close()
-    console.log('\n✅ Test terminé avec succès!')
+    console.log('\n🔍 Test de requête sur la collection "programmes"...');
+    const programmesCollection = db.collection('programmes');
+    const count = await programmesCollection.countDocuments();
+    console.log(`✅ ${count} documents trouvés dans "programmes"`);
+
+    if (count > 0) {
+      const sampleDoc = await programmesCollection.findOne();
+      console.log('\n📄 Exemple de document:');
+      console.log(JSON.stringify(sampleDoc, null, 2).substring(0, 500) + '...');
+    }
+
   } catch (error) {
-    console.error('❌ Erreur:', error.message)
-    console.error('📋 Détails:', error)
+    console.error('\n❌ Erreur de connexion:');
+    console.error(error.message);
+
+    if (error.message.includes('authentication failed')) {
+      console.error('\n💡 Suggestions:');
+      console.error('   1. Vérifiez votre nom d\'utilisateur et mot de passe');
+      console.error('   2. Assurez-vous que le mot de passe est URL-encodé (! devient %21)');
+      console.error('   3. Vérifiez les droits de l\'utilisateur dans MongoDB Atlas');
+    } else if (error.message.includes('ENOTFOUND')) {
+      console.error('\n💡 Suggestions:');
+      console.error('   1. Vérifiez le nom du cluster');
+      console.error('   2. Vérifiez votre connexion internet');
+    } else if (error.message.includes('IP')) {
+      console.error('\n💡 Suggestions:');
+      console.error('   1. Ajoutez votre IP dans MongoDB Atlas → Network Access');
+      console.error('   2. Ou autorisez 0.0.0.0/0 pour toutes les IPs');
+    }
+
+    process.exit(1);
+  } finally {
+    await client.close();
+    console.log('\n🔌 Connexion fermée');
   }
 }
 
-testConnection()
+testConnection();
