@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import PlausibleProvider from 'next-plausible'
 import '../globals.css'
 
 const geistSans = Geist({
@@ -24,12 +25,14 @@ export default function AppLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
-      >
-        {children}
-      </body>
+      <PlausibleProvider domain={process.env['NEXT_PUBLIC_PLAUSIBLE_DOMAIN'] || 'gestion.fr'}>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          suppressHydrationWarning
+        >
+          {children}
+        </body>
+      </PlausibleProvider>
     </html>
   )
 }
