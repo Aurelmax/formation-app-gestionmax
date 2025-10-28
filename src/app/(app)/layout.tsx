@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import PlausibleProvider from 'next-plausible'
+import Script from 'next/script'
 import '../globals.css'
 
 const geistSans = Geist({
@@ -83,22 +83,27 @@ export default function AppLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const plausibleDomain = process.env['NEXT_PUBLIC_PLAUSIBLE_DOMAIN'] || 'gestionmax.fr'
+
   return (
     <html lang="fr" suppressHydrationWarning>
-      <PlausibleProvider
-        domain={process.env['NEXT_PUBLIC_PLAUSIBLE_DOMAIN'] || 'gestionmax.fr'}
-        customDomain="https://plausible.io"
-        scriptProps={{
-          src: 'https://plausible.io/js/pa-foXNNP06JJpbUKtH5aIuV.js'
-        }}
+      <head>
+        <Script
+          defer
+          data-domain={plausibleDomain}
+          src="https://plausible.io/js/pa-foXNNP06JJpbUKtH5aIuV.js"
+          strategy="afterInteractive"
+        />
+        <Script id="plausible-init" strategy="afterInteractive">
+          {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
+        </Script>
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          suppressHydrationWarning
-        >
-          {children}
-        </body>
-      </PlausibleProvider>
+        {children}
+      </body>
     </html>
   )
 }
