@@ -19,9 +19,12 @@ export const organizationSchema: WithContext<Organization> = {
   url: baseUrl,
   logo: {
     '@type': 'ImageObject',
+    '@id': `${baseUrl}/#logo`,
     url: `${baseUrl}/visuel-formation-gestionmax-antibes.png`,
-    width: '400',
-    height: '120',
+    contentUrl: `${baseUrl}/visuel-formation-gestionmax-antibes.png`,
+    width: 400,
+    height: 120,
+    caption: 'Logo GestionMax Formation',
   },
   image: `${baseUrl}/formation-wordpress-antibes.webp`,
   description:
@@ -73,7 +76,11 @@ export const localBusinessSchema: WithContext<LocalBusiness> = {
   '@type': 'LocalBusiness',
   '@id': `${baseUrl}/#localbusiness`,
   name: 'GestionMax Formation WordPress Antibes',
-  image: `${baseUrl}/formation-wordpress-antibes.webp`,
+  image: {
+    '@type': 'ImageObject',
+    url: `${baseUrl}/formation-wordpress-antibes.webp`,
+    contentUrl: `${baseUrl}/formation-wordpress-antibes.webp`,
+  },
   description:
     'Centre de formation WordPress à Antibes. Formateur certifié Qualiopi avec 8 ans d\'expérience. Formations éligibles CPF pour professionnels et particuliers.',
   address: {
@@ -93,6 +100,10 @@ export const localBusinessSchema: WithContext<LocalBusiness> = {
   telephone: '+33-6-XX-XX-XX-XX',
   email: 'contact@gestionmax.fr',
   priceRange: '€€',
+  // Lien vers l'Organization pour éviter les doublons et renforcer la relation
+  parentOrganization: {
+    '@id': `${baseUrl}/#organization`,
+  },
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -101,13 +112,8 @@ export const localBusinessSchema: WithContext<LocalBusiness> = {
       closes: '18:00',
     },
   ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '127',
-    bestRating: '5',
-    worstRating: '1',
-  },
+  // aggregateRating supprimé - À activer uniquement si vous affichez réellement des avis sur la page
+  // Sinon Google peut pénaliser pour incohérence contenu ↔ données structurées
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Formations WordPress',
@@ -136,6 +142,7 @@ export const localBusinessSchema: WithContext<LocalBusiness> = {
  * Schema Course - Détails d'une formation
  */
 export function createCourseSchema(course: {
+  id: string
   titre: string
   description: string
   duree: number
@@ -146,12 +153,11 @@ export function createCourseSchema(course: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Course',
+    '@id': `${baseUrl}/catalogue/${course.id}#course`,
     name: course.titre,
     description: course.description,
     provider: {
-      '@type': 'Organization',
-      name: 'GestionMax Formation',
-      sameAs: baseUrl,
+      '@id': `${baseUrl}/#organization`,
     },
     hasCourseInstance: {
       '@type': 'CourseInstance',
@@ -193,6 +199,7 @@ export function createCourseSchema(course: {
 export const faqPageSchema: WithContext<FAQPage> = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  '@id': `${baseUrl}/#faq`,
   mainEntity: [
     {
       '@type': 'Question',
