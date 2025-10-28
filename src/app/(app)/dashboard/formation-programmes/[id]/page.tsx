@@ -248,7 +248,7 @@ export default function FormationPersonnaliseeDetailPage() {
         </div>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href={`/admin/formation-programmes/${formationId}/edit`}>
+            <Link href={`/dashboard/formation-programmes/${formationId}/edit`}>
               <Edit className="h-4 w-4 mr-2" />
               Modifier
             </Link>

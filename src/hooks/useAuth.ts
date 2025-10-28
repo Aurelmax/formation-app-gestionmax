@@ -152,9 +152,9 @@ export function useAuth(): AuthState & AuthActions {
 
     console.log('✅ Déconnexion terminée')
 
-    // Rediriger vers la page de login
+    // Rediriger vers la page de login du dashboard
     if (typeof window !== 'undefined') {
-      window.location.href = '/admin/login'
+      window.location.href = '/dashboard/login'
     }
   }, [])
 

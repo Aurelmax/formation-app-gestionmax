@@ -142,7 +142,7 @@ export default function FormationProgrammesPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/admin/formation-programmes/nouveau">
+          <Link href="/dashboard/formation-programmes/nouveau">
             <Plus className="h-4 w-4 mr-2" />
             Nouvelle formation
           </Link>
@@ -182,13 +182,13 @@ export default function FormationProgrammesPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-2 pt-3">
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/admin/formation-programmes/${programme.id}`}>
+                    <Link href={`/dashboard/formation-programmes/${programme.id}`}>
                       <Eye className="h-4 w-4 mr-1" />
                       Voir
                     </Link>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/admin/formation-programmes/${programme.id}/edit`}>
+                    <Link href={`/dashboard/formation-programmes/${programme.id}/edit`}>
                       <Edit className="h-4 w-4 mr-1" />
                       Modifier
                     </Link>

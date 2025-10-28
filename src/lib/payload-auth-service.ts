@@ -42,10 +42,10 @@ class PayloadAuthService {
     return user !== null
   }
 
-  // Rediriger vers le login Payload
+  // Rediriger vers le login du dashboard
   redirectToLogin(returnUrl?: string): void {
     const redirect = returnUrl || window.location.pathname
-    window.location.href = `/admin/login?redirect=${encodeURIComponent(redirect)}`
+    window.location.href = `/dashboard/login?redirect=${encodeURIComponent(redirect)}`
   }
 
   // Déconnexion (via Payload)

@@ -13,7 +13,6 @@ import {
   FileText,
   Settings,
   UserCog,
-  ExternalLink,
   LogOut,
   PenTool,
   Image,
@@ -70,7 +69,8 @@ export function Sidebar() {
           )
         })}
 
-        {/* Lien vers l'interface CMS */}
+        {/* Interface Payload CMS désactivée - Utiliser uniquement le dashboard React */}
+        {/*
         <div className="pt-4 border-t border-gray-200">
           <a
             href="/admin"
@@ -82,6 +82,7 @@ export function Sidebar() {
             Interface Payload CMS
           </a>
         </div>
+        */}
       </nav>
 
       <div className="p-4 border-t">

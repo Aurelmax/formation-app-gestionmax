@@ -125,7 +125,7 @@ export default function ProgrammesPage() {
           <p className="text-muted-foreground">Gérez votre catalogue de formations</p>
         </div>
         <Button asChild>
-          <Link href="/admin/programmes/nouveau">
+          <Link href="/dashboard/programmes/nouveau">
             <Plus className="h-4 w-4 mr-2" />
             Nouveau programme
           </Link>
@@ -185,13 +185,13 @@ export default function ProgrammesPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/admin/programmes/${programme._id}`}>
+                    <Link href={`/dashboard/programmes/${programme._id}`}>
                       <Eye className="h-4 w-4 mr-1" />
                       Voir
                     </Link>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/admin/programmes/${programme._id}/edit`}>
+                    <Link href={`/dashboard/programmes/${programme._id}/edit`}>
                       <Edit className="h-4 w-4 mr-1" />
                       Modifier
                     </Link>
@@ -230,7 +230,7 @@ export default function ProgrammesPage() {
                 Commencez par créer votre premier programme de formation.
               </p>
               <Button asChild>
-                <Link href="/admin/programmes/nouveau">
+                <Link href="/dashboard/programmes/nouveau">
                   <Plus className="h-4 w-4 mr-2" />
                   Créer un programme
                 </Link>

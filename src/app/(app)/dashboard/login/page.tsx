@@ -197,6 +197,8 @@ export default function AdminLoginPage() {
               </Button>
 
               {/* Bouton pour se connecter via Payload CMS */}
+              {/* Bouton désactivé - Interface Payload CMS native désactivée */}
+              {/*
               <Button
                 type="button"
                 variant="secondary"
@@ -209,6 +211,7 @@ export default function AdminLoginPage() {
               >
                 🔐 Se connecter via Payload CMS
               </Button>
+              */}
 
               {/* Bouton de développement - Bypass login (temporaire) */}
               <Button
