@@ -29,5 +29,5 @@ RUN mkdir -p media
 # Exposer le port
 EXPOSE 3000
 
-# Commande de démarrage en production
-CMD ["npm", "start"]
+# Commande de démarrage en production (standalone mode)
+CMD ["node", ".next/standalone/server.js"]
