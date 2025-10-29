@@ -84,7 +84,13 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
               Vous devez être connecté pour accéder à cette page.
             </p>
             <div className="space-y-2">
-              <Button onClick={() => router.push('/dashboard/login')} className="w-full">
+              <Button
+                onClick={() => {
+                  console.log('Redirection vers /dashboard/login')
+                  window.location.href = '/dashboard/login'
+                }}
+                className="w-full"
+              >
                 Se connecter
               </Button>
               {process.env.NODE_ENV === 'development' && (
