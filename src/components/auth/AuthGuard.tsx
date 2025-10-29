@@ -87,16 +87,18 @@ export function AuthGuard({ children, requiredRole, requiredPermission }: AuthGu
               <Button onClick={() => router.push('/dashboard/login')} className="w-full">
                 Se connecter
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  localStorage.setItem('debug_mode', 'true')
-                  window.location.reload()
-                }}
-                className="w-full"
-              >
-                🔧 Mode Debug (Temporaire)
-              </Button>
+              {process.env.NODE_ENV === 'development' && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    localStorage.setItem('debug_mode', 'true')
+                    window.location.reload()
+                  }}
+                  className="w-full"
+                >
+                  🔧 Mode Debug (Temporaire)
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
