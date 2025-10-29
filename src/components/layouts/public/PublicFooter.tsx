@@ -48,6 +48,11 @@ export function PublicFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/manifeste" className="hover:text-white transition">
+                  Manifeste
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-white transition">
                   Contact
                 </Link>
