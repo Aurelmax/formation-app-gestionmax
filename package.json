@@ -37,7 +37,7 @@
     "start:formation": "./start-formation-app.sh",
     "build:production": "./build-and-start.sh",
     "production": "npm run build && npm run start:3010",
-    "postinstall": "npm run sync:types",
+    "postinstall": "echo 'Skipping postinstall - use npm run sync:types manually if needed'",
     "postbuild": "npm run sync:types"
   },
   "overrides": {

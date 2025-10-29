@@ -7,6 +7,9 @@ WORKDIR /app
 # Copier les fichiers de dépendances
 COPY package*.json ./
 
+# Copier le dossier scripts nécessaire pour le postinstall
+COPY scripts ./scripts
+
 # Installer les dépendances avec legacy peer deps
 RUN npm ci --legacy-peer-deps
 
