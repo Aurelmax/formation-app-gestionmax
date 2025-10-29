@@ -1,4 +1,4 @@
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import config from '@/payload.config'
 
 const SUPER_ADMIN_EMAIL = 'aurelien@gestionmax.fr'
@@ -8,7 +8,7 @@ async function createSuperAdmin() {
   console.log('🚀 Création du superAdmin...\n')
 
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Vérifier si l'utilisateur existe déjà
     const existingUsers = await payload.find({

@@ -43,6 +43,8 @@ export async function getPayloadClient() {
   try {
     isConnecting = true
     console.log('🔄 Initialisation de Payload CMS...')
+    console.log('🔍 MongoDB URI présente:', process.env['MONGODB_URI'] ? '✅ Oui' : '❌ Non')
+    console.log('🔍 MongoDB URI length:', process.env['MONGODB_URI']?.length || 0)
 
     // Obtenir une nouvelle instance Payload
     const payload = await getPayloadInstance({ config })
@@ -50,12 +52,13 @@ export async function getPayloadClient() {
     // Vérifier que la connexion MongoDB est active
     if (payload.db && payload.db.connection) {
       const connectionState = payload.db.connection.readyState
-      console.log('📊 État de connexion MongoDB:', {
+      const statusMap: Record<number, string> = {
         0: 'Déconnecté',
         1: 'Connecté ✅',
         2: 'Connexion en cours...',
         3: 'Déconnexion en cours...',
-      }[connectionState] || connectionState)
+      }
+      console.log('📊 État de connexion MongoDB:', statusMap[connectionState] || `État ${connectionState}`)
 
       if (connectionState !== 1) {
         console.warn('⚠️ MongoDB pas complètement connecté')

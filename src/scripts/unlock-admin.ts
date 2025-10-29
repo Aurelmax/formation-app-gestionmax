@@ -1,4 +1,4 @@
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import config from '@/payload.config'
 
 const DEFAULT_EMAIL = 'admin@gestionmax.fr'
@@ -8,7 +8,7 @@ async function unlockAdmin() {
   console.log('🔓 Déverrouillage de l\'utilisateur admin...\n')
 
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Chercher l'utilisateur admin
     const users = await payload.find({

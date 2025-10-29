@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 /**
  * GET /api/contacts/[id]
@@ -9,7 +8,7 @@ import config from '@/payload.config'
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     const contact = await payload.findByID({
       collection: 'contacts',
@@ -49,7 +48,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 export async function PUT(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
     const body = await _request.json()
 
     // Vérifier si le contact existe
@@ -124,7 +123,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Vérifier si le contact existe
     const existingContact = await payload.findByID({

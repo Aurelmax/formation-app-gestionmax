@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 export async function GET() {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     const formations = await payload.find({
       collection: 'formations_personnalisees',
@@ -28,7 +27,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Vérifier si le code formation existe déjà
     const existingFormations = await payload.find({

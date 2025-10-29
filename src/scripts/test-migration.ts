@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import payloadConfig from '../payload.config'
 
 // Charger les variables d'environnement
@@ -41,7 +41,7 @@ class MigrationTester {
     this.log('🧪 Initialisation des tests de migration...')
 
     try {
-      this.payload = await getPayload({ config: payloadConfig })
+      this.payload = await getPayloadClient()
       this.log('✅ Connexion à Payload CMS établie')
       return true
     } catch (error) {

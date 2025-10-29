@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@payload-config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 // GET /api/apprenants-payload/:id - Récupérer un apprenant par ID
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     const apprenant = await payload.findByID({
       collection: 'apprenants',
@@ -58,7 +57,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const { id } = await params
     const body = await request.json()
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Récupérer l'apprenant existant pour obtenir l'ID de la structure
     const existingApprenant = await payload.findByID({
@@ -143,7 +142,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     await payload.delete({
       collection: 'apprenants',

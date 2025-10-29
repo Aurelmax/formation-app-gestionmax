@@ -1,11 +1,11 @@
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import config from '@/payload.config'
 
 async function checkUsers() {
   console.log('🔍 Vérification des utilisateurs...')
 
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Récupérer tous les utilisateurs
     const users = await payload.find({

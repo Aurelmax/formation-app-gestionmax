@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 // GET /api/server-users - Récupérer tous les utilisateurs via Payload Local API
 export async function GET(request: NextRequest) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Vérifier l'authentification
     const { user: currentUser } = await payload.auth({ headers: request.headers })
@@ -49,7 +48,7 @@ export async function GET(request: NextRequest) {
 // POST /api/server-users - Créer un utilisateur via Payload Local API
 export async function POST(request: NextRequest) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Vérifier l'authentification
     const { user: currentUser } = await payload.auth({ headers: request.headers })

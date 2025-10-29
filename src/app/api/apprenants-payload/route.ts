@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(_request: NextRequest) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     const apprenants = await payload.find({
       collection: 'apprenants',

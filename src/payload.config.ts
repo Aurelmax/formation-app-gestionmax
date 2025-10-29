@@ -1112,7 +1112,11 @@ export default buildConfig({
   ],
   plugins: [],
   db: mongooseAdapter({
-    url: process.env['MONGODB_URI'] || '',
+    url: (() => {
+      const uri = process.env['MONGODB_URI'] || ''
+      console.log('🔍 [Payload Config] MongoDB URI configurée:', uri ? `✅ ${uri.substring(0, 50)}...` : '❌ Vide')
+      return uri
+    })(),
     connectOptions: {
       // Options optimisées pour éviter les problèmes de connexion
       serverSelectionTimeoutMS: 5000,

@@ -1,30 +1,8 @@
-import { getPayload } from 'payload'
-import config from './payload.config'
+// src/payload.ts
+// ⚠️ Ce fichier est obsolète. Il redirige désormais vers le nouveau client unique.
+// Gardé uniquement pour compatibilité temporaire.
 
-let cached = (global as unknown as { payload: { client: any; promise: any } }).payload
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
-if (!cached) {
-  cached = (global as unknown as { payload: { client: any; promise: any } }).payload = {
-    client: null,
-    promise: null,
-  }
-}
-
-export const getPayloadClient = async () => {
-  if (cached.client) {
-    return cached.client
-  }
-
-  if (!cached.promise) {
-    cached.promise = getPayload({ config })
-  }
-
-  try {
-    cached.client = await cached.promise
-  } catch (e) {
-    cached.promise = null
-    throw e
-  }
-
-  return cached.client
-}
+export default getPayloadClient
+export { getPayloadClient }

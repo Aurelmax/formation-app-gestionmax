@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
     const resolvedParams = await params
 
     const formation = await payload.findByID({
@@ -35,7 +34,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 export async function PUT(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const body = await _request.json()
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
     const resolvedParams = await params
 
     // Vérifier si la formation existe
@@ -101,7 +100,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
     const resolvedParams = await params
 
     // Vérifier si la formation existe

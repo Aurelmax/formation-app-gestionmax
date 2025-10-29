@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import { cookies } from 'next/headers'
 
 // GET /api/auth/me - Récupérer l'utilisateur connecté via Payload
 export async function GET(request: NextRequest) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
     const cookieStore = await cookies()
 
     // Récupérer le token JWT du cookie Payload

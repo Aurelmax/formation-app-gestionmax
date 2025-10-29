@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload, Where } from 'payload'
-import config from '@/payload.config'
+import { Where } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 /**
  * GET /api/contacts
@@ -8,7 +8,7 @@ import config from '@/payload.config'
  */
 export async function GET(request: NextRequest) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
 
     // Récupérer les paramètres de requête
     const searchParams = request.nextUrl.searchParams
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const payload = await getPayload({ config })
+    const payload = await getPayloadClient()
     const body = await request.json()
 
     // Validation basique

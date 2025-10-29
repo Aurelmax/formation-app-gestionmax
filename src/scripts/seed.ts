@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import payloadConfig from '../payload.config'
 
 // Charger les variables d'environnement
@@ -15,7 +15,7 @@ const seed = async () => {
   console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
 
-  const payload = await getPayload({ config: payloadConfig })
+  const payload = await getPayloadClient()
 
   try {
     // Créer un utilisateur admin

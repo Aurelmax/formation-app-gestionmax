@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import payloadConfig from '../../../payload.config'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 
 export async function POST(_request: NextRequest) {
   try {
     const { collection, dryRun = false } = await _request.json()
 
-    const payload = await getPayload({ config: payloadConfig })
+    const payload = await getPayloadClient()
 
     // Logique d'enrichissement simplifiée
     const enrichments = {

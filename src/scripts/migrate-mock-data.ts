@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import payloadConfig from '../payload.config'
 import { MOCK_USERS, MOCK_PROGRAMMES, MOCK_APPRENANTS, MOCK_RENDEZ_VOUS } from '../data/mock-data'
 
@@ -18,7 +18,7 @@ const migrateMockData = async () => {
   console.log('🔑 PAYLOAD_SECRET:', process.env['PAYLOAD_SECRET'] ? '✅ Défini' : '❌ Manquant')
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
 
-  const payload = await getPayload({ config: payloadConfig })
+  const payload = await getPayloadClient()
   const stats: MigrationStats = {
     users: { imported: 0, errors: 0 },
     programmes: { imported: 0, errors: 0 },

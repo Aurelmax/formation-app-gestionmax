@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import payloadConfig from '../payload.config'
 
 // Charger les variables d'environnement
@@ -11,7 +11,7 @@ const checkCollections = async () => {
   console.log('🗄️ MONGODB_URI:', process.env['MONGODB_URI'] ? '✅ Défini' : '❌ Manquant')
 
   try {
-    const payload = await getPayload({ config: payloadConfig })
+    const payload = await getPayloadClient()
 
     console.log('\n📋 Collections disponibles:')
 

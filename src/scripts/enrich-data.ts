@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import payloadConfig from '../payload.config'
 
 // Charger les variables d'environnement
@@ -40,7 +40,7 @@ class DataEnrichmentManager {
     this.log("🚀 Initialisation de l'enrichissement des données...")
 
     try {
-      this.payload = await getPayload({ config: payloadConfig })
+      this.payload = await getPayloadClient()
       this.log('✅ Connexion à Payload CMS établie')
       return true
     } catch (error) {

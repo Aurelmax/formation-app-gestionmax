@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import payloadConfig from '../payload.config'
 import { payloadService } from '../lib/payload-service'
 
@@ -42,7 +42,7 @@ class MigrationValidator {
     this.log('🧪 Initialisation du validateur de migration...')
 
     try {
-      this.payload = await getPayload({ config: payloadConfig })
+      this.payload = await getPayloadClient()
       this.log('✅ Connexion à Payload CMS établie')
       return true
     } catch (error) {

@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { getPayload } from 'payload'
+import { getPayloadClient } from '@/lib/getPayloadClient'
 import payloadConfig from '../payload.config'
 import { MOCK_USERS, MOCK_PROGRAMMES, MOCK_APPRENANTS, MOCK_RENDEZ_VOUS } from '../data/mock-data'
 
@@ -72,7 +72,7 @@ class PayloadMigrationManager {
     }
 
     try {
-      this.payload = await getPayload({ config: payloadConfig })
+      this.payload = await getPayloadClient()
       this.log('✅ Connexion à Payload CMS établie')
 
       // Vérifier les collections disponibles
