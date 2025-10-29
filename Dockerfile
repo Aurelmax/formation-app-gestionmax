@@ -16,11 +16,18 @@ RUN npm ci --legacy-peer-deps
 # Copier le code source
 COPY . .
 
+# Variables d'environnement pour le build
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+# Build Next.js pour production
+RUN npm run build
+
 # Créer le répertoire media
 RUN mkdir -p media
 
 # Exposer le port
 EXPOSE 3000
 
-# Commande de démarrage
-CMD ["npm", "run", "dev"]
+# Commande de démarrage en production
+CMD ["npm", "start"]
