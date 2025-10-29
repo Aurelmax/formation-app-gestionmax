@@ -1,5 +1,9 @@
 import type { NextConfig } from 'next'
 import { withPayload } from '@payloadcms/next/withPayload'
+import { config } from 'dotenv'
+
+// Charger les variables d'environnement le plus tôt possible
+config()
 
 const nextConfig: NextConfig = {
   experimental: {

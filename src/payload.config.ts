@@ -1113,5 +1113,14 @@ export default buildConfig({
   plugins: [],
   db: mongooseAdapter({
     url: process.env['MONGODB_URI'] || '',
+    connectOptions: {
+      // Options optimisées pour éviter les problèmes de connexion
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4, // Forcer IPv4 au lieu d'IPv6
+      // Désactiver la création automatique d'index en production
+      autoIndex: process.env.NODE_ENV !== 'production',
+      autoCreate: process.env.NODE_ENV !== 'production',
+    },
   }),
 })
