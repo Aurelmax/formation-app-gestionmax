@@ -605,6 +605,12 @@ export default buildConfig({
     Apprenants,
     {
       slug: 'articles',
+      access: {
+        read: () => true, // Lecture publique pour les articles
+        create: ({ req: { user } }) => !!user,
+        update: ({ req: { user } }) => !!user,
+        delete: ({ req: { user } }) => !!user,
+      },
       fields: [
         {
           name: 'titre',
@@ -710,6 +716,12 @@ export default buildConfig({
     },
     {
       slug: 'categories',
+      access: {
+        read: () => true, // Lecture publique
+        create: ({ req: { user } }) => !!user,
+        update: ({ req: { user } }) => !!user,
+        delete: ({ req: { user } }) => !!user,
+      },
       fields: [
         {
           name: 'nom',
@@ -740,6 +752,12 @@ export default buildConfig({
     },
     {
       slug: 'tags',
+      access: {
+        read: () => true, // Lecture publique
+        create: ({ req: { user } }) => !!user,
+        update: ({ req: { user } }) => !!user,
+        delete: ({ req: { user } }) => !!user,
+      },
       fields: [
         {
           name: 'nom',
