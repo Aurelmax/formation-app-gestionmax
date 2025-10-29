@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { PublicLayout } from '@/components/layouts/public/PublicLayout'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Heart, Target, Users, Zap, MessageCircle, Award } from 'lucide-react'
+import { Heart, Target, Users, Zap, MessageCircle, Award, BookOpen, ArrowRight } from 'lucide-react'
+import { RecentArticles } from '@/components/blog/RecentArticles'
 
 export const metadata: Metadata = {
   title: 'Manifeste Éditorial - La Relation Client Moderne',
@@ -253,7 +254,7 @@ export default function ManifestePage() {
           </section>
 
           {/* Signature */}
-          <section className="border-t-2 border-gray-200 pt-12">
+          <section className="border-t-2 border-gray-200 pt-12 pb-16">
             <div className="text-center">
               <p className="text-2xl font-bold text-[#1f3b8e] mb-2">✍️ Aurélien Lavayssière</p>
               <p className="text-lg text-gray-600 mb-4">
@@ -264,9 +265,49 @@ export default function ManifestePage() {
               </blockquote>
             </div>
           </section>
+        </div>
 
-          {/* CTA */}
-          <div className="mt-16 text-center bg-gradient-to-r from-[#1f3b8e] to-[#7eb33f] rounded-lg p-12">
+        {/* Articles récents - Section pleine largeur */}
+        <div className="bg-[#1f3b8e]/5 py-20 border-t-2 border-[#1f3b8e]/10">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="bg-[#7eb33f]/10 p-3 rounded-lg">
+                  <BookOpen className="h-8 w-8 text-[#7eb33f]" />
+                </div>
+                <h2 className="text-4xl font-bold text-gray-900">
+                  📚 Dans la continuité du manifeste
+                </h2>
+              </div>
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+                Découvrez nos derniers articles qui explorent concrètement ces principes de relation
+                client moderne
+              </p>
+            </div>
+
+            {/* Composant articles récents */}
+            <RecentArticles limit={4} showCategories={true} />
+
+            {/* CTA vers le blog */}
+            <div className="text-center mt-12">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-2 border-[#1f3b8e] text-[#1f3b8e] hover:bg-[#1f3b8e] hover:text-white font-semibold group"
+                asChild
+              >
+                <Link href="/blog" className="flex items-center gap-2">
+                  <span>Lire tous les articles</span>
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <div className="text-center bg-gradient-to-r from-[#1f3b8e] to-[#7eb33f] rounded-lg p-12">
             <h3 className="text-3xl font-bold text-white mb-4">
               Prêt à transformer votre relation client ?
             </h3>
