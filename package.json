@@ -8,7 +8,7 @@
     "dev:turbo": "next dev --turbopack",
     "dev:turbo:3010": "PORT=3010 next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
     "start:3010": "PORT=3010 next start",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
