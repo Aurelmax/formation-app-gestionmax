@@ -10,8 +10,8 @@ import {
   BookOpen,
   Users,
   Calendar,
-  FileText,
-  Settings,
+  // FileText, // Commenté car Documents n'existe pas encore
+  // Settings, // Commenté car Parametres n'existe pas encore
   UserCog,
   LogOut,
   PenTool,
@@ -34,8 +34,9 @@ const navigation = [
   { name: 'Contacts', href: '/dashboard/contacts', icon: Mail },
   { name: 'Médias', href: '/dashboard/medias', icon: Image },
   { name: 'Utilisateurs', href: '/dashboard/utilisateurs', icon: UserCog },
-  { name: 'Documents', href: '/dashboard/documents', icon: FileText },
-  { name: 'Paramètres', href: '/dashboard/parametres', icon: Settings },
+  // TODO: Créer les pages documents et parametres
+  // { name: 'Documents', href: '/dashboard/documents', icon: FileText },
+  // { name: 'Paramètres', href: '/dashboard/parametres', icon: Settings },
 ]
 
 export function Sidebar() {
