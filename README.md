@@ -62,6 +62,7 @@ formation-app-gestionmax/
 
 - **[Guide d'utilisation de l'API Client](docs/API_CLIENT_USAGE.md)** - Comment utiliser le client API centralisé pour interagir avec Payload CMS
 - **[Nettoyage des déploiements Vercel](docs/VERCEL_DEPLOYMENT_CLEANUP.md)** - Comment supprimer les déploiements échoués sur Vercel
+- **[Sécurité - Page de connexion](docs/SECURITY_LOGIN.md)** - Isolation des outils de développement et bonnes pratiques de sécurité
 - **[Configuration Payload CMS](PAYLOAD_CMS_SETUP.md)** - Configuration et collections Payload
 
 ## 🔧 Configuration
