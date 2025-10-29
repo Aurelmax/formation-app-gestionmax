@@ -160,14 +160,29 @@ export function RendezVousManagement() {
   }
 
   const formatDate = (date: string, heure: string) => {
-    const dateObj = new Date(`${date}T${heure}`)
-    return dateObj.toLocaleDateString('fr-FR', {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+    try {
+      // Nettoyer la date si elle contient déjà une heure
+      const cleanDate = date.includes('T') ? date.split('T')[0] : date
+
+      // Créer l'objet date avec le format ISO complet
+      const dateObj = new Date(`${cleanDate}T${heure}:00`)
+
+      // Vérifier si la date est valide
+      if (isNaN(dateObj.getTime())) {
+        return `${cleanDate} ${heure}`
+      }
+
+      return dateObj.toLocaleDateString('fr-FR', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    } catch (error) {
+      // En cas d'erreur, retourner le format brut
+      return `${date} ${heure}`
+    }
   }
 
   if (isLoading) {
