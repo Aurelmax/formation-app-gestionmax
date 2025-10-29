@@ -23,11 +23,19 @@ ENV NODE_ENV=production
 # Build Next.js pour production
 RUN npm run build
 
+# Copier les fichiers statiques nécessaires dans le standalone
+RUN cp -r public .next/standalone/public || true
+RUN cp -r .next/static .next/standalone/.next/static || true
+
 # Créer le répertoire media
 RUN mkdir -p media
+
+# Copier le script de démarrage
+COPY start-server.sh ./
+RUN chmod +x start-server.sh
 
 # Exposer le port
 EXPOSE 3000
 
-# Commande de démarrage en production (standalone mode)
-CMD ["node", ".next/standalone/server.js"]
+# Commande de démarrage en production (standalone mode avec script wrapper)
+CMD ["./start-server.sh"]
