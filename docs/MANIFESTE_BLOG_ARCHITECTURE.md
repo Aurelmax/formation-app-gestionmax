@@ -5,6 +5,7 @@ Documentation sur l'intégration du blog dans la page manifeste éditorial.
 ## 📋 Table des matières
 
 - [Vue d'ensemble](#vue-densemble)
+- [Navigation et positionnement](#navigation-et-positionnement)
 - [Architecture choisie](#architecture-choisie)
 - [Composant RecentArticles](#composant-recentarticles)
 - [Intégration dans le manifeste](#intégration-dans-le-manifeste)
@@ -21,6 +22,62 @@ La page `/manifeste` combine maintenant :
 3. **Un CTA vers le blog complet** - Pour découvrir tous les articles
 
 Cette architecture crée une **transition naturelle** entre la vision de marque (manifeste) et le contenu vivant (blog).
+
+---
+
+## Navigation et positionnement
+
+### Lien Manifeste déplacé dans le footer
+
+**Décision stratégique** : Le lien "Manifeste" a été déplacé du menu principal (header) vers le footer dans la section "Liens rapides".
+
+#### Rationale
+
+Le manifeste est un **contenu institutionnel/éditorial**, pas une page de conversion directe. Il doit rester accessible mais ne pas encombrer la navigation principale.
+
+#### Navigation avant vs après
+
+**Avant** :
+```
+Header: Accueil | Catalogue | À propos | Manifeste | Blog | Contact (6 items)
+Footer: Catalogue | À propos | Blog | Contact | Règlement | Infos légales
+```
+
+**Après** :
+```
+Header: Accueil | Catalogue | À propos | Blog | Contact (5 items)
+Footer: Catalogue | À propos | Blog | Manifeste | Contact | Règlement | Infos légales
+```
+
+#### Avantages de ce positionnement
+
+1. **Menu principal épuré**
+   - Focus sur les pages essentielles et de conversion
+   - Meilleure lisibilité pour l'utilisateur
+   - UX mobile améliorée (moins d'items dans le hamburger menu)
+
+2. **Cohérence sémantique**
+   - Le manifeste rejoint naturellement les autres pages institutionnelles du footer
+   - Même niveau que "Règlement intérieur" et "Informations légales"
+
+3. **Découverte organique**
+   - Les visiteurs engagés scrollent jusqu'au footer
+   - Ceux qui cherchent le manifeste le trouveront facilement
+   - Pas d'intrusion dans le parcours de conversion principal
+
+4. **SEO maintenu**
+   - Le lien reste présent sur toutes les pages (footer global)
+   - Maillage interne préservé
+   - Crawlabilité identique
+
+#### Fichiers modifiés
+
+- [`src/components/layouts/public/PublicHeader.tsx`](../src/components/layouts/public/PublicHeader.tsx)
+  - Retrait de l'item "Manifeste" du tableau `navigation`
+
+- [`src/components/layouts/public/PublicFooter.tsx`](../src/components/layouts/public/PublicFooter.tsx)
+  - Ajout du lien "Manifeste" dans la section "Liens rapides"
+  - Positionné entre "Blog" et "Contact"
 
 ---
 
