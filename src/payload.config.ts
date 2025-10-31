@@ -45,6 +45,7 @@ export default buildConfig({
     'https://gestionmax.fr',
     'https://www.gestionmax.fr',
     'https://formation-app-gestionmax.vercel.app',
+    'https://formation-app-gestionmax-production.up.railway.app',
     process.env['NEXT_PUBLIC_SERVER_URL'] || '',
   ].filter(Boolean),
   cors: [
@@ -53,6 +54,7 @@ export default buildConfig({
     'https://gestionmax.fr',
     'https://www.gestionmax.fr',
     'https://formation-app-gestionmax.vercel.app',
+    'https://formation-app-gestionmax-production.up.railway.app',
     process.env['NEXT_PUBLIC_SERVER_URL'] || '',
   ].filter(Boolean),
   // 🔧 Préfixe pour éviter les collisions de cookies entre Next.js et Payload
